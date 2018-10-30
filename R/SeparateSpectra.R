@@ -18,22 +18,22 @@
 ##' array. Expected is the output from \code{\link{ArraySpectra}}, but
 ##' sufficient is a named list of two components giving the \code{mean} and
 ##' \code{stack} spectra.
-##' @param neff the effective number of records to account for an expected
-##' spatial correlation of the local noise. Per default set to element \code{N}
+##' @param neff the effective number of records (e.g. to account for an expected
+##' spatial correlation of the local noise). Per default set to element \code{N}
 ##' in \code{spectra}, otherwise supply it explicitly here.
-##' @param diffusion numeric vector of diffusion correction values; must be of
-##' the same length as the spectral estimates in \code{spectra}. By omitting
-##' this parameter no correction will be applied.
+##' @param diffusion numeric vector of diffusion correction values (inverse
+##' transfer function); must be of the same length as the spectral estimates in
+##' \code{spectra}. By omitting this parameter no correction will be applied.
 ##' @param time.uncertainty numeric vector of time uncertainty correction
-##' values; must be of the same length as the spectral estimates in
-##' \code{spectra}. By omitting this parameter no correction will be
-##' applied.
+##' values (inverse transfer function); must be of the same length as the
+##' spectral estimates in \code{spectra}. By omitting this parameter no
+##' correction will be applied.
 ##' @return A list of three components:
 ##' \describe{
 ##' \item{\code{signal}:}{the raw or corrected signal spectrum.}
 ##' \item{\code{noise}:}{the raw or corrected noise spectrum.}
 ##' \item{\code{snr}:}{the signal-to-noise ratio as calculated from the previous
-##' two elements.}
+##' components.}
 ##' }
 ##' @author Thomas Münch
 ##' @seealso \code{\link{ArraySpectra}}

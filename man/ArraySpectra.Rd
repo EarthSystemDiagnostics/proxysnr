@@ -14,9 +14,10 @@ expected to be a numeric vector of the proxy values of a common length.}
 \item{res}{the sampling (e.g., temporal) resolution of the proxy data;
 determines the frequency axis of the spectral estimates.}
 
-\item{neff}{the effective number of records to account for an expected
-spatial correlation of the local noise. Per default set to the number of
-proxy records (the length of \code{cores}).}
+\item{neff}{the effective number of records (e.g. to account for an expected
+spatial correlation of the local noise). Per default, no spatial correlation
+is assumed and \code{neff} is set to the number of proxy records (the length
+of \code{cores}).}
 
 \item{df.log}{width of the Gaussian kernel in logarithmic
 space to smooth the spectral estimates; \code{NULL} (the default) suppresses

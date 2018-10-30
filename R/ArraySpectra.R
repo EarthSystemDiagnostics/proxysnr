@@ -19,9 +19,10 @@
 ##' expected to be a numeric vector of the proxy values of a common length.
 ##' @param res the sampling (e.g., temporal) resolution of the proxy data;
 ##' determines the frequency axis of the spectral estimates.
-##' @param neff the effective number of records to account for an expected
-##' spatial correlation of the local noise. Per default set to the number of
-##' proxy records (the length of \code{cores}).
+##' @param neff the effective number of records (e.g. to account for an expected
+##' spatial correlation of the local noise). Per default, no spatial correlation
+##' is assumed and \code{neff} is set to the number of proxy records (the length
+##' of \code{cores}).
 ##' @param df.log width of the Gaussian kernel in logarithmic
 ##' space to smooth the spectral estimates; \code{NULL} (the default) suppresses
 ##' smoothing. Log-smoothing automatically results in calculation of
@@ -120,7 +121,7 @@ ArraySpectra <- function(cores, res = 1, neff = length(cores),
     
     # return results as a list
     res <- list(
-        N          = N,
+        N          = neff,
         single     = single,
         mean       = mean,
         stack      = stack)

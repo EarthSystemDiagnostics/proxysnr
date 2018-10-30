@@ -80,8 +80,8 @@ spectral transfer function.
 The modelling of the time uncertainty follows the approach presented in
 Comboul et al. (2014) which is implemented in the package
 \code{simproxyage} and hence needed for this function to work. The package
-is available on Bitbucket under \url{https://bitbucket.org/ecus/trenchr} and
-can be installed directly using
+is available on Bitbucket under \url{https://bitbucket.org/ecus/simproxyage}
+and can be installed directly using
 \code{devtools::install_bitbucket("ecus/simproxyage")}.
 
 The spectral estimates are calculated using the function \code{SpecMTM} from
@@ -92,23 +92,23 @@ functions.
 Handling of age cotrol points (see package \code{simproxyage} for more
 details):
 
-The function allows one to model the age uncertainty with
-several age control points (ACP) where the age uncertainty evolves according
-to the model of Comboul et al. (2014) between the age control points but is
-forced back to zero time uncertainty at the ACPs following a Brownian Bridge
+The function allows one to model the age uncertainty with several age
+control points (ACP) where the age uncertainty evolves according to the
+model of Comboul et al. (2014) between the age control points but is forced
+back to zero time uncertainty at the ACPs following a Brownian Bridge
 process.
 
-Per default, the start age (i.e. the youngest age at the core top)
-is assumed to be the first ACP, thus, if not set explicitly in the vector
+Per default, the start age (i.e. the youngest age at the core top) is
+assumed to be the first ACP, thus, if not set explicitly in the vector
 \code{acp}, the youngest age is added as its first element. You can specify
 an arbitrary number of additional ACPs. Between each pair of ACPs (starting
-at the core top), constrained age perturbation
-realisations are performed following the Comboul et al. (2014) model and the
-Brownian Bridge concept. If the last ACP equals the oldest age in \code{t}
-(i.e. the last proxy data point), the last core segment also follows a
-Brownian Bridge process. Alternatively, if the last ACP is younger than the
-final age, \code{NA} is added as the last element to the vector \code{acp}
-which results in an unconstrained age perturbation process for the last core
+at the core top), constrained age perturbation realisations are performed
+following the Comboul et al. (2014) model and the Brownian Bridge
+concept. If the last ACP equals the oldest age in \code{t} (i.e. the last
+proxy data point), the last core segment also follows a Brownian Bridge
+process. Alternatively, if the last ACP is younger than the final age,
+\code{NA} is added as the last element to the vector \code{acp} which
+results in an unconstrained age perturbation process for the last core
 segment.
 
 ACPs lying outside the time interval defined by \code{t} will be removed
