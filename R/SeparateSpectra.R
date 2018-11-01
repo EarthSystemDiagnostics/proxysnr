@@ -74,7 +74,7 @@ SeparateSpectra <- function(spectra, neff = spectra$N,
     if (is.null(time.uncertainty)) {
         time.uncertainty <- 1
     } else {
-        if (length(diffusion) != length(spectra$mean$freq)) {
+        if (length(time.uncertainty) != length(spectra$mean$freq)) {
             stop("Length of time uncertainty correction does not match length of
         spectral estimates.")
         }
