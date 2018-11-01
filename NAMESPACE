@@ -3,4 +3,5 @@
 export(ArraySpectra)
 export(DiffusionCorrection)
 export(SeparateSpectra)
+export(StackCorrelation)
 export(TimeUncertaintyCorrection)

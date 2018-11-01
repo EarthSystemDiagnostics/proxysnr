@@ -1,0 +1,84 @@
+##' Final DML and WAIS spectra
+##'
+##' Internal function to produce the final DML and WAIS spectra (signal, noise,
+##' SNR) used for Figs. (3) and (4) in Münch and Laepple (2018). The DML spectra
+##' are a combination of the results from the DML1 and DML2 data sets.
+##' @param spec output from \code{\link{WrapSpectralResults}} for DML and WAIS
+##' data
+##' @param dml.knit.f frequency at which to combine the spectra from the DML1
+##' and DML2 data sets (defaults to 1/10 yr^(-1)); DML2 spectra are used for
+##' lower frequencies than \code{dml.knit.f}, DML1 for the higher frequencies.
+##' @param df.log Gaussian kernel width in log space for additional smoothing
+##' for visual purposes.
+##' @return A list with the components \code{dml} and \code{wais}, where each is
+##' a list containing three elements:
+##' \describe{
+##' \item{\code{signal}:}{the signal spectrum.}
+##' \item{\code{noise}:}{the noise spectrum.}
+##' \item{\code{snr}:}{the frequency-dependent signal-to-noise ratio.}
+##' }
+##' @author Thomas Münch
+##' @references Münch, T. and Laepple, T.: What climate signal is contained in
+##' decadal to centennial scale isotope variations from Antarctic ice cores?
+##' Clim. Past Discuss., https://doi.org/10.5194/cp-2018-112, in review, 2018.
+PublicationSNR <- function(spec, dml.knit.f = 0.1, df.log = 0.125) {
+
+    
+    # Combine DML1 and DML2 spectra
+    
+    idx.knit1 <- which(spec$dml1$raw$mean$freq > dml.knit.f)
+    idx.knit2 <- which(spec$dml2$raw$mean$freq < dml.knit.f)
+    
+    dml.signal <- list()
+    dml.signal$freq <- c(spec$dml2$raw$mean$freq[idx.knit2],
+                         spec$dml1$raw$mean$freq[idx.knit1])
+    dml.signal$spec <- c(spec$dml2$corr.full$signal$spec[idx.knit2],
+                         spec$dml1$corr.full$signal$spec[idx.knit1])
+
+    dml.noise <- dml.signal
+    dml.noise$spec <- c(spec$dml2$corr.full$noise$spec[idx.knit2],
+                        spec$dml1$corr.full$noise$spec[idx.knit1])
+
+
+    # Smooth DML & WAIS signal and noise and calculate SNR
+
+    if (!requireNamespace("PaleoSpec", quietly = TRUE)) {
+        
+        warning(paste("Package \"PaleoSpec\" not found;",
+                      "no log-smoothing applied."),
+                call. = FALSE)
+        
+    } else {
+        
+        dml.signal <- PaleoSpec::LogSmooth(dml.signal, df.log = df.log)
+        dml.noise  <- PaleoSpec::LogSmooth(dml.noise, df.log = df.log)
+
+        wais.signal <- PaleoSpec::LogSmooth(SPEC$wais$corr.full$signal,
+                                            df.log = df.log)
+        wais.noise  <- PaleoSpec::LogSmooth(SPEC$wais$corr.full$noise,
+                                            df.log = df.log)
+    }
+
+    dml.snr <- list()
+    dml.snr$freq <- dml.signal$freq
+    dml.snr$spec <- dml.signal$spec / dml.noise$spec
+
+    wais.snr <- list()
+    wais.snr$freq <- wais.signal$freq
+    wais.snr$spec <- wais.signal$spec / wais.noise$spec
+
+    
+    # Organize output
+
+    res <- list()
+    res$dml$signal   <- dml.signal
+    res$wais$signal  <- wais.signal
+    res$dml$noise    <- dml.noise
+    res$wais$noise   <- wais.noise
+    res$dml$snr      <- dml.snr
+    res$wais$snr     <- wais.snr
+
+    return(res)
+
+}
+
