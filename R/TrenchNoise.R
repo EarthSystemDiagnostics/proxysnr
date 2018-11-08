@@ -26,9 +26,9 @@
 ##' }
 ##' @author Thomas Münch
 ##' @references
-##' Münch, T., et al., Constraints on post-depositional isotope modifications
-##' in East Antarctic firn from analysing temporal changes of isotope profiles,
-##' The Cryosphere, doi:10.5194/tc-11-2175-2017, 2017.
+##' Münch, T. and Laepple, T.: What climate signal is contained in
+##' decadal to centennial scale isotope variations from Antarctic ice cores?
+##' Clim. Past Discuss., https://doi.org/10.5194/cp-2018-112, in review, 2018.
 TrenchNoise <- function(trench.data, acc.rate = 25, sigma.acc.rate = 5,
                         res = 3, neff = 19, df.log = 0.1) {
 
