@@ -3,6 +3,8 @@
 ## Author: Thomas Münch (thomas.muench@awi.de), Alfred-Wegener-Institut, 2018
 ##
 
+library(devtools)
+
 # 'TrenchR' package to load the data
 library(TrenchR)
 
@@ -24,4 +26,6 @@ t15.1 <- t15.1[-(1 : 6), ]
 t15 <- as.data.frame(cbind(t15.1, t15.2))
 # Document time of processing
 attr(t15, "info") <- sprintf("Processed on: %s.", Sys.time())
+
+devtools::use_data(t15, overwrite = TRUE)
 
