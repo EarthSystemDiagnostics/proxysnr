@@ -25,11 +25,11 @@ doi <- c("10.1594/PANGAEA.104889",
          "10.1594/PANGAEA.104888")
 
 # Names of the respective data sets
-names <- c(paste("fb",
+names <- c(paste("FB98",
                  c("04", "05", "07", "08", "09", "10",
                  "11", "13", "14", "15", "16", "17"),
                  sep = ""),
-           "b31", "b32", "b33")
+           "B31", "B32", "B33")
 
 # Download and process entire DML data
 dml1 <- load.DML(doi = doi, names = names,
