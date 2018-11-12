@@ -49,7 +49,7 @@
 ##' decadal to centennial scale isotope variations from Antarctic ice cores?
 ##' Clim. Past Discuss., https://doi.org/10.5194/cp-2018-112, in review, 2018.
 ##' @export
-DiffusionCorrection <- function(nt, nc, ns, sigma, res = 1, coherent = FALSE) {
+DiffusionTF <- function(nt, nc, ns, sigma, res = 1, coherent = FALSE) {
 
     # convert sigma vector into array if necessary and check for dimensions
     if (is.null(dim(sigma))) {
