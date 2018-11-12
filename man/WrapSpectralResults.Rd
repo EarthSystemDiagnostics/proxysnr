@@ -5,16 +5,16 @@
 \title{Main results for Münch and Laepple (2018)}
 \usage{
 WrapSpectralResults(..., diffusion, time.uncertainty, df.log = 0.05,
-  crit.diffusion = 2)
+  crit.diffusion = 2, inverse.tf = FALSE)
 }
 \arguments{
 \item{...}{a comma separated list of named proxy data sets to analyse.}
 
-\item{diffusion}{a list of inverse transfer functions to correct for the
+\item{diffusion}{a list of (inverse) transfer functions to correct for the
 effect of diffusion. The length of the list has to match the number of
 provided data sets, thus, one transfer function per data set is assumed.}
 
-\item{time.uncertainty}{similar to \code{diffusion} a list of inverse
+\item{time.uncertainty}{similar to \code{diffusion} a list of (inverse)
 transfer functions to correct for the effect of time uncertainty.}
 
 \item{df.log}{a vector of Gaussian kernel widths in log space to smooth the
@@ -24,6 +24,13 @@ is recycled to match the number of data sets.}
 \item{crit.diffusion}{maximum diffusion correction value to obtain cutoff
 frequencies until which results are analysed to avoid large uncertainties at
 the high-frequency end of the spectra.}
+
+\item{inverse.tf}{logical; if \code{TRUE}, it is assumed that
+\code{diffusion} and \code{time.uncertainty} provide the inverse transfer
+functions which can be readily used to correct the spectra. If \code{FALSE}
+(the default), the inverse of the provided transfer functions is calculated
+within the function and used for the corrections. See Eqs. (4) in Münch and
+Laepple (2018) for the definitions.}
 }
 \value{
 A list of \code{N} lists, where \code{N} is the number of provided
@@ -46,18 +53,10 @@ to combine the results for other data sets.
 \examples{
 # Get main results of Münch and Laepple (2018)
 
-# Load the isotope data sets
-dml  <- proxysnr:::load.DML()
-wais <- proxysnr:::load.WAIS()
-# Load the inverse transfer (correction) functions
-dtf <- proxysnr:::load.DTF()
-ttf <- proxysnr:::load.TTF()
-
-# Main paper results
-results <- proxysnr:::WrapSpectralResults(dml1 = dml$dml1,
-               dml2 = dml$dml2, wais = wais,
-               diffusion = dtf,
-               time.uncertainty = ttf,
+results <- proxysnr:::WrapSpectralResults(
+               dml1 = dml$dml1, dml2 = dml$dml2, wais = wais,
+               diffusion = diffusion.tf,
+               time.uncertainty = time.uncertainty.tf,
                df.log = c(0.15, 0.15, 0.1))
 }
 \references{
