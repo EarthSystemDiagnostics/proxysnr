@@ -6,7 +6,7 @@
 \usage{
 TimeUncertaintyTF(t = 100:1, acp = c(t[1], NA), nt = length(t), nc = 1,
   ns = 100, model = "poisson", rate = 0.05, resize = 1,
-  surrogate.fun = rnorm, ..., pad = TRUE)
+  surrogate.fun = rnorm, fun.par = NULL, pad = TRUE, ...)
 }
 \arguments{
 \item{t}{numeric vector of integer values providing a reference chronology
@@ -43,7 +43,8 @@ resize to longest realisation (default).}
 \item{surrogate.fun}{the random number generator to use for creating the
 noise time series; per default the base \code{R} white noise generator.}
 
-\item{...}{additional parameters passed to \code{surrogate.fun}}
+\item{fun.par}{an otional list of additional parameters which are passed to
+\code{surrogate.fun}}
 
 \item{pad}{Strong age perturbations may result in time series that do not
 reach the final age of the reference chronology -- shall the resulting
@@ -51,6 +52,9 @@ reach the final age of the reference chronology -- shall the resulting
 spectral estimation? Defaults to \code{TRUE}. This should not influence the
 spectral estimation provided the number of \code{NA} values is small
 compared to the total length of the time series.}
+
+\item{...}{additional parameters whcih are passed to the spectral estimation
+function}
 }
 \value{
 a list of the components \code{input}, \code{stack} and
@@ -115,8 +119,8 @@ ACPs lying outside the time interval defined by \code{t} will be removed
 from the vector \code{acp} with a warning.
 }
 \references{
-Comboul, M., Emile-Geay, J., Evans, M. N., Mirnateghi, N., Cobb,
-K. M. and Thompson, D. M.: A probabilistic model of chronological errors in
+Comboul, M., Emile-Geay, J., Evans, M. N., Mirnateghi, N., Cobb, K. M.
+and Thompson, D. M.: A probabilistic model of chronological errors in
 layer-counted climate proxies: applications to annually banded coral
 archives, Clim. Past, 10(2), 825-841, doi: 10.5194/cp-10-825-2014, 2014.
 

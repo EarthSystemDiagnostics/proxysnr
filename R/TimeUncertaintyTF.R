@@ -72,13 +72,16 @@
 ##' resize to longest realisation (default).
 ##' @param surrogate.fun the random number generator to use for creating the
 ##' noise time series; per default the base \code{R} white noise generator.
-##' @param ... additional parameters passed to \code{surrogate.fun}
+##' @param fun.par an otional list of additional parameters which are passed to
+##' \code{surrogate.fun}
 ##' @param pad Strong age perturbations may result in time series that do not
 ##' reach the final age of the reference chronology -- shall the resulting
 ##' \code{NA} values (in case of \code{resize = 1}) be set to \code{0} for the
 ##' spectral estimation? Defaults to \code{TRUE}. This should not influence the
 ##' spectral estimation provided the number of \code{NA} values is small
 ##' compared to the total length of the time series.
+##' @param ... additional parameters whcih are passed to the spectral estimation
+##' function
 ##' @return a list of the components \code{input}, \code{stack} and
 ##' \code{ratio} which are \code{"spectral object"} lists providing averages
 ##' over the \code{ns} simulations of:
@@ -91,8 +94,9 @@
 ##' }
 ##' @author Thomas Münch
 ##' @seealso \code{[simproxyage]{MonteCarloArray}}
-##' @references Comboul, M., Emile-Geay, J., Evans, M. N., Mirnateghi, N., Cobb,
-##' K. M. and Thompson, D. M.: A probabilistic model of chronological errors in
+##' @references
+##' Comboul, M., Emile-Geay, J., Evans, M. N., Mirnateghi, N., Cobb, K. M.
+##' and Thompson, D. M.: A probabilistic model of chronological errors in
 ##' layer-counted climate proxies: applications to annually banded coral
 ##' archives, Clim. Past, 10(2), 825-841, doi: 10.5194/cp-10-825-2014, 2014.
 ##'
@@ -102,9 +106,9 @@
 ##' @export
 TimeUncertaintyTF <- function(t = 100 : 1, acp = c(t[1], NA),
                               nt = length(t), nc = 1, ns = 100,
-                              model = "poisson", rate = 0.05,
-                              resize = 1, surrogate.fun = rnorm, ...,
-                              pad = TRUE) {
+                              model = "poisson", rate = 0.05, resize = 1,
+                              surrogate.fun = rnorm, fun.par = NULL,
+                              pad = TRUE, ...) {
 
     # check if package simproxyage is available
     if (!requireNamespace("simproxyage", quietly = TRUE)) {
@@ -127,9 +131,23 @@ TimeUncertaintyTF <- function(t = 100 : 1, acp = c(t[1], NA),
 
 
     # Monte Carlo simulation of age uncertainty for a core array
-    run <- simproxyage::MonteCarloArray(t, acp, nt = nt, nc = nc, ns = ns,
-                                        rate = rate,
-                                        surrogate.fun = surrogate.fun, ...)
+    arg <- c(list(
+        t = t,
+        acp = acp,
+        nt = nt,
+        nc = nc,
+        ns = ns,
+        model = model,
+        rate = rate,
+        resize = resize,
+        surrogate.fun = surrogate.fun),
+        fun.par)
+
+    run <- do.call(simproxyage::MonteCarloArray, args = arg)
+    ## run <- simproxyage::MonteCarloArray(t, acp,
+    ##                                     nt = nt, nc = nc, ns = ns,
+    ##                                     rate = rate,
+    ##                                     surrogate.fun = surrogate.fun, ...)
 
     
     # pad potential NA's at the end of the age-perturbed time series with zero
@@ -144,12 +162,12 @@ TimeUncertaintyTF <- function(t = 100 : 1, acp = c(t[1], NA),
     stacks.lst <- lapply(seq_len(ncol(stacks)), function(i) {
         stacks[, i]})
     stacks.spec <- lapply(stacks.lst, function(x) {
-        fun(ts(x, deltat = 1))})
+        fun(ts(x, deltat = 1), ...)})
 
     input.lst <- lapply(seq_len(ncol(run$input)), function(i) {
         run$input[, i]})
     input.spec <- lapply(input.lst, function(x) {
-        fun(ts(x, deltat = 1))})
+        fun(ts(x, deltat = 1), ...)})
 
 
     # calculate the average over all 'ns' simulations

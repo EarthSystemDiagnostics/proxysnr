@@ -2,7 +2,7 @@
 ##'
 ##' This function implements an empirical Monte Carlo approach to estimate the
 ##' spectral transfer function for the effect of firn diffusion on the spatial
-##' average of isotope records.
+##' average of firn/ice-core stable isotope records.
 ##'
 ##' The approach is described in detail in Münch and Laepple (2018). In brief,
 ##' \code{nc} white noise time series are created and diffused and the average
@@ -35,6 +35,8 @@
 ##' @param coherent if \code{TRUE}, \code{nc} identical white noise time series
 ##' are assumed to estimate the transfer function; else (the default) \code{nc}
 ##' independent noise series.
+##' @param ... additional parameters which are passed to the spectral estimation
+##' function
 ##' @return a list of the components \code{signal}, \code{diffused} and
 ##' \code{ratio} which are \code{"spectral object"} lists providing averages
 ##' over the \code{ns} simulations of:
@@ -49,7 +51,7 @@
 ##' decadal to centennial scale isotope variations from Antarctic ice cores?
 ##' Clim. Past Discuss., https://doi.org/10.5194/cp-2018-112, in review, 2018.
 ##' @export
-DiffusionTF <- function(nt, nc, ns, sigma, res = 1, coherent = FALSE) {
+DiffusionTF <- function(nt, nc, ns, sigma, res = 1, coherent = FALSE, ...) {
 
     # convert sigma vector into array if necessary and check for dimensions
     if (is.null(dim(sigma))) {

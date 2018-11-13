@@ -4,7 +4,7 @@
 \alias{DiffusionTF}
 \title{Diffusion transfer function}
 \usage{
-DiffusionTF(nt, nc, ns, sigma, res = 1, coherent = FALSE)
+DiffusionTF(nt, nc, ns, sigma, res = 1, coherent = FALSE, ...)
 }
 \arguments{
 \item{nt}{the length of the modelled isotope records (i.e. the number of
@@ -30,6 +30,9 @@ determines the frequency axis of the transfer function.}
 \item{coherent}{if \code{TRUE}, \code{nc} identical white noise time series
 are assumed to estimate the transfer function; else (the default) \code{nc}
 independent noise series.}
+
+\item{...}{additional parameters which are passed to the spectral estimation
+function}
 }
 \value{
 a list of the components \code{signal}, \code{diffused} and
@@ -45,7 +48,7 @@ function.}
 \description{
 This function implements an empirical Monte Carlo approach to estimate the
 spectral transfer function for the effect of firn diffusion on the spatial
-average of isotope records.
+average of firn/ice-core stable isotope records.
 }
 \details{
 The approach is described in detail in Münch and Laepple (2018). In brief,
