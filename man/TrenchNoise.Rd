@@ -4,13 +4,10 @@
 \alias{TrenchNoise}
 \title{Trench noise spectrum}
 \usage{
-TrenchNoise(trench.data, acc.rate = 25, sigma.acc.rate = 5, res = 3,
-  neff = 19, df.log = 0.1)
+TrenchNoise(acc.rate = 25, sigma.acc.rate = 5, res = 3, neff = 19,
+  df.log = 0.1)
 }
 \arguments{
-\item{trench.data}{list of the shallow trench isotope profiles from Münch et
-al. (2017)}
-
 \item{acc.rate}{assumed mean accumulation rate at the trench site [cm/yr]}
 
 \item{sigma.acc.rate}{assumed uncertainty of the accumulation rate [cm/yr]}

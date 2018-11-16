@@ -59,12 +59,6 @@ WrapSpectralResults <- function(..., diffusion, time.uncertainty,
     
     if (length(df.log) == 1) df.log = rep(df.log, length.out = n)
 
-    # Calculate the inverse of the transfer functions if signalled
-    if (!inverse.tf) {
-        diffusion$spec <- 1 / diffusion$spec
-        time.uncertainty$spec <- 1 / time.uncertainty$spec
-    }
-
     
     # Loop over data sets to obtain the relevant spectral quantities
     
@@ -73,8 +67,16 @@ WrapSpectralResults <- function(..., diffusion, time.uncertainty,
 
         tmp <- list()
 
+        # get diffusion/time-uncertainty correction functions
+        d.crr <- diffusion[[i]]$spec
+        t.crr <- time.uncertainty[[i]]$spec
+        if (!inverse.tf) {
+            d.crr <- 1 / d.crr
+            t.crr <- 1 / t.crr
+        }
+
         # critical cutoff frequency for diffusion correction
-        idx <- which(diffusion[[i]]$spec >= crit.diffusion)[1]
+        idx <- which(d.crr >= crit.diffusion)[1]
         tmp$f.cutoff <- c(idx, diffusion[[i]]$freq[idx])
 
         # mean and stack spectra
@@ -85,10 +87,9 @@ WrapSpectralResults <- function(..., diffusion, time.uncertainty,
 
         # corrected signal and noise spectra
         tmp$corr.t.unc.only <-
-            SeparateSpectra(spec, time = time.uncertainty[[i]]$spec)
+            SeparateSpectra(spec, time = t.crr)
         tmp$corr.full <-
-            SeparateSpectra(spec, time = time.uncertainty[[i]]$spec,
-                            diffusion = diffusion[[i]]$spec)
+            SeparateSpectra(spec, time = t.crr, diffusion = d.crr)
 
         res[[i]] <- tmp
 

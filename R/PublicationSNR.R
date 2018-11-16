@@ -16,6 +16,8 @@
 ##' \item{\code{signal}:}{the signal spectrum.}
 ##' \item{\code{noise}:}{the noise spectrum.}
 ##' \item{\code{snr}:}{the frequency-dependent signal-to-noise ratio.}
+##' \item{\code{f.cutoff}:}{a two-element vector with the index and value of the
+##' cutoff frequency from constraining the diffusion correction.}
 ##' }
 ##' @author Thomas Münch
 ##' @references Münch, T. and Laepple, T.: What climate signal is contained in
@@ -26,18 +28,21 @@ PublicationSNR <- function(spec, dml.knit.f = 0.1, df.log = 0.125) {
     
     # Combine DML1 and DML2 spectra
     
-    idx.knit1 <- which(spec$dml1$raw$mean$freq > dml.knit.f)
-    idx.knit2 <- which(spec$dml2$raw$mean$freq < dml.knit.f)
+    idx.knit1 <- which(spec$dml1$raw$signal$freq > dml.knit.f)
+    idx.knit2 <- which(spec$dml2$raw$signal$freq < dml.knit.f)
     
     dml.signal <- list()
-    dml.signal$freq <- c(spec$dml2$raw$mean$freq[idx.knit2],
-                         spec$dml1$raw$mean$freq[idx.knit1])
+    dml.signal$freq <- c(spec$dml2$raw$signal$freq[idx.knit2],
+                         spec$dml1$raw$signal$freq[idx.knit1])
     dml.signal$spec <- c(spec$dml2$corr.full$signal$spec[idx.knit2],
                          spec$dml1$corr.full$signal$spec[idx.knit1])
 
     dml.noise <- dml.signal
     dml.noise$spec <- c(spec$dml2$corr.full$noise$spec[idx.knit2],
                         spec$dml1$corr.full$noise$spec[idx.knit1])
+
+    dml.f.cutoff <- spec$dml1$f.cutoff
+    dml.f.cutoff[1] <- which(dml.signal$freq == spec$dml1$f.cutoff[2])
 
 
     # Smooth DML & WAIS signal and noise and calculate SNR
@@ -53,9 +58,9 @@ PublicationSNR <- function(spec, dml.knit.f = 0.1, df.log = 0.125) {
         dml.signal <- PaleoSpec::LogSmooth(dml.signal, df.log = df.log)
         dml.noise  <- PaleoSpec::LogSmooth(dml.noise, df.log = df.log)
 
-        wais.signal <- PaleoSpec::LogSmooth(SPEC$wais$corr.full$signal,
+        wais.signal <- PaleoSpec::LogSmooth(spec$wais$corr.full$signal,
                                             df.log = df.log)
-        wais.noise  <- PaleoSpec::LogSmooth(SPEC$wais$corr.full$noise,
+        wais.noise  <- PaleoSpec::LogSmooth(spec$wais$corr.full$noise,
                                             df.log = df.log)
     }
 
@@ -71,12 +76,16 @@ PublicationSNR <- function(spec, dml.knit.f = 0.1, df.log = 0.125) {
     # Organize output
 
     res <- list()
+
     res$dml$signal   <- dml.signal
-    res$wais$signal  <- wais.signal
     res$dml$noise    <- dml.noise
-    res$wais$noise   <- wais.noise
     res$dml$snr      <- dml.snr
-    res$wais$snr     <- wais.snr
+    res$dml$f.cutoff <- dml.f.cutoff
+    
+    res$wais$signal   <- wais.signal
+    res$wais$noise    <- wais.noise
+    res$wais$snr      <- wais.snr
+    res$wais$f.cutoff <- spec$wais$f.cutoff
 
     return(res)
 
