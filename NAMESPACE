@@ -2,6 +2,10 @@
 
 export(ArraySpectra)
 export(DiffusionTF)
+export(PlotArraySpectra)
+export(PlotSNR)
+export(PlotStackCorrelation)
+export(PlotTF)
 export(SeparateSpectra)
 export(StackCorrelation)
 export(TimeUncertaintyTF)
