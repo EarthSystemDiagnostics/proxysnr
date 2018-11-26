@@ -4,10 +4,11 @@
 \alias{PlotTF}
 \title{Plot transfer functions (Figure B1 in Münch and Laepple, 2018)}
 \usage{
-PlotTF(dtf = NULL, ttf = NULL, names = NULL, col = NULL, xlim = c(500,
-  2), ylim1 = c(0.005, 5), ylim2 = c(0.2, 1.5), plt.ann = "default",
-  xlab = NULL, ylab1 = NULL, ylab2 = NULL, xtm = NULL, ytm1 = NULL,
-  ytm2 = NULL, xtl = NULL, ytl1 = NULL, ytl2 = NULL)
+PlotTF(dtf = NULL, ttf = NULL, names = NULL, col = NULL,
+  dtf.threshold = NULL, xlim = c(500, 2), ylim1 = c(0.005, 5),
+  ylim2 = c(0.2, 1.5), plt.ann = "default", xlab = NULL, ylab1 = NULL,
+  ylab2 = NULL, xtm = NULL, ytm1 = NULL, ytm2 = NULL, xtl = NULL,
+  ytl1 = NULL, ytl2 = NULL)
 }
 \arguments{
 \item{dtf}{A list of transfer function data sets: each data set is an object
@@ -31,6 +32,10 @@ data sets differ in number, you can provide a list of two vectors of names.}
 
 \item{col}{a numeric or character vector of colors to use for the plotting;
 if \code{NULL} default colors are used.}
+
+\item{dtf.threshold}{optional critical diffusion transfer function
+value to plot a corresponding horizontal line and vertical lines of
+corresponding frequency cutoff values (omitted for \code{NULL}).}
 
 \item{xlim}{the x limits (x1, x2) of the plot.}
 
@@ -78,7 +83,7 @@ uncertainty.
 # Plot Figure B1 in Münch and Laepple (2018), i.e. the used transfer
 # functions to correct the DML and WAIS isotope spectra:
 
-PlotTF(names = c("DML1", "DML2", "WAIS"),
+PlotTF(names = c("DML1", "DML2", "WAIS"), dtf.threshold = 0.5,
        col = c("black", "firebrick", "dodgerblue"))
 }
 \references{

@@ -308,7 +308,7 @@ PlotArraySpectra <- function(spec, f.cutoff = NA,
 
     legend("bottomleft",
            c("Individual spectra", "Mean spectrum",
-             "Spectrum of stacked record", "Mean spectrum scaled by 1/N"),
+             "Spectrum of stacked record", "Mean spectrum scaled by 1/n"),
            col = c("darkgrey", "black", "burlywood4", "black"),
            lty = c(1, 1, 1, 5),
            lwd = c(1, 2, 2, 1), seg.len = 2.5, bty = "n")
@@ -350,7 +350,7 @@ muench_laepple_fig02 <- function(spec, f.cut = FALSE) {
 
     LPlot(spec$dml1$raw$signal, bP = TRUE, bNo = TRUE, axes = FALSE,
           xlim = c(500, 2), ylim = ylim, xlab = "", ylab = "")
-    axis(2, at = y.at)
+    axis(2, at = y.at, labels = y.at)
     box()
 
     mtext(ylabel, side = 2, line = 4.5, las = 0,
@@ -404,7 +404,7 @@ muench_laepple_fig02 <- function(spec, f.cut = FALSE) {
     LPlot(spec$wais$raw$signal, bP = TRUE, bNo = TRUE, axes = FALSE,
           xlim = c(500, 2), ylim = ylim, xlab = "", ylab = "")
     axis(1)
-    axis(2, at = y.at)
+    axis(2, at = y.at, labels = y.at)
     box()
 
     mtext("Time period (yr)", side = 1, line = 3.5,
@@ -904,6 +904,9 @@ muench_laepple_fig05 <- function(SNR, TNS, f.cut = FALSE) {
 ##' data sets differ in number, you can provide a list of two vectors of names.
 ##' @param col a numeric or character vector of colors to use for the plotting;
 ##' if \code{NULL} default colors are used.
+##' @param dtf.threshold optional critical diffusion transfer function
+##' value to plot a corresponding horizontal line and vertical lines of
+##' corresponding frequency cutoff values (omitted for \code{NULL}).
 ##' @param xlim the x limits (x1, x2) of the plot.
 ##' @param ylim1 the y limits (y1, y2) of the diffusion transfer function plot.
 ##' @param ylim2 the y limits (y1, y2) of the time uncertainty transfer function
@@ -927,13 +930,14 @@ muench_laepple_fig05 <- function(SNR, TNS, f.cut = FALSE) {
 ##' # Plot Figure B1 in Münch and Laepple (2018), i.e. the used transfer
 ##' # functions to correct the DML and WAIS isotope spectra:
 ##'
-##' PlotTF(names = c("DML1", "DML2", "WAIS"),
+##' PlotTF(names = c("DML1", "DML2", "WAIS"), dtf.threshold = 0.5,
 ##'        col = c("black", "firebrick", "dodgerblue"))
 ##' @references Münch, T. and Laepple, T.: What climate signal is contained in
 ##' decadal to centennial scale isotope variations from Antarctic ice cores?
 ##' Clim. Past Discuss., https://doi.org/10.5194/cp-2018-112, in review, 2018.
 PlotTF <- function(dtf = NULL, ttf = NULL,
                    names = NULL, col = NULL,
+                   dtf.threshold = NULL,
                    xlim = c(500, 2),
                    ylim1 = c(0.005, 5), ylim2 = c(0.2, 1.5),
                    plt.ann = "default",
@@ -992,12 +996,18 @@ PlotTF <- function(dtf = NULL, ttf = NULL,
     }
 
     if (length(nam1) != length(dtf))
-        warning("dtf: Number of data sets does not match given nuber of names.",
+        warning("dtf: Number of data sets does not match number of names.",
                 call. = FALSE)
     if (length(nam2) != length(ttf))
-        warning("ttf: Number of data sets does not match given nuber of names.",
+        warning("ttf: Number of data sets does not match number of names.",
                 call. = FALSE)
 
+    if (!is.null(dtf.threshold)) {
+        f.cutoff <- sapply(dtf, function(x) {
+            x$freq[which(x$spec <= dtf.threshold)[1]]}
+            )
+    }
+    
     # Wrapper function for the legend
     
     leg <- function(names, col) {
@@ -1015,7 +1025,19 @@ PlotTF <- function(dtf = NULL, ttf = NULL,
           xlab = "", ylab = "", xlim = xlim, ylim = ylim1)
 
     for (i in 1 : ii) {
+        
         LLines(dtf[[i]], bP = TRUE, lwd = 2, col = col[i])
+
+        if (!is.null(dtf.threshold)) {
+            lines(x = rep(1 / f.cutoff[i], 2), y = c(ylim1[1] / 10, dtf.threshold),
+                  lwd = 1, lty = 2, col = col[i])
+        }
+    }
+
+    if (!is.null(dtf.threshold)) {
+        lines(x = c(2 * xlim[1], min(1 / f.cutoff[!is.na(f.cutoff)])),
+              y = rep(dtf.threshold, 2),
+              lwd = 1, lty = 2, col = "darkgrey")
     }
 
     mtext("a", side = 3, adj = 0.01, padj = 0.5,
