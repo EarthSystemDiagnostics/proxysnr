@@ -4,7 +4,7 @@
 \alias{LLines}
 \title{Add spectrum to existing log-log spectral plot}
 \usage{
-LLines(x, conf = TRUE, bPeriod = FALSE, col = "black", alpha = 0.3,
+LLines(x, conf = TRUE, bPeriod = FALSE, col = "black", alpha = 0.2,
   removeFirst = 0, removeLast = 0, ...)
 }
 \arguments{
@@ -19,7 +19,7 @@ interval (suppressed if \code{x} contains no error limits).}
 \item{col}{color for the line plot and the confidence interval.}
 
 \item{alpha}{transparency level (between 0 and 1) for the confidence
-interval. Defaults to \code{0.3}.}
+interval. Defaults to \code{0.2}.}
 
 \item{removeFirst}{omit \code{removeFirst} values on the low frequency side.}
 

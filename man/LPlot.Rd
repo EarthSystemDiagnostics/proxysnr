@@ -5,7 +5,7 @@
 \title{Log-log spectral plot}
 \usage{
 LPlot(x, conf = TRUE, bPeriod = FALSE, bNoPlot = FALSE, axes = TRUE,
-  col = "black", alpha = 0.3, removeFirst = 0, removeLast = 0,
+  col = "black", alpha = 0.2, removeFirst = 0, removeLast = 0,
   xlab = "f", ylab = "PSD", xlim = NULL, ylim = NULL, ...)
 }
 \arguments{
@@ -26,7 +26,7 @@ suppressed. Defaults to \code{TRUE}.}
 \item{col}{color for the line plot and the confidence interval.}
 
 \item{alpha}{transparency level (between 0 and 1) for the confidence
-interval. Defaults to \code{0.3}.}
+interval. Defaults to \code{0.2}.}
 
 \item{removeFirst}{omit \code{removeFirst} values on the low frequency side.}
 

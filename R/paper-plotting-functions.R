@@ -44,8 +44,8 @@ SetPlotPar <- function(mar = c(5, 5, 0.5, 0.5),
 
 ##' Draw error shading
 ##'
-##' A wrapper function for the \code{polygon} function to draw error shadings on
-##' a line plot.
+##' A wrapper function for the \code{polygon} function to draw error shadings
+##' (or confidence intervals) on a line plot.
 ##' @param x numeric vector of x values of the error band.
 ##' @param y1 numeric vector for the upper bound of the error band; must be of
 ##' the same length as \code{x}.
@@ -56,21 +56,17 @@ SetPlotPar <- function(mar = c(5, 5, 0.5, 0.5),
 ##' @param ... additional parameters which are passed to \code{polygon}.
 ##' @seealso \code{\link{polygon}}
 ##' @author Thomas Münch
-Polyplot <- function(x, y1, y2, col = "grey", alpha = 0.2, ...) {
+Polyplot <- function(x, y1, y2, col = "black", alpha = 0.2, ...) {
 
-    if (length(x) != length(y1) |
-        length(x) != length(y2) |
-        length(y1) != length(y2)) {
-        
+    inp <- list(x, y1, y2)
+    if (var(sapply(inp, length)) != 0)
         stop("All input vectors must be of the same length.")
-    }
-
-    yy <- rbind(y1, y2)
+    if (any(sapply(inp, function(x){any(is.na(x))})))
+        warning("Polyplot: Missing values as input.", call. = FALSE)
 
     col <- adjustcolor(col = col, alpha = alpha)
 
-    polygon(c(x, rev(x)),
-            c(yy[1, ], rev(yy[2, ])),
+    polygon(c(x, rev(x)), c(y1, rev(y2)),
             col = col, border = NA, ...)
     
 }
@@ -90,7 +86,7 @@ Polyplot <- function(x, y1, y2, col = "grey", alpha = 0.2, ...) {
 ##' suppressed. Defaults to \code{TRUE}.
 ##' @param col color for the line plot and the confidence interval.
 ##' @param alpha transparency level (between 0 and 1) for the confidence
-##' interval. Defaults to \code{0.3}.
+##' interval. Defaults to \code{0.2}.
 ##' @param removeFirst omit \code{removeFirst} values on the low frequency side.
 ##' @param removeLast omit \code{removeLast} values on the high frequency side.
 ##' @param xlab character string for labelling the x-axis.
@@ -102,15 +98,9 @@ Polyplot <- function(x, y1, y2, col = "grey", alpha = 0.2, ...) {
 ##' @param ... further graphical parameters passed to \code{plot}.
 ##' @author Thomas Laepple
 LPlot <- function(x, conf = TRUE, bPeriod = FALSE, bNoPlot = FALSE, axes = TRUE,
-                  col = "black", alpha = 0.3, removeFirst = 0, removeLast = 0,
+                  col = "black", alpha = 0.2, removeFirst = 0, removeLast = 0,
                   xlab = "f", ylab = "PSD", xlim = NULL, ylim = NULL, ...) {
 
-    ColTransparent<-function (color, alpha = 0.8, beta = 150) {
-        x <- col2rgb(color)[, 1]
-        rgb(min(x[1] + beta, 255), min(x[2] + beta, 255), min(x[3] + beta, 255),
-            255 * alpha, maxColorValue = 255)
-    }
-    
     if (bPeriod) {
         x$freq <- 1 / x$freq
         if (is.null(xlim)) xlim <- rev(range(x$freq))
@@ -129,8 +119,8 @@ LPlot <- function(x, conf = TRUE, bPeriod = FALSE, bNoPlot = FALSE, axes = TRUE,
 
     lim <- !is.null(x$lim.1) & !is.null(x$lim.2)
     if (conf & lim & !bNoPlot) {
-        polygon(c(x$freq, rev(x$freq)), c(x$lim.1, rev(x$lim.2)),
-                col = ColTransparent(col, alpha), border = NA)
+        Polyplot(x = x$freq, y1 = x$lim.1, y2 = x$lim.2,
+                 col = col, alpha = alpha)
     }
 
     if (!bNoPlot) lines(x$freq, x$spec, col = col, ...)
@@ -148,19 +138,13 @@ LPlot <- function(x, conf = TRUE, bPeriod = FALSE, bNoPlot = FALSE, axes = TRUE,
 ##'     (inverse frequency). Defaults to \code{FALSE}.
 ##' @param col color for the line plot and the confidence interval.
 ##' @param alpha transparency level (between 0 and 1) for the confidence
-##' interval. Defaults to \code{0.3}.
+##' interval. Defaults to \code{0.2}.
 ##' @param removeFirst omit \code{removeFirst} values on the low frequency side. 
 ##' @param removeLast omit \code{removeLast} values on the high frequency side.
 ##' @param ... further graphical parameters passed to \code{lines}.
 ##' @author Thomas Laepple
-LLines<-function(x, conf = TRUE, bPeriod = FALSE, col = "black", alpha = 0.3,
+LLines<-function(x, conf = TRUE, bPeriod = FALSE, col = "black", alpha = 0.2,
                  removeFirst = 0, removeLast = 0, ...) {
-
-    ColTransparent<-function (color, alpha = 0.8, beta = 150) {
-        x <- col2rgb(color)[, 1]
-        rgb(min(x[1] + beta, 255), min(x[2] + beta, 255), min(x[3] + beta, 255),
-            255 * alpha, maxColorValue = 255)
-    }
 
     if (bPeriod) x$freq <- 1 / x$freq
     
@@ -173,8 +157,8 @@ LLines<-function(x, conf = TRUE, bPeriod = FALSE, col = "black", alpha = 0.3,
 
     lim <- !is.null(x$lim.1) & !is.null(x$lim.2)
     if (conf & lim) {
-        polygon(c(x$freq, rev(x$freq)), c(x$lim.1, rev(x$lim.2)),
-                col = ColTransparent(col, alpha), border = NA)
+        Polyplot(x = x$freq, y1 = x$lim.1, y2 = x$lim.2,
+                 col = col, alpha = alpha)
     }
     
     lines(x$freq, x$spec, col = col, ...)

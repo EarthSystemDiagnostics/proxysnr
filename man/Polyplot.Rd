@@ -4,7 +4,7 @@
 \alias{Polyplot}
 \title{Draw error shading}
 \usage{
-Polyplot(x, y1, y2, col = "grey", alpha = 0.2, ...)
+Polyplot(x, y1, y2, col = "black", alpha = 0.2, ...)
 }
 \arguments{
 \item{x}{numeric vector of x values of the error band.}
@@ -22,8 +22,8 @@ the same length as \code{x}.}
 \item{...}{additional parameters which are passed to \code{polygon}.}
 }
 \description{
-A wrapper function for the \code{polygon} function to draw error shadings on
-a line plot.
+A wrapper function for the \code{polygon} function to draw error shadings
+(or confidence intervals) on a line plot.
 }
 \seealso{
 \code{\link{polygon}}
