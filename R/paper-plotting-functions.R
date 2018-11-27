@@ -173,6 +173,13 @@ LLines<-function(x, conf = TRUE, bPeriod = FALSE, col = "black", alpha = 0.2,
 ##' a cutoff frequency.
 ##' @param xlim the x limits (x1, x2) of the plot.
 ##' @param ylim the y limits (y1, y2) of the plot.
+##' @param col a three-element vector with the colours for the individual
+##' spectra (\code{col[1]}), the mean (\code{col[2]}) and the stack spectrum
+##' (\code{col[3]}).
+##' @param col.sn a two-element vector with the colours for the approximate
+##' signal (\code{col[1]}) and noise shading (\code{col[2]}).
+##' @param alpha.sn opacity factor for the colours in \code{col.sn} within
+##' [0,1].
 ##' @param plt.ann if \code{"default"} use axis annotation as in Fig. 1 of Münch
 ##' and Laepple (2018). Since no other fixed annotation scheme is implemented,
 ##' setting \code{plt.ann} to a different value will result in an error.
@@ -195,13 +202,16 @@ LLines<-function(x, conf = TRUE, bPeriod = FALSE, col = "black", alpha = 0.2,
 ##' @examples
 ##' # Plot Figure 1 in Münch and Laepple (2018) (DML1 oxygen isotope data set):
 ##' 
-##' PlotArraySpectra(ArraySpectra(dml$dml1, df.log = 0.14))
+##' PlotArraySpectra(ArraySpectra(dml$dml1, df.log = 0.12))
 ##' @export
 ##' @references Münch, T. and Laepple, T.: What climate signal is contained in
 ##' decadal to centennial scale isotope variations from Antarctic ice cores?
 ##' Clim. Past Discuss., https://doi.org/10.5194/cp-2018-112, in review, 2018.
 PlotArraySpectra <- function(spec, f.cutoff = NA,
                              xlim = c(100, 2), ylim = c(0.005, 50),
+                             col = c("darkgrey", "black", "burlywood4"),
+                             col.sn = c("dodgerblue4", "firebrick4"),
+                             alpha.sn = 0.2,
                              plt.ann = "default",
                              xlab = NULL, ylab = NULL,
                              xtm = NULL, ytm = NULL,
@@ -249,10 +259,10 @@ PlotArraySpectra <- function(spec, f.cutoff = NA,
 
     Polyplot(1 / psd1$freq[-i.remove],
              psd1$spec[-i.remove], psd2$spec[-i.remove],
-             col = "firebrick4", alpha = 0.2)
+             col = col.sn[2], alpha = alpha.sn)
     Polyplot(1 / psd1$freq[-i.remove],
              psd2$spec[-i.remove], psd3$spec[-i.remove],
-             col = "dodgerblue4", alpha = 0.2)
+             col = col.sn[1], alpha = alpha.sn)
 
     # Frequency cutoff line
 
@@ -265,20 +275,20 @@ PlotArraySpectra <- function(spec, f.cutoff = NA,
         
         LLines(spec$single[[i]], conf = FALSE, bP = TRUE,
                removeF = 1, removeL = 1,
-               col = "darkgrey")
+               col = col[1])
     }
 
     # Main spectra
 
     LLines(psd1, conf = FALSE, bP = TRUE,
            removeF = 1, removeL = 1,
-           col = "black", lwd = 3)
+           col = col[2], lwd = 3)
     LLines(psd2, conf = FALSE, bP = TRUE,
            removeF = 1, removeL = 1,
-           col = "burlywood4", lwd = 3)
+           col = col[3], lwd = 3)
     LLines(psd3, conf = FALSE, bP = TRUE,
            removeF = 1, removeL = 1,
-           col = "black", lwd = 1.5, lty = 5)
+           col = col[2], lwd = 1.5, lty = 5)
 
     # Axis and legend settings
 
@@ -293,7 +303,7 @@ PlotArraySpectra <- function(spec, f.cutoff = NA,
     legend("bottomleft",
            c("Individual spectra", "Mean spectrum",
              "Spectrum of stacked record", "Mean spectrum scaled by 1/n"),
-           col = c("darkgrey", "black", "burlywood4", "black"),
+           col = c(col[1 : 3], col[2]),#"darkgrey", "black", "burlywood4", "black"),
            lty = c(1, 1, 1, 5),
            lwd = c(1, 2, 2, 1), seg.len = 2.5, bty = "n")
 

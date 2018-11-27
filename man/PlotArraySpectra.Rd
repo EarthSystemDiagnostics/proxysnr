@@ -5,8 +5,9 @@
 \title{Plot proxy array spectra (Figure 1 in Münch and Laepple, 2018)}
 \usage{
 PlotArraySpectra(spec, f.cutoff = NA, xlim = c(100, 2), ylim = c(0.005,
-  50), plt.ann = "default", xlab = NULL, ylab = NULL, xtm = NULL,
-  ytm = NULL, xtl = NULL, ytl = NULL)
+  50), col = c("darkgrey", "black", "burlywood4"), col.sn = c("dodgerblue4",
+  "firebrick4"), alpha.sn = 0.2, plt.ann = "default", xlab = NULL,
+  ylab = NULL, xtm = NULL, ytm = NULL, xtl = NULL, ytl = NULL)
 }
 \arguments{
 \item{spec}{output from \code{\link{ArraySpectra}}.}
@@ -17,6 +18,16 @@ a cutoff frequency.}
 \item{xlim}{the x limits (x1, x2) of the plot.}
 
 \item{ylim}{the y limits (y1, y2) of the plot.}
+
+\item{col}{a three-element vector with the colours for the individual
+spectra (\code{col[1]}), the mean (\code{col[2]}) and the stack spectrum
+(\code{col[3]}).}
+
+\item{col.sn}{a two-element vector with the colours for the approximate
+signal (\code{col[1]}) and noise shading (\code{col[2]}).}
+
+\item{alpha.sn}{opacity factor for the colours in \code{col.sn} within
+[0,1].}
 
 \item{plt.ann}{if \code{"default"} use axis annotation as in Fig. 1 of Münch
 and Laepple (2018). Since no other fixed annotation scheme is implemented,
@@ -48,7 +59,7 @@ Plot the spectral estimates from a spatial proxy core array.
 \examples{
 # Plot Figure 1 in Münch and Laepple (2018) (DML1 oxygen isotope data set):
 
-PlotArraySpectra(ArraySpectra(dml$dml1, df.log = 0.14))
+PlotArraySpectra(ArraySpectra(dml$dml1, df.log = 0.12))
 }
 \references{
 Münch, T. and Laepple, T.: What climate signal is contained in
