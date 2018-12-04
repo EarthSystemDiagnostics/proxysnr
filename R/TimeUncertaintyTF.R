@@ -142,15 +142,11 @@ TimeUncertaintyTF <- function(t = 100 : 1, acp = c(t[1], NA),
 
     # calculate spectra of the 'ns' input and age-perturbed time series
 
-    stacks.lst <- lapply(seq_len(ncol(stacks)), function(i) {
-        stacks[, i]})
-    stacks.spec <- lapply(stacks.lst, function(x) {
-        SpecMTM(ts(x, deltat = 1), ...)})
+    stacks.spec <- lapply(seq_len(ncol(stacks)), function(i) {
+        SpecMTM(ts(stacks[, i], deltat = 1), ...)})
 
-    input.lst <- lapply(seq_len(ncol(run$input)), function(i) {
-        run$input[, i]})
-    input.spec <- lapply(input.lst, function(x) {
-        SpecMTM(ts(x, deltat = 1), ...)})
+    input.spec <- lapply(seq_len(ncol(run$input)), function(i) {
+        SpecMTM(ts(run$input[, i], deltat = 1), ...)})
 
 
     # calculate the average over all 'ns' simulations

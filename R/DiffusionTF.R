@@ -99,15 +99,11 @@ DiffusionTF <- function(nt, nc, ns, sigma, res = 1, coherent = FALSE, ...) {
 
     # calculate spectra of the 'ns' average diffused and undiffused noise series
 
-    signal.lst <- lapply(seq_len(ncol(stack.signal)), function(i) {
-        stack.signal[, i]})
-    signal.spec <- lapply(signal.lst, function(x) {
-        SpecMTM(ts(x, deltat = res), ...)})
+    signal.spec <- lapply(seq_len(ncol(stack.signal)), function(i) {
+        SpecMTM(ts(stack.signal[, i], deltat = res), ...)})
 
-    diff.lst <- lapply(seq_len(ncol(stack.diff)), function(i) {
-        stack.diff[, i]})
-    diff.spec <- lapply(diff.lst, function(x) {
-        SpecMTM(ts(x, deltat = res), ...)})
+    diff.spec <- lapply(seq_len(ncol(stack.diff)), function(i) {
+        SpecMTM(ts(stack.diff[, i], deltat = res), ...)})
 
 
     # calculate the average over all 'ns' simulations
