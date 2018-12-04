@@ -4,14 +4,15 @@
 ##' SNR) used for Figs. (3) and (4) in Münch and Laepple (2018). The DML spectra
 ##' are a combination of the results from the DML1 and DML2 data sets.
 ##' @param spec output from \code{\link{WrapSpectralResults}} for DML and WAIS
-##' data
+##' data.
 ##' @param dml.knit.f frequency at which to combine the spectra from the DML1
 ##' and DML2 data sets (defaults to 1/10 yr^(-1)); DML2 spectra are used for
 ##' lower frequencies than \code{dml.knit.f}, DML1 for the higher frequencies.
-##' @param df.log Gaussian kernel width in log space for additional smoothing
-##' for visual purposes.
+##' @param df.log width of Gaussian kernel in logarithmic frequency units for
+##' additional smoothing for visual purposes; \code{NULL} suppresses smoothing.
 ##' @return A list with the components \code{dml} and \code{wais}, where each is
-##' a list containing three elements:
+##' a list containing three elements of class \code{"spec"} and one numeric
+##' vector:
 ##' \describe{
 ##' \item{\code{signal}:}{the signal spectrum.}
 ##' \item{\code{noise}:}{the noise spectrum.}
@@ -47,21 +48,13 @@ PublicationSNR <- function(spec, dml.knit.f = 0.1, df.log = 0.125) {
 
     # Smooth DML & WAIS signal and noise and calculate SNR
 
-    if (!requireNamespace("PaleoSpec", quietly = TRUE)) {
+    if (!is.null(df.log)) {
         
-        warning(paste("Package \"PaleoSpec\" not found;",
-                      "no log-smoothing applied."),
-                call. = FALSE)
-        
-    } else {
-        
-        dml.signal <- PaleoSpec::LogSmooth(dml.signal, df.log = df.log)
-        dml.noise  <- PaleoSpec::LogSmooth(dml.noise, df.log = df.log)
-
-        wais.signal <- PaleoSpec::LogSmooth(spec$wais$corr.full$signal,
-                                            df.log = df.log)
-        wais.noise  <- PaleoSpec::LogSmooth(spec$wais$corr.full$noise,
-                                            df.log = df.log)
+        dml.signal <- LogSmooth(dml.signal, df.log = df.log)
+        dml.noise  <- LogSmooth(dml.noise, df.log = df.log)
+    
+        wais.signal <- LogSmooth(spec$wais$corr.full$signal, df.log = df.log)
+        wais.noise  <- LogSmooth(spec$wais$corr.full$noise, df.log = df.log)
     }
 
     dml.snr <- list()

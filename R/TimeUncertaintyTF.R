@@ -18,10 +18,8 @@
 ##' and can be installed directly using
 ##' \code{devtools::install_bitbucket("ecus/simproxyage")}.
 ##'
-##' The spectral estimates are calculated using the function \code{SpecMTM} from
-##' the package \code{PaleoSpec}, which applies the multi-taper method. If the
-##' package is not available, spectra are calculated using base \code{R}
-##' functions.
+##' The spectral estimates are calculated using Thomson’s multitaper method with
+##' three windows with linear detrending before analysis.
 ##'
 ##' Handling of age cotrol points (see package \code{simproxyage} for more
 ##' details):
@@ -71,7 +69,8 @@
 ##' time axes: 0 = do not resize, -1 = resize to shortest realisation, 1 =
 ##' resize to longest realisation (default).
 ##' @param surrogate.fun the random number generator to use for creating the
-##' noise time series; per default the base \code{R} white noise generator.
+##' noise time series; per default, Gaussian white noise is created using the
+##' base \code{R} function \code{\link{rnorm}}.
 ##' @param fun.par an otional list of additional parameters which are passed to
 ##' \code{surrogate.fun}
 ##' @param pad Strong age perturbations may result in time series that do not
@@ -80,10 +79,10 @@
 ##' spectral estimation? Defaults to \code{TRUE}. This should not influence the
 ##' spectral estimation provided the number of \code{NA} values is small
 ##' compared to the total length of the time series.
-##' @param ... additional parameters whcih are passed to the spectral estimation
-##' function
+##' @param ... additional parameters which are passed to the spectral estimation
+##' function \code{\link{SpecMTM}}.
 ##' @return a list of the components \code{input}, \code{stack} and
-##' \code{ratio} which are \code{"spectral object"} lists providing averages
+##' \code{ratio} which are objects of class \code{"spec"} providing averages
 ##' over the \code{ns} simulations of:
 ##' \describe{
 ##' \item{\code{input}:}{the original spectrum of the surrogate data}
@@ -117,18 +116,6 @@ TimeUncertaintyTF <- function(t = 100 : 1, acp = c(t[1], NA),
              call. = FALSE)
     }
 
-    # check if package PaleoSpec is available
-    if (!requireNamespace("PaleoSpec", quietly = TRUE)) {
-        paleospec <- FALSE
-        fun <- spectrum
-        warning(paste("Package \"PaleoSpec\" not found.",
-                      "Using base \"R\" methods for spectral estimation."),
-                call. = FALSE)
-    } else {
-        paleospec <- TRUE
-        fun <- PaleoSpec::SpecMTM
-    }
-
 
     # Monte Carlo simulation of age uncertainty for a core array
     arg <- c(list(
@@ -144,11 +131,7 @@ TimeUncertaintyTF <- function(t = 100 : 1, acp = c(t[1], NA),
         fun.par)
 
     run <- do.call(simproxyage::MonteCarloArray, args = arg)
-    ## run <- simproxyage::MonteCarloArray(t, acp,
-    ##                                     nt = nt, nc = nc, ns = ns,
-    ##                                     rate = rate,
-    ##                                     surrogate.fun = surrogate.fun, ...)
-
+    
     
     # pad potential NA's at the end of the age-perturbed time series with zero
     stacks <- run$stacks
@@ -162,29 +145,18 @@ TimeUncertaintyTF <- function(t = 100 : 1, acp = c(t[1], NA),
     stacks.lst <- lapply(seq_len(ncol(stacks)), function(i) {
         stacks[, i]})
     stacks.spec <- lapply(stacks.lst, function(x) {
-        fun(ts(x, deltat = 1), ...)})
+        SpecMTM(ts(x, deltat = 1), ...)})
 
     input.lst <- lapply(seq_len(ncol(run$input)), function(i) {
         run$input[, i]})
     input.spec <- lapply(input.lst, function(x) {
-        fun(ts(x, deltat = 1), ...)})
+        SpecMTM(ts(x, deltat = 1), ...)})
 
 
     # calculate the average over all 'ns' simulations
 
-    if (paleospec) {
-        stacks.spec.mean <- PaleoSpec::MeanSpectrum(stacks.spec, iRem = 0)$spec
-        input.spec.mean  <- PaleoSpec::MeanSpectrum(input.spec, iRem = 0)$spec
-    } else {
-        input.spec.mean <- list()
-        input.spec.mean$freq <- input.spec[[1]]$freq
-        input.spec.mean$spec <- rowMeans(sapply(input.spec,
-                                                 function(lst) {lst$spec}))
-        stacks.spec.mean <- list()
-        stacks.spec.mean$freq <- stacks.spec[[1]]$freq
-        stacks.spec.mean$spec <- rowMeans(sapply(stacks.spec,
-                                                 function(lst) {lst$spec}))
-    }
+    stacks.spec.mean <- MeanSpectrum(stacks.spec)
+    input.spec.mean  <- MeanSpectrum(input.spec)
 
 
     # return average input and age-perturbed spectra and the corresponding

@@ -8,18 +8,19 @@ PublicationSNR(spec, dml.knit.f = 0.1, df.log = 0.125)
 }
 \arguments{
 \item{spec}{output from \code{\link{WrapSpectralResults}} for DML and WAIS
-data}
+data.}
 
 \item{dml.knit.f}{frequency at which to combine the spectra from the DML1
 and DML2 data sets (defaults to 1/10 yr^(-1)); DML2 spectra are used for
 lower frequencies than \code{dml.knit.f}, DML1 for the higher frequencies.}
 
-\item{df.log}{Gaussian kernel width in log space for additional smoothing
-for visual purposes.}
+\item{df.log}{width of Gaussian kernel in logarithmic frequency units for
+additional smoothing for visual purposes; \code{NULL} suppresses smoothing.}
 }
 \value{
 A list with the components \code{dml} and \code{wais}, where each is
-a list containing three elements:
+a list containing three elements of class \code{"spec"} and one numeric
+vector:
 \describe{
 \item{\code{signal}:}{the signal spectrum.}
 \item{\code{noise}:}{the noise spectrum.}

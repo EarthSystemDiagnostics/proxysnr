@@ -41,7 +41,8 @@ time axes: 0 = do not resize, -1 = resize to shortest realisation, 1 =
 resize to longest realisation (default).}
 
 \item{surrogate.fun}{the random number generator to use for creating the
-noise time series; per default the base \code{R} white noise generator.}
+noise time series; per default, Gaussian white noise is created using the
+base \code{R} function \code{\link{rnorm}}.}
 
 \item{fun.par}{an otional list of additional parameters which are passed to
 \code{surrogate.fun}}
@@ -53,12 +54,12 @@ spectral estimation? Defaults to \code{TRUE}. This should not influence the
 spectral estimation provided the number of \code{NA} values is small
 compared to the total length of the time series.}
 
-\item{...}{additional parameters whcih are passed to the spectral estimation
-function}
+\item{...}{additional parameters which are passed to the spectral estimation
+function \code{\link{SpecMTM}}.}
 }
 \value{
 a list of the components \code{input}, \code{stack} and
-\code{ratio} which are \code{"spectral object"} lists providing averages
+\code{ratio} which are objects of class \code{"spec"} providing averages
 over the \code{ns} simulations of:
 \describe{
 \item{\code{input}:}{the original spectrum of the surrogate data}
@@ -88,10 +89,8 @@ is available on Bitbucket under \url{https://bitbucket.org/ecus/simproxyage}
 and can be installed directly using
 \code{devtools::install_bitbucket("ecus/simproxyage")}.
 
-The spectral estimates are calculated using the function \code{SpecMTM} from
-the package \code{PaleoSpec}, which applies the multi-taper method. If the
-package is not available, spectra are calculated using base \code{R}
-functions.
+The spectral estimates are calculated using Thomson’s multitaper method with
+three windows with linear detrending before analysis.
 
 Handling of age cotrol points (see package \code{simproxyage} for more
 details):

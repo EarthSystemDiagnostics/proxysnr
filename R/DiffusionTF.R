@@ -5,18 +5,17 @@
 ##' average of firn/ice-core stable isotope records.
 ##'
 ##' The approach is described in detail in Münch and Laepple (2018). In brief,
-##' \code{nc} white noise time series are created and diffused and the average
-##' of these time series is calculated. The process is repeated \code{ns}
-##' times. For each of the \code{ns} realisations, spectra of the average
-##' diffused and undiffused records are calculated yielding the spectral
+##' \code{nc} Gaussian white noise time series are created and diffused and the
+##' average of these time series is calculated. The process is repeated
+##' \code{ns} times. For each of the \code{ns} realisations, spectra of the
+##' average diffused and undiffused records are calculated yielding the spectral
 ##' transfer function.
 ##'
 ##' Diffusion is modelled as the convolution of the undiffused record with a
-##' Gaussian with standard deviation given by the diffusion length. The
-##' spectral estimates are calculated using the function \code{SpecMTM} from the
-##' package \code{PaleoSpec}, which applies the multi-taper method. If the
-##' package is not available, spectra are calculated using base \code{R}
-##' functions.
+##' Gaussian with standard deviation given by the diffusion length
+##' \code{sigma}. The spectral estimates are calculated using Thomson’s
+##' multitaper method with three windows with linear detrending before
+##' analysis.
 ##' @param nt the length of the modelled isotope records (i.e. the number of
 ##' data points in each record)
 ##' @param nc the number of cores in the modelled core array
@@ -36,9 +35,9 @@
 ##' are assumed to estimate the transfer function; else (the default) \code{nc}
 ##' independent noise series.
 ##' @param ... additional parameters which are passed to the spectral estimation
-##' function
+##' function \code{\link{SpecMTM}}.
 ##' @return a list of the components \code{signal}, \code{diffused} and
-##' \code{ratio} which are \code{"spectral object"} lists providing averages
+##' \code{ratio} which are objects of class \code{"spec"} providing the averages
 ##' over the \code{ns} simulations of:
 ##' \describe{
 ##' \item{\code{signal}:}{the undiffused noise spectrum}
@@ -70,24 +69,12 @@ DiffusionTF <- function(nt, nc, ns, sigma, res = 1, coherent = FALSE, ...) {
 
     }
 
-    # check if package PaleoSpec is available
-    if (!requireNamespace("PaleoSpec", quietly = TRUE)) {
-        paleospec <- FALSE
-        fun <- spectrum
-        warning(paste("Package \"PaleoSpec\" not found.",
-                      "Using base \"R\" methods for spectral estimation."),
-                call. = FALSE)
-    } else {
-        paleospec <- TRUE
-        fun <- PaleoSpec::SpecMTM
-    }
-
 
     # create 'nc' white noise time series, diffuse them, and calculate their
     # average; repeat 'ns' times
     
     stack.signal <- array(dim = c(nt, ns))
-    stack.diff <- array(dim = c(nt, ns))
+    stack.diff   <- array(dim = c(nt, ns))
 
     for (i in 1 : ns) {
 
@@ -105,7 +92,7 @@ DiffusionTF <- function(nt, nc, ns, sigma, res = 1, coherent = FALSE, ...) {
         }
 
         stack.signal[, i] <- rowMeans(X)
-        stack.diff[, i] <- rowMeans(Xdiff)
+        stack.diff[, i]   <- rowMeans(Xdiff)
 
     }
 
@@ -115,30 +102,18 @@ DiffusionTF <- function(nt, nc, ns, sigma, res = 1, coherent = FALSE, ...) {
     signal.lst <- lapply(seq_len(ncol(stack.signal)), function(i) {
         stack.signal[, i]})
     signal.spec <- lapply(signal.lst, function(x) {
-        fun(ts(x, deltat = res), ...)})
+        SpecMTM(ts(x, deltat = res), ...)})
 
     diff.lst <- lapply(seq_len(ncol(stack.diff)), function(i) {
         stack.diff[, i]})
     diff.spec <- lapply(diff.lst, function(x) {
-        fun(ts(x, deltat = res), ...)})
+        SpecMTM(ts(x, deltat = res), ...)})
 
 
     # calculate the average over all 'ns' simulations
 
-    if (paleospec) {
-        signal.spec.mean <- PaleoSpec::MeanSpectrum(signal.spec, iRem = 0)$spec
-        diff.spec.mean  <- PaleoSpec::MeanSpectrum(diff.spec, iRem = 0)$spec
-    } else {
-        signal.spec.mean <- list()
-        signal.spec.mean$freq <- signal.spec[[1]]$freq
-        signal.spec.mean$spec <- rowMeans(sapply(signal.spec,
-                                                 function(lst) {lst$spec}))
-        diff.spec.mean <- list()
-        diff.spec.mean$freq <- diff.spec[[1]]$freq
-        diff.spec.mean$spec <- rowMeans(sapply(diff.spec,
-                                               function(lst) {lst$spec}))
-        
-    }
+    signal.spec.mean <- MeanSpectrum(signal.spec)
+    diff.spec.mean   <- MeanSpectrum(diff.spec)
 
 
     # return average undiffused and diffused spectra and the corresponding

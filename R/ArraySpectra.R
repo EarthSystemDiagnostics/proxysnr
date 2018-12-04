@@ -1,20 +1,14 @@
 ##' Spectral estimates of core array
 ##'
 ##' \code{ArraySpectra} calculates all relevant spectral estimates
-##' from a given core array of \code{N} proxy records. All spectral estimates
-##' can be smoothed in logarithmic space and confidence intervals can be
-##' calculated.
+##' from a given core array of \code{N} proxy records. The spectral estimates
+##' can be smoothed in logarithmic space.
 ##'
-##' The spectral estimates are calculated using the function
-##' \code{SpecMTM} from the package \code{PaleoSpec}, which applies the
-##' multi-taper method. If the package is not available, spectra are
-##' calculated using base \code{R} functions, which may result in estimates with
-##' higher spectral uncertainty. In both cases, each spectral result is returned
-##' as a \code{"spectral object"} list with the minimum elements \code{freq} and
-##' \code{spec}. Log-smoothing and (re-)calculation of confidence intervals is
-##' only available with \code{PaleoSpec}.
-##'
-##' \code{PaleoSpec} is available upon request.
+##' The spectral estimates are calculated using Thomson’s multitaper method with
+##' three windows with linear detrending before analysis
+##' (see \code{\link{SpecMTM}}). Each spectral result is returned as an object
+##' of class \code{"spec"} with the minimum elements \code{freq} and
+##' \code{spec}.
 ##' @param cores a list of the proxy data from the core array. Each component is
 ##' expected to be a numeric vector of the proxy values of a common length.
 ##' @param res the sampling (e.g., temporal) resolution of the proxy data;
@@ -23,16 +17,11 @@
 ##' spatial correlation of the local noise). Per default, no spatial correlation
 ##' is assumed and \code{neff} is set to the number of proxy records (the length
 ##' of \code{cores}).
-##' @param df.log width of the Gaussian kernel in logarithmic
-##' space to smooth the spectral estimates; \code{NULL} (the default) suppresses
-##' smoothing. Log-smoothing automatically results in calculation of
-##' confidence intervals using a p-value of \code{0.05}.
-##' @param pval p-value for calculating confidence intervals of the spectral
-##' estimates if no log-smoothing is applied to the spectra, or for
-##' re-calculating the confidence intervals with a different p-value than the
-##' default \code{0.05}.
-##' @param ... additional parameters supplied to the spectral estimation
-##' function.
+##' @param df.log width of the Gaussian kernel in logarithmic frequency units to
+##' smooth the spectral estimates; \code{NULL} (the default) suppresses
+##' smoothing.
+##' @param ... additional parameters which are passed to the spectral estimation
+##' function \code{\link{SpecMTM}}.
 ##' @return A list of the following components:
 ##' \describe{
 ##' \item{N:}{the number of (effective) proxy records of the core array.}
@@ -43,79 +32,36 @@
 ##' ("stacked record").}
 ##' }
 ##' @author Thomas Münch
-##' @seealso \code{[PaleoSpec]{SpecMTM}}
+##' @seealso \code{\link{SpecMTM}}
 ##' @export
 ArraySpectra <- function(cores, res = 1, neff = length(cores),
-                         df.log = NULL, pval = 0.05, ...) {
-
-    # check if package PaleoSpec is available
-    if (!requireNamespace("PaleoSpec", quietly = TRUE)) {
-        paleospec <- FALSE
-        fun <- spectrum
-        warning(paste("Package \"PaleoSpec\" not found.",
-                      "Using base \"R\" methods for spectral estimation."),
-                call. = FALSE)
-    } else {
-        paleospec <- TRUE
-        fun <- PaleoSpec::SpecMTM
-    }
+                         df.log = NULL, ...) {
 
     # proxy data vectors must be of the same length
     if (sd(sapply(cores, function(lst) {length(lst)})) > 0) {
         stop("All data vectors in supplied input list must be of the same length.")
     }
 
+    
     # estimate individual spectra
     single <- lapply(cores, function(lst) {
-        fun(ts(lst, deltat = res), ...)
+        SpecMTM(ts(lst, deltat = res), ...)
     })
 
     # estimate spectrum of stacked record
     ts.stack <- rowMeans(simplify2array(cores))
-    stack <- fun(ts(ts.stack, deltat = res), ...)
+    stack <- SpecMTM(ts(ts.stack, deltat = res), ...)
 
     # calculate mean spectrum across individual record's spectra
-    if (paleospec) {
-        mean <- PaleoSpec::MeanSpectrum(single, iRemoveLowest = 0)$spec
-    } else {
-        mean <- list()
-        mean$freq <- stack$freq
-        mean$spec <- rowMeans(sapply(single, function(lst) {lst$spec}))
-    }
+    mean <- MeanSpectrum(single)
 
 
     # log-smooth spectra
     if (!is.null(df.log)) {
 
-        if (paleospec) {
-
-            single <- lapply(single, PaleoSpec::LogSmooth, df.log = df.log)
-            mean   <- PaleoSpec::LogSmooth(mean, df.log = df.log)
-            stack  <- PaleoSpec::LogSmooth(stack, df.log = df.log)
-            
-        } else {
-
-            warning("Log-smoothing not possible without package \"PaleoSpec\".")
-
-        }
-    }
-
-    
-    # re-set confidence intervals
-    if (is.null(df.log) | (!is.null(df.log) & pval != 0.05)) {
-
-        if (paleospec) {
-            
-            single <- lapply(single, function(lst) {
-                lst <- PaleoSpec::AddConfInterval(lst, pval = pval)})
-            mean  <- PaleoSpec::AddConfInterval(mean, pval = pval)
-            stack <- PaleoSpec::AddConfInterval(stack, pval = pval)
-
-        } else {
-
-            warning(paste("(Re-)calculation of confidence intervals",
-                          "not possible without package \"PaleoSpec\"."))
-        }
+        single <- lapply(single, LogSmooth, df.log = df.log)
+        mean   <- LogSmooth(mean, df.log = df.log)
+        stack  <- LogSmooth(stack, df.log = df.log)
     }
 
     

@@ -4,8 +4,7 @@
 \alias{ArraySpectra}
 \title{Spectral estimates of core array}
 \usage{
-ArraySpectra(cores, res = 1, neff = length(cores), df.log = NULL,
-  pval = 0.05, ...)
+ArraySpectra(cores, res = 1, neff = length(cores), df.log = NULL, ...)
 }
 \arguments{
 \item{cores}{a list of the proxy data from the core array. Each component is
@@ -19,18 +18,12 @@ spatial correlation of the local noise). Per default, no spatial correlation
 is assumed and \code{neff} is set to the number of proxy records (the length
 of \code{cores}).}
 
-\item{df.log}{width of the Gaussian kernel in logarithmic
-space to smooth the spectral estimates; \code{NULL} (the default) suppresses
-smoothing. Log-smoothing automatically results in calculation of
-confidence intervals using a p-value of \code{0.05}.}
+\item{df.log}{width of the Gaussian kernel in logarithmic frequency units to
+smooth the spectral estimates; \code{NULL} (the default) suppresses
+smoothing.}
 
-\item{pval}{p-value for calculating confidence intervals of the spectral
-estimates if no log-smoothing is applied to the spectra, or for
-re-calculating the confidence intervals with a different p-value than the
-default \code{0.05}.}
-
-\item{...}{additional parameters supplied to the spectral estimation
-function.}
+\item{...}{additional parameters which are passed to the spectral estimation
+function \code{\link{SpecMTM}}.}
 }
 \value{
 A list of the following components:
@@ -45,24 +38,18 @@ proxy record.}
 }
 \description{
 \code{ArraySpectra} calculates all relevant spectral estimates
-from a given core array of \code{N} proxy records. All spectral estimates
-can be smoothed in logarithmic space and confidence intervals can be
-calculated.
+from a given core array of \code{N} proxy records. The spectral estimates
+can be smoothed in logarithmic space.
 }
 \details{
-The spectral estimates are calculated using the function
-\code{SpecMTM} from the package \code{PaleoSpec}, which applies the
-multi-taper method. If the package is not available, spectra are
-calculated using base \code{R} functions, which may result in estimates with
-higher spectral uncertainty. In both cases, each spectral result is returned
-as a \code{"spectral object"} list with the minimum elements \code{freq} and
-\code{spec}. Log-smoothing and (re-)calculation of confidence intervals is
-only available with \code{PaleoSpec}.
-
-\code{PaleoSpec} is available upon request.
+The spectral estimates are calculated using Thomson’s multitaper method with
+three windows with linear detrending before analysis
+(see \code{\link{SpecMTM}}). Each spectral result is returned as an object
+of class \code{"spec"} with the minimum elements \code{freq} and
+\code{spec}.
 }
 \seealso{
-\code{[PaleoSpec]{SpecMTM}}
+\code{\link{SpecMTM}}
 }
 \author{
 Thomas Münch

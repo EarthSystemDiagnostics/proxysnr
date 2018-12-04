@@ -32,11 +32,11 @@ are assumed to estimate the transfer function; else (the default) \code{nc}
 independent noise series.}
 
 \item{...}{additional parameters which are passed to the spectral estimation
-function}
+function \code{\link{SpecMTM}}.}
 }
 \value{
 a list of the components \code{signal}, \code{diffused} and
-\code{ratio} which are \code{"spectral object"} lists providing averages
+\code{ratio} which are objects of class \code{"spec"} providing the averages
 over the \code{ns} simulations of:
 \describe{
 \item{\code{signal}:}{the undiffused noise spectrum}
@@ -52,18 +52,17 @@ average of firn/ice-core stable isotope records.
 }
 \details{
 The approach is described in detail in Münch and Laepple (2018). In brief,
-\code{nc} white noise time series are created and diffused and the average
-of these time series is calculated. The process is repeated \code{ns}
-times. For each of the \code{ns} realisations, spectra of the average
-diffused and undiffused records are calculated yielding the spectral
+\code{nc} Gaussian white noise time series are created and diffused and the
+average of these time series is calculated. The process is repeated
+\code{ns} times. For each of the \code{ns} realisations, spectra of the
+average diffused and undiffused records are calculated yielding the spectral
 transfer function.
 
 Diffusion is modelled as the convolution of the undiffused record with a
-Gaussian with standard deviation given by the diffusion length. The
-spectral estimates are calculated using the function \code{SpecMTM} from the
-package \code{PaleoSpec}, which applies the multi-taper method. If the
-package is not available, spectra are calculated using base \code{R}
-functions.
+Gaussian with standard deviation given by the diffusion length
+\code{sigma}. The spectral estimates are calculated using Thomson’s
+multitaper method with three windows with linear detrending before
+analysis.
 }
 \references{
 Münch, T. and Laepple, T.: What climate signal is contained in
