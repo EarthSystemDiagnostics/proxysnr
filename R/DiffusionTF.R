@@ -125,6 +125,8 @@ DiffusionTF <- function(nt, nc, ns, sigma, res = 1, coherent = FALSE, ...) {
     res$ratio$freq <- res$signal$freq
     res$ratio$spec <- res$diff$spec / res$signal$spec
 
+    class(res$ratio) <- "spec"
+
     return(res)
     
 }

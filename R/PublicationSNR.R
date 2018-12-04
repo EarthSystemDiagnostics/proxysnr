@@ -70,6 +70,14 @@ PublicationSNR <- function(spec, dml.knit.f = 0.1, df.log = 0.125) {
 
     res <- list()
 
+    class(dml.signal) <- "spec"
+    class(dml.noise)  <- "spec"
+    class(dml.snr)    <- "spec"
+
+    class(wais.signal) <- "spec"
+    class(wais.noise)  <- "spec"
+    class(wais.snr)    <- "spec"
+
     res$dml$signal   <- dml.signal
     res$dml$noise    <- dml.noise
     res$dml$snr      <- dml.snr

@@ -28,7 +28,7 @@
 ##' values (inverse transfer function); must be of the same length as the
 ##' spectral estimates in \code{spectra}. By omitting this parameter no
 ##' correction will be applied.
-##' @return A list of three components:
+##' @return A list of three components, each of class \code{"spec"}:
 ##' \describe{
 ##' \item{\code{signal}:}{the raw or corrected signal spectrum.}
 ##' \item{\code{noise}:}{the raw or corrected noise spectrum.}
@@ -108,7 +108,12 @@ SeparateSpectra <- function(spectra, neff = spectra$N,
     snr$spec <- signal$spec / noise$spec
 
     
-    # return results as a list
+    # Organize output
+
+    class(signal) <- "spec"
+    class(noise)  <- "spec"
+    class(snr)    <- "spec"
+    
     res <- list(
         signal  = signal,
         noise   = noise,

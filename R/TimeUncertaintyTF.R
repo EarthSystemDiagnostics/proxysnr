@@ -168,6 +168,8 @@ TimeUncertaintyTF <- function(t = 100 : 1, acp = c(t[1], NA),
     res$ratio$freq <- stacks.spec.mean$freq
     res$ratio$spec <- stacks.spec.mean$spec / input.spec.mean$spec
 
+    class(res$ratio) <- "spec"
+
     return(res)
 
 }

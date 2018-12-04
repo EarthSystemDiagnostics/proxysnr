@@ -22,7 +22,7 @@ available number of 22 profiles (Münch et al., 2017).}
 estimate; defaults to 0.1.}
 }
 \value{
-A list of the three components:
+A list of the three components, each of class \code{"spec"}:
 \describe{
 \item{\code{noise.lower}:}{spectral object list with the estimated trench
 noise spectrum for the assumed lower bound of the accumulation rate.}

@@ -26,7 +26,7 @@ spectral estimates in \code{spectra}. By omitting this parameter no
 correction will be applied.}
 }
 \value{
-A list of three components:
+A list of three components, each of class \code{"spec"}:
 \describe{
 \item{\code{signal}:}{the raw or corrected signal spectrum.}
 \item{\code{noise}:}{the raw or corrected noise spectrum.}
