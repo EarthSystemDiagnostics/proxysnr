@@ -2,17 +2,20 @@
 % Please edit documentation in R/WrapSpectralResults.R
 \name{WrapSpectralResults}
 \alias{WrapSpectralResults}
-\title{Main results for Münch and Laepple (2018)}
+\title{Wrap spectral results for several data sets}
 \usage{
-WrapSpectralResults(..., diffusion, time.uncertainty, df.log = 0.05,
-  crit.diffusion = 2, inverse.tf = FALSE)
+WrapSpectralResults(..., diffusion = NULL, time.uncertainty = NULL,
+  df.log = 0.05, crit.diffusion = 2, inverse.tf = FALSE)
 }
 \arguments{
 \item{...}{a comma separated list of named proxy data sets to analyse.}
 
 \item{diffusion}{a list of (inverse) transfer functions to correct for the
 effect of diffusion. The length of the list has to match the number of
-provided data sets, thus, one transfer function per data set is assumed.}
+provided data sets, thus, one transfer function per data set is assumed. If
+\code{NULL}, no diffusion correction is applied. If you want to omit the
+diffusion correction only for some specific data set(s), set the
+corresponding list element(s) to \code{NA}.}
 
 \item{time.uncertainty}{similar to \code{diffusion} a list of (inverse)
 transfer functions to correct for the effect of time uncertainty.}
@@ -34,26 +37,36 @@ Laepple (2018) for the definitions.}
 }
 \value{
 A list of \code{N} lists, where \code{N} is the number of provided
-data sets and where each of these lists contains four elements:
+data sets and where each of these lists contains up to five elements:
 \describe{
 \item{\code{f.cutoff}:}{a two-element vector with the index and value of the
 cutoff frequency.}
-\item{\code{raw}:}{the raw signal, noise and corresponding SNR spectra.}
-\item{\code{corr.t.unc.only}:}{the signal, noise and corresponding SNR
-spectra after correction for the effect of time uncertainty.}
-\item{\code{corr.full}:}{the signal, noise and corresponding SRN spectra
+\item{\code{raw}:}{a list with three objects of class \code{"spec"}: the raw
+signal, noise and corresponding SNR spectra.}
+\item{\code{corr.diff.only}:}{a list with three objects of class
+\code{"spec"}: the signal, noise and corresponding SNR spectra after
+correction only for the effect of diffusion.}
+\item{\code{corr.t.unc.only}:}{a list with three objects of class
+\code{"spec"}: the signal, noise and corresponding SNR spectra after
+correction only for the effect of time uncertainty.}
+\item{\code{corr.full}:}{a list with three objects of class
+\code{"spec"}: the signal, noise and corresponding SRN spectra
 after correction for both the effects of diffusion and time uncertainty.}
 }
+The number of the returned list elements for each data set depends on
+whether transfer functions for the corrections have been provided in
+\code{diffusion} and \code{time.uncertainty} or not.
 }
 \description{
-This internal wrapper function is used to combine all main spectral results
-presented and discussed in Münch and Laepple (2018) but it can also be used
-to combine the results for other data sets.
+This wrapper function is used to combine all main spectral results for the
+signal, noise and signal-to-noise ratio as presented and discussed in Münch
+and Laepple (2018), but it can also be used to combine the results for other
+data sets.
 }
 \examples{
 # Get main results of Münch and Laepple (2018)
 
-results <- proxysnr:::WrapSpectralResults(
+results <- WrapSpectralResults(
                dml1 = dml$dml1, dml2 = dml$dml2, wais = wais,
                diffusion = diffusion.tf,
                time.uncertainty = time.uncertainty.tf,
