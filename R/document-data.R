@@ -229,9 +229,11 @@
 #' records were simulated at semiannual resolution and the transfer functions
 #' interpolated in frequency space to annual resolution. See also the respective
 #' package vignette:
-#' \code{vignette(topic = "diffusion-tf", package = "proxysnr")}.
+#' \code{vignette(topic = "calculate-transfer-functions", package =
+#'     "proxysnr")}.
 #' @seealso
-#' \code{\link{DiffusionTF}}
+#' \code{\link{DiffusionTF}}\cr
+#' \code{vignette(topic = "calculate-transfer-functions", package = "proxysnr")}
 #' @references
 #' Münch, T. and Laepple, T.: What climate signal is contained in
 #' decadal to centennial scale isotope variations from Antarctic ice cores?
@@ -262,9 +264,11 @@
 #' @source
 #' The transfer functions were obtained using \code{?TimeUncertaintyTF}. See
 #' also the respective package vignette:
-#' \code{vignette(topic = "time-uncertainty-tf", package = "proxysnr")}.
+#' \code{vignette(topic = "calculate-transfer-functions", package =
+#'     "proxysnr")}.
 #' @seealso
-#' \code{\link{TimeUncertaintyTF}}
+#' \code{\link{DiffusionTF}}\cr
+#' \code{vignette(topic = "calculate-transfer-functions", package = "proxysnr")}
 #' @references
 #' Münch, T. and Laepple, T.: What climate signal is contained in
 #' decadal to centennial scale isotope variations from Antarctic ice cores?

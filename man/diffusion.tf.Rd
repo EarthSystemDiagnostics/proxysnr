@@ -22,7 +22,8 @@ site-specific diffusion lengths provided by \code{?diffusion.length}. Isotope
 records were simulated at semiannual resolution and the transfer functions
 interpolated in frequency space to annual resolution. See also the respective
 package vignette:
-\code{vignette(topic = "diffusion-tf", package = "proxysnr")}.
+\code{vignette(topic = "calculate-transfer-functions", package =
+    "proxysnr")}.
 }
 \usage{
 diffusion.tf
@@ -41,6 +42,7 @@ Clim. Past Discuss., \url{https://doi.org/10.5194/cp-2018-112}, in review,
 2018.
 }
 \seealso{
-\code{\link{DiffusionTF}}
+\code{\link{DiffusionTF}}\cr
+\code{vignette(topic = "calculate-transfer-functions", package = "proxysnr")}
 }
 \keyword{datasets}

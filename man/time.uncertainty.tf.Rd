@@ -19,7 +19,8 @@
 \source{
 The transfer functions were obtained using \code{?TimeUncertaintyTF}. See
 also the respective package vignette:
-\code{vignette(topic = "time-uncertainty-tf", package = "proxysnr")}.
+\code{vignette(topic = "calculate-transfer-functions", package =
+    "proxysnr")}.
 }
 \usage{
 time.uncertainty.tf
@@ -38,6 +39,7 @@ Clim. Past Discuss., \url{https://doi.org/10.5194/cp-2018-112}, in review,
 2018.
 }
 \seealso{
-\code{\link{TimeUncertaintyTF}}
+\code{\link{DiffusionTF}}\cr
+\code{vignette(topic = "calculate-transfer-functions", package = "proxysnr")}
 }
 \keyword{datasets}
