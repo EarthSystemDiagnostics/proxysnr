@@ -82,7 +82,9 @@ modelling the time uncertainty of the layer-counted isotope records in order to
 calculate respective time uncertainty transfer functions. **simproxyage** is
 available from [GitHub](https://github.com/EarthSystemDiagnostics/simproxyage)
 and can be installed directly using
-`devtools::install_github("EarthSystemDiagnostics/proxysnr")`.
+`devtools::install_github("EarthSystemDiagnostics/proxysnr")`. Also note that
+the package vignettes are based on R Markdown v2 and require
+[Pandoc](http://pandoc.org).
 
 ## Literature cited
 

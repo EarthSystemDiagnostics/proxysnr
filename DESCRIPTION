@@ -3,9 +3,7 @@ Title: Separate Signal and Noise in Climate Proxy Records.
 Version: 0.1.0
 Authors@R: c(
     person("Thomas", "Münch", email = "thomas.muench@awi.de",
-    role = c("aut", "cre"),
-    url = https://github.com/EarthSystemDiagnostics/proxysnr,
-    issues = https://github.com/EarthSystemDiagnostics/proxysnr/issues),
+    role = c("aut", "cre")),
     person("Thomas", "Laepple", role = "aut"),
     person("Andrew", "Dolman", role = "ctb"))
 Description: This R package implements a method to separate the common signal
@@ -22,3 +20,7 @@ Imports: multitaper
 Suggests: knitr,
     rmarkdown,
     RColorBrewer
+URL: https://github.com/EarthSystemDiagnostics/proxysnr
+BugReports: https://github.com/EarthSystemDiagnostics/proxysnr/issues
+SystemRequirements: Package vignettes based on R Markdown v2 or
+    reStructuredText require Pandoc (http://pandoc.org).
