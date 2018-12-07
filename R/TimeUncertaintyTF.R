@@ -14,14 +14,15 @@
 ##' The modelling of the time uncertainty follows the approach presented in
 ##' Comboul et al. (2014) which is implemented in the package
 ##' \code{simproxyage} and hence needed for this function to work. The package
-##' is available on Bitbucket under \url{https://bitbucket.org/ecus/simproxyage}
+##' is available on GitHub under
+##' \url{https://github.com/EarthSystemDiagnostics/simproxyage}
 ##' and can be installed directly using
-##' \code{devtools::install_bitbucket("ecus/simproxyage")}.
+##' \code{devtools::install_github("EarthSystemDiagnostics/simproxyage")}.
 ##'
 ##' The spectral estimates are calculated using Thomson’s multitaper method with
 ##' three windows with linear detrending before analysis.
 ##'
-##' Handling of age cotrol points (see package \code{simproxyage} for more
+##' Handling of age control points (see package \code{simproxyage} for more
 ##' details):
 ##' 
 ##' The function allows one to model the age uncertainty with several age
@@ -112,7 +113,7 @@ TimeUncertaintyTF <- function(t = 100 : 1, acp = c(t[1], NA),
     # check if package simproxyage is available
     if (!requireNamespace("simproxyage", quietly = TRUE)) {
         stop(paste("Package \"simproxyage\" not found.",
-                      "Please install it; see '?TimeUncertaintyTF'"),
+                      "Please install from GitHub; see '?TimeUncertaintyTF'"),
              call. = FALSE)
     }
 

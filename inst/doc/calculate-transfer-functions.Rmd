@@ -58,7 +58,7 @@ If you have installed **proxysnr** without additionally installing the package
 **simproxyage** and you try to rebuild this vignette, you will receive the
 warning message here that **simproxyage** is not available; then, no time
 uncertainty transfer functions can be calculated. To do so, head over to the
-[github page](https://bitbucket.org/ecus/simproxyage/src/master/) for
+[github page](https://github.com/EarthSystemDiagnostics/simproxyage) for
 **simproxyage** and install the package using `devtools::install_github`.
 
 ## General settings
