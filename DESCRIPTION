@@ -1,12 +1,17 @@
 Package: proxysnr
-Title: Separate Signal and Noise in Proxy Records
-Version: 0.0.0.9000
-Authors@R: person("Thomas", "Münch", email = "thomas.muench@awi.de",
-	   role = c("aut", "cre"))
-Description: Separate the common signal from local noise in proxy records using
-	     spectral analyses including a correction for time uncertainty for
-	     layer counted chronologies and water vapour diffusion in the case
-	     of ice-core stable isotope records.
+Title: Separate Signal and Noise in Climate Proxy Records.
+Version: 0.1.0
+Authors@R: c(
+    person("Thomas", "Münch", email = "thomas.muench@awi.de",
+    role = c("aut", "cre"),
+    url = https://github.com/EarthSystemDiagnostics/proxysnr,
+    issues = https://github.com/EarthSystemDiagnostics/proxysnr/issues),
+    person("Thomas", "Laepple", role = "aut"),
+    person("Andrew", "Dolman", role = "ctb"))
+Description: This R package implements a method to separate the common signal
+    from local noise in a spatial network of climate proxy records using
+    spectral analyses. The package allows the correction of the estimated signal
+    and noise spectra for the effects of time uncertainty and diffusion.
 Depends: R (>= 3.3.1)
 License: file LICENSE
 Encoding: UTF-8
