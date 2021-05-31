@@ -205,8 +205,8 @@ LLines<-function(x, conf = TRUE, bPeriod = FALSE, col = "black", alpha = 0.2,
 ##' PlotArraySpectra(ArraySpectra(dml$dml1, df.log = 0.12))
 ##' @export
 ##' @references Münch, T. and Laepple, T.: What climate signal is contained in
-##' decadal to centennial scale isotope variations from Antarctic ice cores?
-##' Clim. Past Discuss., https://doi.org/10.5194/cp-2018-112, in review, 2018.
+##' decadal- to centennial-scale isotope variations from Antarctic ice cores?
+##' Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
 PlotArraySpectra <- function(spec, f.cutoff = NA,
                              xlim = c(100, 2), ylim = c(0.005, 50),
                              col = c("darkgrey", "black", "burlywood4"),
@@ -319,8 +319,8 @@ PlotArraySpectra <- function(spec, f.cutoff = NA,
 ##' @author Thomas Münch
 ##' @seealso \code{\link{WrapSpectralResults}}
 ##' @references Münch, T. and Laepple, T.: What climate signal is contained in
-##' decadal to centennial scale isotope variations from Antarctic ice cores?
-##' Clim. Past Discuss., https://doi.org/10.5194/cp-2018-112, in review, 2018.
+##' decadal- to centennial-scale isotope variations from Antarctic ice cores?
+##' Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
 muench_laepple_fig02 <- function(spec, f.cut = FALSE) {
 
 
@@ -543,8 +543,8 @@ muench_laepple_fig02 <- function(spec, f.cut = FALSE) {
 ##'         col = c("black", "dodgerblue4"))
 ##' @export
 ##' @references Münch, T. and Laepple, T.: What climate signal is contained in
-##' decadal to centennial scale isotope variations from Antarctic ice cores?
-##' Clim. Past Discuss., https://doi.org/10.5194/cp-2018-112, in review, 2018.
+##' decadal- to centennial-scale isotope variations from Antarctic ice cores?
+##' Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
 PlotSNR <- function(spec, f.cut = FALSE,
                     names = NULL, col = 1 : length(spec),
                     xlim = c(500, 2), ylim = c(0.05, 5),
@@ -694,8 +694,8 @@ PlotSNR <- function(spec, f.cut = FALSE,
 ##' PlotStackCorrelation(freq = crl$signal$freq, correlation = crl$corr,
 ##'           col.pal = palette, label = "DML", ylim = c(NA, log(50)))
 ##' @references Münch, T. and Laepple, T.: What climate signal is contained in
-##' decadal to centennial scale isotope variations from Antarctic ice cores?
-##' Clim. Past Discuss., https://doi.org/10.5194/cp-2018-112, in review, 2018.
+##' decadal- to centennial-scale isotope variations from Antarctic ice cores?
+##' Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
 PlotStackCorrelation <- function(freq, correlation, col.pal,
                                  n = nrow(correlation),
                                  label = "",
@@ -807,8 +807,8 @@ PlotStackCorrelation <- function(freq, correlation, col.pal,
 ##' @author Thomas Münch
 ##' @seealso \code{\link{PublicationSNR}}, \code{\link{TrenchNoise}}
 ##' @references Münch, T. and Laepple, T.: What climate signal is contained in
-##' decadal to centennial scale isotope variations from Antarctic ice cores?
-##' Clim. Past Discuss., https://doi.org/10.5194/cp-2018-112, in review, 2018.
+##' decadal- to centennial-scale isotope variations from Antarctic ice cores?
+##' Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
 muench_laepple_fig05 <- function(SNR, TNS, f.cut = FALSE) {
 
     # Graphics settings
@@ -927,8 +927,8 @@ muench_laepple_fig05 <- function(SNR, TNS, f.cut = FALSE) {
 ##' PlotTF(names = c("DML1", "DML2", "WAIS"), dtf.threshold = 0.5,
 ##'        col = c("black", "firebrick", "dodgerblue"))
 ##' @references Münch, T. and Laepple, T.: What climate signal is contained in
-##' decadal to centennial scale isotope variations from Antarctic ice cores?
-##' Clim. Past Discuss., https://doi.org/10.5194/cp-2018-112, in review, 2018.
+##' decadal- to centennial-scale isotope variations from Antarctic ice cores?
+##' Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
 PlotTF <- function(dtf = NULL, ttf = NULL,
                    names = NULL, col = NULL,
                    dtf.threshold = NULL,

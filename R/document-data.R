@@ -26,8 +26,8 @@
 #' Graf, W., et al.: Stable-isotope records from Dronning Maud Land, Antarctica,
 #' Ann. Glaciol., 35, 195–201, 2002.\cr
 #' Münch, T. and Laepple, T.: What climate signal is contained in
-#' decadal to centennial scale isotope variations from Antarctic ice cores?
-#' Clim. Past Discuss., \url{https://doi.org/10.5194/cp-2018-112}, in review,
+#' decadal- to centennial-scale isotope variations from Antarctic ice cores?
+#' Clim. Past, 14, 2053–2070, \url{https://doi.org/10.5194/cp-14-2053-2018},
 #' 2018.
 "dml"
 
@@ -55,8 +55,8 @@
 #' compared with the past 2,000 years, Nat. Geosci., 6, 372–375,
 #' \url{https://doi.org/10.1038/ngeo1778}, 2013.\cr
 #' Münch, T. and Laepple, T.: What climate signal is contained in
-#' decadal to centennial scale isotope variations from Antarctic ice cores?
-#' Clim. Past Discuss., \url{https://doi.org/10.5194/cp-2018-112}, in review,
+#' decadal- to centennial-scale isotope variations from Antarctic ice cores?
+#' Clim. Past, 14, 2053–2070, \url{https://doi.org/10.5194/cp-14-2053-2018},
 #' 2018.
 "wais"
 
@@ -84,8 +84,8 @@
 #' Cryosphere, 11(5), 2175-2188, \url{https://doi.org/10.5194/tc-11-2175-2017},
 #' 2017.\cr
 #' Münch, T. and Laepple, T.: What climate signal is contained in
-#' decadal to centennial scale isotope variations from Antarctic ice cores?
-#' Clim. Past Discuss., \url{https://doi.org/10.5194/cp-2018-112}, in review,
+#' decadal- to centennial-scale isotope variations from Antarctic ice cores?
+#' Clim. Past, 14, 2053–2070, \url{https://doi.org/10.5194/cp-14-2053-2018},
 #' 2018.
 "t15"
 
@@ -129,8 +129,8 @@
 #' 39(1), 585-594, \url{https://doi.org/10.3189/172756404781814447}, 2004.
 #'
 #' Münch, T. and Laepple, T.: What climate signal is contained in
-#' decadal to centennial scale isotope variations from Antarctic ice cores?
-#' Clim. Past Discuss., \url{https://doi.org/10.5194/cp-2018-112}, in review,
+#' decadal- to centennial-scale isotope variations from Antarctic ice cores?
+#' Clim. Past, 14, 2053–2070, \url{https://doi.org/10.5194/cp-14-2053-2018},
 #' 2018.
 #'
 #' Oerter, H., et al.: Accumulation rates in Dronning Maud Land, Antarctica, as
@@ -198,8 +198,8 @@
 #' Japan, 2000.
 #'
 #' Münch, T. and Laepple, T.: What climate signal is contained in
-#' decadal to centennial scale isotope variations from Antarctic ice cores?
-#' Clim. Past Discuss., \url{https://doi.org/10.5194/cp-2018-112}, in review,
+#' decadal- to centennial-scale isotope variations from Antarctic ice cores?
+#' Clim. Past, 14, 2053–2070, \url{https://doi.org/10.5194/cp-14-2053-2018},
 #' 2018.
 "diffusion.length"
 
@@ -236,8 +236,8 @@
 #' \code{vignette(topic = "calculate-transfer-functions", package = "proxysnr")}
 #' @references
 #' Münch, T. and Laepple, T.: What climate signal is contained in
-#' decadal to centennial scale isotope variations from Antarctic ice cores?
-#' Clim. Past Discuss., \url{https://doi.org/10.5194/cp-2018-112}, in review,
+#' decadal- to centennial-scale isotope variations from Antarctic ice cores?
+#' Clim. Past, 14, 2053–2070, \url{https://doi.org/10.5194/cp-14-2053-2018},
 #' 2018.
 "diffusion.tf"
 
@@ -271,8 +271,8 @@
 #' \code{vignette(topic = "calculate-transfer-functions", package = "proxysnr")}
 #' @references
 #' Münch, T. and Laepple, T.: What climate signal is contained in
-#' decadal to centennial scale isotope variations from Antarctic ice cores?
-#' Clim. Past Discuss., \url{https://doi.org/10.5194/cp-2018-112}, in review,
+#' decadal- to centennial-scale isotope variations from Antarctic ice cores?
+#' Clim. Past, 14, 2053–2070, \url{https://doi.org/10.5194/cp-14-2053-2018},
 #' 2018.
 "time.uncertainty.tf"
 

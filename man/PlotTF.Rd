@@ -4,11 +4,26 @@
 \alias{PlotTF}
 \title{Plot transfer functions (Figure B1 in Münch and Laepple, 2018)}
 \usage{
-PlotTF(dtf = NULL, ttf = NULL, names = NULL, col = NULL,
-  dtf.threshold = NULL, xlim = c(500, 2), ylim1 = c(0.005, 5),
-  ylim2 = c(0.2, 1.5), plt.ann = "default", xlab = NULL, ylab1 = NULL,
-  ylab2 = NULL, xtm = NULL, ytm1 = NULL, ytm2 = NULL, xtl = NULL,
-  ytl1 = NULL, ytl2 = NULL)
+PlotTF(
+  dtf = NULL,
+  ttf = NULL,
+  names = NULL,
+  col = NULL,
+  dtf.threshold = NULL,
+  xlim = c(500, 2),
+  ylim1 = c(0.005, 5),
+  ylim2 = c(0.2, 1.5),
+  plt.ann = "default",
+  xlab = NULL,
+  ylab1 = NULL,
+  ylab2 = NULL,
+  xtm = NULL,
+  ytm1 = NULL,
+  ytm2 = NULL,
+  xtl = NULL,
+  ytl1 = NULL,
+  ytl2 = NULL
+)
 }
 \arguments{
 \item{dtf}{A list of transfer function data sets: each data set is an object
@@ -88,8 +103,8 @@ PlotTF(names = c("DML1", "DML2", "WAIS"), dtf.threshold = 0.5,
 }
 \references{
 Münch, T. and Laepple, T.: What climate signal is contained in
-decadal to centennial scale isotope variations from Antarctic ice cores?
-Clim. Past Discuss., https://doi.org/10.5194/cp-2018-112, in review, 2018.
+decadal- to centennial-scale isotope variations from Antarctic ice cores?
+Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
 }
 \author{
 Thomas Münch

@@ -4,10 +4,24 @@
 \alias{PlotStackCorrelation}
 \title{Plot proxy stack correlation (Figure 4 in Münch and Laepple, 2018)}
 \usage{
-PlotStackCorrelation(freq, correlation, col.pal, n = nrow(correlation),
-  label = "", plt.ann = "default", xlab = NULL, ylab = NULL,
-  xtm = NULL, ytm = NULL, xtl = NULL, ytl = NULL, xtm.min = NULL,
-  ytm.min = NULL, xlim = NA, ylim = NA)
+PlotStackCorrelation(
+  freq,
+  correlation,
+  col.pal,
+  n = nrow(correlation),
+  label = "",
+  plt.ann = "default",
+  xlab = NULL,
+  ylab = NULL,
+  xtm = NULL,
+  ytm = NULL,
+  xtl = NULL,
+  ytl = NULL,
+  xtm.min = NULL,
+  ytm.min = NULL,
+  xlim = NA,
+  ylim = NA
+)
 }
 \arguments{
 \item{freq}{frequency axis of the underlying proxy data set to obtain an
@@ -98,8 +112,8 @@ PlotStackCorrelation(freq = crl$signal$freq, correlation = crl$corr,
 }
 \references{
 Münch, T. and Laepple, T.: What climate signal is contained in
-decadal to centennial scale isotope variations from Antarctic ice cores?
-Clim. Past Discuss., https://doi.org/10.5194/cp-2018-112, in review, 2018.
+decadal- to centennial-scale isotope variations from Antarctic ice cores?
+Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
 }
 \seealso{
 \code{\link{StackCorrelation}}

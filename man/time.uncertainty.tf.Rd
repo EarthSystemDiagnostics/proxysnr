@@ -4,7 +4,8 @@
 \name{time.uncertainty.tf}
 \alias{time.uncertainty.tf}
 \title{Calculated time uncertainty transfer functions}
-\format{A list with 3 elements:
+\format{
+A list with 3 elements:
 \tabular{rll}{
   \code{dml1}: \tab a list with 2 numeric vectors of length 97: \tab  \cr
     \tab \code{freq}: frequency axis, in yr^{-1} \tab  \cr
@@ -15,7 +16,8 @@
   \code{wais}: \tab a list with 2 numeric vectors of length 100: \tab  \cr
     \tab \code{freq}: frequency axis, in yr^{-1} \tab  \cr
     \tab \code{spec}: transfer function value at each frequency \tab  \cr
-}}
+}
+}
 \source{
 The transfer functions were obtained using \code{?TimeUncertaintyTF}. See
 also the respective package vignette:
@@ -34,8 +36,8 @@ uncertainty has on the spectrum of the average (in the time domain) of
 }
 \references{
 Münch, T. and Laepple, T.: What climate signal is contained in
-decadal to centennial scale isotope variations from Antarctic ice cores?
-Clim. Past Discuss., \url{https://doi.org/10.5194/cp-2018-112}, in review,
+decadal- to centennial-scale isotope variations from Antarctic ice cores?
+Clim. Past, 14, 2053–2070, \url{https://doi.org/10.5194/cp-14-2053-2018},
 2018.
 }
 \seealso{

@@ -4,7 +4,8 @@
 \name{dml}
 \alias{dml}
 \title{DML oxygen isotope data}
-\format{A named list with two components:
+\format{
+A named list with two components:
 \describe{
   \item{dml1:}{a named list with 15 components where each component is a
     vector of length 194 with the oxygen isotope data in per mil for all 15
@@ -13,7 +14,8 @@
     of length 995 with the oxygen isotope data in per mil for the cores
     \code{"B31"}, \code{"B32"} and \code{"B33"} for the years from 1994 CE to
     1000 CE.}
-}}
+}
+}
 \source{
 Data citation:\cr
 Graf, W., et al.: Stable-isotope records from Dronning Maud Land, Antarctica,
@@ -23,8 +25,8 @@ Literature citation:\cr
 Graf, W., et al.: Stable-isotope records from Dronning Maud Land, Antarctica,
 Ann. Glaciol., 35, 195–201, 2002.\cr
 Münch, T. and Laepple, T.: What climate signal is contained in
-decadal to centennial scale isotope variations from Antarctic ice cores?
-Clim. Past Discuss., \url{https://doi.org/10.5194/cp-2018-112}, in review,
+decadal- to centennial-scale isotope variations from Antarctic ice cores?
+Clim. Past, 14, 2053–2070, \url{https://doi.org/10.5194/cp-14-2053-2018},
 2018.
 }
 \usage{

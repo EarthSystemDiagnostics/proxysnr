@@ -4,8 +4,16 @@
 \alias{LLines}
 \title{Add spectrum to existing log-log spectral plot}
 \usage{
-LLines(x, conf = TRUE, bPeriod = FALSE, col = "black", alpha = 0.2,
-  removeFirst = 0, removeLast = 0, ...)
+LLines(
+  x,
+  conf = TRUE,
+  bPeriod = FALSE,
+  col = "black",
+  alpha = 0.2,
+  removeFirst = 0,
+  removeLast = 0,
+  ...
+)
 }
 \arguments{
 \item{x}{an object of class \code{"spec"}.}

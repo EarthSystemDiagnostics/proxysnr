@@ -4,7 +4,8 @@
 \name{diffusion.length}
 \alias{diffusion.length}
 \title{Diffusion lengths}
-\format{A list with 3 elements:
+\format{
+A list with 3 elements:
 \describe{
   \item{dml1:}{a data frame with 338 rows and 16 variables:}
     \describe{
@@ -25,7 +26,8 @@
       diffusion lengths corresponding to the firn-core ages in \code{Time},
       in yr}
   }
-}}
+}
+}
 \usage{
 diffusion.length
 }
@@ -63,8 +65,8 @@ by Hondoh, T., vol. 159, pp. 121–140, Hokkaido University Press, Sapporo,
 Japan, 2000.
 
 Münch, T. and Laepple, T.: What climate signal is contained in
-decadal to centennial scale isotope variations from Antarctic ice cores?
-Clim. Past Discuss., \url{https://doi.org/10.5194/cp-2018-112}, in review,
+decadal- to centennial-scale isotope variations from Antarctic ice cores?
+Clim. Past, 14, 2053–2070, \url{https://doi.org/10.5194/cp-14-2053-2018},
 2018.
 }
 \keyword{datasets}

@@ -4,10 +4,22 @@
 \alias{PlotArraySpectra}
 \title{Plot proxy array spectra (Figure 1 in Münch and Laepple, 2018)}
 \usage{
-PlotArraySpectra(spec, f.cutoff = NA, xlim = c(100, 2), ylim = c(0.005,
-  50), col = c("darkgrey", "black", "burlywood4"), col.sn = c("dodgerblue4",
-  "firebrick4"), alpha.sn = 0.2, plt.ann = "default", xlab = NULL,
-  ylab = NULL, xtm = NULL, ytm = NULL, xtl = NULL, ytl = NULL)
+PlotArraySpectra(
+  spec,
+  f.cutoff = NA,
+  xlim = c(100, 2),
+  ylim = c(0.005, 50),
+  col = c("darkgrey", "black", "burlywood4"),
+  col.sn = c("dodgerblue4", "firebrick4"),
+  alpha.sn = 0.2,
+  plt.ann = "default",
+  xlab = NULL,
+  ylab = NULL,
+  xtm = NULL,
+  ytm = NULL,
+  xtl = NULL,
+  ytl = NULL
+)
 }
 \arguments{
 \item{spec}{output from \code{\link{ArraySpectra}}.}
@@ -63,8 +75,8 @@ PlotArraySpectra(ArraySpectra(dml$dml1, df.log = 0.12))
 }
 \references{
 Münch, T. and Laepple, T.: What climate signal is contained in
-decadal to centennial scale isotope variations from Antarctic ice cores?
-Clim. Past Discuss., https://doi.org/10.5194/cp-2018-112, in review, 2018.
+decadal- to centennial-scale isotope variations from Antarctic ice cores?
+Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
 }
 \seealso{
 \code{\link{ArraySpectra}}
