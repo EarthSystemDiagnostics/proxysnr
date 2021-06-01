@@ -47,7 +47,7 @@ of \code{sigma} and filled with the mean average value of \code{rec}.
 ## Diffuse white noise with a linearly increasing diffusion length
 rec <- rnorm(n = 1000)
 var.sigma <- seq(1, 8, length.out = 1000)
-diffused <- DiffuseRecord(rec = rec, sigma = var.sigma)
+diffused <- proxysnr:::DiffuseRecord(rec = rec, sigma = var.sigma)
 plot(rec, type = 'l', las = 1, xlab = "depth in cm", ylab = "data", main = 
      "white noise diffusion with linearly increasing diffusion length")
 lines(diffused, col = "red")
@@ -55,5 +55,5 @@ legend('topleft', c("original record", "diffused record"),
        lty = 1, col = 1 : 2, bty = "n")
 }
 \author{
-Thomas Muench, modified by Thomas Laepple
+Thomas Münch, modified by Thomas Laepple
 }

@@ -17,7 +17,7 @@ SpecMTM(
   jkCIProb = 0.95,
   maxAdaptiveIterations = 100,
   plot = FALSE,
-  na.action = na.fail,
+  na.action = stats::na.fail,
   returnInternals = FALSE,
   detrend = TRUE,
   bPad = FALSE,
@@ -96,9 +96,9 @@ output.
 }
 \examples{
 x <- ts(arima.sim(list(ar = 0.9), 1000))
-spec <- SpecMTM(x)
-LPlot(spec, col = 'grey', ylim = c(0.01, 100))
-LLines(LogSmooth(spec), lwd = 2)
+spec <- proxysnr:::SpecMTM(x)
+proxysnr:::LPlot(spec, col = 'grey', ylim = c(0.01, 100))
+proxysnr:::LLines(proxysnr:::LogSmooth(spec), lwd = 2)
 }
 \references{
 Thomson, D.J (1982) Spectrum estimation and harmonic analysis. _Proceedings

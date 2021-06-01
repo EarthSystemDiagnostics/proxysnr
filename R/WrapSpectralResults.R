@@ -120,11 +120,12 @@ WrapSpectralResults <- function(..., diffusion = NULL, time.uncertainty = NULL,
         }
         if (t.flag) {
             tmp$corr.t.unc.only <-
-                SeparateSpectra(spec, time = t.crr)
+                SeparateSpectra(spec, time.uncertainty = t.crr)
         }
         if (d.flag & t.flag) {
             tmp$corr.full <-
-                SeparateSpectra(spec, time = t.crr, diffusion = d.crr)
+                SeparateSpectra(spec, time.uncertainty = t.crr,
+                                diffusion = d.crr)
         }
 
         res[[i]] <- tmp

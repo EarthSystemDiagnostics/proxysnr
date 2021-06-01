@@ -79,9 +79,9 @@ DiffusionTF <- function(nt, nc, ns, sigma, res = 1, coherent = FALSE, ...) {
     for (i in 1 : ns) {
 
         if (coherent) {
-            X <- array(rnorm(nt), dim = c(nt, nc))
+            X <- array(stats::rnorm(nt), dim = c(nt, nc))
         } else {
-            X <- array(rnorm(nt * nc), dim = c(nt, nc))
+            X <- array(stats::rnorm(nt * nc), dim = c(nt, nc))
         }
         
         Xdiff <- array(dim = c(nt, nc))
@@ -100,10 +100,10 @@ DiffusionTF <- function(nt, nc, ns, sigma, res = 1, coherent = FALSE, ...) {
     # calculate spectra of the 'ns' average diffused and undiffused noise series
 
     signal.spec <- lapply(seq_len(ncol(stack.signal)), function(i) {
-        SpecMTM(ts(stack.signal[, i], deltat = res), ...)})
+        SpecMTM(stats::ts(stack.signal[, i], deltat = res), ...)})
 
     diff.spec <- lapply(seq_len(ncol(stack.diff)), function(i) {
-        SpecMTM(ts(stack.diff[, i], deltat = res), ...)})
+        SpecMTM(stats::ts(stack.diff[, i], deltat = res), ...)})
 
 
     # calculate the average over all 'ns' simulations

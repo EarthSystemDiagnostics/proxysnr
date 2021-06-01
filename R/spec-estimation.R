@@ -92,9 +92,9 @@ LogSmooth <- function(x, df.log=0.05) {
 ##' \code{spec.mtm} default output).
 ##' @examples
 ##' x <- ts(arima.sim(list(ar = 0.9), 1000))
-##' spec <- SpecMTM(x)
-##' LPlot(spec, col = 'grey', ylim = c(0.01, 100))
-##' LLines(LogSmooth(spec), lwd = 2)
+##' spec <- proxysnr:::SpecMTM(x)
+##' proxysnr:::LPlot(spec, col = 'grey', ylim = c(0.01, 100))
+##' proxysnr:::LLines(proxysnr:::LogSmooth(spec), lwd = 2)
 ##' @author Thomas Laepple
 ##' @seealso \code{\link[multitaper]{spec.mtm}}
 ##' @references
@@ -107,15 +107,16 @@ SpecMTM <- function(timeSeries, k = 3, nw = 2, nFFT = "default",
                     centre = c("Slepian"), dpssIN = NULL,
                     returnZeroFreq = FALSE, Ftest = FALSE, jackknife = FALSE,
                     jkCIProb = 0.95, maxAdaptiveIterations = 100,
-                    plot = FALSE, na.action = na.fail, returnInternals = FALSE,
-                    detrend = TRUE, bPad = FALSE, ...) {
+                    plot = FALSE, na.action = stats::na.fail,
+                    returnInternals = FALSE, detrend = TRUE,
+                    bPad = FALSE, ...) {
 
     if (sum(is.na(timeSeries)) > 0)
         stop("missing data")
     if (!bPad)
         nFFT = length(timeSeries)
     if (detrend)
-        timeSeries[] <- lm(timeSeries ~ seq(timeSeries))$residuals
+        timeSeries[] <- stats::lm(timeSeries ~ seq(timeSeries))$residuals
 
     result <- multitaper::spec.mtm(timeSeries = timeSeries,
                                    k = k, nw = nw, nFFT = nFFT,
@@ -151,7 +152,7 @@ SpecMTM <- function(timeSeries, k = 3, nw = 2, nFFT = "default",
 MeanSpectrum <- function(speclist) {
 
     # check for equal lengths of supplied spectra
-    if (var(sapply(speclist, function(x) {length(x$freq)})) > 0)
+    if (stats::var(sapply(speclist, function(x) {length(x$freq)})) > 0)
         stop("MeanSpectrum: Spectra are of different lengths.", call. = FALSE)
     
     mean <- list()

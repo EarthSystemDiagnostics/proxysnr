@@ -13,6 +13,27 @@ SetPlotPar(
   ...
 )
 }
+\arguments{
+\item{mar}{a numerical vector of the form ‘c(bottom, left, top, right)’ which
+gives the number of lines of margin to be specified on the four sides of
+the plot. The default is \code{c(5, 5, 0.5, 0.5)}.}
+
+\item{las}{the style of axis labels; default is to always use horizontal axis
+labels (note that you then need to manually set \code{las = 0} for the y
+axis titles when using \code{mtext}).}
+
+\item{cex.main}{the magnification to be used for main titles relative to the
+current setting of \code{cex}; defaults to \code{1.5}.}
+
+\item{cex.lab}{the magnification to be used for x and y labels relative to the
+current setting of \code{cex}; defaults to \code{1.5}.}
+
+\item{cex.axis}{the magnification to be used for axis annotation relative to
+the current setting of \code{cex}; defaults to \code{1.25}.}
+
+\item{...}{further graphical parameter settings passed on to
+\code{\link[graphics]{par}}.}
+}
 \value{
 A list of plotting parameters to be used with \code{par()}.
 \itemize{
@@ -34,12 +55,12 @@ example.
 }
 \examples{
 # Default settings
-op <- par(SetPlotPar())
+op <- par(proxysnr:::SetPlotPar())
 plot(1 : 10, xlab = "X title", ylab = "Y title", type = "l")
 par(op)
 
 # Change default line width and increase outer margin
-op <- par(SetPlotPar(lwd = 2, oma = c(2, 2, 2, 2)))
+op <- par(proxysnr:::SetPlotPar(lwd = 2, oma = c(2, 2, 2, 2)))
 plot(1 : 10, xlab = "X title", ylab = "Y title", type = "l")
 par(op)
 }

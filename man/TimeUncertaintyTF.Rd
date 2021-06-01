@@ -13,7 +13,7 @@ TimeUncertaintyTF(
   model = "poisson",
   rate = 0.05,
   resize = 1,
-  surrogate.fun = rnorm,
+  surrogate.fun = stats::rnorm,
   fun.par = NULL,
   pad = TRUE,
   ...

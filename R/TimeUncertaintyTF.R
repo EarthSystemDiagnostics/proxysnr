@@ -108,7 +108,7 @@
 TimeUncertaintyTF <- function(t = 100 : 1, acp = c(t[1], NA),
                               nt = length(t), nc = 1, ns = 100,
                               model = "poisson", rate = 0.05, resize = 1,
-                              surrogate.fun = rnorm, fun.par = NULL,
+                              surrogate.fun = stats::rnorm, fun.par = NULL,
                               pad = TRUE, ...) {
 
     # check if package simproxyage is available
@@ -145,10 +145,10 @@ TimeUncertaintyTF <- function(t = 100 : 1, acp = c(t[1], NA),
     # calculate spectra of the 'ns' input and age-perturbed time series
 
     stacks.spec <- lapply(seq_len(ncol(stacks)), function(i) {
-        SpecMTM(ts(stacks[, i], deltat = 1), ...)})
+        SpecMTM(stats::ts(stacks[, i], deltat = 1), ...)})
 
     input.spec <- lapply(seq_len(ncol(run$input)), function(i) {
-        SpecMTM(ts(run$input[, i], deltat = 1), ...)})
+        SpecMTM(stats::ts(run$input[, i], deltat = 1), ...)})
 
 
     # calculate the average over all 'ns' simulations

@@ -28,12 +28,12 @@
 ##' record which are potentially affected by the finite record length are set to
 ##' \code{NA}. Defaults to \code{FALSE}. See also Details.
 ##' @return Numeric vector containing the diffused version of \code{rec}.
-##' @author Thomas Muench, modified by Thomas Laepple
+##' @author Thomas Münch, modified by Thomas Laepple
 ##' @examples
 ##' ## Diffuse white noise with a linearly increasing diffusion length
 ##' rec <- rnorm(n = 1000)
 ##' var.sigma <- seq(1, 8, length.out = 1000)
-##' diffused <- DiffuseRecord(rec = rec, sigma = var.sigma)
+##' diffused <- proxysnr:::DiffuseRecord(rec = rec, sigma = var.sigma)
 ##' plot(rec, type = 'l', las = 1, xlab = "depth in cm", ylab = "data", main = 
 ##'      "white noise diffusion with linearly increasing diffusion length")
 ##' lines(diffused, col = "red")

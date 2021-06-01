@@ -11,7 +11,7 @@ Vertical (depth) resolution is 3 cm.
 }
 \source{
 Data citation:\cr
-Münch, T., et al.: Stable water isotopes measured along two snow trenches
+Münch, T., et al.: Stable water isotopes measured along two snow trenches
 sampled at Kohnen Station, Dronning Maud Land, Antarctica in the 2014/15
 field season, \url{https://doi.org/10.1594/PANGAEA.876639}, 2017.
 
