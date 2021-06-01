@@ -2,6 +2,7 @@
 
 export(ArraySpectra)
 export(DiffusionTF)
+export(IntegratedSNR)
 export(PlotArraySpectra)
 export(PlotSNR)
 export(PlotStackCorrelation)
