@@ -75,6 +75,7 @@ IntegratedSNR <- function(input, N = 1, f1 = 2, f2 = "max",
     freq = freq,
     spec = N * cumsum(signal * df) / cumsum(noise * df)
   )
+  class(snr) <- "spec"
 
   return(snr)
 }
