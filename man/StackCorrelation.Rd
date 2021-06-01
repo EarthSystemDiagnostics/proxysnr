@@ -6,7 +6,7 @@
 \usage{
 StackCorrelation(
   input,
-  N,
+  N = 1,
   f1 = 2,
   f2 = "max",
   freq.cut.lower = NULL,
@@ -18,8 +18,9 @@ StackCorrelation(
 \code{noise}, usually to be obtained from a call to
 \code{\link{SeparateSpectra}}}
 
-\item{N}{maximum number of records in the assumed stack; correlations are
-then calculated for stacks with record numbers from 1 to \code{N}}
+\item{N}{integer vector with the number of records in the assumed stack;
+correlations are then calculated for stacks with record numbers according to
+each element of \code{N}}
 
 \item{f1}{index of the the minimum frequency from which to integrate the
 signal and noise spectra for calculating the correlation; per default the

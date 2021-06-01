@@ -684,7 +684,7 @@ PlotSNR <- function(spec, f.cut = FALSE,
 ##' SNR <- PublicationSNR(DWS)
 ##'
 ##' # Calculate the correlations
-##' crl <- StackCorrelation(SNR$dml, N = 20,
+##' crl <- StackCorrelation(SNR$dml, N = 1 : 20,
 ##'        freq.cut.lower = 1 / 100,
 ##'        freq.cut.upper = SNR$dml$f.cutoff[2])
 ##'

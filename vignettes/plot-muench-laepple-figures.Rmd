@@ -114,12 +114,12 @@ averaging period (i.e. resolution) of the records:
 
 ```{r}
 # for the DMl data
-crl1 <- StackCorrelation(SNR$dml, N = 20,
+crl1 <- StackCorrelation(SNR$dml, N = 1 : 20,
                          freq.cut.lower = 1 / 100,
                          freq.cut.upper = SNR$dml$f.cutoff[2])
 
 # for the WAIS data
-crl2 <- StackCorrelation(SNR$wais, N = 20,
+crl2 <- StackCorrelation(SNR$wais, N = 1 : 20,
                          freq.cut.lower = 1 / 100,
                          freq.cut.upper = SNR$wais$f.cutoff[2])
 ```

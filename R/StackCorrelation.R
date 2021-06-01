@@ -13,8 +13,9 @@
 ##' @param input a list of the spectral objects lists \code{signal} and
 ##' \code{noise}, usually to be obtained from a call to
 ##' \code{\link{SeparateSpectra}}
-##' @param N maximum number of records in the assumed stack; correlations are
-##' then calculated for stacks with record numbers from 1 to \code{N}
+##' @param N integer vector with the number of records in the assumed stack;
+##' correlations are then calculated for stacks with record numbers according to
+##' each element of \code{N}
 ##' @param f1 index of the the minimum frequency from which to integrate the
 ##' signal and noise spectra for calculating the correlation; per default the
 ##' lowest frequency of the spectral estimates is omitted
@@ -45,7 +46,7 @@
 ##' decadal- to centennial-scale isotope variations from Antarctic ice cores?
 ##' Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
 ##' @export
-StackCorrelation <- function(input, N, f1 = 2, f2 = "max",
+StackCorrelation <- function(input, N = 1, f1 = 2, f2 = "max",
                              freq.cut.lower = NULL, freq.cut.upper = NULL) {
 
     if (!is.null(freq.cut.lower)) {
@@ -77,10 +78,10 @@ StackCorrelation <- function(input, N, f1 = 2, f2 = "max",
 
     snr.int <- signal.int$spec / noise.int$spec
 
-    correlation <- matrix(nrow = N, ncol = length(snr.int))
-    for (i in 1 : N) {
+    correlation <- matrix(nrow = length(N), ncol = length(snr.int))
+    for (i in 1 : length(N)) {
         
-        correlation[i, ] <- 1 / sqrt(1 + 1 / (i * rev(snr.int)))
+        correlation[i, ] <- 1 / sqrt(1 + 1 / (N[i] * rev(snr.int)))
     }
 
     res <- list()
