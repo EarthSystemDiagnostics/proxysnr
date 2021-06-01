@@ -1,6 +1,6 @@
 Package: proxysnr
 Title: Separate Signal and Noise in Climate Proxy Records
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: c(
     person("Thomas", "Münch", email = "thomas.muench@awi.de",
     role = c("aut", "cre")),
