@@ -107,7 +107,7 @@ crl <- StackCorrelation(SNR$dml, N = 1 : 20,
 # Plot it
 library(RColorBrewer)
 palette <- colorRampPalette(rev(RColorBrewer::brewer.pal(10, "RdYlBu")))
-PlotStackCorrelation(freq = crl$signal$freq, correlation = crl$corr,
+PlotStackCorrelation(freq = crl$freq, correlation = crl$correlation,
           col.pal = palette, label = "DML", ylim = c(NA, log(50)))
 }
 \references{

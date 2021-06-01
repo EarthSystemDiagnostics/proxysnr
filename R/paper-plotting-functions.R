@@ -710,7 +710,7 @@ PlotSNR <- function(spec, f.cut = FALSE,
 ##' # Plot it
 ##' library(RColorBrewer)
 ##' palette <- colorRampPalette(rev(RColorBrewer::brewer.pal(10, "RdYlBu")))
-##' PlotStackCorrelation(freq = crl$signal$freq, correlation = crl$corr,
+##' PlotStackCorrelation(freq = crl$freq, correlation = crl$correlation,
 ##'           col.pal = palette, label = "DML", ylim = c(NA, log(50)))
 ##' @references Münch, T. and Laepple, T.: What climate signal is contained in
 ##' decadal- to centennial-scale isotope variations from Antarctic ice cores?

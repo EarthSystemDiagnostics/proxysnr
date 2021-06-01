@@ -43,13 +43,13 @@ estimates. Setting \code{freq.cut.upper} overrides the frequency
 corresponding to the index set in \code{f2}.}
 }
 \value{
-a list of three components:
+a list of two components:
 \describe{
-\item{signal:}{a spectral object list of the integrated signal}
-\item{noise:}{a spectral object list of the integrated noise}
+\item{freq:}{numeric vector of frequencies corresponding to the upper ends
+of the cumulative integrations}
 \item{correlation:}{a \code{n * m} matrix where \code{n} corresponds to
-\code{N} and \code{m} is given by \code{length(f1 : f2)} providing the
-correlation values as a function of the number of averaged records and
+\code{length(N)} and \code{m} is given by \code{length(freq)} providing
+the correlation values as a function of the number of averaged records and
 the record resolution (= increasing upper frequency of the integration)}
 }
 }
