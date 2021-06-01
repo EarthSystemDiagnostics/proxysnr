@@ -3,7 +3,7 @@
 ## Author: Thomas Münch (thomas.muench@awi.de), Alfred-Wegener-Institut, 2018
 ##
 
-library(devtools)
+library(usethis)
 
 # 'pangaear' package for easy download from PANGAEA repository
 library(pangaear)
@@ -45,7 +45,7 @@ dml1[13 : 15] <- lapply(dml1[13 : 15], function(x){x[1 : length(dml1[[1]])]})
 
 dml <- list(dml1 = dml1, dml2 = dml2)
 
-devtools::use_data(dml, overwrite = TRUE)
+usethis::use_data(dml, overwrite = TRUE)
 
 
 #-------------------------------------------------------------------------------

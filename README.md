@@ -1,4 +1,4 @@
-# proxysnr: Separate Signal and Noise in Climate Proxy Records.
+# proxysnr: Separate Signal and Noise in Climate Proxy Records
 
 ------------------------------
 
@@ -33,11 +33,11 @@ no. 716092). It further contributes to the German BMBF project PalMod.
 **proxysnr** can be installed directly from GitHub:
 
 ```r
-if (!require("devtools")) {
-  install.packages("devtools")
+if (!require("remotes")) {
+  install.packages("remotes")
 }
 
-devtools::install_github("EarthSystemDiagnostics/proxysnr")
+remotes::install_github("EarthSystemDiagnostics/proxysnr")
 ```
 
 ## Examples
@@ -64,10 +64,11 @@ R markdown `.Rmd` source files and the R code `.R` source files.
    correct the estimated signal, noise and SNR spectra as explained in Münch and
    Laepple (2018).
 
-After installing the package with `devtools::install_github`, or after cloning
-the git repository and installing the package using `devtools::install`, the
-vignettes belonging to the version of the installed package are also available
-directly from the `R` command line by typing
+After installing the package with `remotes::install_github` or after cloning
+the git repository and installing the package using `devtools::install`, setting
+`build_vignettes = TRUE` in both cases, the vignettes belonging to the version
+of the installed package are also available directly from the `R` command line
+by typing
 ```r
 vignette("plot-muench-laepple-figures", package = "proxysnr")
 ```
@@ -82,7 +83,7 @@ modelling the time uncertainty of the layer-counted isotope records in order to
 calculate respective time uncertainty transfer functions. **simproxyage** is
 available from [GitHub](https://github.com/EarthSystemDiagnostics/simproxyage)
 and can be installed directly using
-`devtools::install_github("EarthSystemDiagnostics/proxysnr")`. Also note that
+`remotes::install_github("EarthSystemDiagnostics/simproxyage")`. Also note that
 the package vignettes are based on R Markdown v2 and require
 [Pandoc](http://pandoc.org).
 

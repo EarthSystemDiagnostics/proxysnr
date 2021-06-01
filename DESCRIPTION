@@ -1,5 +1,5 @@
 Package: proxysnr
-Title: Separate Signal and Noise in Climate Proxy Records.
+Title: Separate Signal and Noise in Climate Proxy Records
 Version: 0.1.0
 Authors@R: c(
     person("Thomas", "Münch", email = "thomas.muench@awi.de",
@@ -17,9 +17,19 @@ LazyData: true
 RoxygenNote: 7.1.1
 VignetteBuilder: knitr
 Imports: multitaper
-Suggests: knitr,
+Suggests: Hmisc,
+    knitr,
+    PaleoSpec,
+    pangaear,
     rmarkdown,
-    RColorBrewer
+    RColorBrewer,
+    simproxyage,
+    TrenchR,
+    usethis
+Remotes:
+    earthsystemdiagnostics/paleospec,
+    earthsystemdiagnostics/simproxyage,
+    earthsystemdiagnostics/TrenchR
 URL: https://github.com/EarthSystemDiagnostics/proxysnr
 BugReports: https://github.com/EarthSystemDiagnostics/proxysnr/issues
 SystemRequirements: Package vignettes based on R Markdown v2 or

@@ -3,7 +3,7 @@
 ## Author: Thomas Münch (thomas.muench@awi.de), Alfred-Wegener-Institut, 2018
 ##
 
-library(devtools)
+library(usethis)
 library(PaleoSpec)
 library(Hmisc)
 
@@ -21,7 +21,7 @@ wais <- load.WAIS(url = url,
                   cores.seasonal2annual = cores[4 : 5],
                   fillNA = TRUE, verbose = TRUE)
 
-devtools::use_data(wais, overwrite = TRUE)
+usethis::use_data(wais, overwrite = TRUE)
 
 
 #-------------------------------------------------------------------------------
