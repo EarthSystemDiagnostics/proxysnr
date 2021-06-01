@@ -42,14 +42,14 @@ remotes::install_github("EarthSystemDiagnostics/proxysnr")
 
 ## Examples
 
-Two example vignettes are provided along with the package source to
-demonstrate the main functions of the package. These vignettes can be found in
-the directory `./inst/doc/`, where `.` stands for the root of the package source
-directory. Provided are the rendered `.html` files together with the generating
-R markdown `.Rmd` source files and the R code `.R` source files.
+Two example vignettes are provided along with the package source as rendered
+`.html` files to demonstrate the main functions of the package. These vignettes
+can be found in the directory `./doc/`, where `.` stands for the root of the
+package source directory, while their creating R markdown source codes are
+located under `./vignettes/`.
 
 * The vignette
-  [plot-muench-laepple-figures](http://htmlpreview.github.io/?https://github.com/EarthSystemDiagnostics/proxysnr/blob/master/inst/doc/plot-muench-laepple-figures.html)
+  [plot-muench-laepple-figures](http://htmlpreview.github.io/?https://github.com/EarthSystemDiagnostics/proxysnr/blob/master/doc/plot-muench-laepple-figures.html)
   shows the basic way of applying the package to obtain estimates of the signal,
   noise and SNR spectra. For this, the oxygen isotope data from Münch and
   Laepple (2018) are used, which are provided with this package. The vignette
@@ -57,7 +57,7 @@ R markdown `.Rmd` source files and the R code `.R` source files.
   Laepple (2018).
 
 * The vignette
-   [calculate-transfer-functions](http://htmlpreview.github.io/?https://github.com/EarthSystemDiagnostics/proxysnr/blob/master/inst/doc/calculate-transfer-functions.html)
+   [calculate-transfer-functions](http://htmlpreview.github.io/?https://github.com/EarthSystemDiagnostics/proxysnr/blob/master/doc/calculate-transfer-functions.html)
    demonstrates the application of package functions for obtaining the spectral
    transfer functions describing the loss in spectral power by the effects of
    time uncertainty and diffusion. These transfer functions can be used to
