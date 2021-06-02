@@ -4,9 +4,20 @@
 \alias{TimeUncertaintyTF}
 \title{Time uncertainty transfer function}
 \usage{
-TimeUncertaintyTF(t = 100:1, acp = c(t[1], NA), nt = length(t), nc = 1,
-  ns = 100, model = "poisson", rate = 0.05, resize = 1,
-  surrogate.fun = rnorm, fun.par = NULL, pad = TRUE, ...)
+TimeUncertaintyTF(
+  t = 100:1,
+  acp = c(t[1], NA),
+  nt = length(t),
+  nc = 1,
+  ns = 100,
+  model = "poisson",
+  rate = 0.05,
+  resize = 1,
+  surrogate.fun = stats::rnorm,
+  fun.par = NULL,
+  pad = TRUE,
+  ...
+)
 }
 \arguments{
 \item{t}{numeric vector of integer values providing a reference chronology
@@ -88,7 +99,7 @@ Comboul et al. (2014) which is implemented in the package
 is available on GitHub under
 \url{https://github.com/EarthSystemDiagnostics/simproxyage}
 and can be installed directly using
-\code{devtools::install_github("EarthSystemDiagnostics/simproxyage")}.
+\code{remotes::install_github("EarthSystemDiagnostics/simproxyage")}.
 
 The spectral estimates are calculated using Thomson’s multitaper method with
 three windows with linear detrending before analysis.
@@ -122,11 +133,12 @@ from the vector \code{acp} with a warning.
 Comboul, M., Emile-Geay, J., Evans, M. N., Mirnateghi, N., Cobb, K. M.
 and Thompson, D. M.: A probabilistic model of chronological errors in
 layer-counted climate proxies: applications to annually banded coral
-archives, Clim. Past, 10(2), 825-841, doi: 10.5194/cp-10-825-2014, 2014.
+archives, Clim. Past, 10(2), 825-841,
+https://doi.org/10.5194/cp-10-825-2014, 2014.
 
 Münch, T. and Laepple, T.: What climate signal is contained in
-decadal to centennial scale isotope variations from Antarctic ice cores?
-Clim. Past Discuss., https://doi.org/10.5194/cp-2018-112, in review, 2018.
+decadal- to centennial-scale isotope variations from Antarctic ice cores?
+Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
 }
 \seealso{
 \code{[simproxyage]{MonteCarloArray}}

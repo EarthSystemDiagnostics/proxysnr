@@ -10,6 +10,20 @@
 ##' wrapper function provides a convenient way to set new graphics parameters
 ##' and save their old values for later restoring at the same time; see the
 ##' example.
+##' @param mar a numerical vector of the form ‘c(bottom, left, top, right)’ which
+##'   gives the number of lines of margin to be specified on the four sides of
+##'   the plot. The default is \code{c(5, 5, 0.5, 0.5)}.
+##' @param las the style of axis labels; default is to always use horizontal axis
+##'   labels (note that you then need to manually set \code{las = 0} for the y
+##'   axis titles when using \code{mtext}).
+##' @param cex.main the magnification to be used for main titles relative to the
+##'   current setting of \code{cex}; defaults to \code{1.5}.
+##' @param cex.lab the magnification to be used for x and y labels relative to the
+##'   current setting of \code{cex}; defaults to \code{1.5}.
+##' @param cex.axis the magnification to be used for axis annotation relative to
+##'   the current setting of \code{cex}; defaults to \code{1.25}.
+##' @param ... further graphical parameter settings passed on to
+##'   \code{\link[graphics]{par}}.
 ##' @return A list of plotting parameters to be used with \code{par()}.
 ##' \itemize{
 ##'   \item mar = c(5, 5, 0.5, 0.5)
@@ -23,12 +37,12 @@
 ##' @seealso \code{\link{par}}
 ##' @examples
 ##' # Default settings
-##' op <- par(SetPlotPar())
+##' op <- par(proxysnr:::SetPlotPar())
 ##' plot(1 : 10, xlab = "X title", ylab = "Y title", type = "l")
 ##' par(op)
 ##'
 ##' # Change default line width and increase outer margin
-##' op <- par(SetPlotPar(lwd = 2, oma = c(2, 2, 2, 2)))
+##' op <- par(proxysnr:::SetPlotPar(lwd = 2, oma = c(2, 2, 2, 2)))
 ##' plot(1 : 10, xlab = "X title", ylab = "Y title", type = "l")
 ##' par(op)
 SetPlotPar <- function(mar = c(5, 5, 0.5, 0.5),
@@ -59,15 +73,15 @@ SetPlotPar <- function(mar = c(5, 5, 0.5, 0.5),
 Polyplot <- function(x, y1, y2, col = "black", alpha = 0.2, ...) {
 
     inp <- list(x, y1, y2)
-    if (var(sapply(inp, length)) != 0)
+    if (stats::var(sapply(inp, length)) != 0)
         stop("All input vectors must be of the same length.")
     if (any(sapply(inp, function(x){any(is.na(x))})))
         warning("Polyplot: Missing values as input.", call. = FALSE)
 
-    col <- adjustcolor(col = col, alpha = alpha)
+    col <- grDevices::adjustcolor(col = col, alpha = alpha)
 
-    polygon(c(x, rev(x)), c(y1, rev(y2)),
-            col = col, border = NA, ...)
+    graphics::polygon(c(x, rev(x)), c(y1, rev(y2)),
+                      col = col, border = NA, ...)
     
 }
 
@@ -114,8 +128,9 @@ LPlot <- function(x, conf = TRUE, bPeriod = FALSE, bNoPlot = FALSE, axes = TRUE,
     x$lim.1 <- x$lim.1[index]
     x$lim.2 <- x$lim.2[index]
 
-    plot(x$freq, x$spec, type = "n", log = "xy", xlab = xlab, ylab = ylab,
-         xlim = xlim, ylim = ylim, axes = axes, ...)
+    graphics::plot(x$freq, x$spec, type = "n", log = "xy",
+                   xlab = xlab, ylab = ylab, xlim = xlim, ylim = ylim,
+                   axes = axes, ...)
 
     lim <- !is.null(x$lim.1) & !is.null(x$lim.2)
     if (conf & lim & !bNoPlot) {
@@ -123,7 +138,7 @@ LPlot <- function(x, conf = TRUE, bPeriod = FALSE, bNoPlot = FALSE, axes = TRUE,
                  col = col, alpha = alpha)
     }
 
-    if (!bNoPlot) lines(x$freq, x$spec, col = col, ...)
+    if (!bNoPlot) graphics::lines(x$freq, x$spec, col = col, ...)
     
 }
 
@@ -161,7 +176,7 @@ LLines<-function(x, conf = TRUE, bPeriod = FALSE, col = "black", alpha = 0.2,
                  col = col, alpha = alpha)
     }
     
-    lines(x$freq, x$spec, col = col, ...)
+    graphics::lines(x$freq, x$spec, col = col, ...)
     
 }
 
@@ -205,8 +220,8 @@ LLines<-function(x, conf = TRUE, bPeriod = FALSE, col = "black", alpha = 0.2,
 ##' PlotArraySpectra(ArraySpectra(dml$dml1, df.log = 0.12))
 ##' @export
 ##' @references Münch, T. and Laepple, T.: What climate signal is contained in
-##' decadal to centennial scale isotope variations from Antarctic ice cores?
-##' Clim. Past Discuss., https://doi.org/10.5194/cp-2018-112, in review, 2018.
+##' decadal- to centennial-scale isotope variations from Antarctic ice cores?
+##' Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
 PlotArraySpectra <- function(spec, f.cutoff = NA,
                              xlim = c(100, 2), ylim = c(0.005, 50),
                              col = c("darkgrey", "black", "burlywood4"),
@@ -245,12 +260,12 @@ PlotArraySpectra <- function(spec, f.cutoff = NA,
         
     # Plot parameters
 
-    op <- par(SetPlotPar(mar = c(5, 6.5, 0.5, 0.5)))
-    on.exit(par(op))
+    op <- graphics::par(SetPlotPar(mar = c(5, 6.5, 0.5, 0.5)))
+    on.exit(graphics::par(op))
 
     # Plot frame
     
-    LPlot(psd1, bP = TRUE, bNo = TRUE, axes = FALSE,
+    LPlot(psd1, bPeriod = TRUE, bNoPlot = TRUE, axes = FALSE,
           xlim = xlim, ylim = ylim, xlab = "", ylab = "")
 
     # Shadings
@@ -266,46 +281,46 @@ PlotArraySpectra <- function(spec, f.cutoff = NA,
 
     # Frequency cutoff line
 
-    lines(x = rep(1 / f.cutoff, 2), y = c(ylim[1]/10, ylim[2]),
-          lty = 2, col = "darkgrey")
+    graphics::lines(x = rep(1 / f.cutoff, 2), y = c(ylim[1]/10, ylim[2]),
+                    lty = 2, col = "darkgrey")
 
     # Individual spectra
 
     for (i in 1 : N) {
         
-        LLines(spec$single[[i]], conf = FALSE, bP = TRUE,
-               removeF = 1, removeL = 1,
+        LLines(spec$single[[i]], conf = FALSE, bPeriod = TRUE,
+               removeFirst = 1, removeLast = 1,
                col = col[1])
     }
 
     # Main spectra
 
-    LLines(psd1, conf = FALSE, bP = TRUE,
-           removeF = 1, removeL = 1,
+    LLines(psd1, conf = FALSE, bPeriod = TRUE,
+           removeFirst = 1, removeLast = 1,
            col = col[2], lwd = 3)
-    LLines(psd2, conf = FALSE, bP = TRUE,
-           removeF = 1, removeL = 1,
+    LLines(psd2, conf = FALSE, bPeriod = TRUE,
+           removeFirst = 1, removeLast = 1,
            col = col[3], lwd = 3)
-    LLines(psd3, conf = FALSE, bP = TRUE,
-           removeF = 1, removeL = 1,
+    LLines(psd3, conf = FALSE, bPeriod = TRUE,
+           removeFirst = 1, removeLast = 1,
            col = col[2], lwd = 1.5, lty = 5)
 
     # Axis and legend settings
 
-    axis(1, at = set.xtm, labels = set.xtl)
-    axis(2, at = set.ytm, labels = set.ytl)
+    graphics::axis(1, at = set.xtm, labels = set.xtl)
+    graphics::axis(2, at = set.ytm, labels = set.ytl)
 
-    mtext(set.xlab, side = 1, line = 3.5,
-          cex = par()$cex.lab)
-    mtext(set.ylab, side = 2, line = 4.5,
-          cex = par()$cex.lab, las = 0)
+    graphics::mtext(set.xlab, side = 1, line = 3.5,
+                    cex = graphics::par()$cex.lab)
+    graphics::mtext(set.ylab, side = 2, line = 4.5,
+                    cex = graphics::par()$cex.lab, las = 0)
 
-    legend("bottomleft",
-           c("Individual spectra", "Mean spectrum",
-             "Spectrum of stacked record", "Mean spectrum scaled by 1/n"),
-           col = c(col[1 : 3], col[2]),#"darkgrey", "black", "burlywood4", "black"),
-           lty = c(1, 1, 1, 5),
-           lwd = c(1, 2, 2, 1), seg.len = 2.5, bty = "n")
+    graphics::legend("bottomleft",
+                     c("Individual spectra", "Mean spectrum",
+                       "Spectrum of stacked record", "Mean spectrum scaled by 1/n"),
+                     col = c(col[1 : 3], col[2]),
+                     lty = c(1, 1, 1, 5),
+                     lwd = c(1, 2, 2, 1), seg.len = 2.5, bty = "n")
 
 }
 
@@ -319,8 +334,8 @@ PlotArraySpectra <- function(spec, f.cutoff = NA,
 ##' @author Thomas Münch
 ##' @seealso \code{\link{WrapSpectralResults}}
 ##' @references Münch, T. and Laepple, T.: What climate signal is contained in
-##' decadal to centennial scale isotope variations from Antarctic ice cores?
-##' Clim. Past Discuss., https://doi.org/10.5194/cp-2018-112, in review, 2018.
+##' decadal- to centennial-scale isotope variations from Antarctic ice cores?
+##' Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
 muench_laepple_fig02 <- function(spec, f.cut = FALSE) {
 
 
@@ -332,171 +347,175 @@ muench_laepple_fig02 <- function(spec, f.cut = FALSE) {
     y.at <- c(0.05, 0.1, 0.5, 1, 5)
     removeLast <- 1
 
-    op <- par(SetPlotPar(mar = c(0, 0, 0, 0),
-                         oma = c(5, 10, 2, 0.5),
-                         mfcol = c(2, 2),
-                         cex.axis = 1.5))
-    on.exit(par(op))
+    op <- graphics::par(SetPlotPar(mar = c(0, 0, 0, 0),
+                                   oma = c(5, 10, 2, 0.5),
+                                   mfcol = c(2, 2),
+                                   cex.axis = 1.5))
+    on.exit(graphics::par(op))
 
     
     # --------------------------------------------------------------------------
     # Plot DML signal spectra
 
-    LPlot(spec$dml1$raw$signal, bP = TRUE, bNo = TRUE, axes = FALSE,
+    LPlot(spec$dml1$raw$signal, bPeriod = TRUE, bNoPlot = TRUE, axes = FALSE,
           xlim = c(500, 2), ylim = ylim, xlab = "", ylab = "")
-    axis(2, at = y.at, labels = y.at)
-    box()
+    graphics::axis(2, at = y.at, labels = y.at)
+    graphics::box()
 
-    mtext(ylabel, side = 2, line = 4.5, las = 0,
-          cex = par()$cex.lab)
-    mtext("DML", side = 2, line = 8, las = 0,
-          cex = par()$cex.lab)
-    mtext("Signal", side = 3, line = 0.5, las = 0, adj = 0.99, padj = 0.3,
-          col = "dodgerblue4", cex = par()$cex.lab)
-    mtext("a", side = 3, adj = 0.01, padj = 0.5,
-          line = -1, font = 2, cex = par()$cex.lab)
+    graphics::mtext(ylabel, side = 2, line = 4.5, las = 0,
+                    cex = graphics::par()$cex.lab)
+    graphics::mtext("DML", side = 2, line = 8, las = 0,
+                    cex = graphics::par()$cex.lab)
+    graphics::mtext("Signal", side = 3, line = 0.5, las = 0, adj = 0.99,
+                    padj = 0.3, col = "dodgerblue4",
+                    cex = graphics::par()$cex.lab)
+    graphics::mtext("a", side = 3, adj = 0.01, padj = 0.5,
+                    line = -1, font = 2, cex = graphics::par()$cex.lab)
 
     if (f.cut)
         removeLast <-
             length(spec$dml1$f.cutoff[1] : length(spec$dml1$raw$signal$freq))
     
-    LLines(spec$dml1$raw$signal, conf = FALSE, bP = TRUE,
-           removeF = 1, removeL = removeLast,
+    LLines(spec$dml1$raw$signal, conf = FALSE, bPeriod = TRUE,
+           removeFirst = 1, removeLast = removeLast,
            col = "dodgerblue4", lwd = 1.5, lty = 3)
-    LLines(spec$dml1$corr.t$signal, conf = FALSE, bP = TRUE,
-           removeF = 1, removeL = removeLast,
+    LLines(spec$dml1$corr.t$signal, conf = FALSE, bPeriod = TRUE,
+           removeFirst = 1, removeLast = removeLast,
            col = "dodgerblue4", lwd = 1.5, lty = 5)
-    LLines(spec$dml1$corr.full$signal, conf = FALSE, bP = TRUE,
-           removeF = 1, removeL = removeLast,
+    LLines(spec$dml1$corr.full$signal, conf = FALSE, bPeriod = TRUE,
+           removeFirst = 1, removeLast = removeLast,
            col = "dodgerblue4", lwd = 3, lty = 1)
 
     if (f.cut)
         removeLast <-
             length(spec$dml2$f.cutoff[1] : length(spec$dml2$raw$signal$freq))
     
-    LLines(spec$dml2$raw$signal, conf = FALSE, bP = TRUE,
-           removeF = 1, removeL = removeLast,
+    LLines(spec$dml2$raw$signal, conf = FALSE, bPeriod = TRUE,
+           removeFirst = 1, removeLast = removeLast,
            col = "black", lwd = 1.5, lty = 3)
-    LLines(spec$dml2$corr.t$signal, conf = FALSE, bP = TRUE,
-           removeF = 1, removeL = removeLast,
+    LLines(spec$dml2$corr.t$signal, conf = FALSE, bPeriod = TRUE,
+           removeFirst = 1, removeLast = removeLast,
            col = "black", lwd = 1.5, lty = 5)
-    LLines(spec$dml2$corr.full$signal, conf = FALSE, bP = TRUE,
-           removeF = 1, removeL = removeLast,
+    LLines(spec$dml2$corr.full$signal, conf = FALSE, bPeriod = TRUE,
+           removeFirst = 1, removeLast = removeLast,
            col = "black", lwd = 3, lty = 1)
 
-    legend("bottomleft", c("DML1", "DML2"), lty = 1, lwd = 2,
-           col = c("dodgerblue4", "black"),  seg.len = 3, bty = "n", cex = 1.25)
-    legend("bottomleft",
-           c("Uncorrected signal", "Corrected for time uncertainty",
-             "Corrected for time uncertainty + diffusion"),
-           lwd = c(1.5, 1.5, 2), lty = c(3, 5, 1), col = "darkgrey",
-           inset = c(0.225, 0), seg.len = 3, bty = "n", cex = 1.25)
+    graphics::legend("bottomleft", c("DML1", "DML2"), lty = 1, lwd = 2,
+                     col = c("dodgerblue4", "black"),  seg.len = 3,
+                     bty = "n", cex = 1.25)
+    graphics::legend("bottomleft",
+                     c("Uncorrected signal", "Corrected for time uncertainty",
+                       "Corrected for time uncertainty + diffusion"),
+                     lwd = c(1.5, 1.5, 2), lty = c(3, 5, 1), col = "darkgrey",
+                     inset = c(0.225, 0), seg.len = 3, bty = "n", cex = 1.25)
 
     # --------------------------------------------------------------------------
     # Plot WAIS signal spectra
     
-    LPlot(spec$wais$raw$signal, bP = TRUE, bNo = TRUE, axes = FALSE,
+    LPlot(spec$wais$raw$signal, bPeriod = TRUE, bNoPlot = TRUE, axes = FALSE,
           xlim = c(500, 2), ylim = ylim, xlab = "", ylab = "")
-    axis(1)
-    axis(2, at = y.at, labels = y.at)
-    box()
+    graphics::axis(1)
+    graphics::axis(2, at = y.at, labels = y.at)
+    graphics::box()
 
-    mtext("Time period (yr)", side = 1, line = 3.5,
-          cex = par()$cex.lab)
-    mtext(ylabel, side = 2, line = 4.5, las = 0,
-          cex = par()$cex.lab)
-    mtext("WAIS", side = 2, line = 8, las = 0,
-          cex = par()$cex.lab)
-    mtext("c", side = 3, adj = 0.01, padj = 0.5,
-          line = -1, font = 2, cex = par()$cex.lab)
+    graphics::mtext("Time period (yr)", side = 1, line = 3.5,
+                    cex = graphics::par()$cex.lab)
+    graphics::mtext(ylabel, side = 2, line = 4.5, las = 0,
+                    cex = graphics::par()$cex.lab)
+    graphics::mtext("WAIS", side = 2, line = 8, las = 0,
+                    cex = graphics::par()$cex.lab)
+    graphics::mtext("c", side = 3, adj = 0.01, padj = 0.5,
+                    line = -1, font = 2, cex = graphics::par()$cex.lab)
     
     if (f.cut)
         removeLast <-
             length(spec$wais$f.cutoff[1] : length(spec$wais$raw$signal$freq))
 
-    LLines(spec$wais$raw$signal, conf = FALSE, bP = TRUE,
-           removeF = 1, removeL = removeLast,
+    LLines(spec$wais$raw$signal, conf = FALSE, bPeriod = TRUE,
+           removeFirst = 1, removeLast = removeLast,
            col = "dodgerblue4", lwd = 1.5, lty = 3)
-    LLines(spec$wais$corr.t$signal, conf = FALSE, bP = TRUE,
-           removeF = 1, removeL = removeLast,
+    LLines(spec$wais$corr.t$signal, conf = FALSE, bPeriod = TRUE,
+           removeFirst = 1, removeLast = removeLast,
            col = "dodgerblue4", lwd = 1.5, lty = 5)
-    LLines(spec$wais$corr.full$signal, conf = FALSE, bP = TRUE,
-           removeF = 1, removeL = removeLast,
+    LLines(spec$wais$corr.full$signal, conf = FALSE, bPeriod = TRUE,
+           removeFirst = 1, removeLast = removeLast,
            col = "dodgerblue4", lwd = 3, lty = 1)
 
     #---------------------------------------------------------------------------
     # Plot DML noise spectra
     
-    LPlot(spec$dml1$raw$noise, bP = TRUE, bNo = TRUE, axes = FALSE,
+    LPlot(spec$dml1$raw$noise, bPeriod = TRUE, bNoPlot = TRUE, axes = FALSE,
           xlim = c(500, 2), ylim = ylim, xlab = "", ylab = "")
-    box()
+    graphics::box()
 
-    mtext("Noise", side = 3, line = 0.5, las = 0, adj = 0.015, padj = 0.3,
-          col = "firebrick4", cex = par()$cex.lab)
-    mtext("b", side = 3, adj = 0.01, padj = 0.5,
-          line = -1, font = 2, cex = par()$cex.lab)
+    graphics::mtext("Noise", side = 3, line = 0.5, las = 0, adj = 0.015,
+                    padj = 0.3, col = "firebrick4",
+                    cex = graphics::par()$cex.lab)
+    graphics::mtext("b", side = 3, adj = 0.01, padj = 0.5,
+                    line = -1, font = 2, cex = graphics::par()$cex.lab)
 
     if (f.cut)
         removeLast <-
             length(spec$dml1$f.cutoff[1] : length(spec$dml1$raw$signal$freq))
     
-    LLines(spec$dml1$raw$noise, conf = FALSE, bP = TRUE,
-           removeF = 1, removeL = removeLast,
+    LLines(spec$dml1$raw$noise, conf = FALSE, bPeriod = TRUE,
+           removeFirst = 1, removeLast = removeLast,
            col = "firebrick4", lwd = 1.5, lty = 3)
-    LLines(spec$dml1$corr.t$noise, conf = FALSE, bP = TRUE,
-           removeF = 1, removeL = removeLast,
+    LLines(spec$dml1$corr.t$noise, conf = FALSE, bPeriod = TRUE,
+           removeFirst = 1, removeLast = removeLast,
            col = "firebrick4", lwd = 1.5, lty = 5)
-    LLines(spec$dml1$corr.full$noise, conf = FALSE, bP = TRUE,
-           removeF = 1, removeL = removeLast,
+    LLines(spec$dml1$corr.full$noise, conf = FALSE, bPeriod = TRUE,
+           removeFirst = 1, removeLast = removeLast,
            col = "firebrick4", lwd = 3, lty = 1)
 
     if (f.cut)
         removeLast <-
             length(spec$dml2$f.cutoff[1] : length(spec$dml2$raw$signal$freq))
     
-    LLines(spec$dml2$raw$noise, conf = FALSE, bP = TRUE,
-           removeF = 1, removeL = removeLast,
+    LLines(spec$dml2$raw$noise, conf = FALSE, bPeriod = TRUE,
+           removeFirst = 1, removeLast = removeLast,
            col = "black", lwd = 1.5, lty = 3)
-    LLines(spec$dml2$corr.t$noise, conf = FALSE, bP = TRUE,
-           removeF = 1, removeL = removeLast,
+    LLines(spec$dml2$corr.t$noise, conf = FALSE, bPeriod = TRUE,
+           removeFirst = 1, removeLast = removeLast,
            col = "black", lwd = 1.5, lty = 5)
-    LLines(spec$dml2$corr.full$noise, conf = FALSE, bP = TRUE,
-           removeF = 1, removeL = removeLast,
+    LLines(spec$dml2$corr.full$noise, conf = FALSE, bPeriod = TRUE,
+           removeFirst = 1, removeLast = removeLast,
            col = "black", lwd = 3, lty = 1)
 
-    legend("bottomleft", c("DML1", "DML2"), lty = 1, lwd = 2,
-           col = c("firebrick4", "black"),  seg.len = 3, bty = "n", cex = 1.25)
-    legend("bottomleft",
-           c("Uncorrected noise", "Corrected for time uncertainty",
-             "Corrected for time uncertainty + diffusion"),
-           lwd = c(1.5, 1.5, 2), lty = c(3, 5, 1), col = "darkgrey",
-           inset = c(0.225, 0), seg.len = 3, bty = "n", cex = 1.25)
+    graphics::legend("bottomleft", c("DML1", "DML2"), lty = 1, lwd = 2,
+                     col = c("firebrick4", "black"),  seg.len = 3,
+                     bty = "n", cex = 1.25)
+    graphics::legend("bottomleft",
+                     c("Uncorrected noise", "Corrected for time uncertainty",
+                       "Corrected for time uncertainty + diffusion"),
+                     lwd = c(1.5, 1.5, 2), lty = c(3, 5, 1), col = "darkgrey",
+                     inset = c(0.225, 0), seg.len = 3, bty = "n", cex = 1.25)
 
     #---------------------------------------------------------------------------
     # Plot WAIS noise spectra
     
-    LPlot(spec$wais$raw$noise, bP = TRUE, bNo = TRUE, axes = FALSE,
+    LPlot(spec$wais$raw$noise, bPeriod = TRUE, bNoPlot = TRUE, axes = FALSE,
           xlim = c(500, 2), ylim = ylim, xlab = "", ylab = "")
-    axis(1)
-    box()
+    graphics::axis(1)
+    graphics::box()
 
-    mtext("Time period (yr)", side = 1, line = 3.5,
-          cex = par()$cex.lab)
-    mtext("d", side = 3, adj = 0.01, padj = 0.5,
-          line = -1, font = 2, cex = par()$cex.lab)
+    graphics::mtext("Time period (yr)", side = 1, line = 3.5,
+                    cex = graphics::par()$cex.lab)
+    graphics::mtext("d", side = 3, adj = 0.01, padj = 0.5,
+                    line = -1, font = 2, cex = graphics::par()$cex.lab)
 
     if (f.cut)
         removeLast <-
             length(spec$wais$f.cutoff[1] : length(spec$wais$raw$signal$freq))
 
-    LLines(spec$wais$raw$noise, conf = FALSE, bP = TRUE,
-           removeF = 1, removeL = removeLast,
+    LLines(spec$wais$raw$noise, conf = FALSE, bPeriod = TRUE,
+           removeFirst = 1, removeLast = removeLast,
            col = "firebrick4", lwd = 1.5, lty = 3)
-    LLines(spec$wais$corr.t$noise, conf = FALSE, bP = TRUE,
-           removeF = 1, removeL = removeLast,
+    LLines(spec$wais$corr.t$noise, conf = FALSE, bPeriod = TRUE,
+           removeFirst = 1, removeLast = removeLast,
            col = "firebrick4", lwd = 1.5, lty = 5)
-    LLines(spec$wais$corr.full$noise, conf = FALSE, bP = TRUE,
-           removeF = 1, removeL = removeLast,
+    LLines(spec$wais$corr.full$noise, conf = FALSE, bPeriod = TRUE,
+           removeFirst = 1, removeLast = removeLast,
            col = "firebrick4", lwd = 3, lty = 1)
 
 }
@@ -535,7 +554,7 @@ muench_laepple_fig02 <- function(spec, f.cut = FALSE) {
 ##'        df.log = c(0.15, 0.15, 0.1))
 ##'
 ##' # Calculate the final signal-to-noise ratio spectra
-##' SNR <- PublicationSNR(DWS)
+##' SNR <- proxysnr:::PublicationSNR(DWS)
 ##'
 ##' # Plot it
 ##' PlotSNR(SNR, f.cut = TRUE,
@@ -543,8 +562,8 @@ muench_laepple_fig02 <- function(spec, f.cut = FALSE) {
 ##'         col = c("black", "dodgerblue4"))
 ##' @export
 ##' @references Münch, T. and Laepple, T.: What climate signal is contained in
-##' decadal to centennial scale isotope variations from Antarctic ice cores?
-##' Clim. Past Discuss., https://doi.org/10.5194/cp-2018-112, in review, 2018.
+##' decadal- to centennial-scale isotope variations from Antarctic ice cores?
+##' Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
 PlotSNR <- function(spec, f.cut = FALSE,
                     names = NULL, col = 1 : length(spec),
                     xlim = c(500, 2), ylim = c(0.05, 5),
@@ -572,8 +591,8 @@ PlotSNR <- function(spec, f.cut = FALSE,
     if (!is.null(xtm)) {set.xtm = xtm; set.xtl = xtl}
     if (!is.null(ytm)) {set.ytm = ytm; set.ytl = ytl}
 
-    op <- par(SetPlotPar(mar = c(5, 6, 0.5, 0.5)))
-    on.exit(par(op))
+    op <- graphics::par(SetPlotPar(mar = c(5, 6, 0.5, 0.5)))
+    on.exit(graphics::par(op))
 
     # Plot SNR
 
@@ -581,12 +600,12 @@ PlotSNR <- function(spec, f.cut = FALSE,
                          conf, removeF, removeL, add = FALSE) {
 
         if (!add) {
-            LPlot(snr, bP = TRUE, bNo = TRUE, axes = FALSE,
+            LPlot(snr, bPeriod = TRUE, bNoPlot = TRUE, axes = FALSE,
                   xlim = xlim, ylim = ylim, xlab = "", ylab = "")
         }
 
-    LLines(snr, conf = conf, bP = TRUE,
-           removeF = removeF, removeL = removeL,
+    LLines(snr, conf = conf, bPeriod = TRUE,
+           removeFirst = removeF, removeLast = removeL,
            col = col, lwd = lwd)
 
     }
@@ -614,12 +633,12 @@ PlotSNR <- function(spec, f.cut = FALSE,
 
     # Axis and legends settings
     
-    axis(1, at = set.xtm, labels = set.xtl)
-    axis(2, at = set.ytm, labels = set.ytl)
-    mtext(set.xlab, side = 1, line = 3.5,
-          cex = par()$cex.lab)
-    mtext(set.ylab, side = 2, line = 4.25,
-          cex = par()$cex.lab, las = 0)
+    graphics::axis(1, at = set.xtm, labels = set.xtl)
+    graphics::axis(2, at = set.ytm, labels = set.ytl)
+    graphics::mtext(set.xlab, side = 1, line = 3.5,
+                    cex = graphics::par()$cex.lab)
+    graphics::mtext(set.ylab, side = 2, line = 4.25,
+                    cex = graphics::par()$cex.lab, las = 0)
 
     if (is.null(names)) {
         names <- names(spec)
@@ -629,8 +648,8 @@ PlotSNR <- function(spec, f.cut = FALSE,
     if (length(names) != length(spec))
         warning("Number of data sets does not match given nuber of names.",
                 call. = FALSE)
-    legend("topleft", legend = names, col = col,
-           seg.len = 3, lty = 1, lwd = 2, bty = "n")
+    graphics::legend("topleft", legend = names, col = col,
+                     seg.len = 3, lty = 1, lwd = 2, bty = "n")
     
 }
     
@@ -681,21 +700,21 @@ PlotSNR <- function(spec, f.cut = FALSE,
 ##'        df.log = c(0.15, 0.15, 0.1))
 ##'
 ##' # Calculate the final signal-to-noise ratio spectra
-##' SNR <- PublicationSNR(DWS)
+##' SNR <- proxysnr:::PublicationSNR(DWS)
 ##'
 ##' # Calculate the correlations
-##' crl <- StackCorrelation(SNR$dml, N = 20,
+##' crl <- StackCorrelation(SNR$dml, N = 1 : 20,
 ##'        freq.cut.lower = 1 / 100,
 ##'        freq.cut.upper = SNR$dml$f.cutoff[2])
 ##'
 ##' # Plot it
 ##' library(RColorBrewer)
 ##' palette <- colorRampPalette(rev(RColorBrewer::brewer.pal(10, "RdYlBu")))
-##' PlotStackCorrelation(freq = crl$signal$freq, correlation = crl$corr,
+##' PlotStackCorrelation(freq = crl$freq, correlation = crl$correlation,
 ##'           col.pal = palette, label = "DML", ylim = c(NA, log(50)))
 ##' @references Münch, T. and Laepple, T.: What climate signal is contained in
-##' decadal to centennial scale isotope variations from Antarctic ice cores?
-##' Clim. Past Discuss., https://doi.org/10.5194/cp-2018-112, in review, 2018.
+##' decadal- to centennial-scale isotope variations from Antarctic ice cores?
+##' Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
 PlotStackCorrelation <- function(freq, correlation, col.pal,
                                  n = nrow(correlation),
                                  label = "",
@@ -743,8 +762,8 @@ PlotStackCorrelation <- function(freq, correlation, col.pal,
 
     # Graphics settings
     
-    op <- par(SetPlotPar(mar = c(5, 5, 2, 0.5)))
-    on.exit(par(op))
+    op <- graphics::par(SetPlotPar(mar = c(5, 5, 2, 0.5)))
+    on.exit(graphics::par(op))
 
     if (length(xlim) == 1) {
         if (is.na(xlim)) {
@@ -768,31 +787,31 @@ PlotStackCorrelation <- function(freq, correlation, col.pal,
     }
     
     # Plot filled contour map
-    filled.contour(x, y, correlation,
-                   color.palette = col.pal,
-                   xlim = xlim, ylim = ylim,
-                   zlim = c(0, 1),
-                   plot.title = title(xlab = set.xlab, ylab = set.ylab),
-                   plot.axes =
-                       {
-                           contour(x, y, correlation,
-                               add = TRUE, labcex = 1, lwd = 1);
-                           axis(1, at = log(set.xtm), label = set.xtl);
-                           axis(1, at = log(set.xtm.min), label = FALSE,
-                                tcl = 0.5 * par("tcl"));
-                           axis(2, at = log(set.ytm), label = set.ytl);
-                           axis(2, at = log(set.ytm.min), label = FALSE,
-                                tcl = 0.5 * par("tcl"));
-                       }
-                   )
+    graphics::filled.contour(x, y, correlation,
+      color.palette = col.pal,
+      xlim = xlim, ylim = ylim,
+      zlim = c(0, 1),
+      plot.title = graphics::title(xlab = set.xlab, ylab = set.ylab),
+      plot.axes =
+        {
+          graphics::contour(x, y, correlation,
+                            add = TRUE, labcex = 1, lwd = 1);
+          graphics::axis(1, at = log(set.xtm), label = set.xtl);
+          graphics::axis(1, at = log(set.xtm.min), label = FALSE,
+                         tcl = 0.5 * graphics::par("tcl"));
+          graphics::axis(2, at = log(set.ytm), label = set.ytl);
+          graphics::axis(2, at = log(set.ytm.min), label = FALSE,
+                         tcl = 0.5 * graphics::par("tcl"));
+        }
+      )
 
     # Plot labels
-    op.usr <- par(usr = c(0, 1, 0, 1), xlog = FALSE, ylog = FALSE)
-    text(0.98, 0.5, labels = "Correlation",
-         srt = -90, xpd = NA, cex = par()$cex.lab)
-    text(0.01, 1.04, adj = c(0, 0.5), labels = label,
-         xpd = NA, cex = par()$cex.lab)
-    par(op.usr)
+    op.usr <- graphics::par(usr = c(0, 1, 0, 1), xlog = FALSE, ylog = FALSE)
+    graphics::text(0.98, 0.5, labels = "Correlation",
+                   srt = -90, xpd = NA, cex = graphics::par()$cex.lab)
+    graphics::text(0.01, 1.04, adj = c(0, 0.5), labels = label,
+                   xpd = NA, cex = graphics::par()$cex.lab)
+    graphics::par(op.usr)
     
 }
 
@@ -807,8 +826,8 @@ PlotStackCorrelation <- function(freq, correlation, col.pal,
 ##' @author Thomas Münch
 ##' @seealso \code{\link{PublicationSNR}}, \code{\link{TrenchNoise}}
 ##' @references Münch, T. and Laepple, T.: What climate signal is contained in
-##' decadal to centennial scale isotope variations from Antarctic ice cores?
-##' Clim. Past Discuss., https://doi.org/10.5194/cp-2018-112, in review, 2018.
+##' decadal- to centennial-scale isotope variations from Antarctic ice cores?
+##' Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
 muench_laepple_fig05 <- function(SNR, TNS, f.cut = FALSE) {
 
     # Graphics settings
@@ -825,16 +844,16 @@ muench_laepple_fig05 <- function(SNR, TNS, f.cut = FALSE) {
         removeLast <-
             length(SNR$dml$f.cutoff[1] : length(SNR$dml$noise$freq))
 
-    op <- par(SetPlotPar(mar = c(5, 6.5, 0.5, 0.5)))
-    on.exit(par(op))
+    op <- graphics::par(SetPlotPar(mar = c(5, 6.5, 0.5, 0.5)))
+    on.exit(graphics::par(op))
 
     # Plot final DML noise spectrum
 
-    LPlot(SNR$dml$noise, bP = TRUE, bNo = TRUE, axes = FALSE,
+    LPlot(SNR$dml$noise, bPeriod = TRUE, bNoPlot = TRUE, axes = FALSE,
           xlim = xlim, ylim = ylim, xlab = "", ylab = "")
 
-    LLines(SNR$dml$noise, conf = FALSE, bP = TRUE,
-           removeF = 1, removeL = removeLast,
+    LLines(SNR$dml$noise, conf = FALSE, bPeriod = TRUE,
+           removeFirst = 1, removeLast = removeLast,
            col = "firebrick4", lwd = 3, lty = 1)
 
     # Plot trench noise spectrum
@@ -842,7 +861,7 @@ muench_laepple_fig05 <- function(SNR, TNS, f.cut = FALSE) {
     i.remove <- c(1, 2, length(TNS$lower$freq))
 
     # shaded spectral range according to upper/lower accumulation rate
-    polygon(
+    graphics::polygon(
         c(
             1 / TNS$lower$freq[-i.remove],
             rev(1 / TNS$upper$freq[-i.remove])),
@@ -850,29 +869,29 @@ muench_laepple_fig05 <- function(SNR, TNS, f.cut = FALSE) {
             TNS$lower$spec[-i.remove],
             rev(TNS$upper$spec[-i.remove])
         ),
-        col = adjustcolor("dodgerblue4", 0.2), border = NA)
+        col = grDevices::adjustcolor("dodgerblue4", 0.2), border = NA)
 
     # trench noise spectrum for mean accumulation rate
-    LLines(TNS$mean, conf = FALSE, bP = TRUE,
-           removeF = 2, removeL = 0,
+    LLines(TNS$mean, conf = FALSE, bPeriod = TRUE,
+           removeFirst = 2, removeLast = 0,
            col = "dodgerblue4", lwd = 3, lty = 1)
 
     # Axis and legends settings
 
-    axis(1, at = xtm, labels = xtm)
-    axis(2, at = ytm, labels = ytm)
+    graphics::axis(1, at = xtm, labels = xtm)
+    graphics::axis(2, at = ytm, labels = ytm)
 
-    mtext(xlab, side = 1, line = 3.5,
-          cex = par()$cex.lab)
-    mtext(ylab, side = 2, line = 4.5, las = 0,
-          cex = par()$cex.lab)
+    graphics::mtext(xlab, side = 1, line = 3.5,
+                    cex = graphics::par()$cex.lab)
+    graphics::mtext(ylab, side = 2, line = 4.5, las = 0,
+                    cex = graphics::par()$cex.lab)
 
-    legend("bottomleft",
-           c("Array scale (DML data set)", "Local scale (trench data set)"),
-           col = c("firebrick4", "dodgerblue4"),
-           seg.len = 3, lty = 1, lwd = 2, bty = "n")
+    graphics::legend("bottomleft", c("Array scale (DML data set)",
+                                     "Local scale (trench data set)"),
+                     col = c("firebrick4", "dodgerblue4"),
+                     seg.len = 3, lty = 1, lwd = 2, bty = "n")
 
-    par(op)
+    graphics::par(op)
 
 }
 
@@ -927,8 +946,8 @@ muench_laepple_fig05 <- function(SNR, TNS, f.cut = FALSE) {
 ##' PlotTF(names = c("DML1", "DML2", "WAIS"), dtf.threshold = 0.5,
 ##'        col = c("black", "firebrick", "dodgerblue"))
 ##' @references Münch, T. and Laepple, T.: What climate signal is contained in
-##' decadal to centennial scale isotope variations from Antarctic ice cores?
-##' Clim. Past Discuss., https://doi.org/10.5194/cp-2018-112, in review, 2018.
+##' decadal- to centennial-scale isotope variations from Antarctic ice cores?
+##' Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
 PlotTF <- function(dtf = NULL, ttf = NULL,
                    names = NULL, col = NULL,
                    dtf.threshold = NULL,
@@ -941,8 +960,8 @@ PlotTF <- function(dtf = NULL, ttf = NULL,
 
     # Gather or load transfer functions
     
-    if (is.null(dtf)) dtf <- diffusion.tf
-    if (is.null(ttf)) ttf <- time.uncertainty.tf
+    if (is.null(dtf)) dtf <- proxysnr::diffusion.tf
+    if (is.null(ttf)) ttf <- proxysnr::time.uncertainty.tf
 
     # Axis settings
 
@@ -968,10 +987,10 @@ PlotTF <- function(dtf = NULL, ttf = NULL,
 
     # Plot parameters
 
-    op <- par(SetPlotPar(mar = c(0, 0, 0, 0),
-                         oma = c(5, 5, 0.5, 0.5),
-                         mfrow = c(2,1)))
-    on.exit(par(op))
+    op <- graphics::par(SetPlotPar(mar = c(0, 0, 0, 0),
+                                   oma = c(5, 5, 0.5, 0.5),
+                                   mfrow = c(2,1)))
+    on.exit(graphics::par(op))
 
     if (is.null(col)) col <- 1 : max(length(dtf), length(ttf))
 
@@ -1005,8 +1024,8 @@ PlotTF <- function(dtf = NULL, ttf = NULL,
     # Wrapper function for the legend
     
     leg <- function(names, col) {
-        legend("bottomleft", legend = names,
-               lwd = 2, lty = 1, col = col, bty = "n")
+        graphics::legend("bottomleft", legend = names,
+                         lwd = 2, lty = 1, col = col, bty = "n")
     }
 
     
@@ -1020,27 +1039,28 @@ PlotTF <- function(dtf = NULL, ttf = NULL,
 
     for (i in 1 : ii) {
         
-        LLines(dtf[[i]], bP = TRUE, lwd = 2, col = col[i])
+        LLines(dtf[[i]], bPeriod = TRUE, lwd = 2, col = col[i])
 
         if (!is.null(dtf.threshold)) {
-            lines(x = rep(1 / f.cutoff[i], 2), y = c(ylim1[1] / 10, dtf.threshold),
-                  lwd = 1, lty = 2, col = col[i])
+            graphics::lines(x = rep(1 / f.cutoff[i], 2),
+                            y = c(ylim1[1] / 10, dtf.threshold),
+                            lwd = 1, lty = 2, col = col[i])
         }
     }
 
     if (!is.null(dtf.threshold)) {
-        lines(x = c(2 * xlim[1], min(1 / f.cutoff[!is.na(f.cutoff)])),
-              y = rep(dtf.threshold, 2),
-              lwd = 1, lty = 2, col = "darkgrey")
+        graphics::lines(x = c(2 * xlim[1], min(1 / f.cutoff[!is.na(f.cutoff)])),
+                        y = rep(dtf.threshold, 2),
+                        lwd = 1, lty = 2, col = "darkgrey")
     }
 
-    mtext("a", side = 3, adj = 0.01, padj = 0.5,
-          line = -1, font = 2, cex = par()$cex.lab)
-    mtext(set.ylab1, side = 2, line = 3.5,
-          las = 0, cex = par()$cex.lab)
+    graphics::mtext("a", side = 3, adj = 0.01, padj = 0.5,
+                    line = -1, font = 2, cex = graphics::par()$cex.lab)
+    graphics::mtext(set.ylab1, side = 2, line = 3.5,
+                    las = 0, cex = graphics::par()$cex.lab)
 
-    axis(2, at = set.ytm1, labels = set.ytl1)
-    box()
+    graphics::axis(2, at = set.ytm1, labels = set.ytl1)
+    graphics::box()
 
     # Place an extra legend if different number of data sets are used
     if (ii != jj) leg(nam1, col)
@@ -1052,19 +1072,19 @@ PlotTF <- function(dtf = NULL, ttf = NULL,
           xlab = "", ylab = "", xlim = xlim, ylim = ylim2)
 
     for (i in 1 : jj) {
-        LLines(ttf[[i]], bP = TRUE, lwd = 2, col = col[i])
+        LLines(ttf[[i]], bPeriod = TRUE, lwd = 2, col = col[i])
     }
 
-    mtext("b", side = 3, adj = 0.01, padj = 0.5,
-          line = -1, font = 2, cex = par()$cex.lab)
-    mtext(set.ylab2, side = 2, line = 3.5,
-              las = 0, cex = par()$cex.lab)
-    mtext(set.xlab, side = 1, line = 3.5,
-          las = 0, cex = par()$cex.lab)
+    graphics::mtext("b", side = 3, adj = 0.01, padj = 0.5,
+                    line = -1, font = 2, cex = graphics::par()$cex.lab)
+    graphics::mtext(set.ylab2, side = 2, line = 3.5,
+                    las = 0, cex = graphics::par()$cex.lab)
+    graphics::mtext(set.xlab, side = 1, line = 3.5,
+                    las = 0, cex = graphics::par()$cex.lab)
 
-    axis(1, at = set.xtm, labels = set.xtl)
-    axis(2, at = set.ytm2, labels = set.ytl2)
-    box()
+    graphics::axis(1, at = set.xtm, labels = set.xtl)
+    graphics::axis(2, at = set.ytm2, labels = set.ytl2)
+    graphics::box()
 
     leg(nam2, col)
 

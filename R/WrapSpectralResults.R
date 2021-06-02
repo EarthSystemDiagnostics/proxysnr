@@ -47,8 +47,8 @@
 ##' \code{diffusion} and \code{time.uncertainty} or not.
 ##' @author Thomas Münch
 ##' @references Münch, T. and Laepple, T.: What climate signal is contained in
-##' decadal to centennial scale isotope variations from Antarctic ice cores?
-##' Clim. Past Discuss., https://doi.org/10.5194/cp-2018-112, in review, 2018.
+##' decadal- to centennial-scale isotope variations from Antarctic ice cores?
+##' Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
 ##' @examples
 ##' # Get main results of Münch and Laepple (2018)
 ##' 
@@ -120,11 +120,12 @@ WrapSpectralResults <- function(..., diffusion = NULL, time.uncertainty = NULL,
         }
         if (t.flag) {
             tmp$corr.t.unc.only <-
-                SeparateSpectra(spec, time = t.crr)
+                SeparateSpectra(spec, time.uncertainty = t.crr)
         }
         if (d.flag & t.flag) {
             tmp$corr.full <-
-                SeparateSpectra(spec, time = t.crr, diffusion = d.crr)
+                SeparateSpectra(spec, time.uncertainty = t.crr,
+                                diffusion = d.crr)
         }
 
         res[[i]] <- tmp

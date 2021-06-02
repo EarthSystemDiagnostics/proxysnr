@@ -114,12 +114,12 @@ averaging period (i.e. resolution) of the records:
 
 ```{r}
 # for the DMl data
-crl1 <- StackCorrelation(SNR$dml, N = 20,
+crl1 <- StackCorrelation(SNR$dml, N = 1 : 20,
                          freq.cut.lower = 1 / 100,
                          freq.cut.upper = SNR$dml$f.cutoff[2])
 
 # for the WAIS data
-crl2 <- StackCorrelation(SNR$wais, N = 20,
+crl2 <- StackCorrelation(SNR$wais, N = 1 : 20,
                          freq.cut.lower = 1 / 100,
                          freq.cut.upper = SNR$wais$f.cutoff[2])
 ```
@@ -133,14 +133,14 @@ palette <- colorRampPalette(rev(RColorBrewer::brewer.pal(10, "RdYlBu")))
 Plot the figure for DML:
 
 ```{r, fig.width = 8, fig.height = 6.3}
-PlotStackCorrelation(freq = crl1$signal$freq, correlation = crl1$corr,
+PlotStackCorrelation(freq = crl1$freq, correlation = crl1$correlation,
                      col.pal = palette, label = expression(bold("a.")~"DML"),
                      ylim = c(NA, log(50)))
 ```
 
 Plot the figure for WAIS:
 ```{r, fig.width = 8, fig.height = 6.3}
-PlotStackCorrelation(freq = crl2$signal$freq, correlation = crl2$corr,
+PlotStackCorrelation(freq = crl2$freq, correlation = crl2$correlation,
                      col.pal = palette, label = expression(bold("b.")~"WAIS"),
                      ylim = c(NA, log(50)))
 ```
@@ -161,8 +161,8 @@ proxysnr:::muench_laepple_fig05(SNR, TNS, f.cut = TRUE)
 
 ## Literature cited
 
-Münch, T. and Laepple, T.: What climate signal is contained in decadal to
-  centennial scale isotope variations from Antarctic ice cores?, Climate of the
-  Past, accepted for publication,
-  doi: [10.5194/cp-2018-112](https://doi.org/10.5194/cp-2018-112), 2018.
+Münch, T. and Laepple, T.: What climate signal is contained in decadal- to
+centennial-scale isotope variations from Antarctic ice cores?, Clim. Past, 14,
+2053-2070, doi:
+[10.5194/cp-14-2053-2018](https://doi.org/10.5194/cp-14-2053-2018), 2018.
 

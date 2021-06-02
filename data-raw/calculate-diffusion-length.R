@@ -4,7 +4,7 @@
 ## Author: Thomas Münch (thomas.muench@awi.de), Alfred-Wegener-Institut, 2018
 ##
 
-library(devtools)
+library(usethis)
 
 # Package needed for climatological site and core parameters 
 library(proxysnr)
@@ -153,6 +153,6 @@ diffusion.length$wais <- sigma
 
 #-------------------------------------------------------------------------------
 
-devtools::use_data(diffusion.length, overwrite = TRUE)
+usethis::use_data(diffusion.length, overwrite = TRUE)
 
 

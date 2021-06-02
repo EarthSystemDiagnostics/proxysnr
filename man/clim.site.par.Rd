@@ -4,7 +4,8 @@
 \name{clim.site.par}
 \alias{clim.site.par}
 \title{Climatological site parameters}
-\format{A data frame with 20 rows and 5 variables:
+\format{
+A data frame with 20 rows and 5 variables:
 \describe{
   \item{core:}{the name of the firn-core site}
   \item{temperature:}{10-m firn temperature (or annual mean air
@@ -12,7 +13,8 @@
   \item{acc.rate:}{accumulation rate, in kg/m^2/yr}
   \item{pressure:}{surface air pressure, in mbar}
   \item{height:}{surface elevation, in m}
-}}
+}
+}
 \source{
 All values for firn cores in the rows 1-15 from Oerter et al. (2000) (Table
 1, 4), except: temperature for FB9807 adapted from B32 (1 km), temperature
@@ -47,8 +49,8 @@ annual accumulation-rate records from ITASE firn/ice cores, Ann. Glaciol.,
 39(1), 585-594, \url{https://doi.org/10.3189/172756404781814447}, 2004.
 
 Münch, T. and Laepple, T.: What climate signal is contained in
-decadal to centennial scale isotope variations from Antarctic ice cores?
-Clim. Past Discuss., \url{https://doi.org/10.5194/cp-2018-112}, in review,
+decadal- to centennial-scale isotope variations from Antarctic ice cores?
+Clim. Past, 14, 2053–2070, \url{https://doi.org/10.5194/cp-14-2053-2018},
 2018.
 
 Oerter, H., et al.: Accumulation rates in Dronning Maud Land, Antarctica, as

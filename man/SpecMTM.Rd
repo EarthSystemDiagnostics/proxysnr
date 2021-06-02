@@ -4,11 +4,25 @@
 \alias{SpecMTM}
 \title{Multitaper spectral estimate}
 \usage{
-SpecMTM(timeSeries, k = 3, nw = 2, nFFT = "default",
-  centre = c("Slepian"), dpssIN = NULL, returnZeroFreq = FALSE,
-  Ftest = FALSE, jackknife = FALSE, jkCIProb = 0.95,
-  maxAdaptiveIterations = 100, plot = FALSE, na.action = na.fail,
-  returnInternals = FALSE, detrend = TRUE, bPad = FALSE, ...)
+SpecMTM(
+  timeSeries,
+  k = 3,
+  nw = 2,
+  nFFT = "default",
+  centre = c("Slepian"),
+  dpssIN = NULL,
+  returnZeroFreq = FALSE,
+  Ftest = FALSE,
+  jackknife = FALSE,
+  jkCIProb = 0.95,
+  maxAdaptiveIterations = 100,
+  plot = FALSE,
+  na.action = stats::na.fail,
+  returnInternals = FALSE,
+  detrend = TRUE,
+  bPad = FALSE,
+  ...
+)
 }
 \arguments{
 \item{timeSeries}{A time series of equally spaced data, this can be
@@ -52,14 +66,10 @@ require less than 100 iterations.}
 \item{na.action}{Action to take if NAs exist in the data, the default
     is to fail.}
 
-\item{returnInternals}{Return the weighted eigencoefficients, complex mean values, 
-    and so on. These are necessary for extensions to the multitaper, including 
-    magnitude-squared coherence (function mtm.coh in this package). Note:
+\item{returnInternals}{Return the weighted eigencoefficients, complex mean values, and so on. These are necessary for extensions to the multitaper, including magnitude-squared coherence (function mtm.coh in this package). Note:
   The internal ($mtm) variables eigenCoefs and eigenCoefWt correspond to
 the multitaper eigencoefficients. The eigencoefficients correspond to
-equation (3.4) and weights correspond to |d_k(f)|^2 from equation
- (5.4) in Thomson's 1982 paper. The values sqrt(eigenCoefWt) *
- eigenCoefs are most commonly used in additional calculations. The
+equation (3.4) and weights, eigenCoefWt, correspond to sqrt(|d_k(f)|^2) from equation (5.4) in Thomson's 1982 paper. This is because the square root values contained in eigenCoefWt are commonly used in additional calculations (example: eigenCoefWt * eigenCoefs). The
  values returned in mtm$cmv correspond to the the estimate of the
  coefficients hat(mu)(f) in equation (13.5) in Thomson (1982), or to the
  estimate of hat(C)_1 at frequency 1 in equation (499) form Percival and Walden (1993)}
@@ -86,9 +96,9 @@ output.
 }
 \examples{
 x <- ts(arima.sim(list(ar = 0.9), 1000))
-spec <- SpecMTM(x)
-LPlot(spec, col = 'grey', ylim = c(0.01, 100))
-LLines(LogSmooth(spec), lwd = 2)
+spec <- proxysnr:::SpecMTM(x)
+proxysnr:::LPlot(spec, col = 'grey', ylim = c(0.01, 100))
+proxysnr:::LLines(proxysnr:::LogSmooth(spec), lwd = 2)
 }
 \references{
 Thomson, D.J (1982) Spectrum estimation and harmonic analysis. _Proceedings

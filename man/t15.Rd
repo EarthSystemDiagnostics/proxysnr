@@ -4,12 +4,14 @@
 \name{t15}
 \alias{t15}
 \title{Trench oxygen isotope data}
-\format{A data frame with 107 rows and 22 variables where each variable is the
+\format{
+A data frame with 107 rows and 22 variables where each variable is the
 depth profile of oxygen isotope data from one trench profile in per mil.
-Vertical (depth) resolution is 3 cm.}
+Vertical (depth) resolution is 3 cm.
+}
 \source{
 Data citation:\cr
-Münch, T., et al.: Stable water isotopes measured along two snow trenches
+Münch, T., et al.: Stable water isotopes measured along two snow trenches
 sampled at Kohnen Station, Dronning Maud Land, Antarctica in the 2014/15
 field season, \url{https://doi.org/10.1594/PANGAEA.876639}, 2017.
 
@@ -19,8 +21,8 @@ East Antarctic firn from analysing temporal changes of isotope profiles. The
 Cryosphere, 11(5), 2175-2188, \url{https://doi.org/10.5194/tc-11-2175-2017},
 2017.\cr
 Münch, T. and Laepple, T.: What climate signal is contained in
-decadal to centennial scale isotope variations from Antarctic ice cores?
-Clim. Past Discuss., \url{https://doi.org/10.5194/cp-2018-112}, in review,
+decadal- to centennial-scale isotope variations from Antarctic ice cores?
+Clim. Past, 14, 2053–2070, \url{https://doi.org/10.5194/cp-14-2053-2018},
 2018.
 }
 \usage{

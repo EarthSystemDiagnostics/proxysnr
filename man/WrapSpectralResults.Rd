@@ -4,8 +4,14 @@
 \alias{WrapSpectralResults}
 \title{Wrap spectral results for several data sets}
 \usage{
-WrapSpectralResults(..., diffusion = NULL, time.uncertainty = NULL,
-  df.log = 0.05, crit.diffusion = 2, inverse.tf = FALSE)
+WrapSpectralResults(
+  ...,
+  diffusion = NULL,
+  time.uncertainty = NULL,
+  df.log = 0.05,
+  crit.diffusion = 2,
+  inverse.tf = FALSE
+)
 }
 \arguments{
 \item{...}{a comma separated list of named proxy data sets to analyse.}
@@ -74,8 +80,8 @@ results <- WrapSpectralResults(
 }
 \references{
 Münch, T. and Laepple, T.: What climate signal is contained in
-decadal to centennial scale isotope variations from Antarctic ice cores?
-Clim. Past Discuss., https://doi.org/10.5194/cp-2018-112, in review, 2018.
+decadal- to centennial-scale isotope variations from Antarctic ice cores?
+Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
 }
 \author{
 Thomas Münch

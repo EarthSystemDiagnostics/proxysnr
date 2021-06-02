@@ -38,19 +38,19 @@ ArraySpectra <- function(cores, res = 1, neff = length(cores),
                          df.log = NULL, ...) {
 
     # proxy data vectors must be of the same length
-    if (sd(sapply(cores, function(lst) {length(lst)})) > 0) {
+    if (stats::sd(sapply(cores, function(lst) {length(lst)})) > 0) {
         stop("All data vectors in supplied input list must be of the same length.")
     }
 
     
     # estimate individual spectra
     single <- lapply(cores, function(lst) {
-        SpecMTM(ts(lst, deltat = res), ...)
+        SpecMTM(stats::ts(lst, deltat = res), ...)
     })
 
     # estimate spectrum of stacked record
     ts.stack <- rowMeans(simplify2array(cores))
-    stack <- SpecMTM(ts(ts.stack, deltat = res), ...)
+    stack <- SpecMTM(stats::ts(ts.stack, deltat = res), ...)
 
     # calculate mean spectrum across individual record's spectra
     mean <- MeanSpectrum(single)

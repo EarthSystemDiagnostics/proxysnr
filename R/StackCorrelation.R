@@ -13,8 +13,9 @@
 ##' @param input a list of the spectral objects lists \code{signal} and
 ##' \code{noise}, usually to be obtained from a call to
 ##' \code{\link{SeparateSpectra}}
-##' @param N maximum number of records in the assumed stack; correlations are
-##' then calculated for stacks with record numbers from 1 to \code{N}
+##' @param N integer vector with the number of records in the assumed stack;
+##' correlations are then calculated for stacks with record numbers according to
+##' each element of \code{N}
 ##' @param f1 index of the the minimum frequency from which to integrate the
 ##' signal and noise spectra for calculating the correlation; per default the
 ##' lowest frequency of the spectral estimates is omitted
@@ -31,62 +32,32 @@
 ##' the integration different from the maximum frequency of the spectral
 ##' estimates. Setting \code{freq.cut.upper} overrides the frequency
 ##' corresponding to the index set in \code{f2}.
-##' @return a list of three components:
+##' @return a list of two components:
 ##' \describe{
-##' \item{signal:}{a spectral object list of the integrated signal}
-##' \item{noise:}{a spectral object list of the integrated noise}
+##' \item{freq:}{numeric vector of frequencies corresponding to the upper ends
+##' of the cumulative integrations}
 ##' \item{correlation:}{a \code{n * m} matrix where \code{n} corresponds to
-##' \code{N} and \code{m} is given by \code{length(f1 : f2)} providing the
-##' correlation values as a function of the number of averaged records and
+##' \code{length(N)} and \code{m} is given by \code{length(freq)} providing
+##' the correlation values as a function of the number of averaged records and
 ##' the record resolution (= increasing upper frequency of the integration)}
 ##' }
 ##' @author Thomas Münch
 ##' @references Münch, T. and Laepple, T.: What climate signal is contained in
-##' decadal to centennial scale isotope variations from Antarctic ice cores?
-##' Clim. Past Discuss., https://doi.org/10.5194/cp-2018-112, in review, 2018.
+##' decadal- to centennial-scale isotope variations from Antarctic ice cores?
+##' Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
 ##' @export
-StackCorrelation <- function(input, N, f1 = 2, f2 = "max",
+StackCorrelation <- function(input, N = 1, f1 = 2, f2 = "max",
                              freq.cut.lower = NULL, freq.cut.upper = NULL) {
 
-    if (!is.null(freq.cut.lower)) {
-        f1 <- which.min(abs(input$signal$freq - freq.cut.lower))
-    }
+    snr <- IntegratedSNR(input, N = 1, f1 = f1, f2 = f2,
+                         freq.cut.lower = freq.cut.lower,
+                         freq.cut.upper = freq.cut.upper)
 
-    if (!is.null(freq.cut.upper)) {
-        f2 <- which.min(abs(input$signal$freq - freq.cut.upper))
-    } else {
-        if (f2 == "max") {
-            f2 <- length(input$signal$freq)
-        }
-    }
+    correlation <- t(sapply(N, function(x) {
+      1 / sqrt(1 + 1 / (x * rev(snr$spec)))
+    }))
 
-    df <- diff(input$signal$freq)
-    df <- c(df[1], df)
-
-    input$signal$freq <- input$signal$freq[f1 : f2]
-    input$signal$spec <- input$signal$spec[f1 : f2]
-    input$noise$freq  <- input$noise$freq[f1 : f2]
-    input$noise$spec  <- input$noise$spec[f1 : f2]
-
-    df <- df[f1 : f2]
-
-    signal.int <- noise.int <- list()
-    signal.int$freq <- noise.int$freq <- input$signal$freq
-    signal.int$spec <- 2 * cumsum(input$signal$spec * df)
-    noise.int$spec  <- 2 * cumsum(input$noise$spec * df)
-
-    snr.int <- signal.int$spec / noise.int$spec
-
-    correlation <- matrix(nrow = N, ncol = length(snr.int))
-    for (i in 1 : N) {
-        
-        correlation[i, ] <- 1 / sqrt(1 + 1 / (i * rev(snr.int)))
-    }
-
-    res <- list()
-    res$signal <- signal.int
-    res$noise  <- noise.int
-    res$correlation <- correlation
+    res <- list(freq = snr$freq, correlation = correlation)
     
     return(res)
 

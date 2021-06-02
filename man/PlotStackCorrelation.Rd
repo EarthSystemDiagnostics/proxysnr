@@ -4,10 +4,24 @@
 \alias{PlotStackCorrelation}
 \title{Plot proxy stack correlation (Figure 4 in Münch and Laepple, 2018)}
 \usage{
-PlotStackCorrelation(freq, correlation, col.pal, n = nrow(correlation),
-  label = "", plt.ann = "default", xlab = NULL, ylab = NULL,
-  xtm = NULL, ytm = NULL, xtl = NULL, ytl = NULL, xtm.min = NULL,
-  ytm.min = NULL, xlim = NA, ylim = NA)
+PlotStackCorrelation(
+  freq,
+  correlation,
+  col.pal,
+  n = nrow(correlation),
+  label = "",
+  plt.ann = "default",
+  xlab = NULL,
+  ylab = NULL,
+  xtm = NULL,
+  ytm = NULL,
+  xtl = NULL,
+  ytl = NULL,
+  xtm.min = NULL,
+  ytm.min = NULL,
+  xlim = NA,
+  ylim = NA
+)
 }
 \arguments{
 \item{freq}{frequency axis of the underlying proxy data set to obtain an
@@ -83,23 +97,23 @@ DWS <- WrapSpectralResults(
        df.log = c(0.15, 0.15, 0.1))
 
 # Calculate the final signal-to-noise ratio spectra
-SNR <- PublicationSNR(DWS)
+SNR <- proxysnr:::PublicationSNR(DWS)
 
 # Calculate the correlations
-crl <- StackCorrelation(SNR$dml, N = 20,
+crl <- StackCorrelation(SNR$dml, N = 1 : 20,
        freq.cut.lower = 1 / 100,
        freq.cut.upper = SNR$dml$f.cutoff[2])
 
 # Plot it
 library(RColorBrewer)
 palette <- colorRampPalette(rev(RColorBrewer::brewer.pal(10, "RdYlBu")))
-PlotStackCorrelation(freq = crl$signal$freq, correlation = crl$corr,
+PlotStackCorrelation(freq = crl$freq, correlation = crl$correlation,
           col.pal = palette, label = "DML", ylim = c(NA, log(50)))
 }
 \references{
 Münch, T. and Laepple, T.: What climate signal is contained in
-decadal to centennial scale isotope variations from Antarctic ice cores?
-Clim. Past Discuss., https://doi.org/10.5194/cp-2018-112, in review, 2018.
+decadal- to centennial-scale isotope variations from Antarctic ice cores?
+Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
 }
 \seealso{
 \code{\link{StackCorrelation}}

@@ -4,9 +4,22 @@
 \alias{LPlot}
 \title{Log-log spectral plot}
 \usage{
-LPlot(x, conf = TRUE, bPeriod = FALSE, bNoPlot = FALSE, axes = TRUE,
-  col = "black", alpha = 0.2, removeFirst = 0, removeLast = 0,
-  xlab = "f", ylab = "PSD", xlim = NULL, ylim = NULL, ...)
+LPlot(
+  x,
+  conf = TRUE,
+  bPeriod = FALSE,
+  bNoPlot = FALSE,
+  axes = TRUE,
+  col = "black",
+  alpha = 0.2,
+  removeFirst = 0,
+  removeLast = 0,
+  xlab = "f",
+  ylab = "PSD",
+  xlim = NULL,
+  ylim = NULL,
+  ...
+)
 }
 \arguments{
 \item{x}{an object of class \code{"spec"}.}

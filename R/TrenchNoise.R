@@ -23,10 +23,9 @@
 ##' the accumulation rate.}
 ##' }
 ##' @author Thomas Münch
-##' @references
-##' Münch, T. and Laepple, T.: What climate signal is contained in
-##' decadal to centennial scale isotope variations from Antarctic ice cores?
-##' Clim. Past Discuss., https://doi.org/10.5194/cp-2018-112, in review, 2018.
+##' @references Münch, T. and Laepple, T.: What climate signal is contained in
+##' decadal- to centennial-scale isotope variations from Antarctic ice cores?
+##' Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
 TrenchNoise <- function(acc.rate = 25, sigma.acc.rate = 5,
                         res = 3, neff = 19, df.log = 0.1) {
 
@@ -39,7 +38,7 @@ TrenchNoise <- function(acc.rate = 25, sigma.acc.rate = 5,
     # calculation for lower bound of accumulation rate
     noise$lower <- SeparateSpectra(
         ArraySpectra(
-            t15,
+            proxysnr::t15,
             res = res / (acc.rate - sigma.acc.rate),
             neff = neff,
             df.log = df.log
@@ -49,7 +48,7 @@ TrenchNoise <- function(acc.rate = 25, sigma.acc.rate = 5,
     # calculation for mean of accumulation rate
     noise$mean <- SeparateSpectra(
         ArraySpectra(
-            t15,
+            proxysnr::t15,
             res = res / (acc.rate),
             neff = neff,
             df.log = df.log
@@ -59,7 +58,7 @@ TrenchNoise <- function(acc.rate = 25, sigma.acc.rate = 5,
     # calculation for upper bound of accumulation rate
     noise$upper <- SeparateSpectra(
         ArraySpectra(
-            t15,
+            proxysnr::t15,
             res = res / (acc.rate + sigma.acc.rate),
             neff = neff,
             df.log = df.log
