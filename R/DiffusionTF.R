@@ -55,7 +55,7 @@ DiffusionTF <- function(nt, nc, ns, sigma, res = 1, coherent = FALSE, ...) {
     # convert sigma vector into array if necessary and check for dimensions
     if (is.null(dim(sigma))) {
         
-        if (length(sigma != nt)) {
+        if (length(sigma) != nt) {
             stop("Invalid length of supplied vector of diffusion lengths.")
         }
         

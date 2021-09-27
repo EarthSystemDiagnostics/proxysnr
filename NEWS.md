@@ -1,3 +1,7 @@
+# proxysnr 0.2.1
+
+* `DiffusionTF()`: Bug fix in the error check on correct input vector length.
+
 # proxysnr 0.2.0
 
 ## New function and user-relevant changes
