@@ -21,12 +21,11 @@ Dr. Thomas Laepple and Dr. Andrew Dolman. Please contact Dr. Thomas Münch
 <<thomas.muench@awi.de>> at the Alfred Wegener Institute, Helmholtz Centre for
 Polar and Marine Research, Germany, for further information.
 
-This work was supported by Helmholtz funding through the Polar Regions and
-Coasts in the Changing Earth System (PACES) programme of the Alfred Wegener
-Institute, by the Initiative and Networking Fund of the Helmholtz Association
-Grant VG-NH900 and by the European Research Council (ERC) under the European
+This work was supported by the European Research Council (ERC) under the European
 Union’s Horizon 2020 research and innovation programme (grant agreement
-no. 716092). It further contributes to the German BMBF project PalMod.
+no. 716092) and Helmholtz funding through the Polar Regions and
+Coasts in the Changing Earth System (PACES) programme of the Alfred Wegener
+Institute. It further contributes to the German BMBF project PalMod.
 
 ## Installation
 
