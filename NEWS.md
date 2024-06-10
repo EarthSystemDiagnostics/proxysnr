@@ -1,3 +1,8 @@
+# proxysnr 0.2.2
+
+* `DiffusionTF()`: Added new function parameter `window` for analysing only a
+  subset of the total simulated record length. Function documentation updated.
+
 # proxysnr 0.2.1
 
 * `DiffusionTF()`: Bug fix in the error check on correct input vector length.

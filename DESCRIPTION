@@ -1,6 +1,6 @@
 Package: proxysnr
 Title: Separate Signal and Noise in Climate Proxy Records
-Version: 0.2.1
+Version: 0.2.2
 Authors@R: c(
     person("Thomas", "Münch", email = "thomas.muench@awi.de",
     role = c("aut", "cre")),
@@ -14,7 +14,7 @@ Depends: R (>= 3.3.1)
 License: file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.3
 VignetteBuilder: knitr
 Imports: multitaper
 Suggests: Hmisc,

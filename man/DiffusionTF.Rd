@@ -4,7 +4,7 @@
 \alias{DiffusionTF}
 \title{Diffusion transfer function}
 \usage{
-DiffusionTF(nt, nc, ns, sigma, res = 1, coherent = FALSE, ...)
+DiffusionTF(nt, nc, ns, sigma, res = 1, window = NULL, coherent = FALSE, ...)
 }
 \arguments{
 \item{nt}{the length of the modelled isotope records (i.e. the number of
@@ -26,6 +26,11 @@ units of \code{res}.}
 
 \item{res}{the sampling (e.g., temporal) resolution of the isotope data;
 determines the frequency axis of the transfer function.}
+
+\item{window}{length-2 vector giving a start and an end time (within `1 :
+nt`) offering the possibility to only use a subset of the total length of
+the simulated records for the transfer function analysis, while the default
+of `NULL` means to use the records' entire lengths.}
 
 \item{coherent}{if \code{TRUE}, \code{nc} identical white noise time series
 are assumed to estimate the transfer function; else (the default) \code{nc}
@@ -55,8 +60,9 @@ The approach is described in detail in Münch and Laepple (2018). In brief,
 \code{nc} Gaussian white noise time series are created and diffused and the
 average of these time series is calculated. The process is repeated
 \code{ns} times. For each of the \code{ns} realisations, spectra of the
-average diffused and undiffused records are calculated yielding the spectral
-transfer function.
+average diffused and undiffused records are calculated; subsequently, the
+\code{ns} spectra are averaged, and the ratio of the average diffused to
+the average undiffused spectrum yields the spectral transfer function.
 
 Diffusion is modelled as the convolution of the undiffused record with a
 Gaussian with standard deviation given by the diffusion length

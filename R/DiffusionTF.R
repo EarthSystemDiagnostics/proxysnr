@@ -8,14 +8,16 @@
 ##' \code{nc} Gaussian white noise time series are created and diffused and the
 ##' average of these time series is calculated. The process is repeated
 ##' \code{ns} times. For each of the \code{ns} realisations, spectra of the
-##' average diffused and undiffused records are calculated yielding the spectral
-##' transfer function.
+##' average diffused and undiffused records are calculated; subsequently, the
+##' \code{ns} spectra are averaged, and the ratio of the average diffused to
+##' the average undiffused spectrum yields the spectral transfer function.
 ##'
 ##' Diffusion is modelled as the convolution of the undiffused record with a
 ##' Gaussian with standard deviation given by the diffusion length
 ##' \code{sigma}. The spectral estimates are calculated using Thomson’s
 ##' multitaper method with three windows with linear detrending before
 ##' analysis.
+##'
 ##' @param nt the length of the modelled isotope records (i.e. the number of
 ##' data points in each record)
 ##' @param nc the number of cores in the modelled core array
@@ -31,6 +33,10 @@
 ##' units of \code{res}.
 ##' @param res the sampling (e.g., temporal) resolution of the isotope data;
 ##' determines the frequency axis of the transfer function.
+##' @param window length-2 vector giving a start and an end time (within `1 :
+##' nt`) offering the possibility to only use a subset of the total length of
+##' the simulated records for the transfer function analysis, while the default
+##' of `NULL` means to use the records' entire lengths.
 ##' @param coherent if \code{TRUE}, \code{nc} identical white noise time series
 ##' are assumed to estimate the transfer function; else (the default) \code{nc}
 ##' independent noise series.
@@ -50,7 +56,8 @@
 ##' decadal- to centennial-scale isotope variations from Antarctic ice cores?
 ##' Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
 ##' @export
-DiffusionTF <- function(nt, nc, ns, sigma, res = 1, coherent = FALSE, ...) {
+DiffusionTF <- function(nt, nc, ns, sigma, res = 1, window = NULL,
+                        coherent = FALSE, ...) {
 
     # convert sigma vector into array if necessary and check for dimensions
     if (is.null(dim(sigma))) {
@@ -69,6 +76,22 @@ DiffusionTF <- function(nt, nc, ns, sigma, res = 1, coherent = FALSE, ...) {
 
     }
 
+    if ((nw <- length(window)) > 0) {
+
+      if (nw != 2) stop("`window` must have length two.", call. = FALSE)
+      if (window[2] <= window[1])
+        stop("`window[2]` must be > `window[1]`.", call. = FALSE)
+      if (window[1] < 1) stop("`window[1] must be >= 1.", call. = FALSE)
+      if (window[2] > nt)
+        stop("`window[2] is > total number of time points.", call. = FALSE)
+
+      k <- window[1] : window[2]
+
+    } else {
+
+      k <- seq_len(nt)
+
+    }
 
     # create 'nc' white noise time series, diffuse them, and calculate their
     # average; repeat 'ns' times
@@ -100,10 +123,10 @@ DiffusionTF <- function(nt, nc, ns, sigma, res = 1, coherent = FALSE, ...) {
     # calculate spectra of the 'ns' average diffused and undiffused noise series
 
     signal.spec <- lapply(seq_len(ncol(stack.signal)), function(i) {
-        SpecMTM(stats::ts(stack.signal[, i], deltat = res), ...)})
+        SpecMTM(stats::ts(stack.signal[k, i], deltat = res), ...)})
 
     diff.spec <- lapply(seq_len(ncol(stack.diff)), function(i) {
-        SpecMTM(stats::ts(stack.diff[, i], deltat = res), ...)})
+        SpecMTM(stats::ts(stack.diff[k, i], deltat = res), ...)})
 
 
     # calculate the average over all 'ns' simulations
