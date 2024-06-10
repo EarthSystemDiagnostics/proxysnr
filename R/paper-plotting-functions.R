@@ -373,8 +373,8 @@ muench_laepple_fig02 <- function(spec, f.cut = FALSE) {
                     line = -1, font = 2, cex = graphics::par()$cex.lab)
 
     if (f.cut)
-        removeLast <-
-            length(spec$dml1$f.cutoff[1] : length(spec$dml1$raw$signal$freq))
+        removeLast <- length(
+            spec$dml1$corr.full$f.cutoff[1] : length(spec$dml1$raw$signal$freq))
     
     LLines(spec$dml1$raw$signal, conf = FALSE, bPeriod = TRUE,
            removeFirst = 1, removeLast = removeLast,
@@ -387,8 +387,8 @@ muench_laepple_fig02 <- function(spec, f.cut = FALSE) {
            col = "dodgerblue4", lwd = 3, lty = 1)
 
     if (f.cut)
-        removeLast <-
-            length(spec$dml2$f.cutoff[1] : length(spec$dml2$raw$signal$freq))
+        removeLast <- length(
+            spec$dml2$corr.full$f.cutoff[1] : length(spec$dml2$raw$signal$freq))
     
     LLines(spec$dml2$raw$signal, conf = FALSE, bPeriod = TRUE,
            removeFirst = 1, removeLast = removeLast,
@@ -428,8 +428,8 @@ muench_laepple_fig02 <- function(spec, f.cut = FALSE) {
                     line = -1, font = 2, cex = graphics::par()$cex.lab)
     
     if (f.cut)
-        removeLast <-
-            length(spec$wais$f.cutoff[1] : length(spec$wais$raw$signal$freq))
+        removeLast <- length(
+            spec$wais$corr.full$f.cutoff[1] : length(spec$wais$raw$signal$freq))
 
     LLines(spec$wais$raw$signal, conf = FALSE, bPeriod = TRUE,
            removeFirst = 1, removeLast = removeLast,
@@ -455,8 +455,8 @@ muench_laepple_fig02 <- function(spec, f.cut = FALSE) {
                     line = -1, font = 2, cex = graphics::par()$cex.lab)
 
     if (f.cut)
-        removeLast <-
-            length(spec$dml1$f.cutoff[1] : length(spec$dml1$raw$signal$freq))
+        removeLast <- length(
+            spec$dml1$corr.full$f.cutoff[1] : length(spec$dml1$raw$signal$freq))
     
     LLines(spec$dml1$raw$noise, conf = FALSE, bPeriod = TRUE,
            removeFirst = 1, removeLast = removeLast,
@@ -469,8 +469,8 @@ muench_laepple_fig02 <- function(spec, f.cut = FALSE) {
            col = "firebrick4", lwd = 3, lty = 1)
 
     if (f.cut)
-        removeLast <-
-            length(spec$dml2$f.cutoff[1] : length(spec$dml2$raw$signal$freq))
+        removeLast <- length(
+            spec$dml2$corr.full$f.cutoff[1] : length(spec$dml2$raw$signal$freq))
     
     LLines(spec$dml2$raw$noise, conf = FALSE, bPeriod = TRUE,
            removeFirst = 1, removeLast = removeLast,
@@ -505,8 +505,8 @@ muench_laepple_fig02 <- function(spec, f.cut = FALSE) {
                     line = -1, font = 2, cex = graphics::par()$cex.lab)
 
     if (f.cut)
-        removeLast <-
-            length(spec$wais$f.cutoff[1] : length(spec$wais$raw$signal$freq))
+        removeLast <- length(
+            spec$wais$corr.full$f.cutoff[1] : length(spec$wais$raw$signal$freq))
 
     LLines(spec$wais$raw$noise, conf = FALSE, bPeriod = TRUE,
            removeFirst = 1, removeLast = removeLast,
@@ -554,7 +554,8 @@ muench_laepple_fig02 <- function(spec, f.cut = FALSE) {
 ##'        df.log = c(0.15, 0.15, 0.1))
 ##'
 ##' # Calculate the final signal-to-noise ratio spectra
-##' SNR <- proxysnr:::PublicationSNR(DWS)
+##' SNR <- proxysnr:::PublicationSNR(DWS$dml1$corr.full, DWS$dml2$corr.full,
+##'                                  DWS$wais$corr.full)
 ##'
 ##' # Plot it
 ##' PlotSNR(SNR, f.cut = TRUE,
@@ -700,7 +701,8 @@ PlotSNR <- function(spec, f.cut = FALSE,
 ##'        df.log = c(0.15, 0.15, 0.1))
 ##'
 ##' # Calculate the final signal-to-noise ratio spectra
-##' SNR <- proxysnr:::PublicationSNR(DWS)
+##' SNR <- proxysnr:::PublicationSNR(DWS$dml1$corr.full, DWS$dml2$corr.full,
+##'                                  DWS$wais$corr.full)
 ##'
 ##' # Calculate the correlations
 ##' crl <- StackCorrelation(SNR$dml, N = 1 : 20,

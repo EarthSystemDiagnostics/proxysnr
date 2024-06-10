@@ -45,23 +45,21 @@ Laepple (2018) for the definitions.}
 A list of \code{N} lists, where \code{N} is the number of provided
 data sets and where each of these lists contains up to five elements:
 \describe{
-\item{\code{f.cutoff}:}{a two-element vector with the index and value of the
-cutoff frequency.}
-\item{\code{raw}:}{a list with three objects of class \code{"spec"}: the raw
-signal, noise and corresponding SNR spectra.}
-\item{\code{corr.diff.only}:}{a list with three objects of class
-\code{"spec"}: the signal, noise and corresponding SNR spectra after
-correction only for the effect of diffusion.}
-\item{\code{corr.t.unc.only}:}{a list with three objects of class
-\code{"spec"}: the signal, noise and corresponding SNR spectra after
-correction only for the effect of time uncertainty.}
-\item{\code{corr.full}:}{a list with three objects of class
-\code{"spec"}: the signal, noise and corresponding SRN spectra
-after correction for both the effects of diffusion and time uncertainty.}
+\item{\code{raw}:}{a list with four elements: three objects of class
+\code{"spec"} (the raw signal, noise and corresponding SNR spectra), and a
+two-element vector (\code{f.cutoff}) with the index and value of the cutoff
+frequency.}
+\item{\code{corr.diff.only}:}{as item \code{raw} but with the spectra after
+correction for the effect of diffusion.}
+\item{\code{corr.t.unc.only}:}{as item \code{raw} but with the spectra after
+correction for the effect of time uncertainty.}
+\item{\code{corr.full}:}{as item \code{raw} but with the spectra after
+correction for both the effects of diffusion and time uncertainty.}
 }
 The number of the returned list elements for each data set depends on
 whether transfer functions for the corrections have been provided in
-\code{diffusion} and \code{time.uncertainty} or not.
+\code{diffusion} and \code{time.uncertainty} or not. Also, the element
+\code{f.cutoff} is `NA` if diffusion has not been corrected for.
 }
 \description{
 This wrapper function is used to combine all main spectral results for the

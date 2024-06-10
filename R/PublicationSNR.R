@@ -3,13 +3,17 @@
 ##' Internal function to produce the final DML and WAIS spectra (signal, noise,
 ##' SNR) used for Figs. (3) and (4) in Münch and Laepple (2018). The DML spectra
 ##' are a combination of the results from the DML1 and DML2 data sets.
-##' @param spec output from \code{\link{WrapSpectralResults}} for DML and WAIS
-##' data.
+##'
+##' @param spec.dml1 DML1 spectral data (e.g. the raw or any of the corrected
+##'   spectra for DML1 as obtained from \code{\link{WrapSpectralResults}}).
+##' @param spec.dml2 as `DML1` for the DML2 spectral data.
+##' @param spec.wais as `DML1` for the WAIS spectral data.
 ##' @param dml.knit.f frequency at which to combine the spectra from the DML1
 ##' and DML2 data sets (defaults to 1/10 yr^(-1)); DML2 spectra are used for
 ##' lower frequencies than \code{dml.knit.f}, DML1 for the higher frequencies.
 ##' @param df.log width of Gaussian kernel in logarithmic frequency units for
 ##' additional smoothing for visual purposes; \code{NULL} suppresses smoothing.
+##'
 ##' @return A list with the components \code{dml} and \code{wais}, where each is
 ##' a list containing three elements of class \code{"spec"} and one numeric
 ##' vector:
@@ -24,26 +28,27 @@
 ##' @references Münch, T. and Laepple, T.: What climate signal is contained in
 ##' decadal- to centennial-scale isotope variations from Antarctic ice cores?
 ##' Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
-PublicationSNR <- function(spec, dml.knit.f = 0.1, df.log = 0.125) {
+##'
+PublicationSNR <- function(spec.dml1, spec.dml2, spec.wais,
+                           dml.knit.f = 0.1, df.log = 0.125) {
 
-    
     # Combine DML1 and DML2 spectra
     
-    idx.knit1 <- which(spec$dml1$raw$signal$freq > dml.knit.f)
-    idx.knit2 <- which(spec$dml2$raw$signal$freq < dml.knit.f)
+    idx.knit1 <- which(spec.dml1$signal$freq > dml.knit.f)
+    idx.knit2 <- which(spec.dml2$signal$freq < dml.knit.f)
     
     dml.signal <- list()
-    dml.signal$freq <- c(spec$dml2$raw$signal$freq[idx.knit2],
-                         spec$dml1$raw$signal$freq[idx.knit1])
-    dml.signal$spec <- c(spec$dml2$corr.full$signal$spec[idx.knit2],
-                         spec$dml1$corr.full$signal$spec[idx.knit1])
+    dml.signal$freq <- c(spec.dml2$signal$freq[idx.knit2],
+                         spec.dml1$signal$freq[idx.knit1])
+    dml.signal$spec <- c(spec.dml2$signal$spec[idx.knit2],
+                         spec.dml1$signal$spec[idx.knit1])
 
     dml.noise <- dml.signal
-    dml.noise$spec <- c(spec$dml2$corr.full$noise$spec[idx.knit2],
-                        spec$dml1$corr.full$noise$spec[idx.knit1])
+    dml.noise$spec <- c(spec.dml2$noise$spec[idx.knit2],
+                        spec.dml1$noise$spec[idx.knit1])
 
-    dml.f.cutoff <- spec$dml1$f.cutoff
-    dml.f.cutoff[1] <- which(dml.signal$freq == spec$dml1$f.cutoff[2])
+    dml.f.cutoff <- spec.dml1$f.cutoff
+    dml.f.cutoff[1] <- which(dml.signal$freq == spec.dml1$f.cutoff[2])
 
 
     # Smooth DML & WAIS signal and noise and calculate SNR
@@ -53,8 +58,8 @@ PublicationSNR <- function(spec, dml.knit.f = 0.1, df.log = 0.125) {
         dml.signal <- LogSmooth(dml.signal, df.log = df.log)
         dml.noise  <- LogSmooth(dml.noise, df.log = df.log)
     
-        wais.signal <- LogSmooth(spec$wais$corr.full$signal, df.log = df.log)
-        wais.noise  <- LogSmooth(spec$wais$corr.full$noise, df.log = df.log)
+        wais.signal <- LogSmooth(spec.wais$signal, df.log = df.log)
+        wais.noise  <- LogSmooth(spec.wais$noise, df.log = df.log)
     }
 
     dml.snr <- list()
@@ -86,7 +91,7 @@ PublicationSNR <- function(spec, dml.knit.f = 0.1, df.log = 0.125) {
     res$wais$signal   <- wais.signal
     res$wais$noise    <- wais.noise
     res$wais$snr      <- wais.snr
-    res$wais$f.cutoff <- spec$wais$f.cutoff
+    res$wais$f.cutoff <- spec.wais$f.cutoff
 
     return(res)
 

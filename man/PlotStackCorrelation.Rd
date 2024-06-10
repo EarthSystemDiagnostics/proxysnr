@@ -97,7 +97,8 @@ DWS <- WrapSpectralResults(
        df.log = c(0.15, 0.15, 0.1))
 
 # Calculate the final signal-to-noise ratio spectra
-SNR <- proxysnr:::PublicationSNR(DWS)
+SNR <- proxysnr:::PublicationSNR(DWS$dml1$corr.full, DWS$dml2$corr.full,
+                                 DWS$wais$corr.full)
 
 # Calculate the correlations
 crl <- StackCorrelation(SNR$dml, N = 1 : 20,

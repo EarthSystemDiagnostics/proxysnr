@@ -4,11 +4,21 @@
 \alias{PublicationSNR}
 \title{Final DML and WAIS spectra}
 \usage{
-PublicationSNR(spec, dml.knit.f = 0.1, df.log = 0.125)
+PublicationSNR(
+  spec.dml1,
+  spec.dml2,
+  spec.wais,
+  dml.knit.f = 0.1,
+  df.log = 0.125
+)
 }
 \arguments{
-\item{spec}{output from \code{\link{WrapSpectralResults}} for DML and WAIS
-data.}
+\item{spec.dml1}{DML1 spectral data (e.g. the raw or any of the corrected
+spectra for DML1 as obtained from \code{\link{WrapSpectralResults}}).}
+
+\item{spec.dml2}{as `DML1` for the DML2 spectral data.}
+
+\item{spec.wais}{as `DML1` for the WAIS spectral data.}
 
 \item{dml.knit.f}{frequency at which to combine the spectra from the DML1
 and DML2 data sets (defaults to 1/10 yr^(-1)); DML2 spectra are used for

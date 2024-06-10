@@ -1,3 +1,11 @@
+# proxysnr 0.2.3
+
+* `WrapSpectralResults()`: output element `f.cutoff` with the cutoff frequency
+  for constraining the diffusion correction is now found within each output
+  element of the raw or corrected spectra, but it has value `NA` for the
+  elements where diffusion has not been corrected for.
+* Changed data input arrangement of internal function `PublicationSNR()`.
+
 # proxysnr 0.2.2
 
 * `DiffusionTF()`: Added new function parameter `window` for analysing only a

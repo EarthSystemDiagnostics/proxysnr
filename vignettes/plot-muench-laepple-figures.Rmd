@@ -81,7 +81,7 @@ are returned for these data sets (see `?WrapSpectralResults` for details).
 
 ```{r, fig.width = 7, fig.height = 6}
 PlotArraySpectra(ArraySpectra(dml$dml1, df.log = 0.12),
-                 f.cutoff = DWS$dml1$f.cutoff[2])
+                 f.cutoff = DWS$dml1$corr.full$f.cutoff[2])
 ```
 
 ### Plot DML and WAIS signal and noise spectra (Figure 2)
@@ -96,7 +96,8 @@ Obtain the final signal-to-noise ratio "spectra" by combining both DML data sets
 and applying additional logarithmic smoothing for visual purposes:
 
 ```{r}
-SNR <- proxysnr:::PublicationSNR(DWS)
+SNR <- proxysnr:::PublicationSNR(DWS$dml1$corr.full, DWS$dml2$corr.full,
+                                 DWS$wais$corr.full)
 ```
 
 Plot the figure:

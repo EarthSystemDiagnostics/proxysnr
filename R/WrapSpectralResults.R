@@ -28,23 +28,21 @@
 ##' @return A list of \code{N} lists, where \code{N} is the number of provided
 ##' data sets and where each of these lists contains up to five elements:
 ##' \describe{
-##' \item{\code{f.cutoff}:}{a two-element vector with the index and value of the
-##' cutoff frequency.}
-##' \item{\code{raw}:}{a list with three objects of class \code{"spec"}: the raw
-##' signal, noise and corresponding SNR spectra.}
-##' \item{\code{corr.diff.only}:}{a list with three objects of class
-##' \code{"spec"}: the signal, noise and corresponding SNR spectra after
-##' correction only for the effect of diffusion.}
-##' \item{\code{corr.t.unc.only}:}{a list with three objects of class
-##' \code{"spec"}: the signal, noise and corresponding SNR spectra after
-##' correction only for the effect of time uncertainty.}
-##' \item{\code{corr.full}:}{a list with three objects of class
-##' \code{"spec"}: the signal, noise and corresponding SRN spectra
-##' after correction for both the effects of diffusion and time uncertainty.}
+##' \item{\code{raw}:}{a list with four elements: three objects of class
+##' \code{"spec"} (the raw signal, noise and corresponding SNR spectra), and a
+##' two-element vector (\code{f.cutoff}) with the index and value of the cutoff
+##' frequency.}
+##' \item{\code{corr.diff.only}:}{as item \code{raw} but with the spectra after
+##' correction for the effect of diffusion.}
+##' \item{\code{corr.t.unc.only}:}{as item \code{raw} but with the spectra after
+##' correction for the effect of time uncertainty.}
+##' \item{\code{corr.full}:}{as item \code{raw} but with the spectra after
+##' correction for both the effects of diffusion and time uncertainty.}
 ##' }
 ##' The number of the returned list elements for each data set depends on
 ##' whether transfer functions for the corrections have been provided in
-##' \code{diffusion} and \code{time.uncertainty} or not.
+##' \code{diffusion} and \code{time.uncertainty} or not. Also, the element
+##' \code{f.cutoff} is `NA` if diffusion has not been corrected for.
 ##' @author Thomas Münch
 ##' @references Münch, T. and Laepple, T.: What climate signal is contained in
 ##' decadal- to centennial-scale isotope variations from Antarctic ice cores?
@@ -102,9 +100,7 @@ WrapSpectralResults <- function(..., diffusion = NULL, time.uncertainty = NULL,
         # critical cutoff frequency for diffusion correction
         if (d.flag) {
             idx <- which(d.crr >= crit.diffusion)[1]
-            tmp$f.cutoff <- c(idx, diffusion[[i]]$freq[idx])
-        } else {
-            tmp$f.cutoff <- NA
+            f.cutoff <- c(idx, diffusion[[i]]$freq[idx])
         }
 
         # mean and stack spectra
@@ -112,20 +108,24 @@ WrapSpectralResults <- function(..., diffusion = NULL, time.uncertainty = NULL,
 
         # raw signal and noise spectra
         tmp$raw <- SeparateSpectra(spec)
+        tmp$raw$f.cutoff <- NA_real_
 
         # corrected signal and noise spectra
         if (d.flag) {
             tmp$corr.diff.only <-
-                SeparateSpectra(spec, diffusion = d.crr)
+              SeparateSpectra(spec, diffusion = d.crr)
+            tmp$corr.diff.only$f.cutoff <- f.cutoff
         }
         if (t.flag) {
             tmp$corr.t.unc.only <-
-                SeparateSpectra(spec, time.uncertainty = t.crr)
+              SeparateSpectra(spec, time.uncertainty = t.crr)
+            tmp$corr.t.unc.only$f.cutoff <- NA_real_
         }
         if (d.flag & t.flag) {
             tmp$corr.full <-
-                SeparateSpectra(spec, time.uncertainty = t.crr,
-                                diffusion = d.crr)
+              SeparateSpectra(spec, time.uncertainty = t.crr,
+                              diffusion = d.crr)
+            tmp$corr.full$f.cutoff <- f.cutoff
         }
 
         res[[i]] <- tmp
