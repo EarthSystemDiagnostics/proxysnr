@@ -2,60 +2,6 @@
 ## Collection of plotting functions for the results in Münch and Laepple (2018)
 ##
 
-##' Default plotting parameters
-##'
-##' This function returns a list of default plotting parameters specified as its
-##' function arguments, which can then be set via a call to
-##' \code{par}. Additional parameters can be specified via \code{...}. This
-##' wrapper function provides a convenient way to set new graphics parameters
-##' and save their old values for later restoring at the same time; see the
-##' example.
-##' @param mar a numerical vector of the form ‘c(bottom, left, top, right)’ which
-##'   gives the number of lines of margin to be specified on the four sides of
-##'   the plot. The default is \code{c(5, 5, 0.5, 0.5)}.
-##' @param las the style of axis labels; default is to always use horizontal axis
-##'   labels (note that you then need to manually set \code{las = 0} for the y
-##'   axis titles when using \code{mtext}).
-##' @param cex.main the magnification to be used for main titles relative to the
-##'   current setting of \code{cex}; defaults to \code{1.5}.
-##' @param cex.lab the magnification to be used for x and y labels relative to the
-##'   current setting of \code{cex}; defaults to \code{1.5}.
-##' @param cex.axis the magnification to be used for axis annotation relative to
-##'   the current setting of \code{cex}; defaults to \code{1.25}.
-##' @param ... further graphical parameter settings passed on to
-##'   \code{\link[graphics]{par}}.
-##' @return A list of plotting parameters to be used with \code{par()}.
-##' \itemize{
-##'   \item mar = c(5, 5, 0.5, 0.5)
-##'   \item las = 1
-##'   \item cex.main = 1.5
-##'   \item cex.lab = 1.5
-##'   \item cex.axis = 1.25
-##'   \item ...
-##' }
-##' @author Thomas Münch
-##' @seealso \code{\link{par}}
-##' @examples
-##' # Default settings
-##' op <- par(proxysnr:::SetPlotPar())
-##' plot(1 : 10, xlab = "X title", ylab = "Y title", type = "l")
-##' par(op)
-##'
-##' # Change default line width and increase outer margin
-##' op <- par(proxysnr:::SetPlotPar(lwd = 2, oma = c(2, 2, 2, 2)))
-##' plot(1 : 10, xlab = "X title", ylab = "Y title", type = "l")
-##' par(op)
-SetPlotPar <- function(mar = c(5, 5, 0.5, 0.5),
-                       las = 1,
-                       cex.main = 1.5,
-                       cex.lab = 1.5,
-                       cex.axis = 1.25, ...) {
-
-    par <- c(as.list(environment()), list(...))
-    return(par)
-
-}
-
 ##' Draw error shading
 ##'
 ##' A wrapper function for the \code{polygon} function to draw error shadings
@@ -260,7 +206,8 @@ PlotArraySpectra <- function(spec, f.cutoff = NA,
         
     # Plot parameters
 
-    op <- graphics::par(SetPlotPar(mar = c(5, 6.5, 0.5, 0.5)))
+    op <- graphics::par(mar = c(5, 6.5, 0.5, 0.5), las = 1,
+                        cex.main = 1.5, cex.lab = 1.5, cex.axis = 1.25)
     on.exit(graphics::par(op))
 
     # Plot frame
@@ -347,10 +294,9 @@ muench_laepple_fig02 <- function(spec, f.cut = FALSE) {
     y.at <- c(0.05, 0.1, 0.5, 1, 5)
     removeLast <- 1
 
-    op <- graphics::par(SetPlotPar(mar = c(0, 0, 0, 0),
-                                   oma = c(5, 10, 2, 0.5),
-                                   mfcol = c(2, 2),
-                                   cex.axis = 1.5))
+    op <- graphics::par(mar = c(0, 0, 0, 0), las = 1,
+                        oma = c(5, 10, 2, 0.5), mfcol = c(2, 2),
+                        cex.main = 1.5, cex.lab = 1.5, cex.axis = 1.5)
     on.exit(graphics::par(op))
 
     
@@ -592,7 +538,8 @@ PlotSNR <- function(spec, f.cut = FALSE,
     if (!is.null(xtm)) {set.xtm = xtm; set.xtl = xtl}
     if (!is.null(ytm)) {set.ytm = ytm; set.ytl = ytl}
 
-    op <- graphics::par(SetPlotPar(mar = c(5, 6, 0.5, 0.5)))
+    op <- graphics::par(mar = c(5, 6, 0.5, 0.5), las = 1,
+                  cex.main = 1.5, cex.lab = 1.5, cex.axis = 1.25)
     on.exit(graphics::par(op))
 
     # Plot SNR
@@ -764,7 +711,8 @@ PlotStackCorrelation <- function(freq, correlation, col.pal,
 
     # Graphics settings
     
-    op <- graphics::par(SetPlotPar(mar = c(5, 5, 2, 0.5)))
+    op <- graphics::par(mar = c(5, 5, 2, 0.5), las = 1,
+                        cex.main = 1.5, cex.lab = 1.5, cex.axis = 1.25)
     on.exit(graphics::par(op))
 
     if (length(xlim) == 1) {
@@ -846,7 +794,8 @@ muench_laepple_fig05 <- function(SNR, TNS, f.cut = FALSE) {
         removeLast <-
             length(SNR$dml$f.cutoff[1] : length(SNR$dml$noise$freq))
 
-    op <- graphics::par(SetPlotPar(mar = c(5, 6.5, 0.5, 0.5)))
+    op <- graphics::par(mar = c(5, 6.5, 0.5, 0.5), las = 1,
+                  cex.main = 1.5, cex.lab = 1.5, cex.axis = 1.25)
     on.exit(graphics::par(op))
 
     # Plot final DML noise spectrum
@@ -989,9 +938,9 @@ PlotTF <- function(dtf = NULL, ttf = NULL,
 
     # Plot parameters
 
-    op <- graphics::par(SetPlotPar(mar = c(0, 0, 0, 0),
-                                   oma = c(5, 5, 0.5, 0.5),
-                                   mfrow = c(2,1)))
+    op <- graphics::par(mar = c(0, 0, 0, 0), las = 1,
+                        oma = c(5, 5, 0.5, 0.5), mfrow = c(2,1),
+                        cex.main = 1.5, cex.lab = 1.5, cex.axis = 1.25)
     on.exit(graphics::par(op))
 
     if (is.null(col)) col <- 1 : max(length(dtf), length(ttf))
