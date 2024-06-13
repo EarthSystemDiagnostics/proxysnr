@@ -48,7 +48,7 @@ package source directory, while their creating R markdown source codes are
 located under `./vignettes/`.
 
 * The vignette
-  [plot-muench-laepple-figures](http://htmlpreview.github.io/?https://github.com/EarthSystemDiagnostics/proxysnr/blob/master/doc/plot-muench-laepple-figures.html)
+  [plot-muench-laepple-figures](http://htmlpreview.github.io/?https://github.com/EarthSystemDiagnostics/proxysnr/blob/master/vignettes/plot-muench-laepple-figures.html)
   shows the basic way of applying the package to obtain estimates of the signal,
   noise and SNR spectra. For this, the oxygen isotope data from Münch and
   Laepple (2018) are used, which are provided with this package. The vignette
@@ -56,7 +56,7 @@ located under `./vignettes/`.
   Laepple (2018).
 
 * The vignette
-   [calculate-transfer-functions](http://htmlpreview.github.io/?https://github.com/EarthSystemDiagnostics/proxysnr/blob/master/doc/calculate-transfer-functions.html)
+   [calculate-transfer-functions](http://htmlpreview.github.io/?https://github.com/EarthSystemDiagnostics/proxysnr/blob/master/vignettes/calculate-transfer-functions.html)
    demonstrates the application of package functions for obtaining the spectral
    transfer functions describing the loss in spectral power by the effects of
    time uncertainty and diffusion. These transfer functions can be used to
