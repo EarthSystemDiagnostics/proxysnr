@@ -13,6 +13,7 @@
 ##' @return an object of class \code{"spec"} with the smoothed spectrum
 ##' including the average degrees of freedom.
 ##' @author Thomas Laepple
+##' @noRd
 LogSmooth <- function(x, df.log=0.05) {
 
     # Gaussian kernel
@@ -90,11 +91,6 @@ LogSmooth <- function(x, df.log=0.05) {
 ##' \code{dof}: a numeric vector of the same length as the spectrum with
 ##' the degrees of freedom of the spectral estimate (copied from the
 ##' \code{spec.mtm} default output).
-##' @examples
-##' x <- ts(arima.sim(list(ar = 0.9), 1000))
-##' spec <- proxysnr:::SpecMTM(x)
-##' proxysnr:::LPlot(spec, col = 'grey', ylim = c(0.01, 100))
-##' proxysnr:::LLines(proxysnr:::LogSmooth(spec), lwd = 2)
 ##' @author Thomas Laepple
 ##' @seealso \code{\link[multitaper]{spec.mtm}}
 ##' @references
@@ -135,6 +131,7 @@ SpecMTM <- function(timeSeries, k = 3, nw = 2, nFFT = "default",
     
     return(result)
 }
+
 ##' Mean spectrum
 ##'
 ##' Calculate the mean spectrum of all supplied individual spectra.
@@ -149,6 +146,7 @@ SpecMTM <- function(timeSeries, k = 3, nw = 2, nFFT = "default",
 ##' @return an object of class \code{"spec"} with components \code{freq},
 ##' \code{spec} and \code{dof}.
 ##' @author Thomas Laepple, Thomas Münch
+##' @noRd
 MeanSpectrum <- function(speclist) {
 
     # check for equal lengths of supplied spectra

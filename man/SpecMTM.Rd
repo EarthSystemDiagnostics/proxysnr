@@ -94,12 +94,6 @@ package multitaper, which sets convenient defaults for the spectral estimate
 and makes the degrees of freedom accessible as a direct list element of the
 output.
 }
-\examples{
-x <- ts(arima.sim(list(ar = 0.9), 1000))
-spec <- proxysnr:::SpecMTM(x)
-proxysnr:::LPlot(spec, col = 'grey', ylim = c(0.01, 100))
-proxysnr:::LLines(proxysnr:::LogSmooth(spec), lwd = 2)
-}
 \references{
 Thomson, D.J (1982) Spectrum estimation and harmonic analysis. _Proceedings
 of the IEEE_ Volume *70*, Number 9, pp. 1055-1096.

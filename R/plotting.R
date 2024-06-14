@@ -19,6 +19,7 @@
 ##' @param ... additional parameters which are passed to \code{polygon}.
 ##' @seealso \code{\link{polygon}}
 ##' @author Thomas Münch
+##' @noRd
 Polyplot <- function(x, y1, y2, col = "black", alpha = 0.2, ...) {
 
     inp <- list(x, y1, y2)
@@ -60,6 +61,7 @@ Polyplot <- function(x, y1, y2, col = "black", alpha = 0.2, ...) {
 ##' calculated internally.
 ##' @param ... further graphical parameters passed to \code{plot}.
 ##' @author Thomas Laepple
+##' @noRd
 LPlot <- function(x, conf = TRUE, bPeriod = FALSE, bNoPlot = FALSE, axes = TRUE,
                   col = "black", alpha = 0.2, removeFirst = 0, removeLast = 0,
                   xlab = "f", ylab = "PSD", xlim = NULL, ylim = NULL, ...) {
@@ -107,6 +109,7 @@ LPlot <- function(x, conf = TRUE, bPeriod = FALSE, bNoPlot = FALSE, axes = TRUE,
 ##' @param removeLast omit \code{removeLast} values on the high frequency side.
 ##' @param ... further graphical parameters passed to \code{lines}.
 ##' @author Thomas Laepple
+##' @noRd
 LLines<-function(x, conf = TRUE, bPeriod = FALSE, col = "black", alpha = 0.2,
                  removeFirst = 0, removeLast = 0, ...) {
 
