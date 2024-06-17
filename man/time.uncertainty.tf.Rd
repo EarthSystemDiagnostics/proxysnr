@@ -19,10 +19,10 @@ A list with 3 elements:
 }
 }
 \source{
-The transfer functions were obtained using \code{?TimeUncertaintyTF}. See
-also the respective package vignette:
-\code{vignette(topic = "calculate-transfer-functions", package =
-    "proxysnr")}.
+The transfer functions were obtained using
+\code{?CalculateTimeUncertaintyTF}. See also the respective package
+vignette:
+\code{vignette(topic = "calculate-transfer-functions", package = "proxysnr")}.
 }
 \usage{
 time.uncertainty.tf
@@ -41,7 +41,7 @@ Clim. Past, 14, 2053–2070, \url{https://doi.org/10.5194/cp-14-2053-2018},
 2018.
 }
 \seealso{
-\code{\link{DiffusionTF}}\cr
+\code{\link{CalculateTimeUncertaintyTF}}\cr
 \code{vignette(topic = "calculate-transfer-functions", package = "proxysnr")}
 }
 \keyword{datasets}

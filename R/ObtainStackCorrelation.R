@@ -12,7 +12,7 @@
 ##' to \code{f2}.
 ##' @param input a list of the spectral objects lists \code{signal} and
 ##' \code{noise}, usually to be obtained from a call to
-##' \code{\link{SeparateSpectra}}
+##' \code{\link{SeparateSignalFromNoise}}
 ##' @param N integer vector with the number of records in the assumed stack;
 ##' correlations are then calculated for stacks with record numbers according to
 ##' each element of \code{N}
@@ -46,12 +46,13 @@
 ##' decadal- to centennial-scale isotope variations from Antarctic ice cores?
 ##' Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
 ##' @export
-StackCorrelation <- function(input, N = 1, f1 = 2, f2 = "max",
-                             freq.cut.lower = NULL, freq.cut.upper = NULL) {
+ObtainStackCorrelation <- function(input, N = 1, f1 = 2, f2 = "max",
+                                   freq.cut.lower = NULL,
+                                   freq.cut.upper = NULL) {
 
-    snr <- IntegratedSNR(input, N = 1, f1 = f1, f2 = f2,
-                         freq.cut.lower = freq.cut.lower,
-                         freq.cut.upper = freq.cut.upper)
+    snr <- GetIntegratedSNR(input, N = 1, f1 = f1, f2 = f2,
+                            freq.cut.lower = freq.cut.lower,
+                            freq.cut.upper = freq.cut.upper)
 
     correlation <- t(sapply(N, function(x) {
       1 / sqrt(1 + 1 / (x * rev(snr$spec)))

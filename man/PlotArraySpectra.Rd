@@ -22,7 +22,7 @@ PlotArraySpectra(
 )
 }
 \arguments{
-\item{spec}{output from \code{\link{ArraySpectra}}.}
+\item{spec}{output from \code{\link{ObtainArraySpectra}}.}
 
 \item{f.cutoff}{optional frequency value to draw a vertical line symbolising
 a cutoff frequency.}
@@ -72,7 +72,7 @@ Fig. 1 in Münch and Laepple, 2018.
 \examples{
 # Plot Figure 1 in Münch and Laepple (2018) (DML1 oxygen isotope data set):
 
-PlotArraySpectra(ArraySpectra(dml$dml1, df.log = 0.12))
+PlotArraySpectra(ObtainArraySpectra(dml$dml1, df.log = 0.12))
 }
 \references{
 Münch, T. and Laepple, T.: What climate signal is contained in
@@ -80,7 +80,7 @@ decadal- to centennial-scale isotope variations from Antarctic ice cores?
 Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
 }
 \seealso{
-\code{\link{ArraySpectra}}
+\code{\link{ObtainArraySpectra}}
 }
 \author{
 Thomas Münch

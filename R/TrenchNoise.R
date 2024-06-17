@@ -36,8 +36,8 @@ TrenchNoise <- function(acc.rate = 25, sigma.acc.rate = 5,
     noise <- list()
 
     # calculation for lower bound of accumulation rate
-    noise$lower <- SeparateSpectra(
-        ArraySpectra(
+    noise$lower <- SeparateSignalFromNoise(
+        ObtainArraySpectra(
             proxysnr::t15,
             res = res / (acc.rate - sigma.acc.rate),
             neff = neff,
@@ -46,8 +46,8 @@ TrenchNoise <- function(acc.rate = 25, sigma.acc.rate = 5,
     )$noise
     
     # calculation for mean of accumulation rate
-    noise$mean <- SeparateSpectra(
-        ArraySpectra(
+    noise$mean <- SeparateSignalFromNoise(
+        ObtainArraySpectra(
             proxysnr::t15,
             res = res / (acc.rate),
             neff = neff,
@@ -56,8 +56,8 @@ TrenchNoise <- function(acc.rate = 25, sigma.acc.rate = 5,
     )$noise
     
     # calculation for upper bound of accumulation rate
-    noise$upper <- SeparateSpectra(
-        ArraySpectra(
+    noise$upper <- SeparateSignalFromNoise(
+        ObtainArraySpectra(
             proxysnr::t15,
             res = res / (acc.rate + sigma.acc.rate),
             neff = neff,

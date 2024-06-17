@@ -224,15 +224,14 @@
 #'     \tab \code{spec}: transfer function value at each frequency \tab  \cr
 #' }
 #' @source
-#' The transfer functions were obtained using \code{?DiffusionTF} for the
-#' site-specific diffusion lengths provided by \code{?diffusion.length}. Isotope
-#' records were simulated at semiannual resolution and the transfer functions
-#' interpolated in frequency space to annual resolution. See also the respective
-#' package vignette:
-#' \code{vignette(topic = "calculate-transfer-functions", package =
-#'     "proxysnr")}.
+#' The transfer functions were obtained using \code{?CalculateDiffusionTF} for
+#' the site-specific diffusion lengths provided by
+#' \code{?diffusion.length}. Isotope records were simulated at semiannual
+#' resolution and the transfer functions interpolated in frequency space to
+#' annual resolution. See also the respective package vignette:
+#' \code{vignette(topic = "calculate-transfer-functions", package = "proxysnr")}.
 #' @seealso
-#' \code{\link{DiffusionTF}}\cr
+#' \code{\link{CalculateDiffusionTF}}\cr
 #' \code{vignette(topic = "calculate-transfer-functions", package = "proxysnr")}
 #' @references
 #' Münch, T. and Laepple, T.: What climate signal is contained in
@@ -262,12 +261,12 @@
 #'     \tab \code{spec}: transfer function value at each frequency \tab  \cr
 #' }
 #' @source
-#' The transfer functions were obtained using \code{?TimeUncertaintyTF}. See
-#' also the respective package vignette:
-#' \code{vignette(topic = "calculate-transfer-functions", package =
-#'     "proxysnr")}.
+#' The transfer functions were obtained using
+#' \code{?CalculateTimeUncertaintyTF}. See also the respective package
+#' vignette:
+#' \code{vignette(topic = "calculate-transfer-functions", package = "proxysnr")}.
 #' @seealso
-#' \code{\link{DiffusionTF}}\cr
+#' \code{\link{CalculateTimeUncertaintyTF}}\cr
 #' \code{vignette(topic = "calculate-transfer-functions", package = "proxysnr")}
 #' @references
 #' Münch, T. and Laepple, T.: What climate signal is contained in

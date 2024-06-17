@@ -102,9 +102,9 @@ SNR <- proxysnr:::PublicationSNR(DWS$dml1$corr.full, DWS$dml2$corr.full,
                                  DWS$wais$corr.full)
 
 # Calculate the correlations
-crl <- StackCorrelation(SNR$dml, N = 1 : 20,
-       freq.cut.lower = 1 / 100,
-       freq.cut.upper = SNR$dml$f.cutoff[2])
+crl <- ObtainStackCorrelation(SNR$dml, N = 1 : 20,
+                              freq.cut.lower = 1 / 100,
+                              freq.cut.upper = SNR$dml$f.cutoff[2])
 
 # Plot it
 library(RColorBrewer)
@@ -118,7 +118,7 @@ decadal- to centennial-scale isotope variations from Antarctic ice cores?
 Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
 }
 \seealso{
-\code{\link{StackCorrelation}}
+\code{\link{ObtainStackCorrelation}}
 }
 \author{
 Thomas Münch

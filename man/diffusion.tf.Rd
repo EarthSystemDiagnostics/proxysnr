@@ -19,13 +19,12 @@ A list with 3 elements:
 }
 }
 \source{
-The transfer functions were obtained using \code{?DiffusionTF} for the
-site-specific diffusion lengths provided by \code{?diffusion.length}. Isotope
-records were simulated at semiannual resolution and the transfer functions
-interpolated in frequency space to annual resolution. See also the respective
-package vignette:
-\code{vignette(topic = "calculate-transfer-functions", package =
-    "proxysnr")}.
+The transfer functions were obtained using \code{?CalculateDiffusionTF} for
+the site-specific diffusion lengths provided by
+\code{?diffusion.length}. Isotope records were simulated at semiannual
+resolution and the transfer functions interpolated in frequency space to
+annual resolution. See also the respective package vignette:
+\code{vignette(topic = "calculate-transfer-functions", package = "proxysnr")}.
 }
 \usage{
 diffusion.tf
@@ -44,7 +43,7 @@ Clim. Past, 14, 2053–2070, \url{https://doi.org/10.5194/cp-14-2053-2018},
 2018.
 }
 \seealso{
-\code{\link{DiffusionTF}}\cr
+\code{\link{CalculateDiffusionTF}}\cr
 \code{vignette(topic = "calculate-transfer-functions", package = "proxysnr")}
 }
 \keyword{datasets}

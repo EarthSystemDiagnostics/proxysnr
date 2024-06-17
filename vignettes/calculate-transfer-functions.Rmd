@@ -155,24 +155,24 @@ Specify a numeric vector with two entries to use asymmetric rates.
 
 For the diffusion simulations, estimates of the diffusion length (in units of
 the record resolution) are needed as a function of time since deposition (see
-the parameter `sigma` in the call of the function `DiffusionTF` below, and
-`?DiffusionTF`). Along with **proxysnr**, the diffusion length estimates for the
-DML and WAIS cores are provided in `diffusion.length`; for details see
-`?diffusion.length`. Calculation of these estimates is documented in the package
-source under `./data-raw/calculate-diffusion-length.R`, where `.` is the root of
-the package source directory. The relevant site parameters needed for the
-diffusion length calculations are provided in `clim.site.par`; for details see
-`?clim.site.par`. For further information see the publication Münch and Laepple
-(2018).
+the parameter `sigma` in the call of the function `CalculateDiffusionTF` below,
+and `?CalculateDiffusionTF`). Along with **proxysnr**, the diffusion length
+estimates for the DML and WAIS cores are provided in `diffusion.length`; for
+details see `?diffusion.length`. Calculation of these estimates is documented in
+the package source under `./data-raw/calculate-diffusion-length.R`, where `.` is
+the root of the package source directory. The relevant site parameters needed
+for the diffusion length calculations are provided in `clim.site.par`; for
+details see `?clim.site.par`. For further information see the publication Münch
+and Laepple (2018).
 
 Finally, run the calculations and store only the ratio of average output over
 input spectra, i.e. the transfer function.
 
 Run the diffusion model:
 ```{r}
-tmp <- DiffusionTF(nt = nt / res, nc = nc, ns = ns,
-                   sigma = diffusion.length$dml1[, -1],
-                   res = res)$ratio
+tmp <- CalculateDiffusionTF(nt = nt / res, nc = nc, ns = ns,
+                            sigma = diffusion.length$dml1[, -1],
+                            res = res)$ratio
 ```
 
 Since we used a certain simulation resolution, we have to interpolate onto the
@@ -195,8 +195,9 @@ Run the time uncertainty model with Gaussian white noise as the surrogate data
 and document the meta data:
 ```{r}
 if (pkg.flag) {
-   ttf$dml1 <- TimeUncertaintyTF(t = t, acp = acp, nt = nt, nc = nc, ns = ns,
-                                 rate = rate, surrogate.fun = rnorm)$ratio
+   ttf$dml1 <- CalculateTimeUncertaintyTF(t = t, acp = acp, nt = nt, nc = nc,
+                                          ns = ns, rate = rate,
+					  surrogate.fun = rnorm)$ratio
 } else {
   ttf$dml1$freq <- dtf$dml1$freq
   ttf$dml1$spec <- rep(NA, length(dtf$dml1$freq))
@@ -222,17 +223,18 @@ nt <- length(t)
 acp <- c(1994, 1884, 1816, 1810, 1459, 1259)
 rate <- 0.013
 
-tmp <- DiffusionTF(nt = nt / res, nc = nc, ns = ns,
-                   sigma = diffusion.length$dml2[, -1],
-                   res = res)$ratio
+tmp <- CalculateDiffusionTF(nt = nt / res, nc = nc, ns = ns,
+                            sigma = diffusion.length$dml2[, -1],
+                            res = res)$ratio
 
 dtf$dml2 <- tmp
 dtf$dml2$freq <- ff$dml2
 dtf$dml2$spec <- approx(tmp$freq, tmp$spec, dtf$dml2$freq)$y
 
 if (pkg.flag) {
-   ttf$dml2 <- TimeUncertaintyTF(t = t, acp = acp, nt = nt, nc = nc, ns = ns,
-                                 rate = rate, surrogate.fun = rnorm)$ratio
+   ttf$dml2 <- CalculateTimeUncertaintyTF(t = t, acp = acp, nt = nt, nc = nc,
+                                          ns = ns, rate = rate,
+					  surrogate.fun = rnorm)$ratio
 } else {
   ttf$dml2$freq <- dtf$dml2$freq
   ttf$dml2$spec <- rep(NA, length(dtf$dml2$freq))
@@ -262,17 +264,18 @@ nt <- length(t)
 acp <- c(2000, 1992, 1964, 1885, 1837, 1816, 1810)
 rate <- 0.027
 
-tmp <- DiffusionTF(nt = nt / res, nc = nc, ns = ns,
-                   sigma = diffusion.length$wais[, -1],
-                   res = res)$ratio
+tmp <- CalculateDiffusionTF(nt = nt / res, nc = nc, ns = ns,
+                            sigma = diffusion.length$wais[, -1],
+                            res = res)$ratio
 
 dtf$wais <- tmp
 dtf$wais$freq <- ff$wais
 dtf$wais$spec <- approx(tmp$freq, tmp$spec, dtf$wais$freq)$y
 
 if (pkg.flag) {
-   ttf$wais <- TimeUncertaintyTF(t = t, acp = acp, nt = nt, nc = nc, ns = ns,
-                                 rate = rate, surrogate.fun = rnorm)$ratio
+   ttf$wais <- CalculateTimeUncertaintyTF(t = t, acp = acp, nt = nt, nc = nc,
+                                          ns = ns, rate = rate,
+					  surrogate.fun = rnorm)$ratio
 } else {
   ttf$wais$freq <- dtf$wais$freq
   ttf$wais$spec <- rep(NA, length(dtf$wais$freq))

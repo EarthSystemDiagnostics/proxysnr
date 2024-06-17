@@ -105,16 +105,17 @@
 ##' decadal- to centennial-scale isotope variations from Antarctic ice cores?
 ##' Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
 ##' @export
-TimeUncertaintyTF <- function(t = 100 : 1, acp = c(t[1], NA),
-                              nt = length(t), nc = 1, ns = 100,
-                              model = "poisson", rate = 0.05, resize = 1,
-                              surrogate.fun = stats::rnorm, fun.par = NULL,
-                              pad = TRUE, ...) {
+CalculateTimeUncertaintyTF <- function(t = 100 : 1, acp = c(t[1], NA),
+                                       nt = length(t), nc = 1, ns = 100,
+                                       model = "poisson", rate = 0.05,
+                                       resize = 1, surrogate.fun = stats::rnorm,
+                                       fun.par = NULL, pad = TRUE, ...) {
 
     # check if package simproxyage is available
     if (!requireNamespace("simproxyage", quietly = TRUE)) {
         stop(paste("Package \"simproxyage\" not found.",
-                      "Please install from GitHub; see '?TimeUncertaintyTF'"),
+                   "Please install from GitHub;",
+                   "see '?CalculateTimeUncertaintyTF'"),
              call. = FALSE)
     }
 

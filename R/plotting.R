@@ -139,7 +139,7 @@ LLines<-function(x, conf = TRUE, bPeriod = FALSE, col = "black", alpha = 0.2,
 ##'
 ##' Plot the spectral estimates from a spatial proxy core array, such as in
 ##' Fig. 1 in Münch and Laepple, 2018.
-##' @param spec output from \code{\link{ArraySpectra}}.
+##' @param spec output from \code{\link{ObtainArraySpectra}}.
 ##' @param f.cutoff optional frequency value to draw a vertical line symbolising
 ##' a cutoff frequency.
 ##' @param xlim the x limits (x1, x2) of the plot.
@@ -169,11 +169,11 @@ LLines<-function(x, conf = TRUE, bPeriod = FALSE, col = "black", alpha = 0.2,
 ##' the same length as \code{xtm}; see also \code{?axis}.
 ##' @param ytl equivalent to \code{xtl} for the y axis tick mark labels.
 ##' @author Thomas Münch
-##' @seealso \code{\link{ArraySpectra}}
+##' @seealso \code{\link{ObtainArraySpectra}}
 ##' @examples
 ##' # Plot Figure 1 in Münch and Laepple (2018) (DML1 oxygen isotope data set):
 ##' 
-##' PlotArraySpectra(ArraySpectra(dml$dml1, df.log = 0.12))
+##' PlotArraySpectra(ObtainArraySpectra(dml$dml1, df.log = 0.12))
 ##' @export
 ##' @references Münch, T. and Laepple, T.: What climate signal is contained in
 ##' decadal- to centennial-scale isotope variations from Antarctic ice cores?
@@ -450,7 +450,7 @@ PlotSNR <- function(spec, f.cut = FALSE,
 ##' \code{NA} results in using the default limit for this element only.
 ##' @param ylim as \code{xlim} for the y limits of the plot.
 ##' @author Thomas Münch
-##' @seealso \code{\link{StackCorrelation}}
+##' @seealso \code{\link{ObtainStackCorrelation}}
 ##' @export
 ##' @examples
 ##' # Plot Figure 5 in Münch and Laepple (2018)
@@ -468,9 +468,9 @@ PlotSNR <- function(spec, f.cut = FALSE,
 ##'                                  DWS$wais$corr.full)
 ##'
 ##' # Calculate the correlations
-##' crl <- StackCorrelation(SNR$dml, N = 1 : 20,
-##'        freq.cut.lower = 1 / 100,
-##'        freq.cut.upper = SNR$dml$f.cutoff[2])
+##' crl <- ObtainStackCorrelation(SNR$dml, N = 1 : 20,
+##'                               freq.cut.lower = 1 / 100,
+##'                               freq.cut.upper = SNR$dml$f.cutoff[2])
 ##'
 ##' # Plot it
 ##' library(RColorBrewer)

@@ -1,8 +1,7 @@
 ##' Spectral estimates of core array
 ##'
-##' \code{ArraySpectra} calculates all relevant spectral estimates
-##' from a given core array of \code{N} proxy records. The spectral estimates
-##' can be smoothed in logarithmic space.
+##' Calculate all relevant spectral estimates for a given array of \code{n}
+##' proxy records. The spectral estimates can be smoothed in logarithmic space.
 ##'
 ##' The spectral estimates are calculated using Thomson’s multitaper method with
 ##' three windows with linear detrending before analysis
@@ -34,8 +33,8 @@
 ##' @author Thomas Münch
 ##' @seealso \code{\link{SpecMTM}}
 ##' @export
-ArraySpectra <- function(cores, res = 1, neff = length(cores),
-                         df.log = NULL, ...) {
+ObtainArraySpectra <- function(cores, res = 1, neff = length(cores),
+                               df.log = NULL, ...) {
 
     # proxy data vectors must be of the same length
     if (stats::sd(sapply(cores, function(lst) {length(lst)})) > 0) {
@@ -75,4 +74,3 @@ ArraySpectra <- function(cores, res = 1, neff = length(cores),
     return(res)
 
 }
-

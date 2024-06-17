@@ -40,13 +40,14 @@ DWS <- WrapSpectralResults(
     df.log = c(0.15, 0.15, 0.1))
 ```
 
-This function is only a wrapper for the main package functions `ArraySpectra`
-and `SeparateSpectra` which calls the two functions for all the data sets that
-are specified as input to `WrapSpectralResults`. The function `ArraySpectra` is
-used, for a specific data set, to calculate all individual spectra, the
-corresponding mean spectrum and the spectrum of the stacked record (thus, of the
-average isotope record in the time domain); `SeparateSpectra` is used to obtain
-the raw and corrected signal and noise spectra for this data set.
+This function is only a wrapper for the main package functions
+`ObtainArraySpectra` and `SeparateSignalFromNoise` which calls the two functions
+for all the data sets that are specified as input to `WrapSpectralResults`. The
+function `ObtainArraySpectra` is used, for a specific data set, to calculate all
+individual spectra, the corresponding mean spectrum and the spectrum of the
+stacked record (thus, of the average isotope record in the time domain);
+`SeparateSignalFromNoise` is used to obtain the raw and corrected signal and
+noise spectra for this data set.
 
 The data sets analysed in the paper are provided along **proxysnr** in the
 variables `dml` and `wais`; see `?dml` and `?wais` for details on these data
@@ -80,8 +81,8 @@ are returned for these data sets (see `?WrapSpectralResults` for details).
 ### Plot DML1 isotope array spectra (Figure 1)
 
 ```{r, fig.width = 7, fig.height = 6}
-PlotArraySpectra(ArraySpectra(dml$dml1, df.log = 0.12),
-                 f.cutoff = DWS$dml1$corr.full$f.cutoff[2])
+PlotArraySpectra(ObtainArraySpectra(dml$dml1, df.log = 0.12),
+                                    f.cutoff = DWS$dml1$corr.full$f.cutoff[2])
 ```
 
 ### Plot DML and WAIS signal and noise spectra (Figure 2)
@@ -115,14 +116,14 @@ averaging period (i.e. resolution) of the records:
 
 ```{r}
 # for the DMl data
-crl1 <- StackCorrelation(SNR$dml, N = 1 : 20,
-                         freq.cut.lower = 1 / 100,
-                         freq.cut.upper = SNR$dml$f.cutoff[2])
+crl1 <- ObtainStackCorrelation(SNR$dml, N = 1 : 20,
+                               freq.cut.lower = 1 / 100,
+                               freq.cut.upper = SNR$dml$f.cutoff[2])
 
 # for the WAIS data
-crl2 <- StackCorrelation(SNR$wais, N = 1 : 20,
-                         freq.cut.lower = 1 / 100,
-                         freq.cut.upper = SNR$wais$f.cutoff[2])
+crl2 <- ObtainStackCorrelation(SNR$wais, N = 1 : 20,
+                               freq.cut.lower = 1 / 100,
+                               freq.cut.upper = SNR$wais$f.cutoff[2])
 ```
 
 Specify a function to create a colour palette for the contour plots:

@@ -1,10 +1,9 @@
 ##' Calculate signal and noise spectra
 ##' 
-##' \code{SeparateSpectra} calculates the raw signal and noise spectra, and the
-##' corresponding signal-to-noise ratio, as estimated from a core array of
-##' \code{N} proxy records, and allows one to correct these, where applicable,
-##' for the effects of time uncertainty and water vapour diffusion (relevant for
-##' firn and ice cores).
+##' Calculate the raw signal and noise spectra, and the corresponding
+##' signal-to-noise ratio, as estimated from a core array of \code{n} proxy
+##' records, and correct these, where applicable, for the effects of time
+##' uncertainty and water vapour diffusion (relevant for firn and ice cores).
 ##'
 ##' This function is an implementation of Eq. (4) in Münch and Laepple
 ##' (2018). While the diffusion correction is relevant only for diffusing
@@ -15,7 +14,7 @@
 ##' relevant, or for estimating raw signal and noise spectra by supplying no
 ##' correction functions at all.
 ##' @param spectra a list of the raw spectral estimates from a proxy core
-##' array. Expected is the output from \code{\link{ArraySpectra}}, but
+##' array. Expected is the output from \code{\link{ObtainArraySpectra}}, but
 ##' sufficient is a named list of two components giving the \code{mean} and
 ##' \code{stack} spectra.
 ##' @param neff the effective number of records (e.g. to account for an expected
@@ -23,11 +22,11 @@
 ##' in \code{spectra}, otherwise supply it explicitly here.
 ##' @param diffusion numeric vector of diffusion correction values (inverse
 ##' transfer function); must be of the same length as the spectral estimates in
-##' \code{spectra}. By omitting this parameter no correction will be applied.
+##' \code{spectra}. The default `NULL` is to apply no correction.
 ##' @param time.uncertainty numeric vector of time uncertainty correction
 ##' values (inverse transfer function); must be of the same length as the
-##' spectral estimates in \code{spectra}. By omitting this parameter no
-##' correction will be applied.
+##' spectral estimates in \code{spectra}. The default `NULL` is to apply no
+##' correction.
 ##' @return A list of three components, each of class \code{"spec"}:
 ##' \describe{
 ##' \item{\code{signal}:}{the raw or corrected signal spectrum.}
@@ -36,26 +35,18 @@
 ##' components.}
 ##' }
 ##' @author Thomas Münch
-##' @seealso \code{\link{ArraySpectra}}
+##' @seealso \code{\link{ObtainArraySpectra}}
 ##' @references Münch, T. and Laepple, T.: What climate signal is contained in
 ##' decadal- to centennial-scale isotope variations from Antarctic ice cores?
 ##' Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
 ##' @export
-SeparateSpectra <- function(spectra, neff = spectra$N,
-                            diffusion, time.uncertainty) {
+SeparateSignalFromNoise <- function(spectra, neff = spectra$N,
+                                    diffusion = NULL, time.uncertainty = NULL) {
 
     # error checking
 
     if (is.null(neff)) {
         stop("Supply (effective) number of records.")
-    }
-
-    if (missing(diffusion)) {
-        diffusion <- NULL
-    }
-
-    if (missing(time.uncertainty)) {
-        time.uncertainty <- NULL
     }
 
     if (any(is.na(match(c("mean", "stack"), names(spectra))))) {
@@ -122,4 +113,3 @@ SeparateSpectra <- function(spectra, neff = spectra$N,
     return(res)
 
 }
-

@@ -104,26 +104,26 @@ WrapSpectralResults <- function(..., diffusion = NULL, time.uncertainty = NULL,
         }
 
         # mean and stack spectra
-        spec <- ArraySpectra(dat[[i]], df.log = df.log[i])
+        spec <- ObtainArraySpectra(dat[[i]], df.log = df.log[i])
 
         # raw signal and noise spectra
-        tmp$raw <- SeparateSpectra(spec)
+        tmp$raw <- SeparateSignalFromNoise(spec)
         tmp$raw$f.cutoff <- NA_real_
 
         # corrected signal and noise spectra
         if (d.flag) {
             tmp$corr.diff.only <-
-              SeparateSpectra(spec, diffusion = d.crr)
+              SeparateSignalFromNoise(spec, diffusion = d.crr)
             tmp$corr.diff.only$f.cutoff <- f.cutoff
         }
         if (t.flag) {
             tmp$corr.t.unc.only <-
-              SeparateSpectra(spec, time.uncertainty = t.crr)
+              SeparateSignalFromNoise(spec, time.uncertainty = t.crr)
             tmp$corr.t.unc.only$f.cutoff <- NA_real_
         }
         if (d.flag & t.flag) {
             tmp$corr.full <-
-              SeparateSpectra(spec, time.uncertainty = t.crr,
+              SeparateSignalFromNoise(spec, time.uncertainty = t.crr,
                               diffusion = d.crr)
             tmp$corr.full$f.cutoff <- f.cutoff
         }
