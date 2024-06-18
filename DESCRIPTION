@@ -19,7 +19,6 @@ VignetteBuilder: knitr
 Imports: multitaper
 Suggests: Hmisc,
     knitr,
-    PaleoSpec,
     pangaear,
     rmarkdown,
     RColorBrewer,
@@ -27,7 +26,6 @@ Suggests: Hmisc,
     TrenchR,
     usethis
 Remotes:
-    earthsystemdiagnostics/paleospec,
     earthsystemdiagnostics/simproxyage,
     earthsystemdiagnostics/TrenchR
 URL: https://github.com/EarthSystemDiagnostics/proxysnr
