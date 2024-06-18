@@ -1,3 +1,6 @@
+[![Github_Status_Badge](https://img.shields.io/badge/Github-0.2.3-blue.svg)](https://github.com/EarthSystemDiagnostics/proxysnr)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.2027638.svg)](https://doi.org/10.5281/zenodo.2027638)
+
 # proxysnr: Separate Signal and Noise in Climate Proxy Records
 
 ------------------------------
