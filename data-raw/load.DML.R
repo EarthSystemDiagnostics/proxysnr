@@ -91,8 +91,7 @@ load.DML <- function(doi,
         tmp <- pangaear::pg_data(doi = doi[i], mssgs = verbose)
         
         # Keep age (yr AD) and d18O values only
-        data[[i]] <- as.data.frame(
-            tmp[[1]]$data)[, c("Age [a AD]", "d18O H2O [per mil SMOW]")]
+        data[[i]] <- as.data.frame(tmp[[1]]$data)[, c(3, 6)]
 
         # Adjust time frame of record
         i.start <- ifelse(is.null(setStart[i]),
@@ -138,7 +137,7 @@ load.DML <- function(doi,
     
     # Clear the local pangaea data cache if desired
     if (clearCache) {
-        pangaear::pg_cache_clear(prompt = FALSE)
+        pangaear::pg_cache$delete_all()
     }
 
     # Provide meta info as attributes
