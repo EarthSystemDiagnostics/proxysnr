@@ -154,16 +154,14 @@ rate <- 0.013
 Specify a numeric vector with two entries to use asymmetric rates.
 
 For the diffusion simulations, estimates of the diffusion length (in units of
-the record resolution) are needed as a function of time since deposition (see
-the parameter `sigma` in the call of the function `CalculateDiffusionTF` below,
-and `?CalculateDiffusionTF`). Along with **proxysnr**, the diffusion length
-estimates for the DML and WAIS cores are provided in `diffusion.length`; for
-details see `?diffusion.length`. Calculation of these estimates is documented in
-the package source under `./data-raw/calculate-diffusion-length.R`, where `.` is
-the root of the package source directory. The relevant site parameters needed
-for the diffusion length calculations are provided in `clim.site.par`; for
-details see `?clim.site.par`. For further information see the publication Münch
-and Laepple (2018).
+the record resolution) are needed as a function of time since deposition, which
+need to be supplied as the parameter `sigma` in the call of the function
+`CalculateDiffusionTF` (see below). Along with **proxysnr**, the diffusion
+length estimates for the DML and WAIS cores are provided in the internal dataset
+`diffusion.length`. Calculation of these estimates is documented in the package
+source under `./data-raw/produce-internal-data.R`, where `.` is the root of the
+package source directory. For further information see the publication Münch and
+Laepple (2018).
 
 Finally, run the calculations and store only the ratio of average output over
 input spectra, i.e. the transfer function.
@@ -171,7 +169,7 @@ input spectra, i.e. the transfer function.
 Run the diffusion model:
 ```{r}
 tmp <- CalculateDiffusionTF(nt = nt / res, nc = nc, ns = ns,
-                            sigma = diffusion.length$dml1[, -1],
+                            sigma = proxysnr:::diffusion.length$dml1[, -1],
                             res = res)$ratio
 ```
 
@@ -224,7 +222,7 @@ acp <- c(1994, 1884, 1816, 1810, 1459, 1259)
 rate <- 0.013
 
 tmp <- CalculateDiffusionTF(nt = nt / res, nc = nc, ns = ns,
-                            sigma = diffusion.length$dml2[, -1],
+                            sigma = proxysnr:::diffusion.length$dml2[, -1],
                             res = res)$ratio
 
 dtf$dml2 <- tmp
@@ -265,7 +263,7 @@ acp <- c(2000, 1992, 1964, 1885, 1837, 1816, 1810)
 rate <- 0.027
 
 tmp <- CalculateDiffusionTF(nt = nt / res, nc = nc, ns = ns,
-                            sigma = diffusion.length$wais[, -1],
+                            sigma = proxysnr:::diffusion.length$wais[, -1],
                             res = res)$ratio
 
 dtf$wais <- tmp

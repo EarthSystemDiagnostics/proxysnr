@@ -296,22 +296,20 @@ muench_laepple_fig02 <- function(spec, f.cut = FALSE) {
 
 }
 
-
-
 ##' Figure 5 in Münch and Laepple (2018)
 ##'
-##' Plot comparison of the DML and trench noise spectra (Figure 5 in Münch and
-##' Laepple, 2018).
+##' Plot comparison of the DML and T15 trench noise spectra (Figure 5 in Münch
+##' and Laepple, 2018).
 ##' @param SNR output from \code{\link{PublicationSNR}}.
-##' @param TNS output from \code{\link{TrenchNoise}}.
+##' @param TNS T15 trench noise spectra; per default loaded from internal data.
 ##' @param f.cut Shall the spectra be cut at the cutoff frequency constrained
 ##' by the diffusion correction strength? Defaults to \code{FALSE}.
 ##' @author Thomas Münch
-##' @seealso \code{\link{PublicationSNR}}, \code{\link{TrenchNoise}}
+##' @seealso \code{\link{PublicationSNR}}
 ##' @references Münch, T. and Laepple, T.: What climate signal is contained in
 ##' decadal- to centennial-scale isotope variations from Antarctic ice cores?
 ##' Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
-muench_laepple_fig05 <- function(SNR, TNS, f.cut = FALSE) {
+muench_laepple_fig05 <- function(SNR, TNS = t15.noise, f.cut = FALSE) {
 
     # Graphics settings
 

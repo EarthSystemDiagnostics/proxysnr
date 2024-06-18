@@ -12,7 +12,7 @@
 
 <meta name="author" content="Thomas Münch" />
 
-<meta name="date" content="2024-06-17" />
+<meta name="date" content="2024-06-18" />
 
 <title>Calculate diffusion and time uncertainty transfer functions</title>
 
@@ -341,7 +341,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <h1 class="title toc-ignore">Calculate diffusion and time uncertainty
 transfer functions</h1>
 <h4 class="author">Thomas Münch</h4>
-<h4 class="date">2024-06-17</h4>
+<h4 class="date">2024-06-18</h4>
 
 
 
@@ -456,24 +456,21 @@ We use symmetric rates here:</p>
 rates.</p>
 <p>For the diffusion simulations, estimates of the diffusion length (in
 units of the record resolution) are needed as a function of time since
-deposition (see the parameter <code>sigma</code> in the call of the
-function <code>CalculateDiffusionTF</code> below, and
-<code>?CalculateDiffusionTF</code>). Along with
+deposition, which need to be supplied as the parameter
+<code>sigma</code> in the call of the function
+<code>CalculateDiffusionTF</code> (see below). Along with
 <strong>proxysnr</strong>, the diffusion length estimates for the DML
-and WAIS cores are provided in <code>diffusion.length</code>; for
-details see <code>?diffusion.length</code>. Calculation of these
-estimates is documented in the package source under
-<code>./data-raw/calculate-diffusion-length.R</code>, where
-<code>.</code> is the root of the package source directory. The relevant
-site parameters needed for the diffusion length calculations are
-provided in <code>clim.site.par</code>; for details see
-<code>?clim.site.par</code>. For further information see the publication
-Münch and Laepple (2018).</p>
+and WAIS cores are provided in the internal dataset
+<code>diffusion.length</code>. Calculation of these estimates is
+documented in the package source under
+<code>./data-raw/produce-internal-data.R</code>, where <code>.</code> is
+the root of the package source directory. For further information see
+the publication Münch and Laepple (2018).</p>
 <p>Finally, run the calculations and store only the ratio of average
 output over input spectra, i.e. the transfer function.</p>
 <p>Run the diffusion model:</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">CalculateDiffusionTF</span>(<span class="at">nt =</span> nt <span class="sc">/</span> res, <span class="at">nc =</span> nc, <span class="at">ns =</span> ns,</span>
-<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>                            <span class="at">sigma =</span> diffusion.length<span class="sc">$</span>dml1[, <span class="sc">-</span><span class="dv">1</span>],</span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>                            <span class="at">sigma =</span> proxysnr<span class="sc">:::</span>diffusion.length<span class="sc">$</span>dml1[, <span class="sc">-</span><span class="dv">1</span>],</span>
 <span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>                            <span class="at">res =</span> res)<span class="sc">$</span>ratio</span></code></pre></div>
 <p>Since we used a certain simulation resolution, we have to interpolate
 onto the target resolution of our proxy data. Additionally, we store
@@ -517,7 +514,7 @@ surrogate data and document the meta data:</p>
 <span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a>rate <span class="ot">&lt;-</span> <span class="fl">0.013</span></span>
 <span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a></span>
 <span id="cb15-7"><a href="#cb15-7" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">CalculateDiffusionTF</span>(<span class="at">nt =</span> nt <span class="sc">/</span> res, <span class="at">nc =</span> nc, <span class="at">ns =</span> ns,</span>
-<span id="cb15-8"><a href="#cb15-8" tabindex="-1"></a>                            <span class="at">sigma =</span> diffusion.length<span class="sc">$</span>dml2[, <span class="sc">-</span><span class="dv">1</span>],</span>
+<span id="cb15-8"><a href="#cb15-8" tabindex="-1"></a>                            <span class="at">sigma =</span> proxysnr<span class="sc">:::</span>diffusion.length<span class="sc">$</span>dml2[, <span class="sc">-</span><span class="dv">1</span>],</span>
 <span id="cb15-9"><a href="#cb15-9" tabindex="-1"></a>                            <span class="at">res =</span> res)<span class="sc">$</span>ratio</span>
 <span id="cb15-10"><a href="#cb15-10" tabindex="-1"></a></span>
 <span id="cb15-11"><a href="#cb15-11" tabindex="-1"></a>dtf<span class="sc">$</span>dml2 <span class="ot">&lt;-</span> tmp</span>
@@ -554,7 +551,7 @@ surrogate data and document the meta data:</p>
 <span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a>rate <span class="ot">&lt;-</span> <span class="fl">0.027</span></span>
 <span id="cb16-6"><a href="#cb16-6" tabindex="-1"></a></span>
 <span id="cb16-7"><a href="#cb16-7" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">CalculateDiffusionTF</span>(<span class="at">nt =</span> nt <span class="sc">/</span> res, <span class="at">nc =</span> nc, <span class="at">ns =</span> ns,</span>
-<span id="cb16-8"><a href="#cb16-8" tabindex="-1"></a>                            <span class="at">sigma =</span> diffusion.length<span class="sc">$</span>wais[, <span class="sc">-</span><span class="dv">1</span>],</span>
+<span id="cb16-8"><a href="#cb16-8" tabindex="-1"></a>                            <span class="at">sigma =</span> proxysnr<span class="sc">:::</span>diffusion.length<span class="sc">$</span>wais[, <span class="sc">-</span><span class="dv">1</span>],</span>
 <span id="cb16-9"><a href="#cb16-9" tabindex="-1"></a>                            <span class="at">res =</span> res)<span class="sc">$</span>ratio</span>
 <span id="cb16-10"><a href="#cb16-10" tabindex="-1"></a></span>
 <span id="cb16-11"><a href="#cb16-11" tabindex="-1"></a>dtf<span class="sc">$</span>wais <span class="ot">&lt;-</span> tmp</span>

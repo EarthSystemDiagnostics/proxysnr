@@ -149,16 +149,13 @@ PlotStackCorrelation(freq = crl2$freq, correlation = crl2$correlation,
 
 ### Plot comparison of DML and Trench noise spectra (Figure 5)
 
-Obtain the noise spectra from the trench oxygen isotope data (the data are
-supplied in the variable `t15`; see `?t15` for details on the data set):
-```{r}
-TNS <- proxysnr:::TrenchNoise()
-```
-
-Plot the comparison of the noise spectra:
+We compare the noise spectrum of the DML firn-core array ("array scale") to the
+noise spectrum of the T15 trench oxygen isotope data ("local scale"). The latter
+is supplied in the internal package variable `t15.noise` and automatically
+loaded by the plotting function:
 
 ```{r, fig.width = 7, fig.height = 6}
-proxysnr:::muench_laepple_fig05(SNR, TNS, f.cut = TRUE)
+proxysnr:::muench_laepple_fig05(SNR, f.cut = TRUE)
 ```
 
 ## Literature cited
