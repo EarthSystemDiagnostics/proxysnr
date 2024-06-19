@@ -7,8 +7,9 @@
 ObtainArraySpectra(cores, res = 1, neff = length(cores), df.log = NULL, ...)
 }
 \arguments{
-\item{cores}{a list of the proxy data from the core array. Each component is
-expected to be a numeric vector of the proxy values of a common length.}
+\item{cores}{a list or a data frame of the proxy data from the core array. If
+a list is supplied, all elements must be numeric vectors of the same
+length.}
 
 \item{res}{the sampling (e.g., temporal) resolution of the proxy data;
 determines the frequency axis of the spectral estimates.}

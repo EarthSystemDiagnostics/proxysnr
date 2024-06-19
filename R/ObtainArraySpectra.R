@@ -9,8 +9,9 @@
 #' of class \code{"spec"} with the minimum elements \code{freq} and
 #' \code{spec}.
 #'
-#' @param cores a list of the proxy data from the core array. Each component is
-#'   expected to be a numeric vector of the proxy values of a common length.
+#' @param cores a list or a data frame of the proxy data from the core array. If
+#'   a list is supplied, all elements must be numeric vectors of the same
+#'   length.
 #' @param res the sampling (e.g., temporal) resolution of the proxy data;
 #'   determines the frequency axis of the spectral estimates.
 #' @param neff the effective number of records (e.g. to account for an expected
@@ -41,11 +42,17 @@
 ObtainArraySpectra <- function(cores, res = 1, neff = length(cores),
                                df.log = NULL, ...) {
 
-  # proxy data vectors must be of the same length
-  if (stats::sd(sapply(cores, function(lst) {length(lst)})) > 0) {
-    stop("All data vectors in supplied input list must be of the same length.")
-  }
+  if (!is.list(cores))
+    stop("'cores' must be a list or a data frame.", call. = FALSE)
 
+  if (!is.data.frame(cores)) {
+
+    # data vectors in list must be of the same length
+    if (stats::sd(lengths(cores)) > 0) {
+      stop("Data in list must all have the same length.", call. = FALSE)
+    }
+
+  }
   
   # estimate individual spectra
   single <- lapply(cores, function(lst) {
