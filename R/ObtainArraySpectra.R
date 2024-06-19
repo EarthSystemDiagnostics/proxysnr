@@ -36,41 +36,41 @@
 ObtainArraySpectra <- function(cores, res = 1, neff = length(cores),
                                df.log = NULL, ...) {
 
-    # proxy data vectors must be of the same length
-    if (stats::sd(sapply(cores, function(lst) {length(lst)})) > 0) {
-        stop("All data vectors in supplied input list must be of the same length.")
-    }
+  # proxy data vectors must be of the same length
+  if (stats::sd(sapply(cores, function(lst) {length(lst)})) > 0) {
+    stop("All data vectors in supplied input list must be of the same length.")
+  }
 
-    
-    # estimate individual spectra
-    single <- lapply(cores, function(lst) {
-        SpecMTM(stats::ts(lst, deltat = res), ...)
-    })
+  
+  # estimate individual spectra
+  single <- lapply(cores, function(lst) {
+    SpecMTM(stats::ts(lst, deltat = res), ...)
+  })
 
-    # estimate spectrum of stacked record
-    ts.stack <- rowMeans(simplify2array(cores))
-    stack <- SpecMTM(stats::ts(ts.stack, deltat = res), ...)
+  # estimate spectrum of stacked record
+  ts.stack <- rowMeans(simplify2array(cores))
+  stack <- SpecMTM(stats::ts(ts.stack, deltat = res), ...)
 
-    # calculate mean spectrum across individual record's spectra
-    mean <- MeanSpectrum(single)
+  # calculate mean spectrum across individual record's spectra
+  mean <- MeanSpectrum(single)
 
 
-    # log-smooth spectra
-    if (!is.null(df.log)) {
+  # log-smooth spectra
+  if (!is.null(df.log)) {
 
-        single <- lapply(single, LogSmooth, df.log = df.log)
-        mean   <- LogSmooth(mean, df.log = df.log)
-        stack  <- LogSmooth(stack, df.log = df.log)
-    }
+    single <- lapply(single, LogSmooth, df.log = df.log)
+    mean   <- LogSmooth(mean, df.log = df.log)
+    stack  <- LogSmooth(stack, df.log = df.log)
+  }
 
-    
-    # return results as a list
-    res <- list(
-        N          = neff,
-        single     = single,
-        mean       = mean,
-        stack      = stack)
+  
+  # return results as a list
+  res <- list(
+    N          = neff,
+    single     = single,
+    mean       = mean,
+    stack      = stack)
 
-    return(res)
+  return(res)
 
 }

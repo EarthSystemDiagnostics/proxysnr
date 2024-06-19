@@ -60,84 +60,84 @@ WrapSpectralResults <- function(..., diffusion = NULL, time.uncertainty = NULL,
                                 df.log = 0.05, crit.diffusion = 2,
                                 inverse.tf = FALSE) {
 
-    # Gather input data
-    dat <- list(...)
-    n <- length(dat)
+  # Gather input data
+  dat <- list(...)
+  n <- length(dat)
 
-    if (n == 0) stop("No data sets supplied.", call. = FALSE)
+  if (n == 0) stop("No data sets supplied.", call. = FALSE)
 
-    if (is.null(diffusion)) diffusion <- as.list(rep(NA, n))
-    if (is.null(time.uncertainty)) time.uncertainty <- as.list(rep(NA, n))
+  if (is.null(diffusion)) diffusion <- as.list(rep(NA, n))
+  if (is.null(time.uncertainty)) time.uncertainty <- as.list(rep(NA, n))
 
-    # Check for correct dimensions
-    if ((n != length(diffusion)) | (n != length(time.uncertainty))) {
-        stop("Mismatch of dimensions of input data and correction function(s).")
-    }
-    
-    if (length(df.log) == 1) df.log = rep(df.log, length.out = n)
+  # Check for correct dimensions
+  if ((n != length(diffusion)) | (n != length(time.uncertainty))) {
+    stop("Mismatch of dimensions of input data and correction function(s).")
+  }
+  
+  if (length(df.log) == 1) df.log = rep(df.log, length.out = n)
 
-    
-    # Loop over data sets to obtain the relevant spectral quantities
-    
-    res <- list()
-    for (i in 1 : n) {
+  
+  # Loop over data sets to obtain the relevant spectral quantities
+  
+  res <- list()
+  for (i in 1 : n) {
 
-        tmp <- list()
+    tmp <- list()
 
-        # get diffusion/time-uncertainty correction functions
-        d.flag <- !is.na(diffusion[i])
-        if (d.flag) {
-            d.crr <- diffusion[[i]]$spec
-            if (!inverse.tf) d.crr <- 1 / d.crr
-        }
-
-        t.flag <- !is.na(time.uncertainty[i])
-        if (t.flag) {            
-            t.crr <- time.uncertainty[[i]]$spec
-            if (!inverse.tf) t.crr <- 1 / t.crr
-        }
-        
-        # critical cutoff frequency for diffusion correction
-        if (d.flag) {
-            idx <- which(d.crr >= crit.diffusion)[1]
-            f.cutoff <- c(idx, diffusion[[i]]$freq[idx])
-        }
-
-        # mean and stack spectra
-        spec <- ObtainArraySpectra(dat[[i]], df.log = df.log[i])
-
-        # raw signal and noise spectra
-        tmp$raw <- SeparateSignalFromNoise(spec)
-        tmp$raw$f.cutoff <- NA_real_
-
-        # corrected signal and noise spectra
-        if (d.flag) {
-            tmp$corr.diff.only <-
-              SeparateSignalFromNoise(spec, diffusion = d.crr)
-            tmp$corr.diff.only$f.cutoff <- f.cutoff
-        }
-        if (t.flag) {
-            tmp$corr.t.unc.only <-
-              SeparateSignalFromNoise(spec, time.uncertainty = t.crr)
-            tmp$corr.t.unc.only$f.cutoff <- NA_real_
-        }
-        if (d.flag & t.flag) {
-            tmp$corr.full <-
-              SeparateSignalFromNoise(spec, time.uncertainty = t.crr,
-                              diffusion = d.crr)
-            tmp$corr.full$f.cutoff <- f.cutoff
-        }
-
-        res[[i]] <- tmp
-
+    # get diffusion/time-uncertainty correction functions
+    d.flag <- !is.na(diffusion[i])
+    if (d.flag) {
+      d.crr <- diffusion[[i]]$spec
+      if (!inverse.tf) d.crr <- 1 / d.crr
     }
 
+    t.flag <- !is.na(time.uncertainty[i])
+    if (t.flag) {            
+      t.crr <- time.uncertainty[[i]]$spec
+      if (!inverse.tf) t.crr <- 1 / t.crr
+    }
     
-    # Output
-    
-    names(res) <- names(dat)
+    # critical cutoff frequency for diffusion correction
+    if (d.flag) {
+      idx <- which(d.crr >= crit.diffusion)[1]
+      f.cutoff <- c(idx, diffusion[[i]]$freq[idx])
+    }
 
-    return(res)
+    # mean and stack spectra
+    spec <- ObtainArraySpectra(dat[[i]], df.log = df.log[i])
+
+    # raw signal and noise spectra
+    tmp$raw <- SeparateSignalFromNoise(spec)
+    tmp$raw$f.cutoff <- NA_real_
+
+    # corrected signal and noise spectra
+    if (d.flag) {
+      tmp$corr.diff.only <-
+        SeparateSignalFromNoise(spec, diffusion = d.crr)
+      tmp$corr.diff.only$f.cutoff <- f.cutoff
+    }
+    if (t.flag) {
+      tmp$corr.t.unc.only <-
+        SeparateSignalFromNoise(spec, time.uncertainty = t.crr)
+      tmp$corr.t.unc.only$f.cutoff <- NA_real_
+    }
+    if (d.flag & t.flag) {
+      tmp$corr.full <-
+        SeparateSignalFromNoise(spec, time.uncertainty = t.crr,
+                                diffusion = d.crr)
+      tmp$corr.full$f.cutoff <- f.cutoff
+    }
+
+    res[[i]] <- tmp
+
+  }
+
+  
+  # Output
+  
+  names(res) <- names(dat)
+
+  return(res)
 
 }
 

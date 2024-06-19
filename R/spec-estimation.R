@@ -16,62 +16,62 @@
 ##' @noRd
 LogSmooth <- function(x, df.log=0.05) {
 
-    # Gaussian kernel
-    weights <- function(x, sigma) {
-        1 / sqrt(2 * pi * sigma^2) * exp(-x^2 / (2 * sigma^2))
-    }
+  # Gaussian kernel
+  weights <- function(x, sigma) {
+    1 / sqrt(2 * pi * sigma^2) * exp(-x^2 / (2 * sigma^2))
+  }
 
-    # frequency dependent smoothing weights in log space
-    fweights <- function(ftarget, f, df.log) {
-        
-        sigma   <- ftarget * (exp(df.log) - exp(-df.log))
-        weights <- weights(f - ftarget, sigma)
-        
-        return(weights)
-    }
-
-    # logarithmic smoothing with cut weights, if necessary
-    smoothlog.cutEnd <- function(x, f, df.log, dof = 1) {
-
-        x.smooth <- vector()
-        dof.smooth <- vector()
-        for (i in 1 : length(f)) {
-
-            # get averaging weights
-            w <- fweights(f[i], f, df.log)
-            # cut the weights down
-            DistanceSlowEnd <- i - 1
-            DistanceFastEnd <- length(f) - i
-
-            if ((i + DistanceSlowEnd + 1) <= length(f))
-                w[(i + DistanceSlowEnd + 1) : length(f)] <- 0
-            if ((i - DistanceFastEnd - 1) >= 1)
-                w[1 : (i - DistanceFastEnd - 1)] <- 0
-
-            # normalize to 1
-            w <- w / f
-            w <- w / sum(w)
-
-            # apply the smoothing
-            x.smooth[i]   <- sum(w * x)
-            dof.smooth[i] <- sum(w * dof) / sum(w^2)
-        }
-        
-        return(list(spec = x.smooth, dof = dof.smooth))
-        
-    }
-
-    temp <- smoothlog.cutEnd(x$spec, x$freq, df.log, dof = x$dof)
-
-    result <- list()
+  # frequency dependent smoothing weights in log space
+  fweights <- function(ftarget, f, df.log) {
     
-    result$freq <- x$freq
-    result$spec <- temp$spec
-    result$dof <- temp$dof
-
-    class(result) <- "spec"
+    sigma   <- ftarget * (exp(df.log) - exp(-df.log))
+    weights <- weights(f - ftarget, sigma)
     
-    return(result)
+    return(weights)
+  }
+
+  # logarithmic smoothing with cut weights, if necessary
+  smoothlog.cutEnd <- function(x, f, df.log, dof = 1) {
+
+    x.smooth <- vector()
+    dof.smooth <- vector()
+    for (i in 1 : length(f)) {
+
+      # get averaging weights
+      w <- fweights(f[i], f, df.log)
+      # cut the weights down
+      DistanceSlowEnd <- i - 1
+      DistanceFastEnd <- length(f) - i
+
+      if ((i + DistanceSlowEnd + 1) <= length(f))
+        w[(i + DistanceSlowEnd + 1) : length(f)] <- 0
+      if ((i - DistanceFastEnd - 1) >= 1)
+        w[1 : (i - DistanceFastEnd - 1)] <- 0
+
+      # normalize to 1
+      w <- w / f
+      w <- w / sum(w)
+
+      # apply the smoothing
+      x.smooth[i]   <- sum(w * x)
+      dof.smooth[i] <- sum(w * dof) / sum(w^2)
+    }
+    
+    return(list(spec = x.smooth, dof = dof.smooth))
+    
+  }
+
+  temp <- smoothlog.cutEnd(x$spec, x$freq, df.log, dof = x$dof)
+
+  result <- list()
+  
+  result$freq <- x$freq
+  result$spec <- temp$spec
+  result$dof <- temp$dof
+
+  class(result) <- "spec"
+  
+  return(result)
 
 }
 
@@ -107,29 +107,29 @@ SpecMTM <- function(timeSeries, k = 3, nw = 2, nFFT = "default",
                     returnInternals = FALSE, detrend = TRUE,
                     bPad = FALSE, ...) {
 
-    if (sum(is.na(timeSeries)) > 0)
-        stop("missing data")
-    if (!bPad)
-        nFFT = length(timeSeries)
-    if (detrend)
-        timeSeries[] <- stats::lm(timeSeries ~ seq(timeSeries))$residuals
+  if (sum(is.na(timeSeries)) > 0)
+    stop("missing data")
+  if (!bPad)
+    nFFT = length(timeSeries)
+  if (detrend)
+    timeSeries[] <- stats::lm(timeSeries ~ seq(timeSeries))$residuals
 
-    result <- multitaper::spec.mtm(timeSeries = timeSeries,
-                                   k = k, nw = nw, nFFT = nFFT,
-                                   centre = centre,
-                                   dpssIN = dpssIN,
-                                   returnZeroFreq = returnZeroFreq,
-                                   Ftest = Ftest,
-                                   jackknife = jackknife,
-                                   jkCIProb = jkCIProb,
-                                   maxAdaptiveIterations = maxAdaptiveIterations,
-                                   plot = plot,
-                                   na.action = na.action,
-                                   returnInternals = returnInternals,
-                                   ...)
-    result$dof <- result$mtm$dofs
-    
-    return(result)
+  result <- multitaper::spec.mtm(timeSeries = timeSeries,
+                                 k = k, nw = nw, nFFT = nFFT,
+                                 centre = centre,
+                                 dpssIN = dpssIN,
+                                 returnZeroFreq = returnZeroFreq,
+                                 Ftest = Ftest,
+                                 jackknife = jackknife,
+                                 jkCIProb = jkCIProb,
+                                 maxAdaptiveIterations = maxAdaptiveIterations,
+                                 plot = plot,
+                                 na.action = na.action,
+                                 returnInternals = returnInternals,
+                                 ...)
+  result$dof <- result$mtm$dofs
+  
+  return(result)
 }
 
 ##' Mean spectrum
@@ -149,18 +149,18 @@ SpecMTM <- function(timeSeries, k = 3, nw = 2, nFFT = "default",
 ##' @noRd
 MeanSpectrum <- function(speclist) {
 
-    # check for equal lengths of supplied spectra
-    if (stats::var(sapply(speclist, function(x) {length(x$freq)})) > 0)
-        stop("MeanSpectrum: Spectra are of different lengths.", call. = FALSE)
-    
-    mean <- list()
-    mean$freq <- speclist[[1]]$freq
-    mean$spec <- rowMeans(sapply(speclist, function(x) {x$spec}))
-    mean$dof  <- rowSums(sapply(speclist, function(x) {x$dof}))
+  # check for equal lengths of supplied spectra
+  if (stats::var(sapply(speclist, function(x) {length(x$freq)})) > 0)
+    stop("MeanSpectrum: Spectra are of different lengths.", call. = FALSE)
+  
+  mean <- list()
+  mean$freq <- speclist[[1]]$freq
+  mean$spec <- rowMeans(sapply(speclist, function(x) {x$spec}))
+  mean$dof  <- rowSums(sapply(speclist, function(x) {x$dof}))
 
-    class(mean) <- "spec"
+  class(mean) <- "spec"
 
-    return(mean)
+  return(mean)
 
 }
-    
+

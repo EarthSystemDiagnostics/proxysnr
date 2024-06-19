@@ -125,29 +125,29 @@ sigma <- array(dim = c(nt, nc + 1))
 # Loop over individual core sites
 for (i in 1 : nc) {
 
-    # Herron-Langway density profile for site 'i'
-    HL  <- FirnR::DensityHL(depth = depth,
-                            rho.surface = rho.surface,
-                            T = param$temperature[i] + 273.15,
-                            bdot = param$acc.rate[i])
+  # Herron-Langway density profile for site 'i'
+  HL  <- FirnR::DensityHL(depth = depth,
+                          rho.surface = rho.surface,
+                          T = param$temperature[i] + 273.15,
+                          bdot = param$acc.rate[i])
 
-    # age of core according to Herron-Langway solution and const. acc. rate
-    t <- HL$depth.we * 1000 / param$acc.rate[i]
+  # age of core according to Herron-Langway solution and const. acc. rate
+  t <- HL$depth.we * 1000 / param$acc.rate[i]
 
-    # diffusion length in [cm] for site 'i' as a function of depth
-    sig.cm <- FirnR::DiffusionLength(depth = depth,
-                                     rho = HL$rho,
-                                     T = param$temperature[i] + 273.15,
-                                     P = param$pressure[i],
-                                     bdot = param$acc.rate[i])
+  # diffusion length in [cm] for site 'i' as a function of depth
+  sig.cm <- FirnR::DiffusionLength(depth = depth,
+                                   rho = HL$rho,
+                                   T = param$temperature[i] + 273.15,
+                                   P = param$pressure[i],
+                                   bdot = param$acc.rate[i])
 
-    # convert diffusion length from [cm] to [yr]
-    sig.yr <- 1e-2 * sig.cm * (HL$rho / param$acc.rate[i])
-    
-    # diffusion length in [yr] on equidistant time grid
-    sigma[, 1]     <- seq_len(nt) * t.res
-    sigma[, i + 1] <- approx(t / t.res, sig.yr, seq_len(nt), rule = 2)$y
-    
+  # convert diffusion length from [cm] to [yr]
+  sig.yr <- 1e-2 * sig.cm * (HL$rho / param$acc.rate[i])
+  
+  # diffusion length in [yr] on equidistant time grid
+  sigma[, 1]     <- seq_len(nt) * t.res
+  sigma[, i + 1] <- approx(t / t.res, sig.yr, seq_len(nt), rule = 2)$y
+  
 }
 
 # Store results
@@ -167,24 +167,24 @@ sigma <- array(dim = c(nt, nc + 1))
 
 for (i in 1 : nc) {
 
-    HL  <- FirnR::DensityHL(depth = depth,
-                            rho.surface = rho.surface,
-                            T = param$temperature[i] + 273.15,
-                            bdot = param$acc.rate[i])
+  HL  <- FirnR::DensityHL(depth = depth,
+                          rho.surface = rho.surface,
+                          T = param$temperature[i] + 273.15,
+                          bdot = param$acc.rate[i])
 
-    t <- HL$depth.we * 1000 / param$acc.rate[i]
+  t <- HL$depth.we * 1000 / param$acc.rate[i]
 
-    sig.cm <- FirnR::DiffusionLength(depth = depth,
-                                     rho = HL$rho,
-                                     T = param$temperature[i] + 273.15,
-                                     P = param$pressure[i],
-                                     bdot = param$acc.rate[i])
+  sig.cm <- FirnR::DiffusionLength(depth = depth,
+                                   rho = HL$rho,
+                                   T = param$temperature[i] + 273.15,
+                                   P = param$pressure[i],
+                                   bdot = param$acc.rate[i])
 
-    sig.yr <- 1e-2 * sig.cm * (HL$rho / param$acc.rate[i])
-    
-    sigma[, 1]     <- seq_len(nt) * t.res
-    sigma[, i + 1] <- approx(t / t.res, sig.yr, seq_len(nt), rule = 2)$y
-    
+  sig.yr <- 1e-2 * sig.cm * (HL$rho / param$acc.rate[i])
+  
+  sigma[, 1]     <- seq_len(nt) * t.res
+  sigma[, i + 1] <- approx(t / t.res, sig.yr, seq_len(nt), rule = 2)$y
+  
 }
 
 sigma <- as.data.frame(sigma)
@@ -203,24 +203,24 @@ sigma <- array(dim = c(nt, nc + 1))
 
 for (i in 1 : nc) {
 
-    HL  <- FirnR::DensityHL(depth = depth,
-                            rho.surface = rho.surface,
-                            T = param$temperature[i] + 273.15,
-                            bdot = param$acc.rate[i])
+  HL  <- FirnR::DensityHL(depth = depth,
+                          rho.surface = rho.surface,
+                          T = param$temperature[i] + 273.15,
+                          bdot = param$acc.rate[i])
 
-    t <- HL$depth.we * 1000 / param$acc.rate[i]
+  t <- HL$depth.we * 1000 / param$acc.rate[i]
 
-    sig.cm <- FirnR::DiffusionLength(depth = depth,
-                                     rho = HL$rho,
-                                     T = param$temperature[i] + 273.15,
-                                     P = param$pressure[i],
-                                     bdot = param$acc.rate[i])
+  sig.cm <- FirnR::DiffusionLength(depth = depth,
+                                   rho = HL$rho,
+                                   T = param$temperature[i] + 273.15,
+                                   P = param$pressure[i],
+                                   bdot = param$acc.rate[i])
 
-    sig.yr <- 1e-2 * sig.cm * (HL$rho / param$acc.rate[i])
-    
-    sigma[, 1]     <- seq_len(nt) * t.res
-    sigma[, i + 1] <- approx(t / t.res, sig.yr, seq_len(nt), rule = 2)$y
-    
+  sig.yr <- 1e-2 * sig.cm * (HL$rho / param$acc.rate[i])
+  
+  sigma[, 1]     <- seq_len(nt) * t.res
+  sigma[, i + 1] <- approx(t / t.res, sig.yr, seq_len(nt), rule = 2)$y
+  
 }
 
 sigma <- as.data.frame(sigma)

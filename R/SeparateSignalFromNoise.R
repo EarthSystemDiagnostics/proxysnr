@@ -43,73 +43,73 @@
 SeparateSignalFromNoise <- function(spectra, neff = spectra$N,
                                     diffusion = NULL, time.uncertainty = NULL) {
 
-    # error checking
+  # error checking
 
-    if (is.null(neff)) {
-        stop("Supply (effective) number of records.")
-    }
+  if (is.null(neff)) {
+    stop("Supply (effective) number of records.")
+  }
 
-    if (any(is.na(match(c("mean", "stack"), names(spectra))))) {
-        stop("Input list of spectra does not seem to have the right format.")
-    }
+  if (any(is.na(match(c("mean", "stack"), names(spectra))))) {
+    stop("Input list of spectra does not seem to have the right format.")
+  }
 
-    if (is.null(diffusion)) {
-        diffusion <- 1
-    } else {
-        if (length(diffusion) != length(spectra$mean$freq)) {
-            stop("Length of diffusion correction does not match length of
+  if (is.null(diffusion)) {
+    diffusion <- 1
+  } else {
+    if (length(diffusion) != length(spectra$mean$freq)) {
+      stop("Length of diffusion correction does not match length of
         spectral estimates.")
-        }
     }
+  }
 
-    if (is.null(time.uncertainty)) {
-        time.uncertainty <- 1
-    } else {
-        if (length(time.uncertainty) != length(spectra$mean$freq)) {
-            stop("Length of time uncertainty correction does not match length of
+  if (is.null(time.uncertainty)) {
+    time.uncertainty <- 1
+  } else {
+    if (length(time.uncertainty) != length(spectra$mean$freq)) {
+      stop("Length of time uncertainty correction does not match length of
         spectral estimates.")
-        }
     }
+  }
 
 
-    # calculate the signal and noise spectra
-    
-    d.corr <- diffusion
-    t.corr <- time.uncertainty
+  # calculate the signal and noise spectra
+  
+  d.corr <- diffusion
+  t.corr <- time.uncertainty
 
-    N <- neff
-    n <- N / (N - t.corr)
+  N <- neff
+  n <- N / (N - t.corr)
 
-    corr.fac <- n * d.corr
+  corr.fac <- n * d.corr
 
-    mean  <- spectra$mean
-    stack <- spectra$stack
-    
-    signal <- list()
-    noise  <- list()
-    snr    <- list()
+  mean  <- spectra$mean
+  stack <- spectra$stack
+  
+  signal <- list()
+  noise  <- list()
+  snr    <- list()
 
-    signal$freq <- mean$freq
-    noise$freq  <- mean$freq
-    snr$freq    <- mean$freq
+  signal$freq <- mean$freq
+  noise$freq  <- mean$freq
+  snr$freq    <- mean$freq
 
-    signal$spec <- t.corr * corr.fac * (stack$spec - mean$spec / N)
-    noise$spec  <- corr.fac * (mean$spec - t.corr * stack$spec)
+  signal$spec <- t.corr * corr.fac * (stack$spec - mean$spec / N)
+  noise$spec  <- corr.fac * (mean$spec - t.corr * stack$spec)
 
-    snr$spec <- signal$spec / noise$spec
+  snr$spec <- signal$spec / noise$spec
 
-    
-    # Organize output
+  
+  # Organize output
 
-    class(signal) <- "spec"
-    class(noise)  <- "spec"
-    class(snr)    <- "spec"
-    
-    res <- list(
-        signal  = signal,
-        noise   = noise,
-        snr     = snr)
+  class(signal) <- "spec"
+  class(noise)  <- "spec"
+  class(snr)    <- "spec"
+  
+  res <- list(
+    signal  = signal,
+    noise   = noise,
+    snr     = snr)
 
-    return(res)
+  return(res)
 
 }

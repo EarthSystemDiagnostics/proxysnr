@@ -59,95 +59,95 @@
 CalculateDiffusionTF <- function(nt, nc, ns, sigma, res = 1, window = NULL,
                                  coherent = FALSE, ...) {
 
-    # convert sigma vector into array if necessary and check for dimensions
-    if (is.null(dim(sigma))) {
-        
-        if (length(sigma) != nt) {
-            stop("Invalid length of supplied vector of diffusion lengths.")
-        }
-        
-        sigma <- array(sigma, dim = c(nt, nc))
+  # convert sigma vector into array if necessary and check for dimensions
+  if (is.null(dim(sigma))) {
+    
+    if (length(sigma) != nt) {
+      stop("Invalid length of supplied vector of diffusion lengths.")
+    }
+    
+    sigma <- array(sigma, dim = c(nt, nc))
 
+  } else {
+
+    if (prod(dim(sigma)) != (nt * nc)) {
+      stop("Invalid dimensions of supplied array of diffusion lengths.")
+    }
+
+  }
+
+  if ((nw <- length(window)) > 0) {
+
+    if (nw != 2) stop("`window` must have length two.", call. = FALSE)
+    if (window[2] <= window[1])
+      stop("`window[2]` must be > `window[1]`.", call. = FALSE)
+    if (window[1] < 1) stop("`window[1] must be >= 1.", call. = FALSE)
+    if (window[2] > nt)
+      stop("`window[2] is > total number of time points.", call. = FALSE)
+
+    k <- window[1] : window[2]
+
+  } else {
+
+    k <- seq_len(nt)
+
+  }
+
+  # create 'nc' white noise time series, diffuse them, and calculate their
+  # average; repeat 'ns' times
+  
+  stack.signal <- array(dim = c(nt, ns))
+  stack.diff   <- array(dim = c(nt, ns))
+
+  for (i in 1 : ns) {
+
+    if (coherent) {
+      X <- array(stats::rnorm(nt), dim = c(nt, nc))
     } else {
+      X <- array(stats::rnorm(nt * nc), dim = c(nt, nc))
+    }
+    
+    Xdiff <- array(dim = c(nt, nc))
 
-        if (prod(dim(sigma)) != (nt * nc)) {
-            stop("Invalid dimensions of supplied array of diffusion lengths.")
-        }
+    for (j in 1 : nc) {
 
+      Xdiff[, j] <- DiffuseRecord(X[, j], sigma = sigma[, j], res = res)
     }
 
-    if ((nw <- length(window)) > 0) {
+    stack.signal[, i] <- rowMeans(X)
+    stack.diff[, i]   <- rowMeans(Xdiff)
 
-      if (nw != 2) stop("`window` must have length two.", call. = FALSE)
-      if (window[2] <= window[1])
-        stop("`window[2]` must be > `window[1]`.", call. = FALSE)
-      if (window[1] < 1) stop("`window[1] must be >= 1.", call. = FALSE)
-      if (window[2] > nt)
-        stop("`window[2] is > total number of time points.", call. = FALSE)
-
-      k <- window[1] : window[2]
-
-    } else {
-
-      k <- seq_len(nt)
-
-    }
-
-    # create 'nc' white noise time series, diffuse them, and calculate their
-    # average; repeat 'ns' times
-    
-    stack.signal <- array(dim = c(nt, ns))
-    stack.diff   <- array(dim = c(nt, ns))
-
-    for (i in 1 : ns) {
-
-        if (coherent) {
-            X <- array(stats::rnorm(nt), dim = c(nt, nc))
-        } else {
-            X <- array(stats::rnorm(nt * nc), dim = c(nt, nc))
-        }
-        
-        Xdiff <- array(dim = c(nt, nc))
-
-        for (j in 1 : nc) {
-
-            Xdiff[, j] <- DiffuseRecord(X[, j], sigma = sigma[, j], res = res)
-        }
-
-        stack.signal[, i] <- rowMeans(X)
-        stack.diff[, i]   <- rowMeans(Xdiff)
-
-    }
+  }
 
 
-    # calculate spectra of the 'ns' average diffused and undiffused noise series
+  # calculate spectra of the 'ns' average diffused and undiffused noise series
 
-    signal.spec <- lapply(seq_len(ncol(stack.signal)), function(i) {
-        SpecMTM(stats::ts(stack.signal[k, i], deltat = res), ...)})
+  signal.spec <- lapply(seq_len(ncol(stack.signal)), function(i) {
+    SpecMTM(stats::ts(stack.signal[k, i], deltat = res), ...)})
 
-    diff.spec <- lapply(seq_len(ncol(stack.diff)), function(i) {
-        SpecMTM(stats::ts(stack.diff[k, i], deltat = res), ...)})
-
-
-    # calculate the average over all 'ns' simulations
-
-    signal.spec.mean <- MeanSpectrum(signal.spec)
-    diff.spec.mean   <- MeanSpectrum(diff.spec)
+  diff.spec <- lapply(seq_len(ncol(stack.diff)), function(i) {
+    SpecMTM(stats::ts(stack.diff[k, i], deltat = res), ...)})
 
 
-    # return average undiffused and diffused spectra and the corresponding
-    # ratio (transfer function) as a list
-    
-    res <- list()
-    res$signal     <- signal.spec.mean
-    res$diffused   <- diff.spec.mean
-    res$ratio$freq <- res$signal$freq
-    res$ratio$spec <- res$diff$spec / res$signal$spec
+  # calculate the average over all 'ns' simulations
 
-    class(res$ratio) <- "spec"
+  signal.spec.mean <- MeanSpectrum(signal.spec)
+  diff.spec.mean   <- MeanSpectrum(diff.spec)
 
-    return(res)
-    
+
+  # return average undiffused and diffused spectra and the corresponding
+  # ratio (transfer function) as a list
+  
+  res <- list()
+  res$signal     <- signal.spec.mean
+  res$diffused   <- diff.spec.mean
+  res$ratio$freq <- res$signal$freq
+  res$ratio$spec <- res$diff$spec / res$signal$spec
+
+  class(res$ratio) <- "spec"
+
+  return(res)
+  
 }
 
 #' Diffuse a record

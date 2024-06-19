@@ -111,65 +111,65 @@ CalculateTimeUncertaintyTF <- function(t = 100 : 1, acp = c(t[1], NA),
                                        resize = 1, surrogate.fun = stats::rnorm,
                                        fun.par = NULL, pad = TRUE, ...) {
 
-    # check if package simproxyage is available
-    if (!requireNamespace("simproxyage", quietly = TRUE)) {
-        stop(paste("Package \"simproxyage\" not found.",
-                   "Please install from GitHub;",
-                   "see '?CalculateTimeUncertaintyTF'"),
-             call. = FALSE)
-    }
+  # check if package simproxyage is available
+  if (!requireNamespace("simproxyage", quietly = TRUE)) {
+    stop(paste("Package \"simproxyage\" not found.",
+               "Please install from GitHub;",
+               "see '?CalculateTimeUncertaintyTF'"),
+         call. = FALSE)
+  }
 
 
-    # Monte Carlo simulation of age uncertainty for a core array
-    arg <- c(list(
-        t = t,
-        acp = acp,
-        nt = nt,
-        nc = nc,
-        ns = ns,
-        model = model,
-        rate = rate,
-        resize = resize,
-        surrogate.fun = surrogate.fun),
-        fun.par)
+  # Monte Carlo simulation of age uncertainty for a core array
+  arg <- c(list(
+    t = t,
+    acp = acp,
+    nt = nt,
+    nc = nc,
+    ns = ns,
+    model = model,
+    rate = rate,
+    resize = resize,
+    surrogate.fun = surrogate.fun),
+    fun.par)
 
-    run <- do.call(simproxyage::MonteCarloArray, args = arg)
-    
-    
-    # pad potential NA's at the end of the age-perturbed time series with zero
-    stacks <- run$stacks
-    if (pad) {
-        stacks[which(is.na(run$stacks))] <- 0
-    }
-
-
-    # calculate spectra of the 'ns' input and age-perturbed time series
-
-    stacks.spec <- lapply(seq_len(ncol(stacks)), function(i) {
-        SpecMTM(stats::ts(stacks[, i], deltat = 1), ...)})
-
-    input.spec <- lapply(seq_len(ncol(run$input)), function(i) {
-        SpecMTM(stats::ts(run$input[, i], deltat = 1), ...)})
+  run <- do.call(simproxyage::MonteCarloArray, args = arg)
+  
+  
+  # pad potential NA's at the end of the age-perturbed time series with zero
+  stacks <- run$stacks
+  if (pad) {
+    stacks[which(is.na(run$stacks))] <- 0
+  }
 
 
-    # calculate the average over all 'ns' simulations
+  # calculate spectra of the 'ns' input and age-perturbed time series
 
-    stacks.spec.mean <- MeanSpectrum(stacks.spec)
-    input.spec.mean  <- MeanSpectrum(input.spec)
+  stacks.spec <- lapply(seq_len(ncol(stacks)), function(i) {
+    SpecMTM(stats::ts(stacks[, i], deltat = 1), ...)})
+
+  input.spec <- lapply(seq_len(ncol(run$input)), function(i) {
+    SpecMTM(stats::ts(run$input[, i], deltat = 1), ...)})
 
 
-    # return average input and age-perturbed spectra and the corresponding
-    # ratio (transfer function) as a list
+  # calculate the average over all 'ns' simulations
 
-    res <- list()
-    res$input <- input.spec.mean
-    res$stack <- stacks.spec.mean
-    res$ratio$freq <- stacks.spec.mean$freq
-    res$ratio$spec <- stacks.spec.mean$spec / input.spec.mean$spec
+  stacks.spec.mean <- MeanSpectrum(stacks.spec)
+  input.spec.mean  <- MeanSpectrum(input.spec)
 
-    class(res$ratio) <- "spec"
 
-    return(res)
+  # return average input and age-perturbed spectra and the corresponding
+  # ratio (transfer function) as a list
+
+  res <- list()
+  res$input <- input.spec.mean
+  res$stack <- stacks.spec.mean
+  res$ratio$freq <- stacks.spec.mean$freq
+  res$ratio$spec <- stacks.spec.mean$spec / input.spec.mean$spec
+
+  class(res$ratio) <- "spec"
+
+  return(res)
 
 }
 

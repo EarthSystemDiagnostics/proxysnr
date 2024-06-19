@@ -36,68 +36,68 @@
 PublicationSNR <- function(spec.dml1, spec.dml2, spec.wais,
                            dml.knit.f = 0.1, df.log = 0.125) {
 
-    # Combine DML1 and DML2 spectra
+  # Combine DML1 and DML2 spectra
 
-    idx.knit1 <- which(spec.dml1$signal$freq > dml.knit.f)
-    idx.knit2 <- which(spec.dml2$signal$freq < dml.knit.f)
+  idx.knit1 <- which(spec.dml1$signal$freq > dml.knit.f)
+  idx.knit2 <- which(spec.dml2$signal$freq < dml.knit.f)
 
-    dml.signal <- list()
-    dml.signal$freq <- c(spec.dml2$signal$freq[idx.knit2],
-                         spec.dml1$signal$freq[idx.knit1])
-    dml.signal$spec <- c(spec.dml2$signal$spec[idx.knit2],
-                         spec.dml1$signal$spec[idx.knit1])
+  dml.signal <- list()
+  dml.signal$freq <- c(spec.dml2$signal$freq[idx.knit2],
+                       spec.dml1$signal$freq[idx.knit1])
+  dml.signal$spec <- c(spec.dml2$signal$spec[idx.knit2],
+                       spec.dml1$signal$spec[idx.knit1])
 
-    dml.noise <- dml.signal
-    dml.noise$spec <- c(spec.dml2$noise$spec[idx.knit2],
-                        spec.dml1$noise$spec[idx.knit1])
+  dml.noise <- dml.signal
+  dml.noise$spec <- c(spec.dml2$noise$spec[idx.knit2],
+                      spec.dml1$noise$spec[idx.knit1])
 
-    dml.f.cutoff <- spec.dml1$f.cutoff
-    dml.f.cutoff[1] <- which(dml.signal$freq == spec.dml1$f.cutoff[2])
-
-
-    # Smooth DML & WAIS signal and noise and calculate SNR
-
-    if (!is.null(df.log)) {
-
-        dml.signal <- LogSmooth(dml.signal, df.log = df.log)
-        dml.noise  <- LogSmooth(dml.noise, df.log = df.log)
-
-        wais.signal <- LogSmooth(spec.wais$signal, df.log = df.log)
-        wais.noise  <- LogSmooth(spec.wais$noise, df.log = df.log)
-    }
-
-    dml.snr <- list()
-    dml.snr$freq <- dml.signal$freq
-    dml.snr$spec <- dml.signal$spec / dml.noise$spec
-
-    wais.snr <- list()
-    wais.snr$freq <- wais.signal$freq
-    wais.snr$spec <- wais.signal$spec / wais.noise$spec
+  dml.f.cutoff <- spec.dml1$f.cutoff
+  dml.f.cutoff[1] <- which(dml.signal$freq == spec.dml1$f.cutoff[2])
 
 
-    # Organize output
+  # Smooth DML & WAIS signal and noise and calculate SNR
 
-    res <- list()
+  if (!is.null(df.log)) {
 
-    class(dml.signal) <- "spec"
-    class(dml.noise)  <- "spec"
-    class(dml.snr)    <- "spec"
+    dml.signal <- LogSmooth(dml.signal, df.log = df.log)
+    dml.noise  <- LogSmooth(dml.noise, df.log = df.log)
 
-    class(wais.signal) <- "spec"
-    class(wais.noise)  <- "spec"
-    class(wais.snr)    <- "spec"
+    wais.signal <- LogSmooth(spec.wais$signal, df.log = df.log)
+    wais.noise  <- LogSmooth(spec.wais$noise, df.log = df.log)
+  }
 
-    res$dml$signal   <- dml.signal
-    res$dml$noise    <- dml.noise
-    res$dml$snr      <- dml.snr
-    res$dml$f.cutoff <- dml.f.cutoff
+  dml.snr <- list()
+  dml.snr$freq <- dml.signal$freq
+  dml.snr$spec <- dml.signal$spec / dml.noise$spec
 
-    res$wais$signal   <- wais.signal
-    res$wais$noise    <- wais.noise
-    res$wais$snr      <- wais.snr
-    res$wais$f.cutoff <- spec.wais$f.cutoff
+  wais.snr <- list()
+  wais.snr$freq <- wais.signal$freq
+  wais.snr$spec <- wais.signal$spec / wais.noise$spec
 
-    return(res)
+
+  # Organize output
+
+  res <- list()
+
+  class(dml.signal) <- "spec"
+  class(dml.noise)  <- "spec"
+  class(dml.snr)    <- "spec"
+
+  class(wais.signal) <- "spec"
+  class(wais.noise)  <- "spec"
+  class(wais.snr)    <- "spec"
+
+  res$dml$signal   <- dml.signal
+  res$dml$noise    <- dml.noise
+  res$dml$snr      <- dml.snr
+  res$dml$f.cutoff <- dml.f.cutoff
+
+  res$wais$signal   <- wais.signal
+  res$wais$noise    <- wais.noise
+  res$wais$snr      <- wais.snr
+  res$wais$f.cutoff <- spec.wais$f.cutoff
+
+  return(res)
 
 }
 
@@ -116,183 +116,183 @@ PublicationSNR <- function(spec.dml1, spec.dml2, spec.wais,
 muench_laepple_fig02 <- function(spec, f.cut = FALSE) {
 
 
-    # --------------------------------------------------------------------------
-    # Graphics settings
-    
-    ylabel <- expression("Power spectral density " * "(\u2030"^{2}%.%"yr)")
-    ylim <- c(5e-2, 1e1)
-    y.at <- c(0.05, 0.1, 0.5, 1, 5)
-    removeLast <- 1
+  # --------------------------------------------------------------------------
+  # Graphics settings
+  
+  ylabel <- expression("Power spectral density " * "(\u2030"^{2}%.%"yr)")
+  ylim <- c(5e-2, 1e1)
+  y.at <- c(0.05, 0.1, 0.5, 1, 5)
+  removeLast <- 1
 
-    op <- graphics::par(mar = c(0, 0, 0, 0), las = 1,
-                        oma = c(5, 10, 2, 0.5), mfcol = c(2, 2),
-                        cex.main = 1.5, cex.lab = 1.5, cex.axis = 1.5)
-    on.exit(graphics::par(op))
+  op <- graphics::par(mar = c(0, 0, 0, 0), las = 1,
+                      oma = c(5, 10, 2, 0.5), mfcol = c(2, 2),
+                      cex.main = 1.5, cex.lab = 1.5, cex.axis = 1.5)
+  on.exit(graphics::par(op))
 
-    
-    # --------------------------------------------------------------------------
-    # Plot DML signal spectra
+  
+  # --------------------------------------------------------------------------
+  # Plot DML signal spectra
 
-    LPlot(spec$dml1$raw$signal, bPeriod = TRUE, bNoPlot = TRUE, axes = FALSE,
-          xlim = c(500, 2), ylim = ylim, xlab = "", ylab = "")
-    graphics::axis(2, at = y.at, labels = y.at)
-    graphics::box()
+  LPlot(spec$dml1$raw$signal, bPeriod = TRUE, bNoPlot = TRUE, axes = FALSE,
+        xlim = c(500, 2), ylim = ylim, xlab = "", ylab = "")
+  graphics::axis(2, at = y.at, labels = y.at)
+  graphics::box()
 
-    graphics::mtext(ylabel, side = 2, line = 4.5, las = 0,
-                    cex = graphics::par()$cex.lab)
-    graphics::mtext("DML", side = 2, line = 8, las = 0,
-                    cex = graphics::par()$cex.lab)
-    graphics::mtext("Signal", side = 3, line = 0.5, las = 0, adj = 0.99,
-                    padj = 0.3, col = "dodgerblue4",
-                    cex = graphics::par()$cex.lab)
-    graphics::mtext("a", side = 3, adj = 0.01, padj = 0.5,
-                    line = -1, font = 2, cex = graphics::par()$cex.lab)
+  graphics::mtext(ylabel, side = 2, line = 4.5, las = 0,
+                  cex = graphics::par()$cex.lab)
+  graphics::mtext("DML", side = 2, line = 8, las = 0,
+                  cex = graphics::par()$cex.lab)
+  graphics::mtext("Signal", side = 3, line = 0.5, las = 0, adj = 0.99,
+                  padj = 0.3, col = "dodgerblue4",
+                  cex = graphics::par()$cex.lab)
+  graphics::mtext("a", side = 3, adj = 0.01, padj = 0.5,
+                  line = -1, font = 2, cex = graphics::par()$cex.lab)
 
-    if (f.cut)
-        removeLast <- length(
-            spec$dml1$corr.full$f.cutoff[1] : length(spec$dml1$raw$signal$freq))
-    
-    LLines(spec$dml1$raw$signal, conf = FALSE, bPeriod = TRUE,
-           removeFirst = 1, removeLast = removeLast,
-           col = "dodgerblue4", lwd = 1.5, lty = 3)
-    LLines(spec$dml1$corr.t$signal, conf = FALSE, bPeriod = TRUE,
-           removeFirst = 1, removeLast = removeLast,
-           col = "dodgerblue4", lwd = 1.5, lty = 5)
-    LLines(spec$dml1$corr.full$signal, conf = FALSE, bPeriod = TRUE,
-           removeFirst = 1, removeLast = removeLast,
-           col = "dodgerblue4", lwd = 3, lty = 1)
+  if (f.cut)
+    removeLast <- length(
+      spec$dml1$corr.full$f.cutoff[1] : length(spec$dml1$raw$signal$freq))
+  
+  LLines(spec$dml1$raw$signal, conf = FALSE, bPeriod = TRUE,
+         removeFirst = 1, removeLast = removeLast,
+         col = "dodgerblue4", lwd = 1.5, lty = 3)
+  LLines(spec$dml1$corr.t$signal, conf = FALSE, bPeriod = TRUE,
+         removeFirst = 1, removeLast = removeLast,
+         col = "dodgerblue4", lwd = 1.5, lty = 5)
+  LLines(spec$dml1$corr.full$signal, conf = FALSE, bPeriod = TRUE,
+         removeFirst = 1, removeLast = removeLast,
+         col = "dodgerblue4", lwd = 3, lty = 1)
 
-    if (f.cut)
-        removeLast <- length(
-            spec$dml2$corr.full$f.cutoff[1] : length(spec$dml2$raw$signal$freq))
-    
-    LLines(spec$dml2$raw$signal, conf = FALSE, bPeriod = TRUE,
-           removeFirst = 1, removeLast = removeLast,
-           col = "black", lwd = 1.5, lty = 3)
-    LLines(spec$dml2$corr.t$signal, conf = FALSE, bPeriod = TRUE,
-           removeFirst = 1, removeLast = removeLast,
-           col = "black", lwd = 1.5, lty = 5)
-    LLines(spec$dml2$corr.full$signal, conf = FALSE, bPeriod = TRUE,
-           removeFirst = 1, removeLast = removeLast,
-           col = "black", lwd = 3, lty = 1)
+  if (f.cut)
+    removeLast <- length(
+      spec$dml2$corr.full$f.cutoff[1] : length(spec$dml2$raw$signal$freq))
+  
+  LLines(spec$dml2$raw$signal, conf = FALSE, bPeriod = TRUE,
+         removeFirst = 1, removeLast = removeLast,
+         col = "black", lwd = 1.5, lty = 3)
+  LLines(spec$dml2$corr.t$signal, conf = FALSE, bPeriod = TRUE,
+         removeFirst = 1, removeLast = removeLast,
+         col = "black", lwd = 1.5, lty = 5)
+  LLines(spec$dml2$corr.full$signal, conf = FALSE, bPeriod = TRUE,
+         removeFirst = 1, removeLast = removeLast,
+         col = "black", lwd = 3, lty = 1)
 
-    graphics::legend("bottomleft", c("DML1", "DML2"), lty = 1, lwd = 2,
-                     col = c("dodgerblue4", "black"),  seg.len = 3,
-                     bty = "n", cex = 1.25)
-    graphics::legend("bottomleft",
-                     c("Uncorrected signal", "Corrected for time uncertainty",
-                       "Corrected for time uncertainty + diffusion"),
-                     lwd = c(1.5, 1.5, 2), lty = c(3, 5, 1), col = "darkgrey",
-                     inset = c(0.225, 0), seg.len = 3, bty = "n", cex = 1.25)
+  graphics::legend("bottomleft", c("DML1", "DML2"), lty = 1, lwd = 2,
+                   col = c("dodgerblue4", "black"),  seg.len = 3,
+                   bty = "n", cex = 1.25)
+  graphics::legend("bottomleft",
+                   c("Uncorrected signal", "Corrected for time uncertainty",
+                     "Corrected for time uncertainty + diffusion"),
+                   lwd = c(1.5, 1.5, 2), lty = c(3, 5, 1), col = "darkgrey",
+                   inset = c(0.225, 0), seg.len = 3, bty = "n", cex = 1.25)
 
-    # --------------------------------------------------------------------------
-    # Plot WAIS signal spectra
-    
-    LPlot(spec$wais$raw$signal, bPeriod = TRUE, bNoPlot = TRUE, axes = FALSE,
-          xlim = c(500, 2), ylim = ylim, xlab = "", ylab = "")
-    graphics::axis(1)
-    graphics::axis(2, at = y.at, labels = y.at)
-    graphics::box()
+  # --------------------------------------------------------------------------
+  # Plot WAIS signal spectra
+  
+  LPlot(spec$wais$raw$signal, bPeriod = TRUE, bNoPlot = TRUE, axes = FALSE,
+        xlim = c(500, 2), ylim = ylim, xlab = "", ylab = "")
+  graphics::axis(1)
+  graphics::axis(2, at = y.at, labels = y.at)
+  graphics::box()
 
-    graphics::mtext("Time period (yr)", side = 1, line = 3.5,
-                    cex = graphics::par()$cex.lab)
-    graphics::mtext(ylabel, side = 2, line = 4.5, las = 0,
-                    cex = graphics::par()$cex.lab)
-    graphics::mtext("WAIS", side = 2, line = 8, las = 0,
-                    cex = graphics::par()$cex.lab)
-    graphics::mtext("c", side = 3, adj = 0.01, padj = 0.5,
-                    line = -1, font = 2, cex = graphics::par()$cex.lab)
-    
-    if (f.cut)
-        removeLast <- length(
-            spec$wais$corr.full$f.cutoff[1] : length(spec$wais$raw$signal$freq))
+  graphics::mtext("Time period (yr)", side = 1, line = 3.5,
+                  cex = graphics::par()$cex.lab)
+  graphics::mtext(ylabel, side = 2, line = 4.5, las = 0,
+                  cex = graphics::par()$cex.lab)
+  graphics::mtext("WAIS", side = 2, line = 8, las = 0,
+                  cex = graphics::par()$cex.lab)
+  graphics::mtext("c", side = 3, adj = 0.01, padj = 0.5,
+                  line = -1, font = 2, cex = graphics::par()$cex.lab)
+  
+  if (f.cut)
+    removeLast <- length(
+      spec$wais$corr.full$f.cutoff[1] : length(spec$wais$raw$signal$freq))
 
-    LLines(spec$wais$raw$signal, conf = FALSE, bPeriod = TRUE,
-           removeFirst = 1, removeLast = removeLast,
-           col = "dodgerblue4", lwd = 1.5, lty = 3)
-    LLines(spec$wais$corr.t$signal, conf = FALSE, bPeriod = TRUE,
-           removeFirst = 1, removeLast = removeLast,
-           col = "dodgerblue4", lwd = 1.5, lty = 5)
-    LLines(spec$wais$corr.full$signal, conf = FALSE, bPeriod = TRUE,
-           removeFirst = 1, removeLast = removeLast,
-           col = "dodgerblue4", lwd = 3, lty = 1)
+  LLines(spec$wais$raw$signal, conf = FALSE, bPeriod = TRUE,
+         removeFirst = 1, removeLast = removeLast,
+         col = "dodgerblue4", lwd = 1.5, lty = 3)
+  LLines(spec$wais$corr.t$signal, conf = FALSE, bPeriod = TRUE,
+         removeFirst = 1, removeLast = removeLast,
+         col = "dodgerblue4", lwd = 1.5, lty = 5)
+  LLines(spec$wais$corr.full$signal, conf = FALSE, bPeriod = TRUE,
+         removeFirst = 1, removeLast = removeLast,
+         col = "dodgerblue4", lwd = 3, lty = 1)
 
-    #---------------------------------------------------------------------------
-    # Plot DML noise spectra
-    
-    LPlot(spec$dml1$raw$noise, bPeriod = TRUE, bNoPlot = TRUE, axes = FALSE,
-          xlim = c(500, 2), ylim = ylim, xlab = "", ylab = "")
-    graphics::box()
+  #---------------------------------------------------------------------------
+  # Plot DML noise spectra
+  
+  LPlot(spec$dml1$raw$noise, bPeriod = TRUE, bNoPlot = TRUE, axes = FALSE,
+        xlim = c(500, 2), ylim = ylim, xlab = "", ylab = "")
+  graphics::box()
 
-    graphics::mtext("Noise", side = 3, line = 0.5, las = 0, adj = 0.015,
-                    padj = 0.3, col = "firebrick4",
-                    cex = graphics::par()$cex.lab)
-    graphics::mtext("b", side = 3, adj = 0.01, padj = 0.5,
-                    line = -1, font = 2, cex = graphics::par()$cex.lab)
+  graphics::mtext("Noise", side = 3, line = 0.5, las = 0, adj = 0.015,
+                  padj = 0.3, col = "firebrick4",
+                  cex = graphics::par()$cex.lab)
+  graphics::mtext("b", side = 3, adj = 0.01, padj = 0.5,
+                  line = -1, font = 2, cex = graphics::par()$cex.lab)
 
-    if (f.cut)
-        removeLast <- length(
-            spec$dml1$corr.full$f.cutoff[1] : length(spec$dml1$raw$signal$freq))
-    
-    LLines(spec$dml1$raw$noise, conf = FALSE, bPeriod = TRUE,
-           removeFirst = 1, removeLast = removeLast,
-           col = "firebrick4", lwd = 1.5, lty = 3)
-    LLines(spec$dml1$corr.t$noise, conf = FALSE, bPeriod = TRUE,
-           removeFirst = 1, removeLast = removeLast,
-           col = "firebrick4", lwd = 1.5, lty = 5)
-    LLines(spec$dml1$corr.full$noise, conf = FALSE, bPeriod = TRUE,
-           removeFirst = 1, removeLast = removeLast,
-           col = "firebrick4", lwd = 3, lty = 1)
+  if (f.cut)
+    removeLast <- length(
+      spec$dml1$corr.full$f.cutoff[1] : length(spec$dml1$raw$signal$freq))
+  
+  LLines(spec$dml1$raw$noise, conf = FALSE, bPeriod = TRUE,
+         removeFirst = 1, removeLast = removeLast,
+         col = "firebrick4", lwd = 1.5, lty = 3)
+  LLines(spec$dml1$corr.t$noise, conf = FALSE, bPeriod = TRUE,
+         removeFirst = 1, removeLast = removeLast,
+         col = "firebrick4", lwd = 1.5, lty = 5)
+  LLines(spec$dml1$corr.full$noise, conf = FALSE, bPeriod = TRUE,
+         removeFirst = 1, removeLast = removeLast,
+         col = "firebrick4", lwd = 3, lty = 1)
 
-    if (f.cut)
-        removeLast <- length(
-            spec$dml2$corr.full$f.cutoff[1] : length(spec$dml2$raw$signal$freq))
-    
-    LLines(spec$dml2$raw$noise, conf = FALSE, bPeriod = TRUE,
-           removeFirst = 1, removeLast = removeLast,
-           col = "black", lwd = 1.5, lty = 3)
-    LLines(spec$dml2$corr.t$noise, conf = FALSE, bPeriod = TRUE,
-           removeFirst = 1, removeLast = removeLast,
-           col = "black", lwd = 1.5, lty = 5)
-    LLines(spec$dml2$corr.full$noise, conf = FALSE, bPeriod = TRUE,
-           removeFirst = 1, removeLast = removeLast,
-           col = "black", lwd = 3, lty = 1)
+  if (f.cut)
+    removeLast <- length(
+      spec$dml2$corr.full$f.cutoff[1] : length(spec$dml2$raw$signal$freq))
+  
+  LLines(spec$dml2$raw$noise, conf = FALSE, bPeriod = TRUE,
+         removeFirst = 1, removeLast = removeLast,
+         col = "black", lwd = 1.5, lty = 3)
+  LLines(spec$dml2$corr.t$noise, conf = FALSE, bPeriod = TRUE,
+         removeFirst = 1, removeLast = removeLast,
+         col = "black", lwd = 1.5, lty = 5)
+  LLines(spec$dml2$corr.full$noise, conf = FALSE, bPeriod = TRUE,
+         removeFirst = 1, removeLast = removeLast,
+         col = "black", lwd = 3, lty = 1)
 
-    graphics::legend("bottomleft", c("DML1", "DML2"), lty = 1, lwd = 2,
-                     col = c("firebrick4", "black"),  seg.len = 3,
-                     bty = "n", cex = 1.25)
-    graphics::legend("bottomleft",
-                     c("Uncorrected noise", "Corrected for time uncertainty",
-                       "Corrected for time uncertainty + diffusion"),
-                     lwd = c(1.5, 1.5, 2), lty = c(3, 5, 1), col = "darkgrey",
-                     inset = c(0.225, 0), seg.len = 3, bty = "n", cex = 1.25)
+  graphics::legend("bottomleft", c("DML1", "DML2"), lty = 1, lwd = 2,
+                   col = c("firebrick4", "black"),  seg.len = 3,
+                   bty = "n", cex = 1.25)
+  graphics::legend("bottomleft",
+                   c("Uncorrected noise", "Corrected for time uncertainty",
+                     "Corrected for time uncertainty + diffusion"),
+                   lwd = c(1.5, 1.5, 2), lty = c(3, 5, 1), col = "darkgrey",
+                   inset = c(0.225, 0), seg.len = 3, bty = "n", cex = 1.25)
 
-    #---------------------------------------------------------------------------
-    # Plot WAIS noise spectra
-    
-    LPlot(spec$wais$raw$noise, bPeriod = TRUE, bNoPlot = TRUE, axes = FALSE,
-          xlim = c(500, 2), ylim = ylim, xlab = "", ylab = "")
-    graphics::axis(1)
-    graphics::box()
+  #---------------------------------------------------------------------------
+  # Plot WAIS noise spectra
+  
+  LPlot(spec$wais$raw$noise, bPeriod = TRUE, bNoPlot = TRUE, axes = FALSE,
+        xlim = c(500, 2), ylim = ylim, xlab = "", ylab = "")
+  graphics::axis(1)
+  graphics::box()
 
-    graphics::mtext("Time period (yr)", side = 1, line = 3.5,
-                    cex = graphics::par()$cex.lab)
-    graphics::mtext("d", side = 3, adj = 0.01, padj = 0.5,
-                    line = -1, font = 2, cex = graphics::par()$cex.lab)
+  graphics::mtext("Time period (yr)", side = 1, line = 3.5,
+                  cex = graphics::par()$cex.lab)
+  graphics::mtext("d", side = 3, adj = 0.01, padj = 0.5,
+                  line = -1, font = 2, cex = graphics::par()$cex.lab)
 
-    if (f.cut)
-        removeLast <- length(
-            spec$wais$corr.full$f.cutoff[1] : length(spec$wais$raw$signal$freq))
+  if (f.cut)
+    removeLast <- length(
+      spec$wais$corr.full$f.cutoff[1] : length(spec$wais$raw$signal$freq))
 
-    LLines(spec$wais$raw$noise, conf = FALSE, bPeriod = TRUE,
-           removeFirst = 1, removeLast = removeLast,
-           col = "firebrick4", lwd = 1.5, lty = 3)
-    LLines(spec$wais$corr.t$noise, conf = FALSE, bPeriod = TRUE,
-           removeFirst = 1, removeLast = removeLast,
-           col = "firebrick4", lwd = 1.5, lty = 5)
-    LLines(spec$wais$corr.full$noise, conf = FALSE, bPeriod = TRUE,
-           removeFirst = 1, removeLast = removeLast,
-           col = "firebrick4", lwd = 3, lty = 1)
+  LLines(spec$wais$raw$noise, conf = FALSE, bPeriod = TRUE,
+         removeFirst = 1, removeLast = removeLast,
+         col = "firebrick4", lwd = 1.5, lty = 3)
+  LLines(spec$wais$corr.t$noise, conf = FALSE, bPeriod = TRUE,
+         removeFirst = 1, removeLast = removeLast,
+         col = "firebrick4", lwd = 1.5, lty = 5)
+  LLines(spec$wais$corr.full$noise, conf = FALSE, bPeriod = TRUE,
+         removeFirst = 1, removeLast = removeLast,
+         col = "firebrick4", lwd = 3, lty = 1)
 
 }
 
@@ -311,69 +311,69 @@ muench_laepple_fig02 <- function(spec, f.cut = FALSE) {
 ##' Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
 muench_laepple_fig05 <- function(SNR, TNS = t15.noise, f.cut = FALSE) {
 
-    # Graphics settings
+  # Graphics settings
 
-    xlab = "Time period (yr)"
-    xlim = c(50, 0.5)
-    xtm <- c(50, 20, 10, 5, 2, 1, 0.5)
-    ylab <- expression("Noise PSD " * "(\u2030"^{2}%.%"yr)")
-    ylim <- c(5e-2, 1e1)
-    ytm <- c(0.05, 0.1, 0.5, 1, 5, 10)
+  xlab = "Time period (yr)"
+  xlim = c(50, 0.5)
+  xtm <- c(50, 20, 10, 5, 2, 1, 0.5)
+  ylab <- expression("Noise PSD " * "(\u2030"^{2}%.%"yr)")
+  ylim <- c(5e-2, 1e1)
+  ytm <- c(0.05, 0.1, 0.5, 1, 5, 10)
 
-    removeLast <- 0
-    if (f.cut)
-        removeLast <-
-            length(SNR$dml$f.cutoff[1] : length(SNR$dml$noise$freq))
+  removeLast <- 0
+  if (f.cut)
+    removeLast <-
+      length(SNR$dml$f.cutoff[1] : length(SNR$dml$noise$freq))
 
-    op <- graphics::par(mar = c(5, 6.5, 0.5, 0.5), las = 1,
-                  cex.main = 1.5, cex.lab = 1.5, cex.axis = 1.25)
-    on.exit(graphics::par(op))
+  op <- graphics::par(mar = c(5, 6.5, 0.5, 0.5), las = 1,
+                      cex.main = 1.5, cex.lab = 1.5, cex.axis = 1.25)
+  on.exit(graphics::par(op))
 
-    # Plot final DML noise spectrum
+  # Plot final DML noise spectrum
 
-    LPlot(SNR$dml$noise, bPeriod = TRUE, bNoPlot = TRUE, axes = FALSE,
-          xlim = xlim, ylim = ylim, xlab = "", ylab = "")
+  LPlot(SNR$dml$noise, bPeriod = TRUE, bNoPlot = TRUE, axes = FALSE,
+        xlim = xlim, ylim = ylim, xlab = "", ylab = "")
 
-    LLines(SNR$dml$noise, conf = FALSE, bPeriod = TRUE,
-           removeFirst = 1, removeLast = removeLast,
-           col = "firebrick4", lwd = 3, lty = 1)
+  LLines(SNR$dml$noise, conf = FALSE, bPeriod = TRUE,
+         removeFirst = 1, removeLast = removeLast,
+         col = "firebrick4", lwd = 3, lty = 1)
 
-    # Plot trench noise spectrum
-    
-    i.remove <- c(1, 2, length(TNS$lower$freq))
+  # Plot trench noise spectrum
+  
+  i.remove <- c(1, 2, length(TNS$lower$freq))
 
-    # shaded spectral range according to upper/lower accumulation rate
-    graphics::polygon(
-        c(
-            1 / TNS$lower$freq[-i.remove],
-            rev(1 / TNS$upper$freq[-i.remove])),
-        c(
-            TNS$lower$spec[-i.remove],
-            rev(TNS$upper$spec[-i.remove])
-        ),
-        col = grDevices::adjustcolor("dodgerblue4", 0.2), border = NA)
+  # shaded spectral range according to upper/lower accumulation rate
+  graphics::polygon(
+              c(
+                1 / TNS$lower$freq[-i.remove],
+                rev(1 / TNS$upper$freq[-i.remove])),
+              c(
+                TNS$lower$spec[-i.remove],
+                rev(TNS$upper$spec[-i.remove])
+              ),
+              col = grDevices::adjustcolor("dodgerblue4", 0.2), border = NA)
 
-    # trench noise spectrum for mean accumulation rate
-    LLines(TNS$mean, conf = FALSE, bPeriod = TRUE,
-           removeFirst = 2, removeLast = 0,
-           col = "dodgerblue4", lwd = 3, lty = 1)
+  # trench noise spectrum for mean accumulation rate
+  LLines(TNS$mean, conf = FALSE, bPeriod = TRUE,
+         removeFirst = 2, removeLast = 0,
+         col = "dodgerblue4", lwd = 3, lty = 1)
 
-    # Axis and legends settings
+  # Axis and legends settings
 
-    graphics::axis(1, at = xtm, labels = xtm)
-    graphics::axis(2, at = ytm, labels = ytm)
+  graphics::axis(1, at = xtm, labels = xtm)
+  graphics::axis(2, at = ytm, labels = ytm)
 
-    graphics::mtext(xlab, side = 1, line = 3.5,
-                    cex = graphics::par()$cex.lab)
-    graphics::mtext(ylab, side = 2, line = 4.5, las = 0,
-                    cex = graphics::par()$cex.lab)
+  graphics::mtext(xlab, side = 1, line = 3.5,
+                  cex = graphics::par()$cex.lab)
+  graphics::mtext(ylab, side = 2, line = 4.5, las = 0,
+                  cex = graphics::par()$cex.lab)
 
-    graphics::legend("bottomleft", c("Array scale (DML data set)",
-                                     "Local scale (trench data set)"),
-                     col = c("firebrick4", "dodgerblue4"),
-                     seg.len = 3, lty = 1, lwd = 2, bty = "n")
+  graphics::legend("bottomleft", c("Array scale (DML data set)",
+                                   "Local scale (trench data set)"),
+                   col = c("firebrick4", "dodgerblue4"),
+                   seg.len = 3, lty = 1, lwd = 2, bty = "n")
 
-    graphics::par(op)
+  graphics::par(op)
 
 }
 

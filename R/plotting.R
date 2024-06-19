@@ -22,17 +22,17 @@
 ##' @noRd
 Polyplot <- function(x, y1, y2, col = "black", alpha = 0.2, ...) {
 
-    inp <- list(x, y1, y2)
-    if (stats::var(sapply(inp, length)) != 0)
-        stop("All input vectors must be of the same length.")
-    if (any(sapply(inp, function(x){any(is.na(x))})))
-        warning("Polyplot: Missing values as input.", call. = FALSE)
+  inp <- list(x, y1, y2)
+  if (stats::var(sapply(inp, length)) != 0)
+    stop("All input vectors must be of the same length.")
+  if (any(sapply(inp, function(x){any(is.na(x))})))
+    warning("Polyplot: Missing values as input.", call. = FALSE)
 
-    col <- grDevices::adjustcolor(col = col, alpha = alpha)
+  col <- grDevices::adjustcolor(col = col, alpha = alpha)
 
-    graphics::polygon(c(x, rev(x)), c(y1, rev(y2)),
-                      col = col, border = NA, ...)
-    
+  graphics::polygon(c(x, rev(x)), c(y1, rev(y2)),
+                    col = col, border = NA, ...)
+  
 }
 
 ##' Log-log spectral plot
@@ -66,31 +66,31 @@ LPlot <- function(x, conf = TRUE, bPeriod = FALSE, bNoPlot = FALSE, axes = TRUE,
                   col = "black", alpha = 0.2, removeFirst = 0, removeLast = 0,
                   xlab = "f", ylab = "PSD", xlim = NULL, ylim = NULL, ...) {
 
-    if (bPeriod) {
-        x$freq <- 1 / x$freq
-        if (is.null(xlim)) xlim <- rev(range(x$freq))
-        if (xlab == "f") xlab <- "period"
-    }
+  if (bPeriod) {
+    x$freq <- 1 / x$freq
+    if (is.null(xlim)) xlim <- rev(range(x$freq))
+    if (xlab == "f") xlab <- "period"
+  }
 
-    index <- (removeFirst + 1) : (length(x$freq) - removeLast)
-    
-    x$freq  <- x$freq[index]
-    x$spec  <- x$spec[index]
-    x$lim.1 <- x$lim.1[index]
-    x$lim.2 <- x$lim.2[index]
+  index <- (removeFirst + 1) : (length(x$freq) - removeLast)
+  
+  x$freq  <- x$freq[index]
+  x$spec  <- x$spec[index]
+  x$lim.1 <- x$lim.1[index]
+  x$lim.2 <- x$lim.2[index]
 
-    graphics::plot(x$freq, x$spec, type = "n", log = "xy",
-                   xlab = xlab, ylab = ylab, xlim = xlim, ylim = ylim,
-                   axes = axes, ...)
+  graphics::plot(x$freq, x$spec, type = "n", log = "xy",
+                 xlab = xlab, ylab = ylab, xlim = xlim, ylim = ylim,
+                 axes = axes, ...)
 
-    lim <- !is.null(x$lim.1) & !is.null(x$lim.2)
-    if (conf & lim & !bNoPlot) {
-        Polyplot(x = x$freq, y1 = x$lim.1, y2 = x$lim.2,
-                 col = col, alpha = alpha)
-    }
+  lim <- !is.null(x$lim.1) & !is.null(x$lim.2)
+  if (conf & lim & !bNoPlot) {
+    Polyplot(x = x$freq, y1 = x$lim.1, y2 = x$lim.2,
+             col = col, alpha = alpha)
+  }
 
-    if (!bNoPlot) graphics::lines(x$freq, x$spec, col = col, ...)
-    
+  if (!bNoPlot) graphics::lines(x$freq, x$spec, col = col, ...)
+  
 }
 
 ##' Add spectrum to existing log-log spectral plot
@@ -113,23 +113,23 @@ LPlot <- function(x, conf = TRUE, bPeriod = FALSE, bNoPlot = FALSE, axes = TRUE,
 LLines<-function(x, conf = TRUE, bPeriod = FALSE, col = "black", alpha = 0.2,
                  removeFirst = 0, removeLast = 0, ...) {
 
-    if (bPeriod) x$freq <- 1 / x$freq
-    
-    index <- (removeFirst + 1) : (length(x$freq) - removeLast)
+  if (bPeriod) x$freq <- 1 / x$freq
+  
+  index <- (removeFirst + 1) : (length(x$freq) - removeLast)
 
-    x$freq  <- x$freq[index]
-    x$spec  <- x$spec[index]
-    x$lim.1 <- x$lim.1[index]
-    x$lim.2 <- x$lim.2[index]
+  x$freq  <- x$freq[index]
+  x$spec  <- x$spec[index]
+  x$lim.1 <- x$lim.1[index]
+  x$lim.2 <- x$lim.2[index]
 
-    lim <- !is.null(x$lim.1) & !is.null(x$lim.2)
-    if (conf & lim) {
-        Polyplot(x = x$freq, y1 = x$lim.1, y2 = x$lim.2,
-                 col = col, alpha = alpha)
-    }
-    
-    graphics::lines(x$freq, x$spec, col = col, ...)
-    
+  lim <- !is.null(x$lim.1) & !is.null(x$lim.2)
+  if (conf & lim) {
+    Polyplot(x = x$freq, y1 = x$lim.1, y2 = x$lim.2,
+             col = col, alpha = alpha)
+  }
+  
+  graphics::lines(x$freq, x$spec, col = col, ...)
+  
 }
 
 # ------------------------------------------------------------------------------
@@ -188,96 +188,96 @@ PlotArraySpectra <- function(spec, f.cutoff = NA,
                              xtm = NULL, ytm = NULL,
                              xtl = NULL, ytl = NULL) {
 
-    # Gather input
+  # Gather input
+  
+  N <- length(spec$single)    
+  psd1 <- spec$mean
+  psd2 <- spec$stack
+  psd3 <- psd1
+  psd3$spec <- psd3$spec / N
+
+  # Axis settings
+
+  if (plt.ann == "default") {
+    set.xlab <- "Time period (yr)"
+    set.ylab <- expression("Power spectral density " * "(\u2030"^{2}%.%"yr)")
+    set.xtm <- NULL
+    set.xtl <- NULL
+    set.ytm <- 10^(seq(log10(ylim[1]), log10(ylim[2]), by = 1))
+    set.ytl <- format(set.ytm,
+                      scientific = FALSE, trim = TRUE, drop0trailing = TRUE)
+  } else {
+    stop("Invalid axis annotation setting.")
+  }
+  if (!is.null(xlab)) set.xlab = xlab
+  if (!is.null(ylab)) set.ylab = ylab
+  if (!is.null(xtm)) {set.xtm = xtm; set.xtl = xtl}
+  if (!is.null(ytm)) {set.ytm = ytm; set.ytl = ytl}
+  
+  # Plot parameters
+
+  op <- graphics::par(mar = c(5, 6.5, 0.5, 0.5), las = 1,
+                      cex.main = 1.5, cex.lab = 1.5, cex.axis = 1.25)
+  on.exit(graphics::par(op))
+
+  # Plot frame
+  
+  LPlot(psd1, bPeriod = TRUE, bNoPlot = TRUE, axes = FALSE,
+        xlim = xlim, ylim = ylim, xlab = "", ylab = "")
+
+  # Shadings
+  
+  i.remove <- c(1, length(psd1$freq))
+
+  Polyplot(1 / psd1$freq[-i.remove],
+           psd1$spec[-i.remove], psd2$spec[-i.remove],
+           col = col.sn[2], alpha = alpha.sn)
+  Polyplot(1 / psd1$freq[-i.remove],
+           psd2$spec[-i.remove], psd3$spec[-i.remove],
+           col = col.sn[1], alpha = alpha.sn)
+
+  # Frequency cutoff line
+
+  graphics::lines(x = rep(1 / f.cutoff, 2), y = c(ylim[1]/10, ylim[2]),
+                  lty = 2, col = "darkgrey")
+
+  # Individual spectra
+
+  for (i in 1 : N) {
     
-    N <- length(spec$single)    
-    psd1 <- spec$mean
-    psd2 <- spec$stack
-    psd3 <- psd1
-    psd3$spec <- psd3$spec / N
-
-    # Axis settings
-
-    if (plt.ann == "default") {
-        set.xlab <- "Time period (yr)"
-        set.ylab <- expression("Power spectral density " * "(\u2030"^{2}%.%"yr)")
-        set.xtm <- NULL
-        set.xtl <- NULL
-        set.ytm <- 10^(seq(log10(ylim[1]), log10(ylim[2]), by = 1))
-        set.ytl <- format(set.ytm,
-                          scientific = FALSE, trim = TRUE, drop0trailing = TRUE)
-    } else {
-        stop("Invalid axis annotation setting.")
-    }
-    if (!is.null(xlab)) set.xlab = xlab
-    if (!is.null(ylab)) set.ylab = ylab
-    if (!is.null(xtm)) {set.xtm = xtm; set.xtl = xtl}
-    if (!is.null(ytm)) {set.ytm = ytm; set.ytl = ytl}
-        
-    # Plot parameters
-
-    op <- graphics::par(mar = c(5, 6.5, 0.5, 0.5), las = 1,
-                        cex.main = 1.5, cex.lab = 1.5, cex.axis = 1.25)
-    on.exit(graphics::par(op))
-
-    # Plot frame
-    
-    LPlot(psd1, bPeriod = TRUE, bNoPlot = TRUE, axes = FALSE,
-          xlim = xlim, ylim = ylim, xlab = "", ylab = "")
-
-    # Shadings
-    
-    i.remove <- c(1, length(psd1$freq))
-
-    Polyplot(1 / psd1$freq[-i.remove],
-             psd1$spec[-i.remove], psd2$spec[-i.remove],
-             col = col.sn[2], alpha = alpha.sn)
-    Polyplot(1 / psd1$freq[-i.remove],
-             psd2$spec[-i.remove], psd3$spec[-i.remove],
-             col = col.sn[1], alpha = alpha.sn)
-
-    # Frequency cutoff line
-
-    graphics::lines(x = rep(1 / f.cutoff, 2), y = c(ylim[1]/10, ylim[2]),
-                    lty = 2, col = "darkgrey")
-
-    # Individual spectra
-
-    for (i in 1 : N) {
-        
-        LLines(spec$single[[i]], conf = FALSE, bPeriod = TRUE,
-               removeFirst = 1, removeLast = 1,
-               col = col[1])
-    }
-
-    # Main spectra
-
-    LLines(psd1, conf = FALSE, bPeriod = TRUE,
+    LLines(spec$single[[i]], conf = FALSE, bPeriod = TRUE,
            removeFirst = 1, removeLast = 1,
-           col = col[2], lwd = 3)
-    LLines(psd2, conf = FALSE, bPeriod = TRUE,
-           removeFirst = 1, removeLast = 1,
-           col = col[3], lwd = 3)
-    LLines(psd3, conf = FALSE, bPeriod = TRUE,
-           removeFirst = 1, removeLast = 1,
-           col = col[2], lwd = 1.5, lty = 5)
+           col = col[1])
+  }
 
-    # Axis and legend settings
+  # Main spectra
 
-    graphics::axis(1, at = set.xtm, labels = set.xtl)
-    graphics::axis(2, at = set.ytm, labels = set.ytl)
+  LLines(psd1, conf = FALSE, bPeriod = TRUE,
+         removeFirst = 1, removeLast = 1,
+         col = col[2], lwd = 3)
+  LLines(psd2, conf = FALSE, bPeriod = TRUE,
+         removeFirst = 1, removeLast = 1,
+         col = col[3], lwd = 3)
+  LLines(psd3, conf = FALSE, bPeriod = TRUE,
+         removeFirst = 1, removeLast = 1,
+         col = col[2], lwd = 1.5, lty = 5)
 
-    graphics::mtext(set.xlab, side = 1, line = 3.5,
-                    cex = graphics::par()$cex.lab)
-    graphics::mtext(set.ylab, side = 2, line = 4.5,
-                    cex = graphics::par()$cex.lab, las = 0)
+  # Axis and legend settings
 
-    graphics::legend("bottomleft",
-                     c("Individual spectra", "Mean spectrum",
-                       "Spectrum of stacked record", "Mean spectrum scaled by 1/n"),
-                     col = c(col[1 : 3], col[2]),
-                     lty = c(1, 1, 1, 5),
-                     lwd = c(1, 2, 2, 1), seg.len = 2.5, bty = "n")
+  graphics::axis(1, at = set.xtm, labels = set.xtl)
+  graphics::axis(2, at = set.ytm, labels = set.ytl)
+
+  graphics::mtext(set.xlab, side = 1, line = 3.5,
+                  cex = graphics::par()$cex.lab)
+  graphics::mtext(set.ylab, side = 2, line = 4.5,
+                  cex = graphics::par()$cex.lab, las = 0)
+
+  graphics::legend("bottomleft",
+                   c("Individual spectra", "Mean spectrum",
+                     "Spectrum of stacked record", "Mean spectrum scaled by 1/n"),
+                   col = c(col[1 : 3], col[2]),
+                   lty = c(1, 1, 1, 5),
+                   lwd = c(1, 2, 2, 1), seg.len = 2.5, bty = "n")
 
 }
 
@@ -334,86 +334,86 @@ PlotSNR <- function(spec, f.cut = FALSE,
                     xtm = NULL, ytm = NULL,
                     xtl = NULL, ytl = NULL) {
 
-    if (length(col) != length(spec)) col <- rep(col, length.out = length(spec))
+  if (length(col) != length(spec)) col <- rep(col, length.out = length(spec))
 
-    # Axis settings
-    
-    if (plt.ann == "default") {
-        set.xlab <- "Time period (yr)"
-        set.ylab <- "Signal-to-Noise Ratio"
-        set.xtm <- NULL
-        set.xtl <- NULL
-        set.ytm <- c(0.05, 0.1, 0.5, 1, 5)
-        set.ytl <- set.ytm
-    } else {
-        stop("Invalid axis annotation setting.")
+  # Axis settings
+  
+  if (plt.ann == "default") {
+    set.xlab <- "Time period (yr)"
+    set.ylab <- "Signal-to-Noise Ratio"
+    set.xtm <- NULL
+    set.xtl <- NULL
+    set.ytm <- c(0.05, 0.1, 0.5, 1, 5)
+    set.ytl <- set.ytm
+  } else {
+    stop("Invalid axis annotation setting.")
+  }
+  if (!is.null(xlab)) set.xlab = xlab
+  if (!is.null(ylab)) set.ylab = ylab
+  if (!is.null(xtm)) {set.xtm = xtm; set.xtl = xtl}
+  if (!is.null(ytm)) {set.ytm = ytm; set.ytl = ytl}
+
+  op <- graphics::par(mar = c(5, 6, 0.5, 0.5), las = 1,
+                      cex.main = 1.5, cex.lab = 1.5, cex.axis = 1.25)
+  on.exit(graphics::par(op))
+
+  # Plot SNR
+
+  plot.snr <- function(snr, xlim, ylim, lwd, col,
+                       conf, removeF, removeL, add = FALSE) {
+
+    if (!add) {
+      LPlot(snr, bPeriod = TRUE, bNoPlot = TRUE, axes = FALSE,
+            xlim = xlim, ylim = ylim, xlab = "", ylab = "")
     }
-    if (!is.null(xlab)) set.xlab = xlab
-    if (!is.null(ylab)) set.ylab = ylab
-    if (!is.null(xtm)) {set.xtm = xtm; set.xtl = xtl}
-    if (!is.null(ytm)) {set.ytm = ytm; set.ytl = ytl}
-
-    op <- graphics::par(mar = c(5, 6, 0.5, 0.5), las = 1,
-                  cex.main = 1.5, cex.lab = 1.5, cex.axis = 1.25)
-    on.exit(graphics::par(op))
-
-    # Plot SNR
-
-    plot.snr <- function(snr, xlim, ylim, lwd, col,
-                         conf, removeF, removeL, add = FALSE) {
-
-        if (!add) {
-            LPlot(snr, bPeriod = TRUE, bNoPlot = TRUE, axes = FALSE,
-                  xlim = xlim, ylim = ylim, xlab = "", ylab = "")
-        }
 
     LLines(snr, conf = conf, bPeriod = TRUE,
            removeFirst = removeF, removeLast = removeL,
            col = col, lwd = lwd)
 
+  }
+
+  for (i in 1 : length(spec)) {
+
+    add <- ifelse(i == 1, FALSE, TRUE)
+
+    removeL <- 0
+    if (f.cut) {
+      idx <- spec[[i]]$f.cutoff[1]
+      if (is.null(idx)) {
+        warning(
+          "f.cut = TRUE but no cutoff frequency specified in input.")
+      } else {
+        removeLast <-
+          length(idx : length(spec[[i]]$snr$freq))
+      }
     }
-
-    for (i in 1 : length(spec)) {
-
-        add <- ifelse(i == 1, FALSE, TRUE)
-
-        removeL <- 0
-        if (f.cut) {
-            idx <- spec[[i]]$f.cutoff[1]
-            if (is.null(idx)) {
-                warning(
-                    "f.cut = TRUE but no cutoff frequency specified in input.")
-            } else {
-                removeLast <-
-                    length(idx : length(spec[[i]]$snr$freq))
-            }
-        }
-        
-        plot.snr(spec[[i]]$snr, xlim = xlim, ylim = ylim, lwd = 2, col = col[i],
-                 conf = FALSE, removeF = 1, removeL = removeLast, add = add)
-
-    }
-
-    # Axis and legends settings
     
-    graphics::axis(1, at = set.xtm, labels = set.xtl)
-    graphics::axis(2, at = set.ytm, labels = set.ytl)
-    graphics::mtext(set.xlab, side = 1, line = 3.5,
-                    cex = graphics::par()$cex.lab)
-    graphics::mtext(set.ylab, side = 2, line = 4.25,
-                    cex = graphics::par()$cex.lab, las = 0)
+    plot.snr(spec[[i]]$snr, xlim = xlim, ylim = ylim, lwd = 2, col = col[i],
+             conf = FALSE, removeF = 1, removeL = removeLast, add = add)
 
-    if (is.null(names)) {
-        names <- names(spec)
-        if (is.null(names))
-            names <- paste("data", 1 : length(spec), sep = "")
-    }
-    if (length(names) != length(spec))
-        warning("Number of data sets does not match given nuber of names.",
-                call. = FALSE)
-    graphics::legend("topleft", legend = names, col = col,
-                     seg.len = 3, lty = 1, lwd = 2, bty = "n")
-    
+  }
+
+  # Axis and legends settings
+  
+  graphics::axis(1, at = set.xtm, labels = set.xtl)
+  graphics::axis(2, at = set.ytm, labels = set.ytl)
+  graphics::mtext(set.xlab, side = 1, line = 3.5,
+                  cex = graphics::par()$cex.lab)
+  graphics::mtext(set.ylab, side = 2, line = 4.25,
+                  cex = graphics::par()$cex.lab, las = 0)
+
+  if (is.null(names)) {
+    names <- names(spec)
+    if (is.null(names))
+      names <- paste("data", 1 : length(spec), sep = "")
+  }
+  if (length(names) != length(spec))
+    warning("Number of data sets does not match given nuber of names.",
+            call. = FALSE)
+  graphics::legend("topleft", legend = names, col = col,
+                   seg.len = 3, lty = 1, lwd = 2, bty = "n")
+  
 }
     
 ##' Plot proxy stack correlation
@@ -490,95 +490,95 @@ PlotStackCorrelation <- function(freq, correlation, col.pal,
                                  xtm.min = NULL, ytm.min = NULL,
                                  xlim = NA, ylim = NA) {
 
-    # Error checking
-    if (length(freq) != ncol(correlation)) {
-        stop("'freq' vs. 'corr.': Dimensions of input data do not match.")
-    }
-    if (n != nrow(correlation)) {
-        stop("'n' vs. 'corr.': Dimensions of input data do not match.")
-    }
+  # Error checking
+  if (length(freq) != ncol(correlation)) {
+    stop("'freq' vs. 'corr.': Dimensions of input data do not match.")
+  }
+  if (n != nrow(correlation)) {
+    stop("'n' vs. 'corr.': Dimensions of input data do not match.")
+  }
 
-    if (plt.ann == "default") {
-        set.xlab <- "Number of cores"
-        set.ylab <- "Averaging period (yr)"
-        set.xtm <- c(1, 2, 5, 10, 20)
-        set.xtl <- set.xtm
-        set.ytm <- c(2, 5, 10, 20, 50)
-        set.ytl <- set.ytm
-        set.xtm.min <- c(3, 4, 6 : 9, 11 : 19)
-        set.ytm.min <- c(3, 4, 6 : 9, 30, 40)
+  if (plt.ann == "default") {
+    set.xlab <- "Number of cores"
+    set.ylab <- "Averaging period (yr)"
+    set.xtm <- c(1, 2, 5, 10, 20)
+    set.xtl <- set.xtm
+    set.ytm <- c(2, 5, 10, 20, 50)
+    set.ytl <- set.ytm
+    set.xtm.min <- c(3, 4, 6 : 9, 11 : 19)
+    set.ytm.min <- c(3, 4, 6 : 9, 30, 40)
+  } else {
+    stop("Invalid axis annotation setting.")
+  }
+  if (!is.null(xlab)) set.xlab = xlab
+  if (!is.null(ylab)) set.ylab = ylab
+  if (!is.null(xtm)) {set.xtm = xtm; set.xtl = xtl}
+  if (!is.null(ytm)) {set.ytm = ytm; set.ytl = ytl}
+  if (!is.null(xtm.min)) set.xtm.min <- xtm.min
+  if (!is.null(ytm.min)) set.ytm.min <- ytm.min
+
+  # Gather input data and transform to log scale
+  x <- 1 : n
+  x <- log(x)
+  
+  y <- 2 * freq
+  y <- rev(1 / y)
+  y <- log(y)
+
+  # Graphics settings
+  
+  op <- graphics::par(mar = c(5, 5, 2, 0.5), las = 1,
+                      cex.main = 1.5, cex.lab = 1.5, cex.axis = 1.25)
+  on.exit(graphics::par(op))
+
+  if (length(xlim) == 1) {
+    if (is.na(xlim)) {
+      xlim <- range(x, finite = TRUE)
     } else {
-        stop("Invalid axis annotation setting.")
+      stop("Invalid x limit setting.")
     }
-    if (!is.null(xlab)) set.xlab = xlab
-    if (!is.null(ylab)) set.ylab = ylab
-    if (!is.null(xtm)) {set.xtm = xtm; set.xtl = xtl}
-    if (!is.null(ytm)) {set.ytm = ytm; set.ytl = ytl}
-    if (!is.null(xtm.min)) set.xtm.min <- xtm.min
-    if (!is.null(ytm.min)) set.ytm.min <- ytm.min
-
-    # Gather input data and transform to log scale
-    x <- 1 : n
-    x <- log(x)
-    
-    y <- 2 * freq
-    y <- rev(1 / y)
-    y <- log(y)
-
-    # Graphics settings
-    
-    op <- graphics::par(mar = c(5, 5, 2, 0.5), las = 1,
-                        cex.main = 1.5, cex.lab = 1.5, cex.axis = 1.25)
-    on.exit(graphics::par(op))
-
-    if (length(xlim) == 1) {
-        if (is.na(xlim)) {
-            xlim <- range(x, finite = TRUE)
-        } else {
-            stop("Invalid x limit setting.")
-        }
+  } else {
+    idx <- which(is.na(xlim))
+    xlim[idx] <- range(x, finite = TRUE)[idx]
+  }
+  if (length(ylim) == 1) {
+    if (is.na(ylim)) {
+      ylim <- range(y, finite = TRUE)
     } else {
-        idx <- which(is.na(xlim))
-        xlim[idx] <- range(x, finite = TRUE)[idx]
+      stop("Invalid y limit setting.")
     }
-    if (length(ylim) == 1) {
-        if (is.na(ylim)) {
-            ylim <- range(y, finite = TRUE)
-        } else {
-            stop("Invalid y limit setting.")
-        }
-    } else {
-        idx <- which(is.na(ylim))
-        ylim[idx] <- range(y, finite = TRUE)[idx]
-    }
-    
-    # Plot filled contour map
-    graphics::filled.contour(x, y, correlation,
-      color.palette = col.pal,
-      xlim = xlim, ylim = ylim,
-      zlim = c(0, 1),
-      plot.title = graphics::title(xlab = set.xlab, ylab = set.ylab),
-      plot.axes =
-        {
-          graphics::contour(x, y, correlation,
-                            add = TRUE, labcex = 1, lwd = 1);
-          graphics::axis(1, at = log(set.xtm), label = set.xtl);
-          graphics::axis(1, at = log(set.xtm.min), label = FALSE,
-                         tcl = 0.5 * graphics::par("tcl"));
-          graphics::axis(2, at = log(set.ytm), label = set.ytl);
-          graphics::axis(2, at = log(set.ytm.min), label = FALSE,
-                         tcl = 0.5 * graphics::par("tcl"));
-        }
-      )
+  } else {
+    idx <- which(is.na(ylim))
+    ylim[idx] <- range(y, finite = TRUE)[idx]
+  }
+  
+  # Plot filled contour map
+  graphics::filled.contour(x, y, correlation,
+                           color.palette = col.pal,
+                           xlim = xlim, ylim = ylim,
+                           zlim = c(0, 1),
+                           plot.title = graphics::title(xlab = set.xlab, ylab = set.ylab),
+                           plot.axes =
+                             {
+                               graphics::contour(x, y, correlation,
+                                                 add = TRUE, labcex = 1, lwd = 1);
+                               graphics::axis(1, at = log(set.xtm), label = set.xtl);
+                               graphics::axis(1, at = log(set.xtm.min), label = FALSE,
+                                              tcl = 0.5 * graphics::par("tcl"));
+                               graphics::axis(2, at = log(set.ytm), label = set.ytl);
+                               graphics::axis(2, at = log(set.ytm.min), label = FALSE,
+                                              tcl = 0.5 * graphics::par("tcl"));
+                             }
+                           )
 
-    # Plot labels
-    op.usr <- graphics::par(usr = c(0, 1, 0, 1), xlog = FALSE, ylog = FALSE)
-    graphics::text(0.98, 0.5, labels = "Correlation",
-                   srt = -90, xpd = NA, cex = graphics::par()$cex.lab)
-    graphics::text(0.01, 1.04, adj = c(0, 0.5), labels = label,
-                   xpd = NA, cex = graphics::par()$cex.lab)
-    graphics::par(op.usr)
-    
+  # Plot labels
+  op.usr <- graphics::par(usr = c(0, 1, 0, 1), xlog = FALSE, ylog = FALSE)
+  graphics::text(0.98, 0.5, labels = "Correlation",
+                 srt = -90, xpd = NA, cex = graphics::par()$cex.lab)
+  graphics::text(0.01, 1.04, adj = c(0, 0.5), labels = label,
+                 xpd = NA, cex = graphics::par()$cex.lab)
+  graphics::par(op.usr)
+  
 }
 
 ##' Plot transfer functions
@@ -644,135 +644,135 @@ PlotTF <- function(dtf = NULL, ttf = NULL,
                    xtm = NULL, ytm1 = NULL, ytm2 = NULL,
                    xtl = NULL, ytl1 = NULL, ytl2 = NULL) {
 
-    # Gather or load transfer functions
+  # Gather or load transfer functions
+  
+  if (is.null(dtf)) dtf <- proxysnr::diffusion.tf
+  if (is.null(ttf)) ttf <- proxysnr::time.uncertainty.tf
+
+  # Axis settings
+
+  if (plt.ann == "default") {
+    set.xlab <- "Time period (yr)"
+    set.ylab1 <- expression(bar(G))
+    set.ylab2 <- expression(Phi)
+    set.xtm <- NULL
+    set.xtl <- NULL
+    set.ytm1 <- c(0.01, 0.05, 0.1, 0.5, 1, 5)
+    set.ytl1 <- set.ytm1
+    set.ytm2 <- c(0.2, 0.4, 0.6, 0.8, 1, 1.2)
+    set.ytl2 <- NULL
+  } else {
+    stop("Invalid axis annotation setting.")
+  }
+  if (!is.null(xlab)) set.xlab <- xlab
+  if (!is.null(ylab1)) set.ylab1 <- ylab1
+  if (!is.null(ylab2)) set.ylab2 <- ylab2
+  if (!is.null(xtm)) {set.xtm = xtm; set.xtl = xtl}
+  if (!is.null(ytm1)) {set.ytm1 = ytm1; set.ytl1 = ytl1}
+  if (!is.null(ytm2)) {set.ytm2 = ytm2; set.ytl2 = ytl2}
+
+  # Plot parameters
+
+  op <- graphics::par(mar = c(0, 0, 0, 0), las = 1,
+                      oma = c(5, 5, 0.5, 0.5), mfrow = c(2,1),
+                      cex.main = 1.5, cex.lab = 1.5, cex.axis = 1.25)
+  on.exit(graphics::par(op))
+
+  if (is.null(col)) col <- 1 : max(length(dtf), length(ttf))
+
+  if (is.null(names)) {
+    nam1 <- names(dtf)
+    nam2 <- names(ttf)
+    if (is.null(nam1))
+      nam1 <- paste("data", 1 : length(dtf), sep = "")
+    if (is.null(nam2))
+      nam2 <- paste("data", 1 : length(dtf), sep = "")
+  } else if (is.list(names)) {
+    nam1 <- names[[1]]
+    nam2 <- names[[2]]
+  } else {
+    nam1 <- nam2 <- names
+  }
+
+  if (length(nam1) != length(dtf))
+    warning("dtf: Number of data sets does not match number of names.",
+            call. = FALSE)
+  if (length(nam2) != length(ttf))
+    warning("ttf: Number of data sets does not match number of names.",
+            call. = FALSE)
+
+  if (!is.null(dtf.threshold)) {
+    f.cutoff <- sapply(dtf, function(x) {
+      x$freq[which(x$spec <= dtf.threshold)[1]]}
+      )
+  }
+  
+  # Wrapper function for the legend
+  
+  leg <- function(names, col) {
+    graphics::legend("bottomleft", legend = names,
+                     lwd = 2, lty = 1, col = col, bty = "n")
+  }
+
+  
+  # Plot diffusion transfer functions
+
+  ii <- length(dtf)
+  jj <- length(ttf)
+  
+  LPlot(dtf[[1]], bNoPlot = TRUE, bPeriod = TRUE, axes = FALSE,
+        xlab = "", ylab = "", xlim = xlim, ylim = ylim1)
+
+  for (i in 1 : ii) {
     
-    if (is.null(dtf)) dtf <- proxysnr::diffusion.tf
-    if (is.null(ttf)) ttf <- proxysnr::time.uncertainty.tf
-
-    # Axis settings
-
-    if (plt.ann == "default") {
-        set.xlab <- "Time period (yr)"
-        set.ylab1 <- expression(bar(G))
-        set.ylab2 <- expression(Phi)
-        set.xtm <- NULL
-        set.xtl <- NULL
-        set.ytm1 <- c(0.01, 0.05, 0.1, 0.5, 1, 5)
-        set.ytl1 <- set.ytm1
-        set.ytm2 <- c(0.2, 0.4, 0.6, 0.8, 1, 1.2)
-        set.ytl2 <- NULL
-    } else {
-        stop("Invalid axis annotation setting.")
-    }
-    if (!is.null(xlab)) set.xlab <- xlab
-    if (!is.null(ylab1)) set.ylab1 <- ylab1
-    if (!is.null(ylab2)) set.ylab2 <- ylab2
-    if (!is.null(xtm)) {set.xtm = xtm; set.xtl = xtl}
-    if (!is.null(ytm1)) {set.ytm1 = ytm1; set.ytl1 = ytl1}
-    if (!is.null(ytm2)) {set.ytm2 = ytm2; set.ytl2 = ytl2}
-
-    # Plot parameters
-
-    op <- graphics::par(mar = c(0, 0, 0, 0), las = 1,
-                        oma = c(5, 5, 0.5, 0.5), mfrow = c(2,1),
-                        cex.main = 1.5, cex.lab = 1.5, cex.axis = 1.25)
-    on.exit(graphics::par(op))
-
-    if (is.null(col)) col <- 1 : max(length(dtf), length(ttf))
-
-    if (is.null(names)) {
-        nam1 <- names(dtf)
-        nam2 <- names(ttf)
-        if (is.null(nam1))
-            nam1 <- paste("data", 1 : length(dtf), sep = "")
-        if (is.null(nam2))
-            nam2 <- paste("data", 1 : length(dtf), sep = "")
-    } else if (is.list(names)) {
-        nam1 <- names[[1]]
-        nam2 <- names[[2]]
-    } else {
-        nam1 <- nam2 <- names
-    }
-
-    if (length(nam1) != length(dtf))
-        warning("dtf: Number of data sets does not match number of names.",
-                call. = FALSE)
-    if (length(nam2) != length(ttf))
-        warning("ttf: Number of data sets does not match number of names.",
-                call. = FALSE)
+    LLines(dtf[[i]], bPeriod = TRUE, lwd = 2, col = col[i])
 
     if (!is.null(dtf.threshold)) {
-        f.cutoff <- sapply(dtf, function(x) {
-            x$freq[which(x$spec <= dtf.threshold)[1]]}
-            )
+      graphics::lines(x = rep(1 / f.cutoff[i], 2),
+                      y = c(ylim1[1] / 10, dtf.threshold),
+                      lwd = 1, lty = 2, col = col[i])
     }
-    
-    # Wrapper function for the legend
-    
-    leg <- function(names, col) {
-        graphics::legend("bottomleft", legend = names,
-                         lwd = 2, lty = 1, col = col, bty = "n")
-    }
+  }
 
-    
-    # Plot diffusion transfer functions
+  if (!is.null(dtf.threshold)) {
+    graphics::lines(x = c(2 * xlim[1], min(1 / f.cutoff[!is.na(f.cutoff)])),
+                    y = rep(dtf.threshold, 2),
+                    lwd = 1, lty = 2, col = "darkgrey")
+  }
 
-    ii <- length(dtf)
-    jj <- length(ttf)
-    
-    LPlot(dtf[[1]], bNoPlot = TRUE, bPeriod = TRUE, axes = FALSE,
-          xlab = "", ylab = "", xlim = xlim, ylim = ylim1)
+  graphics::mtext("a", side = 3, adj = 0.01, padj = 0.5,
+                  line = -1, font = 2, cex = graphics::par()$cex.lab)
+  graphics::mtext(set.ylab1, side = 2, line = 3.5,
+                  las = 0, cex = graphics::par()$cex.lab)
 
-    for (i in 1 : ii) {
-        
-        LLines(dtf[[i]], bPeriod = TRUE, lwd = 2, col = col[i])
+  graphics::axis(2, at = set.ytm1, labels = set.ytl1)
+  graphics::box()
 
-        if (!is.null(dtf.threshold)) {
-            graphics::lines(x = rep(1 / f.cutoff[i], 2),
-                            y = c(ylim1[1] / 10, dtf.threshold),
-                            lwd = 1, lty = 2, col = col[i])
-        }
-    }
-
-    if (!is.null(dtf.threshold)) {
-        graphics::lines(x = c(2 * xlim[1], min(1 / f.cutoff[!is.na(f.cutoff)])),
-                        y = rep(dtf.threshold, 2),
-                        lwd = 1, lty = 2, col = "darkgrey")
-    }
-
-    graphics::mtext("a", side = 3, adj = 0.01, padj = 0.5,
-                    line = -1, font = 2, cex = graphics::par()$cex.lab)
-    graphics::mtext(set.ylab1, side = 2, line = 3.5,
-                    las = 0, cex = graphics::par()$cex.lab)
-
-    graphics::axis(2, at = set.ytm1, labels = set.ytl1)
-    graphics::box()
-
-    # Place an extra legend if different number of data sets are used
-    if (ii != jj) leg(nam1, col)
+  # Place an extra legend if different number of data sets are used
+  if (ii != jj) leg(nam1, col)
 
 
-    # Plot time uncertainty transfer functions
+  # Plot time uncertainty transfer functions
 
-    LPlot(ttf$dml1, bNoPlot = TRUE, bPeriod = TRUE, axes = FALSE,
-          xlab = "", ylab = "", xlim = xlim, ylim = ylim2)
+  LPlot(ttf$dml1, bNoPlot = TRUE, bPeriod = TRUE, axes = FALSE,
+        xlab = "", ylab = "", xlim = xlim, ylim = ylim2)
 
-    for (i in 1 : jj) {
-        LLines(ttf[[i]], bPeriod = TRUE, lwd = 2, col = col[i])
-    }
+  for (i in 1 : jj) {
+    LLines(ttf[[i]], bPeriod = TRUE, lwd = 2, col = col[i])
+  }
 
-    graphics::mtext("b", side = 3, adj = 0.01, padj = 0.5,
-                    line = -1, font = 2, cex = graphics::par()$cex.lab)
-    graphics::mtext(set.ylab2, side = 2, line = 3.5,
-                    las = 0, cex = graphics::par()$cex.lab)
-    graphics::mtext(set.xlab, side = 1, line = 3.5,
-                    las = 0, cex = graphics::par()$cex.lab)
+  graphics::mtext("b", side = 3, adj = 0.01, padj = 0.5,
+                  line = -1, font = 2, cex = graphics::par()$cex.lab)
+  graphics::mtext(set.ylab2, side = 2, line = 3.5,
+                  las = 0, cex = graphics::par()$cex.lab)
+  graphics::mtext(set.xlab, side = 1, line = 3.5,
+                  las = 0, cex = graphics::par()$cex.lab)
 
-    graphics::axis(1, at = set.xtm, labels = set.xtl)
-    graphics::axis(2, at = set.ytm2, labels = set.ytl2)
-    graphics::box()
+  graphics::axis(1, at = set.xtm, labels = set.xtl)
+  graphics::axis(2, at = set.ytm2, labels = set.ytl2)
+  graphics::box()
 
-    leg(nam2, col)
+  leg(nam2, col)
 
 }
-    
+
