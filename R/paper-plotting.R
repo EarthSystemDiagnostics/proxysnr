@@ -77,7 +77,9 @@ PublicationSNR <- function(spec,
                       spec.dml1$noise$spec[idx.knit1])
 
   dml.f.cutoff <- spec.dml1$f.cutoff
-  dml.f.cutoff[1] <- which(dml.signal$freq == spec.dml1$f.cutoff[2])
+  if (length(dml.f.cutoff) == 2) {
+    dml.f.cutoff[1] <- which(dml.signal$freq == spec.dml1$f.cutoff[2])
+  }
 
 
   # Smooth DML & WAIS signal and noise and calculate SNR
