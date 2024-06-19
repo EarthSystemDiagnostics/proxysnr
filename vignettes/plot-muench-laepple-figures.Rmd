@@ -88,7 +88,7 @@ PlotArraySpectra(ObtainArraySpectra(dml$dml1, df.log = 0.12),
 ### Plot DML and WAIS signal and noise spectra (Figure 2)
 
 ```{r, warning = FALSE, message = FALSE, fig.width = 14, fig.height = 10.36}
-proxysnr:::muench_laepple_fig02(DWS, f.cut = TRUE)
+proxysnr:::muench_laepple_fig02(DWS)
 ```
 
 ### Plot frequency dependence of signal-to-noise ratios (Figure 3)
@@ -155,7 +155,7 @@ is supplied in the internal package variable `t15.noise` and automatically
 loaded by the plotting function:
 
 ```{r, fig.width = 7, fig.height = 6}
-proxysnr:::muench_laepple_fig05(SNR, f.cut = TRUE)
+proxysnr:::muench_laepple_fig05(SNR)
 ```
 
 ## Literature cited

@@ -111,7 +111,7 @@ PublicationSNR <- function(spec.dml1, spec.dml2, spec.wais,
 #'
 #' @param spec output from \code{\link{WrapSpectralResults}}.
 #' @param f.cut Shall the spectra be cut at the cutoff frequency constrained
-#'   by the diffusion correction strength? Defaults to \code{FALSE}.
+#'   by the diffusion correction strength? Defaults to \code{TRUE}.
 #'
 #' @author Thomas Münch
 #' @seealso \code{\link{WrapSpectralResults}}
@@ -121,7 +121,9 @@ PublicationSNR <- function(spec.dml1, spec.dml2, spec.wais,
 #' decadal- to centennial-scale isotope variations from Antarctic ice cores?
 #' Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
 #'
-muench_laepple_fig02 <- function(spec, f.cut = FALSE) {
+#' @noRd
+#'
+muench_laepple_fig02 <- function(spec, f.cut = TRUE) {
 
 
   # --------------------------------------------------------------------------
@@ -312,7 +314,7 @@ muench_laepple_fig02 <- function(spec, f.cut = FALSE) {
 #' @param SNR output from \code{\link{PublicationSNR}}.
 #' @param TNS T15 trench noise spectra; per default loaded from internal data.
 #' @param f.cut Shall the spectra be cut at the cutoff frequency constrained
-#'   by the diffusion correction strength? Defaults to \code{FALSE}.
+#'   by the diffusion correction strength? Defaults to \code{TRUE}.
 #'
 #' @author Thomas Münch
 #' @seealso \code{\link{PublicationSNR}}
@@ -322,7 +324,9 @@ muench_laepple_fig02 <- function(spec, f.cut = FALSE) {
 #' decadal- to centennial-scale isotope variations from Antarctic ice cores?
 #' Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
 #'
-muench_laepple_fig05 <- function(SNR, TNS = t15.noise, f.cut = FALSE) {
+#' @noRd
+#'
+muench_laepple_fig05 <- function(SNR, TNS = t15.noise, f.cut = TRUE) {
 
   # Graphics settings
 
