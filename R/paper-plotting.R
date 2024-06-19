@@ -50,7 +50,7 @@ PublicationSNR <- function(spec,
 
   for (i in 1 : length(spec)) {
 
-    if (!hasName(spec[[i]], nm)) {
+    if (!all(utils::hasName(spec[[i]], nm))) {
       stop(paste0("No version `", nm, "` available for dataset `",
                   names.spec[i], "`."), call. = FALSE)
     }

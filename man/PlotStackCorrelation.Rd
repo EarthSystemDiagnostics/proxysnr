@@ -5,10 +5,8 @@
 \title{Plot proxy stack correlation}
 \usage{
 PlotStackCorrelation(
-  freq,
-  correlation,
+  data,
   col.pal,
-  n = nrow(correlation),
   label = "",
   plt.ann = "default",
   xlab = NULL,
@@ -24,21 +22,18 @@ PlotStackCorrelation(
 )
 }
 \arguments{
-\item{freq}{frequency axis of the underlying proxy data set to obtain an
-axis for the temporal averaging period; its length must match
-\code{ncol(correlation)}.}
-
-\item{correlation}{a \code{n * m} matrix of correlation values where the
-number of columns, \code{m}, corresponds to the number of frequency values
-at which the correlation has been evaluated, i.e. \code{length(freq)}, and
-the number of rows, \code{n}, to the total number of records averaged.}
+\item{data}{a list of the correlation data (e.g. as output by
+\code{\link{ObtainStackCorrelation}}), which must have two elements:
+\code{freq} and \code{correlation}, where \code{freq} contains the
+frequency axis of the underlying proxy data set (to obtain an axis for the
+temporal averaging period), and where \code{correlation} is a \code{n * m}
+matrix of the correlation values. The number of columns of
+\code{correlation} must match the number of frequency values (i.e. the
+length of \code{freq}), and the row index stands for the number of proxy
+records averaged.}
 
 \item{col.pal}{a color palette function to be used to assign colors in the
 plot.}
-
-\item{n}{the total number of records averaged; thus, the correlation map is
-shown for records averaged from 1 to \code{n}. Per default set to the
-number of rows in \code{correlation}.}
 
 \item{label}{an optional label of the data set to be displayed at the top
 of the plot.}
@@ -109,8 +104,8 @@ crl <- ObtainStackCorrelation(SNR$dml, N = 1 : 20,
 # Plot it
 library(RColorBrewer)
 palette <- colorRampPalette(rev(RColorBrewer::brewer.pal(10, "RdYlBu")))
-PlotStackCorrelation(freq = crl$freq, correlation = crl$correlation,
-          col.pal = palette, label = "DML", ylim = c(NA, log(50)))
+PlotStackCorrelation(data = crl, col.pal = palette,
+                     label = "DML", ylim = c(NA, log(50)))
 
 }
 \references{

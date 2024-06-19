@@ -134,15 +134,15 @@ palette <- colorRampPalette(rev(RColorBrewer::brewer.pal(10, "RdYlBu")))
 Plot the figure for DML:
 
 ```{r, fig.width = 8, fig.height = 6.3}
-PlotStackCorrelation(freq = crl1$freq, correlation = crl1$correlation,
-                     col.pal = palette, label = expression(bold("a.")~"DML"),
+PlotStackCorrelation(data = crl1, col.pal = palette,
+                     label = expression(bold("a.")~"DML"),
                      ylim = c(NA, log(50)))
 ```
 
 Plot the figure for WAIS:
 ```{r, fig.width = 8, fig.height = 6.3}
-PlotStackCorrelation(freq = crl2$freq, correlation = crl2$correlation,
-                     col.pal = palette, label = expression(bold("b.")~"WAIS"),
+PlotStackCorrelation(data = crl2, col.pal = palette,
+                     label = expression(bold("b.")~"WAIS"),
                      ylim = c(NA, log(50)))
 ```
 

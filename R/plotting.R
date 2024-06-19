@@ -444,18 +444,17 @@ PlotSNR <- function(spec, f.cut = FALSE,
 #' averaged and their temporal resolution, such as in Fig. 4 in Münch and
 #' Laepple, 2018.
 #'
-#' @param freq frequency axis of the underlying proxy data set to obtain an
-#'   axis for the temporal averaging period; its length must match
-#'   \code{ncol(correlation)}.
-#' @param correlation a \code{n * m} matrix of correlation values where the
-#'   number of columns, \code{m}, corresponds to the number of frequency values
-#'   at which the correlation has been evaluated, i.e. \code{length(freq)}, and
-#'   the number of rows, \code{n}, to the total number of records averaged.
+#' @param data a list of the correlation data (e.g. as output by
+#'   \code{\link{ObtainStackCorrelation}}), which must have two elements:
+#'   \code{freq} and \code{correlation}, where \code{freq} contains the
+#'   frequency axis of the underlying proxy data set (to obtain an axis for the
+#'   temporal averaging period), and where \code{correlation} is a \code{n * m}
+#'   matrix of the correlation values. The number of columns of
+#'   \code{correlation} must match the number of frequency values (i.e. the
+#'   length of \code{freq}), and the row index stands for the number of proxy
+#'   records averaged.
 #' @param col.pal  a color palette function to be used to assign colors in the
 #'   plot.
-#' @param n the total number of records averaged; thus, the correlation map is
-#'   shown for records averaged from 1 to \code{n}. Per default set to the
-#'   number of rows in \code{correlation}.
 #' @param label an optional label of the data set to be displayed at the top
 #'   of the plot.
 #' @param plt.ann if \code{"default"} use axis annotation as in Fig. 4 of Münch
@@ -503,13 +502,12 @@ PlotSNR <- function(spec, f.cut = FALSE,
 #' # Plot it
 #' library(RColorBrewer)
 #' palette <- colorRampPalette(rev(RColorBrewer::brewer.pal(10, "RdYlBu")))
-#' PlotStackCorrelation(freq = crl$freq, correlation = crl$correlation,
-#'           col.pal = palette, label = "DML", ylim = c(NA, log(50)))
+#' PlotStackCorrelation(data = crl, col.pal = palette,
+#'                      label = "DML", ylim = c(NA, log(50)))
 #'
 #' @export
 #'
-PlotStackCorrelation <- function(freq, correlation, col.pal,
-                                 n = nrow(correlation),
+PlotStackCorrelation <- function(data, col.pal,
                                  label = "",
                                  plt.ann = "default",
                                  xlab = NULL, ylab = NULL,
@@ -519,11 +517,14 @@ PlotStackCorrelation <- function(freq, correlation, col.pal,
                                  xlim = NA, ylim = NA) {
 
   # Error checking
-  if (length(freq) != ncol(correlation)) {
-    stop("'freq' vs. 'corr.': Dimensions of input data do not match.")
-  }
-  if (n != nrow(correlation)) {
-    stop("'n' vs. 'corr.': Dimensions of input data do not match.")
+  if (!is.list(data)) stop("'data' must be a list.", call. = FALSE)
+  if (!all(utils::hasName(data, c("freq", "correlation"))))
+    stop("'data' must have elements 'freq' and 'correlation'.", call. = FALSE)
+  if (!is.matrix(data$correlation))
+    stop("Element 'correlation' must be a n x m matrix.", call. = FALSE)
+  if (length(data$freq) != ncol(data$correlation)) {
+    stop("Length of element 'freq' must match number of columns ",
+         "of element 'correlation'.", call. = FALSE)
   }
 
   if (plt.ann == "default") {
@@ -546,12 +547,17 @@ PlotStackCorrelation <- function(freq, correlation, col.pal,
   if (!is.null(ytm.min)) set.ytm.min <- ytm.min
 
   # Gather input data and transform to log scale
+
+  n <- nrow(data$correlation)
+
   x <- 1 : n
   x <- log(x)
   
-  y <- 2 * freq
+  y <- 2 * data$freq
   y <- rev(1 / y)
   y <- log(y)
+
+  z <- data$correlation
 
   # Graphics settings
   
@@ -581,14 +587,14 @@ PlotStackCorrelation <- function(freq, correlation, col.pal,
   }
   
   # Plot filled contour map
-  graphics::filled.contour(x, y, correlation,
+  graphics::filled.contour(x, y, z,
                            color.palette = col.pal,
                            xlim = xlim, ylim = ylim,
                            zlim = c(0, 1),
                            plot.title = graphics::title(xlab = set.xlab, ylab = set.ylab),
                            plot.axes =
                              {
-                               graphics::contour(x, y, correlation,
+                               graphics::contour(x, y, z,
                                                  add = TRUE, labcex = 1, lwd = 1);
                                graphics::axis(1, at = log(set.xtm), label = set.xtl);
                                graphics::axis(1, at = log(set.xtm.min), label = FALSE,
