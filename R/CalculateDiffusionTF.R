@@ -1,61 +1,67 @@
-##' Diffusion transfer function
-##'
-##' This function implements an empirical Monte Carlo approach to estimate the
-##' spectral transfer function for the effect of firn diffusion on the spatial
-##' average of firn/ice-core stable isotope records.
-##'
-##' The approach is described in detail in Münch and Laepple (2018). In brief,
-##' \code{nc} Gaussian white noise time series are created and diffused and the
-##' average of these time series is calculated. The process is repeated
-##' \code{ns} times. For each of the \code{ns} realisations, spectra of the
-##' average diffused and undiffused records are calculated; subsequently, the
-##' \code{ns} spectra are averaged, and the ratio of the average diffused to
-##' the average undiffused spectrum yields the spectral transfer function.
-##'
-##' Diffusion is modelled as the convolution of the undiffused record with a
-##' Gaussian with standard deviation given by the diffusion length
-##' \code{sigma}. The spectral estimates are calculated using Thomson’s
-##' multitaper method with three windows with linear detrending before
-##' analysis.
-##'
-##' @param nt the length of the modelled isotope records (i.e. the number of
-##' data points in each record)
-##' @param nc the number of cores in the modelled core array
-##' @param ns the number of Monte Carlo simulations for estimating the transfer
-##' function
-##' @param sigma numeric vector of length \code{nt} or numeric array of
-##' dimension \code{nt * nc} providing diffusion length values. The \code{nt}
-##' diffusion length values are assumed to correspond to the respective
-##' \code{nt} isotope values. If only a numeric vector is provided, it is
-##' assumed that these diffusion lengths are valid for all \code{nc} cores. If
-##' an array is provided, each column provides the diffusion lengths for the
-##' respective core. Note that the units of the diffusion length must match the
-##' units of \code{res}.
-##' @param res the sampling (e.g., temporal) resolution of the isotope data;
-##' determines the frequency axis of the transfer function.
-##' @param window length-2 vector giving a start and an end time (within `1 :
-##' nt`) offering the possibility to only use a subset of the total length of
-##' the simulated records for the transfer function analysis, while the default
-##' of `NULL` means to use the records' entire lengths.
-##' @param coherent if \code{TRUE}, \code{nc} identical white noise time series
-##' are assumed to estimate the transfer function; else (the default) \code{nc}
-##' independent noise series.
-##' @param ... additional parameters which are passed to the spectral estimation
-##' function \code{\link{SpecMTM}}.
-##' @return a list of the components \code{signal}, \code{diffused} and
-##' \code{ratio} which are objects of class \code{"spec"} providing the averages
-##' over the \code{ns} simulations of:
-##' \describe{
-##' \item{\code{signal}:}{the undiffused noise spectrum}
-##' \item{\code{diffused}:}{the diffused noise spectrum}
-##' \item{\code{ratio}}{their ratio (diffused/undiffused), i.e. the transfer
-##' function.}
-##' }
-##' @author Thomas Münch
-##' @references Münch, T. and Laepple, T.: What climate signal is contained in
-##' decadal- to centennial-scale isotope variations from Antarctic ice cores?
-##' Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
-##' @export
+#' Diffusion transfer function
+#'
+#' This function implements an empirical Monte Carlo approach to estimate the
+#' spectral transfer function for the effect of firn diffusion on the spatial
+#' average of firn/ice-core stable isotope records.
+#'
+#' The approach is described in detail in Münch and Laepple (2018). In brief,
+#' \code{nc} Gaussian white noise time series are created and diffused and the
+#' average of these time series is calculated. The process is repeated
+#' \code{ns} times. For each of the \code{ns} realisations, spectra of the
+#' average diffused and undiffused records are calculated; subsequently, the
+#' \code{ns} spectra are averaged, and the ratio of the average diffused to
+#' the average undiffused spectrum yields the spectral transfer function.
+#'
+#' Diffusion is modelled as the convolution of the undiffused record with a
+#' Gaussian with standard deviation given by the diffusion length
+#' \code{sigma}. The spectral estimates are calculated using Thomson’s
+#' multitaper method with three windows with linear detrending before
+#' analysis.
+#'
+#' @param nt the length of the modelled isotope records (i.e. the number of
+#'   data points in each record).
+#' @param nc the number of cores in the modelled core array.
+#' @param ns the number of Monte Carlo simulations for estimating the transfer
+#'   function.
+#' @param sigma numeric vector of length \code{nt} or numeric array of
+#'   dimension \code{nt * nc} providing diffusion length values. The \code{nt}
+#'   diffusion length values are assumed to correspond to the respective
+#'   \code{nt} isotope values. If only a numeric vector is provided, it is
+#'   assumed that these diffusion lengths are valid for all \code{nc} cores. If
+#'   an array is provided, each column provides the diffusion lengths for the
+#'   respective core. Note that the units of the diffusion length must match the
+#'   units of \code{res}.
+#' @param res the sampling (e.g., temporal) resolution of the isotope data;
+#'   determines the frequency axis of the transfer function.
+#' @param window length-2 vector giving a start and an end time (within `1 :
+#'   nt`) offering the possibility to only use a subset of the total length of
+#'   the simulated records for the transfer function analysis, while the default
+#'   of `NULL` means to use the records' entire lengths.
+#' @param coherent if \code{TRUE}, \code{nc} identical white noise time series
+#'   are assumed to estimate the transfer function; else (the default) \code{nc}
+#'   independent noise series.
+#' @param ... additional parameters which are passed to the spectral estimation
+#'   function \code{\link{SpecMTM}}.
+#'
+#' @return a list of the components \code{signal}, \code{diffused} and
+#'   \code{ratio} which are objects of class \code{"spec"} providing the
+#'   averages over the \code{ns} simulations of:
+#'   \describe{
+#'   \item{\code{signal}:}{the undiffused noise spectrum;}
+#'   \item{\code{diffused}:}{the diffused noise spectrum;}
+#'   \item{\code{ratio}}{their ratio (diffused/undiffused), i.e. the transfer
+#'     function.}
+#' }
+#'
+#' @author Thomas Münch
+#'
+#' @references
+#' Münch, T. and Laepple, T.: What climate signal is contained in
+#' decadal- to centennial-scale isotope variations from Antarctic ice cores?
+#' Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
+#'
+#' @export
+#'
 CalculateDiffusionTF <- function(nt, nc, ns, sigma, res = 1, window = NULL,
                                  coherent = FALSE, ...) {
 

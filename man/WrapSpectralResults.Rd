@@ -31,8 +31,8 @@ spectral estimates from each data set. If dimensions do not fit, its length
 is recycled to match the number of data sets.}
 
 \item{crit.diffusion}{maximum diffusion correction value to obtain cutoff
-frequencies until which results are analysed to avoid large uncertainties at
-the high-frequency end of the spectra.}
+frequencies until which results are analysed to avoid large uncertainties
+at the high-frequency end of the spectra.}
 
 \item{inverse.tf}{logical; if \code{TRUE}, it is assumed that
 \code{diffusion} and \code{time.uncertainty} provide the inverse transfer
@@ -43,18 +43,18 @@ Laepple (2018) for the definitions.}
 }
 \value{
 A list of \code{N} lists, where \code{N} is the number of provided
-data sets and where each of these lists contains up to five elements:
-\describe{
-\item{\code{raw}:}{a list with four elements: three objects of class
-\code{"spec"} (the raw signal, noise and corresponding SNR spectra), and a
-two-element vector (\code{f.cutoff}) with the index and value of the cutoff
-frequency.}
-\item{\code{corr.diff.only}:}{as item \code{raw} but with the spectra after
-correction for the effect of diffusion.}
-\item{\code{corr.t.unc.only}:}{as item \code{raw} but with the spectra after
-correction for the effect of time uncertainty.}
-\item{\code{corr.full}:}{as item \code{raw} but with the spectra after
-correction for both the effects of diffusion and time uncertainty.}
+  data sets and where each of these lists contains up to five elements:
+  \describe{
+  \item{\code{raw}:}{a list with four elements: three objects of class
+  \code{"spec"} (the raw signal, noise and corresponding SNR spectra), and a
+    two-element vector (\code{f.cutoff}) with the index and value of the
+    cutoff frequency.}
+  \item{\code{corr.diff.only}:}{as item \code{raw} but with the spectra after
+    correction for the effect of diffusion.}
+  \item{\code{corr.t.unc.only}:}{as item \code{raw} but with the spectra
+    after correction for the effect of time uncertainty.}
+  \item{\code{corr.full}:}{as item \code{raw} but with the spectra after
+    correction for both the effects of diffusion and time uncertainty.}
 }
 The number of the returned list elements for each data set depends on
 whether transfer functions for the corrections have been provided in
@@ -68,6 +68,7 @@ and Laepple (2018), but it can also be used to combine the results for other
 data sets.
 }
 \examples{
+
 # Get main results of Münch and Laepple (2018)
 
 results <- WrapSpectralResults(
@@ -75,6 +76,7 @@ results <- WrapSpectralResults(
                diffusion = diffusion.tf,
                time.uncertainty = time.uncertainty.tf,
                df.log = c(0.15, 0.15, 0.1))
+
 }
 \references{
 Münch, T. and Laepple, T.: What climate signal is contained in

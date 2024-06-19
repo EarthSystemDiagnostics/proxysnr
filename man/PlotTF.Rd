@@ -32,8 +32,8 @@ of class \code{"spec"} (see \code{?spectrum}) with minimum components
 component \code{freq} is a numeric vector providing a frequency axis and
 component \code{spec} a numeric vector with the corresponding diffusion
 transfer function values. If \code{NULL} (the default), the diffusion
-transfer function provided with the package is plotted, which corresponds to
-Figure B1 in Münch and Laepple (2018).}
+transfer function provided with the package is plotted, which corresponds
+to Figure B1 in Münch and Laepple (2018).}
 
 \item{ttf}{As \code{dtf} but providing time uncertainty transfer
 functions. If \code{NULL} (the default), the time uncertainty transfer
@@ -81,10 +81,10 @@ positions to override the default setting.}
 \item{ytm2}{as \code{xtm} for the second y axis.}
 
 \item{xtl}{x axis tick mark labels. If \code{xtm} is not \code{NULL},
-\code{xtl} is used for the \code{labels} parameter of the \code{\link{axis}}
-function: if \code{xtl} is set to \code{NULL}, the labels are determined
-automatically, else set it explicitly by specifying a vector of labels of
-the same length as \code{xtm}; see also \code{?axis}.}
+\code{xtl} is used for the \code{labels} parameter of the
+\code{\link{axis}} function: if \code{xtl} is set to \code{NULL}, the
+labels are determined automatically, else set it explicitly by specifying a
+vector of labels of the same length as \code{xtm}; see also \code{?axis}.}
 
 \item{ytl1}{as \code{xtl} for the first y axis.}
 
@@ -95,11 +95,13 @@ Plot the spectral transfer functions of the effects of diffusion and time
 uncertainty, such as in Fig. B1 in Münch and Laepple, 2018.
 }
 \examples{
+
 # Plot Figure B1 in Münch and Laepple (2018), i.e. the used transfer
 # functions to correct the DML and WAIS isotope spectra:
 
 PlotTF(names = c("DML1", "DML2", "WAIS"), dtf.threshold = 0.5,
        col = c("black", "firebrick", "dodgerblue"))
+
 }
 \references{
 Münch, T. and Laepple, T.: What climate signal is contained in

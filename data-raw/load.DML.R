@@ -49,26 +49,32 @@ usethis::use_data(dml, overwrite = TRUE)
 
 
 #-------------------------------------------------------------------------------
-##' load.DML: Download and process DML data
-##'
-##' Download DML isotope data from the PANGAEA repository and process them for
-##' the spectral analyses.
-##' @param doi vector of PANGAEA doi's ("10.1594/PANGAEA.xxxxxx")
-##' @param names optional character vector of the names of the data sets
-##' @param setStart vector of start dates for each data set; if \code{NULL} the
-##' original start date is used. If only one date is given, the length of
-##' \code{setStart} is recycled to match the number of data sets.
-##' @param setEnd vector of end dates for each data set; if \code{NULL} the
-##' original end date is used. If only one date is given, the length of
-##' \code{setEnd} is recycled to match the number of data sets.
-##' @param fillNA Shall missing values be linearly interpolated? Defaults to
-##' \code{FALSE}.
-##' @param clearCache Shall the local pangaea data cache (the downloaded data
-##' text files) be deleted? Defaults to \code{FALSE}.
-##' @param verbose if \code{TRUE}, messages on the download and processing are
-##' printed.
-##' @return a list with the oxygen isotope data for the data sets.
-##' @author Thomas Münch
+# utility function
+
+#' load.DML: Download and process DML data
+#'
+#' Download DML isotope data from the PANGAEA repository and process them for
+#' the spectral analyses.
+#'
+#' @param doi vector of PANGAEA doi's ("10.1594/PANGAEA.xxxxxx").
+#' @param names optional character vector of the names of the data sets.
+#' @param setStart vector of start dates for each data set; if `NULL` the
+#'   original start date is used. If only one date is given, the length of
+#'   `setStart` is recycled to match the number of data sets.
+#' @param setEnd vector of end dates for each data set; if `NULL` the original
+#'   end date is used. If only one date is given, the length of `setEnd` is
+#'   recycled to match the number of data sets.
+#' @param fillNA Shall missing values be linearly interpolated? Defaults to
+#'   `FALSE`.
+#' @param clearCache Shall the local pangaea data cache (the downloaded data
+#'   text files) be deleted? Defaults to `FALSE`.
+#' @param verbose if `TRUE`, messages on the download and processing are
+#'   printed.
+#'
+#' @return a list with the oxygen isotope data for the data sets.
+#'
+#' @author Thomas Münch
+#'
 load.DML <- function(doi,
                      names = NULL,
                      setStart = NULL,

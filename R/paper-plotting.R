@@ -2,37 +2,40 @@
 ## Collection of plotting functions for the results in Münch and Laepple (2018)
 ##
 
-##' Final DML and WAIS spectra
-##'
-##' Internal function to produce the final DML and WAIS spectra (signal, noise,
-##' SNR) used for Figs. (3) and (4) in Münch and Laepple (2018). The DML spectra
-##' are a combination of the results from the DML1 and DML2 data sets.
-##'
-##' @param spec.dml1 DML1 spectral data (e.g. the raw or any of the corrected
-##'   spectra for DML1 as obtained from \code{\link{WrapSpectralResults}}).
-##' @param spec.dml2 as `DML1` for the DML2 spectral data.
-##' @param spec.wais as `DML1` for the WAIS spectral data.
-##' @param dml.knit.f frequency at which to combine the spectra from the DML1
-##' and DML2 data sets (defaults to 1/10 yr^(-1)); DML2 spectra are used for
-##' lower frequencies than \code{dml.knit.f}, DML1 for the higher frequencies.
-##' @param df.log width of Gaussian kernel in logarithmic frequency units for
-##' additional smoothing for visual purposes; \code{NULL} suppresses smoothing.
-##'
-##' @return A list with the components \code{dml} and \code{wais}, where each is
-##' a list containing three elements of class \code{"spec"} and one numeric
-##' vector:
-##' \describe{
-##' \item{\code{signal}:}{the signal spectrum.}
-##' \item{\code{noise}:}{the noise spectrum.}
-##' \item{\code{snr}:}{the frequency-dependent signal-to-noise ratio.}
-##' \item{\code{f.cutoff}:}{a two-element vector with the index and value of the
-##' cutoff frequency from constraining the diffusion correction.}
-##' }
-##' @author Thomas Münch
-##' @references Münch, T. and Laepple, T.: What climate signal is contained in
-##' decadal- to centennial-scale isotope variations from Antarctic ice cores?
-##' Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
-##'
+#' Final DML and WAIS spectra
+#'
+#' Internal function to produce the final DML and WAIS spectra (signal, noise,
+#' SNR) used for Figs. (3) and (4) in Münch and Laepple (2018). The DML spectra
+#' are a combination of the results from the DML1 and DML2 data sets.
+#'
+#' @param spec.dml1 DML1 spectral data (e.g. the raw or any of the corrected
+#'   spectra for DML1 as obtained from \code{\link{WrapSpectralResults}}).
+#' @param spec.dml2 as `DML1` for the DML2 spectral data.
+#' @param spec.wais as `DML1` for the WAIS spectral data.
+#' @param dml.knit.f frequency at which to combine the spectra from the DML1
+#'   and DML2 data sets (defaults to 1/10 yr^(-1)); DML2 spectra are used for
+#'   lower frequencies than \code{dml.knit.f}, DML1 for the higher frequencies.
+#' @param df.log width of Gaussian kernel in logarithmic frequency units for
+#'   additional smoothing for visual purposes; \code{NULL} suppresses smoothing.
+#'
+#' @return A list with the components \code{dml} and \code{wais}, where each is
+#'   a list containing three elements of class \code{"spec"} and one numeric
+#'   vector:
+#'   \describe{
+#'   \item{\code{signal}:}{the signal spectrum.}
+#'   \item{\code{noise}:}{the noise spectrum.}
+#'   \item{\code{snr}:}{the frequency-dependent signal-to-noise ratio.}
+#'   \item{\code{f.cutoff}:}{a two-element vector with the index and value of
+#'     the cutoff frequency from constraining the diffusion correction.}
+#' }
+#'
+#' @author Thomas Münch
+#'
+#' @references
+#' Münch, T. and Laepple, T.: What climate signal is contained in
+#' decadal- to centennial-scale isotope variations from Antarctic ice cores?
+#' Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
+#'
 PublicationSNR <- function(spec.dml1, spec.dml2, spec.wais,
                            dml.knit.f = 0.1, df.log = 0.125) {
 
@@ -101,18 +104,23 @@ PublicationSNR <- function(spec.dml1, spec.dml2, spec.wais,
 
 }
 
-##' Figure 2 in Münch and Laepple (2018)
-##'
-##' Plot the signal and noise spectra from the DML and WAIS oxygen isotope data
-##' sets (Figure 2 in Münch and Laepple, 2018).
-##' @param spec output from \code{\link{WrapSpectralResults}}.
-##' @param f.cut Shall the spectra be cut at the cutoff frequency constrained
-##' by the diffusion correction strength? Defaults to \code{FALSE}.
-##' @author Thomas Münch
-##' @seealso \code{\link{WrapSpectralResults}}
-##' @references Münch, T. and Laepple, T.: What climate signal is contained in
-##' decadal- to centennial-scale isotope variations from Antarctic ice cores?
-##' Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
+#' Figure 2 in Münch and Laepple (2018)
+#'
+#' Plot the signal and noise spectra from the DML and WAIS oxygen isotope data
+#' sets (Figure 2 in Münch and Laepple, 2018).
+#'
+#' @param spec output from \code{\link{WrapSpectralResults}}.
+#' @param f.cut Shall the spectra be cut at the cutoff frequency constrained
+#'   by the diffusion correction strength? Defaults to \code{FALSE}.
+#'
+#' @author Thomas Münch
+#' @seealso \code{\link{WrapSpectralResults}}
+#'
+#' @references
+#' Münch, T. and Laepple, T.: What climate signal is contained in
+#' decadal- to centennial-scale isotope variations from Antarctic ice cores?
+#' Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
+#'
 muench_laepple_fig02 <- function(spec, f.cut = FALSE) {
 
 
@@ -296,19 +304,24 @@ muench_laepple_fig02 <- function(spec, f.cut = FALSE) {
 
 }
 
-##' Figure 5 in Münch and Laepple (2018)
-##'
-##' Plot comparison of the DML and T15 trench noise spectra (Figure 5 in Münch
-##' and Laepple, 2018).
-##' @param SNR output from \code{\link{PublicationSNR}}.
-##' @param TNS T15 trench noise spectra; per default loaded from internal data.
-##' @param f.cut Shall the spectra be cut at the cutoff frequency constrained
-##' by the diffusion correction strength? Defaults to \code{FALSE}.
-##' @author Thomas Münch
-##' @seealso \code{\link{PublicationSNR}}
-##' @references Münch, T. and Laepple, T.: What climate signal is contained in
-##' decadal- to centennial-scale isotope variations from Antarctic ice cores?
-##' Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
+#' Figure 5 in Münch and Laepple (2018)
+#'
+#' Plot comparison of the DML and T15 trench noise spectra (Figure 5 in Münch
+#' and Laepple, 2018).
+#'
+#' @param SNR output from \code{\link{PublicationSNR}}.
+#' @param TNS T15 trench noise spectra; per default loaded from internal data.
+#' @param f.cut Shall the spectra be cut at the cutoff frequency constrained
+#'   by the diffusion correction strength? Defaults to \code{FALSE}.
+#'
+#' @author Thomas Münch
+#' @seealso \code{\link{PublicationSNR}}
+#'
+#' @references
+#' Münch, T. and Laepple, T.: What climate signal is contained in
+#' decadal- to centennial-scale isotope variations from Antarctic ice cores?
+#' Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
+#'
 muench_laepple_fig05 <- function(SNR, TNS = t15.noise, f.cut = FALSE) {
 
   # Graphics settings

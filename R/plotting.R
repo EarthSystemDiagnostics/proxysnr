@@ -5,21 +5,23 @@
 # ------------------------------------------------------------------------------
 # unexported utility functions
 
-##' Draw error shading
-##'
-##' A wrapper function for the \code{polygon} function to draw error shadings
-##' (or confidence intervals) on a line plot.
-##' @param x numeric vector of x values of the error band.
-##' @param y1 numeric vector for the upper bound of the error band; must be of
-##' the same length as \code{x}.
-##' @param y2 numeric vector for the lower bound of the error band; must be of
-##' the same length as \code{x}.
-##' @param col colour of the error band.
-##' @param alpha opacity factor for \code{col} within [0,1].
-##' @param ... additional parameters which are passed to \code{polygon}.
-##' @seealso \code{\link{polygon}}
-##' @author Thomas Münch
-##' @noRd
+#' Draw error shading
+#'
+#' A wrapper function for the \code{polygon} function to draw error shadings
+#' (or confidence intervals) on a line plot.
+#'
+#' @param x numeric vector of x values of the error band.
+#' @param y1 numeric vector for the upper bound of the error band; must be of
+#'   the same length as \code{x}.
+#' @param y2 numeric vector for the lower bound of the error band; must be of
+#'   the same length as \code{x}.
+#' @param col colour of the error band.
+#' @param alpha opacity factor for \code{col} within [0,1].
+#' @param ... additional parameters which are passed to \code{polygon}.
+#'
+#' @author Thomas Münch
+#' @noRd
+#'
 Polyplot <- function(x, y1, y2, col = "black", alpha = 0.2, ...) {
 
   inp <- list(x, y1, y2)
@@ -35,33 +37,36 @@ Polyplot <- function(x, y1, y2, col = "black", alpha = 0.2, ...) {
   
 }
 
-##' Log-log spectral plot
-##'
-##' This function plots a spectrum on a double-logarithmic scale and optionally
-##' adds a transparent confidence interval.
-##' @param x an object of class \code{"spec"}.
-##' @param conf if \code{TRUE} (the default) add a transparent confidence
-##' interval (suppressed if \code{x} contains no error limits).
-##' @param bPeriod if \code{TRUE} the x-axis is displayed in units of period
-##'     (inverse frequency), increasing to the left. Defaults to \code{FALSE}.
-##' @param bNoPlot if \code{TRUE} only produce the plot frame (\code{type = "n"}
-##' behaviour of function \code{\link{plot}}). Defaults to \code{FALSE}.
-##' @param axes if \code{FALSE} the plotting of the x and y axes is
-##' suppressed. Defaults to \code{TRUE}.
-##' @param col color for the line plot and the confidence interval.
-##' @param alpha transparency level (between 0 and 1) for the confidence
-##' interval. Defaults to \code{0.2}.
-##' @param removeFirst omit \code{removeFirst} values on the low frequency side.
-##' @param removeLast omit \code{removeLast} values on the high frequency side.
-##' @param xlab character string for labelling the x-axis.
-##' @param ylab character string for labelling the y-axis.
-##' @param xlim range of x-axis values; if \code{NULL} (the default) it is
-##' calculated internally and automatically reversed for \code{bPeriod = TRUE}.
-##' @param ylim range of y-axis values; if \code{NULL} (the default) it is
-##' calculated internally.
-##' @param ... further graphical parameters passed to \code{plot}.
-##' @author Thomas Laepple
-##' @noRd
+#' Log-log spectral plot
+#'
+#' This function plots a spectrum on a double-logarithmic scale and optionally
+#' adds a transparent confidence interval.
+#'
+#' @param x an object of class \code{"spec"}.
+#' @param conf if \code{TRUE} (the default) add a transparent confidence
+#'   interval (suppressed if \code{x} contains no error limits).
+#' @param bPeriod if \code{TRUE} the x-axis is displayed in units of period
+#'   (inverse frequency), increasing to the left. Defaults to \code{FALSE}.
+#' @param bNoPlot if \code{TRUE} only produce the plot frame (\code{type = "n"}
+#'   behaviour of function \code{\link{plot}}). Defaults to \code{FALSE}.
+#' @param axes if \code{FALSE} the plotting of the x and y axes is
+#'   suppressed. Defaults to \code{TRUE}.
+#' @param col color for the line plot and the confidence interval.
+#' @param alpha transparency level (between 0 and 1) for the confidence
+#'   interval. Defaults to \code{0.2}.
+#' @param removeFirst omit \code{removeFirst} values on the low frequency side.
+#' @param removeLast omit \code{removeLast} values on the high frequency side.
+#' @param xlab character string for labelling the x-axis.
+#' @param ylab character string for labelling the y-axis.
+#' @param xlim range of x-axis values; if \code{NULL} (the default) it is
+#'   calculated internally and automatically reversed for \code{bPeriod = TRUE}.
+#' @param ylim range of y-axis values; if \code{NULL} (the default) it is
+#'   calculated internally.
+#' @param ... further graphical parameters passed to \code{plot}.
+#'
+#' @author Thomas Laepple
+#' @noRd
+#'
 LPlot <- function(x, conf = TRUE, bPeriod = FALSE, bNoPlot = FALSE, axes = TRUE,
                   col = "black", alpha = 0.2, removeFirst = 0, removeLast = 0,
                   xlab = "f", ylab = "PSD", xlim = NULL, ylim = NULL, ...) {
@@ -93,23 +98,26 @@ LPlot <- function(x, conf = TRUE, bPeriod = FALSE, bNoPlot = FALSE, axes = TRUE,
   
 }
 
-##' Add spectrum to existing log-log spectral plot
-##'
-##' This function adds a spectrum to an existing double-logarithmic plot and
-##' optionally adds a transparent confidence interval.
-##' @param x an object of class \code{"spec"}.
-##' @param conf if \code{TRUE} (the default) add a transparent confidence
-##' interval (suppressed if \code{x} contains no error limits).
-##' @param bPeriod if \code{TRUE} treat the x-axis values in units of period
-##'     (inverse frequency). Defaults to \code{FALSE}.
-##' @param col color for the line plot and the confidence interval.
-##' @param alpha transparency level (between 0 and 1) for the confidence
-##' interval. Defaults to \code{0.2}.
-##' @param removeFirst omit \code{removeFirst} values on the low frequency side. 
-##' @param removeLast omit \code{removeLast} values on the high frequency side.
-##' @param ... further graphical parameters passed to \code{lines}.
-##' @author Thomas Laepple
-##' @noRd
+#' Add spectrum to existing log-log spectral plot
+#'
+#' This function adds a spectrum to an existing double-logarithmic plot and
+#' optionally adds a transparent confidence interval.
+#' 
+#' @param x an object of class \code{"spec"}.
+#' @param conf if \code{TRUE} (the default) add a transparent confidence
+#'   interval (suppressed if \code{x} contains no error limits).
+#' @param bPeriod if \code{TRUE} treat the x-axis values in units of period
+#'   (inverse frequency). Defaults to \code{FALSE}.
+#' @param col color for the line plot and the confidence interval.
+#' @param alpha transparency level (between 0 and 1) for the confidence
+#'   interval. Defaults to \code{0.2}.
+#' @param removeFirst omit \code{removeFirst} values on the low frequency side. 
+#' @param removeLast omit \code{removeLast} values on the high frequency side.
+#' @param ... further graphical parameters passed to \code{lines}.
+#'
+#' @author Thomas Laepple
+#' @noRd
+#'
 LLines<-function(x, conf = TRUE, bPeriod = FALSE, col = "black", alpha = 0.2,
                  removeFirst = 0, removeLast = 0, ...) {
 
@@ -135,49 +143,56 @@ LLines<-function(x, conf = TRUE, bPeriod = FALSE, col = "black", alpha = 0.2,
 # ------------------------------------------------------------------------------
 # generic functions to plot results from applying proxysnr method
 
-##' Plot proxy array spectra
-##'
-##' Plot the spectral estimates from a spatial proxy core array, such as in
-##' Fig. 1 in Münch and Laepple, 2018.
-##' @param spec output from \code{\link{ObtainArraySpectra}}.
-##' @param f.cutoff optional frequency value to draw a vertical line symbolising
-##' a cutoff frequency.
-##' @param xlim the x limits (x1, x2) of the plot.
-##' @param ylim the y limits (y1, y2) of the plot.
-##' @param col a three-element vector with the colours for the individual
-##' spectra (\code{col[1]}), the mean (\code{col[2]}) and the stack spectrum
-##' (\code{col[3]}).
-##' @param col.sn a two-element vector with the colours for the approximate
-##' signal (\code{col[1]}) and noise shading (\code{col[2]}).
-##' @param alpha.sn opacity factor for the colours in \code{col.sn} within
-##' [0,1].
-##' @param plt.ann if \code{"default"} use axis annotation as in Fig. 1 of Münch
-##' and Laepple (2018). Since no other fixed annotation scheme is implemented,
-##' setting \code{plt.ann} to a different value will result in an error.
-##' @param xlab if not \code{NULL} use this specific x axis label to override
-##' the default setting.
-##' @param ylab if not \code{NULL} use this specific y axis label to override
-##' the default setting.
-##' @param xtm if not \code{NULL} use this vector of specific x axis tick mark
-##' positions to override the default setting.
-##' @param ytm if not \code{NULL} use this vector of specific y axis tick mark
-##' positions to override the default setting.
-##' @param xtl x axis tick mark labels. If \code{xtm} is not \code{NULL},
-##' \code{xtl} is used for the \code{labels} parameter of the \code{\link{axis}}
-##' function: if \code{xtl} is set to \code{NULL}, the labels are determined
-##' automatically, else set it explicitly by specifying a vector of labels of
-##' the same length as \code{xtm}; see also \code{?axis}.
-##' @param ytl equivalent to \code{xtl} for the y axis tick mark labels.
-##' @author Thomas Münch
-##' @seealso \code{\link{ObtainArraySpectra}}
-##' @examples
-##' # Plot Figure 1 in Münch and Laepple (2018) (DML1 oxygen isotope data set):
-##' 
-##' PlotArraySpectra(ObtainArraySpectra(dml$dml1, df.log = 0.12))
-##' @export
-##' @references Münch, T. and Laepple, T.: What climate signal is contained in
-##' decadal- to centennial-scale isotope variations from Antarctic ice cores?
-##' Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
+#' Plot proxy array spectra
+#'
+#' Plot the spectral estimates from a spatial proxy core array, such as in
+#' Fig. 1 in Münch and Laepple, 2018.
+#'
+#' @param spec output from \code{\link{ObtainArraySpectra}}.
+#' @param f.cutoff optional frequency value to draw a vertical line symbolising
+#'   a cutoff frequency.
+#' @param xlim the x limits (x1, x2) of the plot.
+#' @param ylim the y limits (y1, y2) of the plot.
+#' @param col a three-element vector with the colours for the individual
+#'   spectra (\code{col[1]}), the mean (\code{col[2]}) and the stack spectrum
+#'   (\code{col[3]}).
+#' @param col.sn a two-element vector with the colours for the approximate
+#'   signal (\code{col[1]}) and noise shading (\code{col[2]}).
+#' @param alpha.sn opacity factor for the colours in \code{col.sn} within
+#'   [0,1].
+#' @param plt.ann if \code{"default"} use axis annotation as in Fig. 1 of Münch
+#'   and Laepple (2018). Since no other fixed annotation scheme is implemented,
+#'   setting \code{plt.ann} to a different value will result in an error.
+#' @param xlab if not \code{NULL} use this specific x axis label to override
+#'   the default setting.
+#' @param ylab if not \code{NULL} use this specific y axis label to override
+#'   the default setting.
+#' @param xtm if not \code{NULL} use this vector of specific x axis tick mark
+#'   positions to override the default setting.
+#' @param ytm if not \code{NULL} use this vector of specific y axis tick mark
+#'   positions to override the default setting.
+#' @param xtl x axis tick mark labels. If \code{xtm} is not \code{NULL},
+#'   \code{xtl} is used for the \code{labels} parameter of the
+#'   \code{\link{axis}} function: if \code{xtl} is set to \code{NULL}, the
+#'   labels are determined automatically, else set it explicitly by specifying a
+#'   vector of labels of the same length as \code{xtm}; see also \code{?axis}.
+#' @param ytl equivalent to \code{xtl} for the y axis tick mark labels.
+#'
+#' @author Thomas Münch
+#' @seealso \code{\link{ObtainArraySpectra}}
+#'
+#' @references
+#' Münch, T. and Laepple, T.: What climate signal is contained in
+#' decadal- to centennial-scale isotope variations from Antarctic ice cores?
+#' Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
+#'
+#' @examples
+#'
+#' # Plot Figure 1 in Münch and Laepple (2018) (DML1 oxygen isotope data set):
+#' PlotArraySpectra(ObtainArraySpectra(dml$dml1, df.log = 0.12))
+#'
+#' @export
+#'
 PlotArraySpectra <- function(spec, f.cutoff = NA,
                              xlim = c(100, 2), ylim = c(0.005, 50),
                              col = c("darkgrey", "black", "burlywood4"),
@@ -281,51 +296,58 @@ PlotArraySpectra <- function(spec, f.cutoff = NA,
 
 }
 
-##' Plot proxy signal-to-noise ratios
-##'
-##' Plot the timescale dependence of proxy signal-to-noise ratios, such as in
-##' Fig. 3 in Münch and Laepple, 2018.
-##' @param spec a (named) list of signal-to-noise ratio data sets: each data set
-##' itself should be list containing at least a named element \code{snr} which
-##' is an object of class \code{"spec"} providing signal-to-noise ratios as a
-##' function of frequency. For Figure 3 in Münch and Laepple (2018) set
-##' \code{spec} to the output from \code{\link{PublicationSNR}}.
-##' @param names an optional character vector of names of the proxy data
-##' sets. If \code{NULL}, the names of \code{spec} are used or, if not present,
-##' default names.
-##' @param f.cut Shall the spectra be cut at the cutoff frequency constrained
-##' by the diffusion correction strength? Defaults to \code{FALSE}.
-##' @param col a numeric or character vector of colors to use for the plotting
-##' with length recycled to match \code{length(spec)}.
-##' @param plt.ann if \code{"default"} use axis annotation as in Fig. 3 of Münch
-##' and Laepple (2018). Since no other fixed annotation scheme is implemented,
-##' setting \code{plt.ann} to a different value will result in an error.
-##' @inheritParams PlotArraySpectra
-##' @author Thomas Münch
-##' @seealso \code{\link{PublicationSNR}}
-##' @examples
-##' # Plot Figure 3 in Münch and Laepple (2018)
-##' # (DML and WAIS oxygen isotope data sets):
-##'
-##' # Load main spectral results
-##' DWS <- WrapSpectralResults(
-##'        dml1 = dml$dml1, dml2 = dml$dml2, wais = wais,
-##'        diffusion = diffusion.tf,
-##'        time.uncertainty = time.uncertainty.tf,
-##'        df.log = c(0.15, 0.15, 0.1))
-##'
-##' # Calculate the final signal-to-noise ratio spectra
-##' SNR <- proxysnr:::PublicationSNR(DWS$dml1$corr.full, DWS$dml2$corr.full,
-##'                                  DWS$wais$corr.full)
-##'
-##' # Plot it
-##' PlotSNR(SNR, f.cut = TRUE,
-##'         names = c("DML", "WAIS"),
-##'         col = c("black", "dodgerblue4"))
-##' @export
-##' @references Münch, T. and Laepple, T.: What climate signal is contained in
-##' decadal- to centennial-scale isotope variations from Antarctic ice cores?
-##' Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
+#' Plot proxy signal-to-noise ratios
+#'
+#' Plot the timescale dependence of proxy signal-to-noise ratios, such as in
+#' Fig. 3 in Münch and Laepple, 2018.
+#'
+#' @param spec a (named) list of signal-to-noise ratio data sets: each data set
+#'   itself should be list containing at least a named element \code{snr} which
+#'   is an object of class \code{"spec"} providing signal-to-noise ratios as a
+#'   function of frequency. For Figure 3 in Münch and Laepple (2018) set
+#'   \code{spec} to the output from \code{\link{PublicationSNR}}.
+#' @param names an optional character vector of names of the proxy data
+#'   sets. If \code{NULL}, the names of \code{spec} are used or, if not present,
+#'   default names.
+#' @param f.cut Shall the spectra be cut at the cutoff frequency constrained
+#'   by the diffusion correction strength? Defaults to \code{FALSE}.
+#' @param col a numeric or character vector of colors to use for the plotting
+#'   with length recycled to match \code{length(spec)}.
+#' @param plt.ann if \code{"default"} use axis annotation as in Fig. 3 of Münch
+#'   and Laepple (2018). Since no other fixed annotation scheme is implemented,
+#'   setting \code{plt.ann} to a different value will result in an error.
+#' @inheritParams PlotArraySpectra
+#'
+#' @author Thomas Münch
+#'
+#' @references
+#' Münch, T. and Laepple, T.: What climate signal is contained in
+#' decadal- to centennial-scale isotope variations from Antarctic ice cores?
+#' Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
+#'
+#' @examples
+#'
+#' # Plot Figure 3 in Münch and Laepple (2018)
+#' # (DML and WAIS oxygen isotope data sets):
+#'
+#' # Load main spectral results
+#' DWS <- WrapSpectralResults(
+#'        dml1 = dml$dml1, dml2 = dml$dml2, wais = wais,
+#'        diffusion = diffusion.tf,
+#'        time.uncertainty = time.uncertainty.tf,
+#'        df.log = c(0.15, 0.15, 0.1))
+#'
+#' # Calculate the final signal-to-noise ratio spectra
+#' SNR <- proxysnr:::PublicationSNR(DWS$dml1$corr.full, DWS$dml2$corr.full,
+#'                                  DWS$wais$corr.full)
+#'
+#' # Plot it
+#' PlotSNR(SNR, f.cut = TRUE,
+#'         names = c("DML", "WAIS"),
+#'         col = c("black", "dodgerblue4"))
+#'
+#' @export
+#'
 PlotSNR <- function(spec, f.cut = FALSE,
                     names = NULL, col = 1 : length(spec),
                     xlim = c(500, 2), ylim = c(0.05, 5),
@@ -416,70 +438,78 @@ PlotSNR <- function(spec, f.cut = FALSE,
   
 }
     
-##' Plot proxy stack correlation
-##'
-##' Plot the correlation of the spatial average of a certain number of proxy
-##' records with the underlying common signal depending on the number of records
-##' averaged and their temporal resolution, such as in Fig. 4 in Münch and
-##' Laepple, 2018.
-##' @param freq frequency axis of the underlying proxy data set to obtain an
-##' axis for the temporal averaging period; its length must match
-##' \code{ncol(correlation)}.
-##' @param correlation a \code{n * m} matrix of correlation values where the
-##' number of columns, \code{m}, corresponds to the number of frequency values
-##' at which the correlation has been evaluated, i.e. \code{length(freq)}, and
-##' the number of rows, \code{n}, to the total number of records averaged.
-##' @param col.pal  a color palette function to be used to assign colors in the
-##' plot.
-##' @param n the total number of records averaged; thus, the correlation map is
-##' shown for records averaged from 1 to \code{n}. Per default set to the number
-##' of rows in \code{correlation}.
-##' @param label an optional label of the data set to be displayed at the top
-##' of the plot.
-##' @param plt.ann if \code{"default"} use axis annotation as in Fig. 4 of Münch
-##' and Laepple (2018). Since no other fixed annotation scheme is implemented,
-##' setting \code{plt.ann} to a different value will result in an error.
-##' @inheritParams PlotArraySpectra
-##' @param xtm.min if not \code{NULL} use these specific x axis minor tick marks
-##' to override the default setting. Set to \code{NA} to omit minor ticks at
-##' all.
-##' @param ytm.min as \code{xtm.min} for minor y axis tick marks.
-##' @param xlim the x limits (x1, x2) of the plot. Set to \code{NA} to use
-##' default limits, or supply a numeric vector of length 2 with custom
-##' limits in log units. In the latter case, setting either of the elements to
-##' \code{NA} results in using the default limit for this element only.
-##' @param ylim as \code{xlim} for the y limits of the plot.
-##' @author Thomas Münch
-##' @seealso \code{\link{ObtainStackCorrelation}}
-##' @export
-##' @examples
-##' # Plot Figure 5 in Münch and Laepple (2018)
-##' # (DML and WAIS oxygen isotope data sets):
-##'
-##' # Load main spectral results
-##' DWS <- WrapSpectralResults(
-##'        dml1 = dml$dml1, dml2 = dml$dml2, wais = wais,
-##'        diffusion = diffusion.tf,
-##'        time.uncertainty = time.uncertainty.tf,
-##'        df.log = c(0.15, 0.15, 0.1))
-##'
-##' # Calculate the final signal-to-noise ratio spectra
-##' SNR <- proxysnr:::PublicationSNR(DWS$dml1$corr.full, DWS$dml2$corr.full,
-##'                                  DWS$wais$corr.full)
-##'
-##' # Calculate the correlations
-##' crl <- ObtainStackCorrelation(SNR$dml, N = 1 : 20,
-##'                               freq.cut.lower = 1 / 100,
-##'                               freq.cut.upper = SNR$dml$f.cutoff[2])
-##'
-##' # Plot it
-##' library(RColorBrewer)
-##' palette <- colorRampPalette(rev(RColorBrewer::brewer.pal(10, "RdYlBu")))
-##' PlotStackCorrelation(freq = crl$freq, correlation = crl$correlation,
-##'           col.pal = palette, label = "DML", ylim = c(NA, log(50)))
-##' @references Münch, T. and Laepple, T.: What climate signal is contained in
-##' decadal- to centennial-scale isotope variations from Antarctic ice cores?
-##' Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
+#' Plot proxy stack correlation
+#'
+#' Plot the correlation of the spatial average of a certain number of proxy
+#' records with the underlying common signal depending on the number of records
+#' averaged and their temporal resolution, such as in Fig. 4 in Münch and
+#' Laepple, 2018.
+#'
+#' @param freq frequency axis of the underlying proxy data set to obtain an
+#'   axis for the temporal averaging period; its length must match
+#'   \code{ncol(correlation)}.
+#' @param correlation a \code{n * m} matrix of correlation values where the
+#'   number of columns, \code{m}, corresponds to the number of frequency values
+#'   at which the correlation has been evaluated, i.e. \code{length(freq)}, and
+#'   the number of rows, \code{n}, to the total number of records averaged.
+#' @param col.pal  a color palette function to be used to assign colors in the
+#'   plot.
+#' @param n the total number of records averaged; thus, the correlation map is
+#'   shown for records averaged from 1 to \code{n}. Per default set to the
+#'   number of rows in \code{correlation}.
+#' @param label an optional label of the data set to be displayed at the top
+#'   of the plot.
+#' @param plt.ann if \code{"default"} use axis annotation as in Fig. 4 of Münch
+#'   and Laepple (2018). Since no other fixed annotation scheme is implemented,
+#'   setting \code{plt.ann} to a different value will result in an error.
+#' @inheritParams PlotArraySpectra
+#' @param xtm.min if not \code{NULL} use these specific x axis minor tick marks
+#'   to override the default setting. Set to \code{NA} to omit minor ticks at
+#'   all.
+#' @param ytm.min as \code{xtm.min} for minor y axis tick marks.
+#' @param xlim the x limits (x1, x2) of the plot. Set to \code{NA} to use
+#'   default limits, or supply a numeric vector of length 2 with custom
+#'   limits in log units. In the latter case, setting either of the elements to
+#'   \code{NA} results in using the default limit for this element only.
+#' @param ylim as \code{xlim} for the y limits of the plot.
+#'
+#' @author Thomas Münch
+#' @seealso \code{\link{ObtainStackCorrelation}}
+#'
+#' @references
+#' Münch, T. and Laepple, T.: What climate signal is contained in
+#' decadal- to centennial-scale isotope variations from Antarctic ice cores?
+#' Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
+#'
+#' @examples
+#'
+#' # Plot Figure 5 in Münch and Laepple (2018)
+#' # (DML and WAIS oxygen isotope data sets):
+#'
+#' # Load main spectral results
+#' DWS <- WrapSpectralResults(
+#'        dml1 = dml$dml1, dml2 = dml$dml2, wais = wais,
+#'        diffusion = diffusion.tf,
+#'        time.uncertainty = time.uncertainty.tf,
+#'        df.log = c(0.15, 0.15, 0.1))
+#'
+#' # Calculate the final signal-to-noise ratio spectra
+#' SNR <- proxysnr:::PublicationSNR(DWS$dml1$corr.full, DWS$dml2$corr.full,
+#'                                  DWS$wais$corr.full)
+#'
+#' # Calculate the correlations
+#' crl <- ObtainStackCorrelation(SNR$dml, N = 1 : 20,
+#'                               freq.cut.lower = 1 / 100,
+#'                               freq.cut.upper = SNR$dml$f.cutoff[2])
+#'
+#' # Plot it
+#' library(RColorBrewer)
+#' palette <- colorRampPalette(rev(RColorBrewer::brewer.pal(10, "RdYlBu")))
+#' PlotStackCorrelation(freq = crl$freq, correlation = crl$correlation,
+#'           col.pal = palette, label = "DML", ylim = c(NA, log(50)))
+#'
+#' @export
+#'
 PlotStackCorrelation <- function(freq, correlation, col.pal,
                                  n = nrow(correlation),
                                  label = "",
@@ -581,59 +611,66 @@ PlotStackCorrelation <- function(freq, correlation, col.pal,
   
 }
 
-##' Plot transfer functions
-##'
-##' Plot the spectral transfer functions of the effects of diffusion and time
-##' uncertainty, such as in Fig. B1 in Münch and Laepple, 2018.
-##' @param dtf A list of transfer function data sets: each data set is an object
-##' of class \code{"spec"} (see \code{?spectrum}) with minimum components
-##' \code{freq} and \code{spec}, or simply a named list with these two, where
-##' component \code{freq} is a numeric vector providing a frequency axis and
-##' component \code{spec} a numeric vector with the corresponding diffusion
-##' transfer function values. If \code{NULL} (the default), the diffusion
-##' transfer function provided with the package is plotted, which corresponds to
-##' Figure B1 in Münch and Laepple (2018).
-##' @param ttf As \code{dtf} but providing time uncertainty transfer
-##' functions. If \code{NULL} (the default), the time uncertainty transfer
-##' function provided with the package is plotted, which corresponds to Figure
-##' B1 in Münch and Laepple (2018).
-##' @param names an optional character vector of names for the transfer function
-##' data sets. If \code{NULL}, the names of \code{dtf} and \code{ttf} are used
-##' or, if not present, default names. If the diffusion and time uncertainty
-##' data sets differ in number, you can provide a list of two vectors of names.
-##' @param col a numeric or character vector of colors to use for the plotting;
-##' if \code{NULL} default colors are used.
-##' @param dtf.threshold optional critical diffusion transfer function
-##' value to plot a corresponding horizontal line and vertical lines of
-##' corresponding frequency cutoff values (omitted for \code{NULL}).
-##' @param xlim the x limits (x1, x2) of the plot.
-##' @param ylim1 the y limits (y1, y2) of the diffusion transfer function plot.
-##' @param ylim2 the y limits (y1, y2) of the time uncertainty transfer function
-##' plot.
-##' @param plt.ann if \code{"default"} use axis annotation as in Fig. B1 of
-##' Münch and Laepple (2018). Since no other fixed annotation scheme is
-##' implemented, setting \code{plt.ann} to a different value will result in an
-##' error.
-##' @inheritParams PlotArraySpectra
-##' @param ylab1 if not ‘NULL’ use this specific y axis label for the first plot
-##' to override the default setting.
-##' @param ylab2 if not ‘NULL’ use this specific y axis label for the second
-##' plot to override the default setting.
-##' @param ytm1 as \code{xtm} for the first y axis.
-##' @param ytm2 as \code{xtm} for the second y axis.
-##' @param ytl1 as \code{xtl} for the first y axis.
-##' @param ytl2 as \code{xtl} for the second y axis.
-##' @author Thomas Münch
-##' @export
-##' @examples
-##' # Plot Figure B1 in Münch and Laepple (2018), i.e. the used transfer
-##' # functions to correct the DML and WAIS isotope spectra:
-##'
-##' PlotTF(names = c("DML1", "DML2", "WAIS"), dtf.threshold = 0.5,
-##'        col = c("black", "firebrick", "dodgerblue"))
-##' @references Münch, T. and Laepple, T.: What climate signal is contained in
-##' decadal- to centennial-scale isotope variations from Antarctic ice cores?
-##' Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
+#' Plot transfer functions
+#'
+#' Plot the spectral transfer functions of the effects of diffusion and time
+#' uncertainty, such as in Fig. B1 in Münch and Laepple, 2018.
+#'
+#' @param dtf A list of transfer function data sets: each data set is an object
+#'   of class \code{"spec"} (see \code{?spectrum}) with minimum components
+#'   \code{freq} and \code{spec}, or simply a named list with these two, where
+#'   component \code{freq} is a numeric vector providing a frequency axis and
+#'   component \code{spec} a numeric vector with the corresponding diffusion
+#'   transfer function values. If \code{NULL} (the default), the diffusion
+#'   transfer function provided with the package is plotted, which corresponds
+#'   to Figure B1 in Münch and Laepple (2018).
+#' @param ttf As \code{dtf} but providing time uncertainty transfer
+#'   functions. If \code{NULL} (the default), the time uncertainty transfer
+#'   function provided with the package is plotted, which corresponds to Figure
+#'   B1 in Münch and Laepple (2018).
+#' @param names an optional character vector of names for the transfer function
+#'   data sets. If \code{NULL}, the names of \code{dtf} and \code{ttf} are used
+#'   or, if not present, default names. If the diffusion and time uncertainty
+#'   data sets differ in number, you can provide a list of two vectors of names.
+#' @param col a numeric or character vector of colors to use for the plotting;
+#'   if \code{NULL} default colors are used.
+#' @param dtf.threshold optional critical diffusion transfer function
+#'   value to plot a corresponding horizontal line and vertical lines of
+#'   corresponding frequency cutoff values (omitted for \code{NULL}).
+#' @param xlim the x limits (x1, x2) of the plot.
+#' @param ylim1 the y limits (y1, y2) of the diffusion transfer function plot.
+#' @param ylim2 the y limits (y1, y2) of the time uncertainty transfer function
+#'   plot.
+#' @param plt.ann if \code{"default"} use axis annotation as in Fig. B1 of
+#'   Münch and Laepple (2018). Since no other fixed annotation scheme is
+#'   implemented, setting \code{plt.ann} to a different value will result in an
+#'   error.
+#' @inheritParams PlotArraySpectra
+#' @param ylab1 if not ‘NULL’ use this specific y axis label for the first plot
+#'   to override the default setting.
+#' @param ylab2 if not ‘NULL’ use this specific y axis label for the second
+#'   plot to override the default setting.
+#' @param ytm1 as \code{xtm} for the first y axis.
+#' @param ytm2 as \code{xtm} for the second y axis.
+#' @param ytl1 as \code{xtl} for the first y axis.
+#' @param ytl2 as \code{xtl} for the second y axis.
+#'
+#' @author Thomas Münch
+#'
+#' @references Münch, T. and Laepple, T.: What climate signal is contained in
+#' decadal- to centennial-scale isotope variations from Antarctic ice cores?
+#' Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
+#'
+#' @examples
+#'
+#' # Plot Figure B1 in Münch and Laepple (2018), i.e. the used transfer
+#' # functions to correct the DML and WAIS isotope spectra:
+#'
+#' PlotTF(names = c("DML1", "DML2", "WAIS"), dtf.threshold = 0.5,
+#'        col = c("black", "firebrick", "dodgerblue"))
+#'
+#' @export
+#'
 PlotTF <- function(dtf = NULL, ttf = NULL,
                    names = NULL, col = NULL,
                    dtf.threshold = NULL,

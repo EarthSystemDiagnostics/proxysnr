@@ -16,7 +16,7 @@ GetIntegratedSNR(
 \arguments{
 \item{input}{a list of the spectral objects lists \code{signal} and
 \code{noise}, usually to be obtained from a call to
-\code{\link{SeparateSignalFromNoise}}}
+\code{\link{SeparateSignalFromNoise}}.}
 
 \item{N}{integer; number of proxy records averaged. The default returns the
 SNR assuming a single proxy record. For a different number, the SNR is
@@ -24,11 +24,11 @@ scaled by this number, assuming independent noise between the records.}
 
 \item{f1}{index of the the minimum frequency from which to integrate the
 signal and noise spectra for calculating the SNR; per default the
-lowest frequency of the spectral estimates is omitted}
+lowest frequency of the spectral estimates is omitted.}
 
 \item{f2}{index of the maximum frequency until which to integrate the signal
 and noise spectra for calculating the SNR; defaults to use the
-maximum frequency of the given spectral estimates}
+maximum frequency of the given spectral estimates.}
 
 \item{freq.cut.lower}{lower frequency (not index!) at which to cut the
 spectra: this provides a direct way for specifying a minimum frequency for

@@ -58,10 +58,10 @@ positions to override the default setting.}
 positions to override the default setting.}
 
 \item{xtl}{x axis tick mark labels. If \code{xtm} is not \code{NULL},
-\code{xtl} is used for the \code{labels} parameter of the \code{\link{axis}}
-function: if \code{xtl} is set to \code{NULL}, the labels are determined
-automatically, else set it explicitly by specifying a vector of labels of
-the same length as \code{xtm}; see also \code{?axis}.}
+\code{xtl} is used for the \code{labels} parameter of the
+\code{\link{axis}} function: if \code{xtl} is set to \code{NULL}, the
+labels are determined automatically, else set it explicitly by specifying a
+vector of labels of the same length as \code{xtm}; see also \code{?axis}.}
 
 \item{ytl}{equivalent to \code{xtl} for the y axis tick mark labels.}
 }
@@ -70,9 +70,10 @@ Plot the spectral estimates from a spatial proxy core array, such as in
 Fig. 1 in Münch and Laepple, 2018.
 }
 \examples{
-# Plot Figure 1 in Münch and Laepple (2018) (DML1 oxygen isotope data set):
 
+# Plot Figure 1 in Münch and Laepple (2018) (DML1 oxygen isotope data set):
 PlotArraySpectra(ObtainArraySpectra(dml$dml1, df.log = 0.12))
+
 }
 \references{
 Münch, T. and Laepple, T.: What climate signal is contained in

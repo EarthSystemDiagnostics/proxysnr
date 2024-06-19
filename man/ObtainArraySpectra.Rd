@@ -14,9 +14,9 @@ expected to be a numeric vector of the proxy values of a common length.}
 determines the frequency axis of the spectral estimates.}
 
 \item{neff}{the effective number of records (e.g. to account for an expected
-spatial correlation of the local noise). Per default, no spatial correlation
-is assumed and \code{neff} is set to the number of proxy records (the length
-of \code{cores}).}
+spatial correlation of the local noise). Per default, no spatial
+correlation is assumed and \code{neff} is set to the number of proxy
+records (the length of \code{cores}).}
 
 \item{df.log}{width of the Gaussian kernel in logarithmic frequency units to
 smooth the spectral estimates; \code{NULL} (the default) suppresses
@@ -27,13 +27,13 @@ function \code{\link{SpecMTM}}.}
 }
 \value{
 A list of the following components:
-\describe{
-\item{N:}{the number of (effective) proxy records of the core array.}
-\item{single:}{a list of length \code{N} with the spectra of each individual
-proxy record.}
-\item{mean:}{the mean spectrum across all individual spectra.}
-\item{stack:}{the spectrum of the average proxy record in the time domain
-("stacked record").}
+  \describe{
+  \item{N:}{the number of (effective) proxy records of the core array;}
+  \item{single:}{a list of length \code{N} with the spectra of each
+    individual proxy record;}
+  \item{mean:}{the mean spectrum across all individual spectra;}
+  \item{stack:}{the spectrum of the average proxy record in the time domain
+    ("stacked record").}
 }
 }
 \description{

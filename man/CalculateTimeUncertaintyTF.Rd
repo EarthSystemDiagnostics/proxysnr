@@ -21,7 +21,7 @@ CalculateTimeUncertaintyTF(
 }
 \arguments{
 \item{t}{numeric vector of integer values providing a reference chronology
-for the age perturbations (starting with the youngest age)}
+for the age perturbations (starting with the youngest age).}
 
 \item{acp}{numeric vector of age control points where the age uncertainty is
 assumed to be zero. Per default, a two-element vector where the first
@@ -32,10 +32,10 @@ handling more age control points.}
 \item{nt}{the length of the records (i.e. the number of data points) to
 simulate; per default set to \code{length(t)}.}
 
-\item{nc}{the number of cores in the modelled core array}
+\item{nc}{the number of cores in the modelled core array.}
 
 \item{ns}{the number of Monte Carlo simulations for estimating the transfer
-function}
+function.}
 
 \item{model}{name string of the random process to use for realising the age
 perturbations; must be either "poisson" (the default) or "bernoulli"; see
@@ -56,7 +56,7 @@ noise time series; per default, Gaussian white noise is created using the
 base \code{R} function \code{\link{rnorm}}.}
 
 \item{fun.par}{an otional list of additional parameters which are passed to
-\code{surrogate.fun}}
+\code{surrogate.fun}.}
 
 \item{pad}{Strong age perturbations may result in time series that do not
 reach the final age of the reference chronology -- shall the resulting
@@ -70,14 +70,14 @@ function \code{\link{SpecMTM}}.}
 }
 \value{
 a list of the components \code{input}, \code{stack} and
-\code{ratio} which are objects of class \code{"spec"} providing averages
-over the \code{ns} simulations of:
-\describe{
-\item{\code{input}:}{the original spectrum of the surrogate data}
-\item{\code{stack}:}{the spectrum of the spatial average of the
-age-perturbed records}
-\item{\code{ratio}:}{their ratio (perturbed/unperturbed), i.e. the transfer
-function.}
+  \code{ratio} which are objects of class \code{"spec"} providing averages
+  over the \code{ns} simulations of:
+  \describe{
+  \item{\code{input}:}{the original spectrum of the surrogate data;}
+  \item{\code{stack}:}{the spectrum of the spatial average of the
+        age-perturbed records;}
+  \item{\code{ratio}:}{their ratio (perturbed/unperturbed), i.e. the transfer
+        function.}
 }
 }
 \description{

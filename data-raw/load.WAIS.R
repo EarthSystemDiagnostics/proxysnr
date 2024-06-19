@@ -30,20 +30,23 @@ usethis::use_data(wais, overwrite = TRUE)
 #'
 #' Download WAIS isotope data from repository and process them for the spectral
 #' analyses.
+#'
 #' @param url URL of the UASAP-DC repository data file with the WAIS annual
-#' averages data
-#' @param cores name of the WAIS cores to extract from the data file
+#'   averages data.
+#' @param cores name of the WAIS cores to extract from the data file.
 #' @param cores.seasonal2annual name of the cores for which annual data has to
-#' be obtained from high-resolution seasonal data (will be downloaded
-#' additionally)
-#' @param setStart set common start date (year) for all cores; if \code{NULL}
-#' the original start date is used
-#' @param setEnd set common end date (year) for all cores; if \code{NULL} the
-#' original end date is used
+#'   be obtained from high-resolution seasonal data (will be downloaded
+#'   additionally).
+#' @param setStart set common start date (year) for all cores; if `NULL` the
+#'   original start date is used.
+#' @param setEnd set common end date (year) for all cores; if `NULL` the
+#'   original end date is used.
 #' @param fillNA Shall missing values be linearly interpolated? Defaults to
-#' \code{FALSE}.
-#' @param verbose if \code{TRUE}, messages on the processing are printed.
-#' @return a \code{data.frame} with the requested oxygen isotope data.
+#'   `FALSE`.
+#' @param verbose if `TRUE`, messages on the processing are printed.
+#'
+#' @return a `data.frame` with the requested oxygen isotope data.
+#'
 #' @author Thomas Münch
 #'
 load.WAIS <- function(url, cores,
@@ -144,31 +147,31 @@ load.WAIS <- function(url, cores,
 #'
 #' Average a vector into bins.
 #'
-#' This function averages the vector \code{y} into bins according to the positon
-#' of \code{x} within the breaks; you can either specify a desired number N of
+#' This function averages the vector `y` into bins according to the positon
+#' of `x` within the breaks; you can either specify a desired number `N` of
 #' breaks or directly specify the N + 1 break positions.
 #'
-#' @param x vector of values on which the data in \code{y} is tabulated;
-#'   e.g. depth or time points.
+#' @param x vector of values on which the data in `y` is tabulated; e.g. depth
+#'   or time points.
 #' @param y vector of observation values to be averaged into bins. Must have the
-#'   same length as \code{x}.
-#' @param N desired number of breaks (ignored if \code{breaks} are supplied
+#'   same length as `x`.
+#' @param N desired number of breaks (ignored if `breaks` are supplied
 #'   directly).
 #' @param breaks vector of break point positions to define the averagig bins; if
-#'   omitted, break point positions are calculated from the range of \code{x}
-#'   and the desired number of breaks given by \code{N}.
+#'   omitted, break point positions are calculated from the range of `x` and the
+#'   desired number of breaks given by `N`.
 #' @param right logical; indicate whether the bin intervals should be closed on
-#'   the right and open on the left (\code{TRUE}, the default), or vice versa
-#'   (\code{FALSE}).
-#' @param bFill logical; if \code{TRUE}, fill empty bins using linear
-#'   interpolation from the neighbours to the center of the bin.
+#'   the right and open on the left (`TRUE`, the default), or vice versa
+#'   (`FALSE`).
+#' @param bFill logical; if `TRUE`, fill empty bins using linear interpolation
+#'   from the neighbours to the center of the bin.
 #'
 #' @return a list with four elements:
 #' \describe{
-#' \item{\code{breaks}:}{numeric vector of the used break point positions.}
-#' \item{\code{centers}:}{numeric vector with the positions of the bin centers.}
-#' \item{\code{avg}:}{numeric vector with the bin-averaged values.}
-#' \item{\code{nobs}:}{numeric vector with the number of observations
+#' \item{`breaks`:}{numeric vector of the used break point positions.}
+#' \item{`centers`:}{numeric vector with the positions of the bin centers.}
+#' \item{`avg`:}{numeric vector with the bin-averaged values.}
+#' \item{`nobs`:}{numeric vector with the number of observations
 #'   contributing to each bin average.}
 #' }
 #'

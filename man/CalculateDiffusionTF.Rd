@@ -17,12 +17,12 @@ CalculateDiffusionTF(
 }
 \arguments{
 \item{nt}{the length of the modelled isotope records (i.e. the number of
-data points in each record)}
+data points in each record).}
 
-\item{nc}{the number of cores in the modelled core array}
+\item{nc}{the number of cores in the modelled core array.}
 
 \item{ns}{the number of Monte Carlo simulations for estimating the transfer
-function}
+function.}
 
 \item{sigma}{numeric vector of length \code{nt} or numeric array of
 dimension \code{nt * nc} providing diffusion length values. The \code{nt}
@@ -50,13 +50,13 @@ function \code{\link{SpecMTM}}.}
 }
 \value{
 a list of the components \code{signal}, \code{diffused} and
-\code{ratio} which are objects of class \code{"spec"} providing the averages
-over the \code{ns} simulations of:
-\describe{
-\item{\code{signal}:}{the undiffused noise spectrum}
-\item{\code{diffused}:}{the diffused noise spectrum}
-\item{\code{ratio}}{their ratio (diffused/undiffused), i.e. the transfer
-function.}
+  \code{ratio} which are objects of class \code{"spec"} providing the
+  averages over the \code{ns} simulations of:
+  \describe{
+  \item{\code{signal}:}{the undiffused noise spectrum;}
+  \item{\code{diffused}:}{the diffused noise spectrum;}
+  \item{\code{ratio}}{their ratio (diffused/undiffused), i.e. the transfer
+    function.}
 }
 }
 \description{

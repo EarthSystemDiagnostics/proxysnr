@@ -27,7 +27,7 @@ library(usethis)
 
 #' Local climatological parameters for diffusion length calculations
 #'
-#' @format A data frame with 20 rows and 5 variables:
+#' @return A data frame with 20 rows and 5 variables:
 #' \describe{
 #'   \item{core:}{the name of the firn-core site}
 #'   \item{temperature:}{10-m firn temperature (or annual mean air
@@ -242,6 +242,7 @@ diffusion.length$wais <- sigma
 #'   https://doi.org/10.5194/tc-11-2175-2017).
 #' @param df.log Gaussian kernel width in log space to smooth the spectral
 #'   estimate; defaults to 0.1.
+#'
 #' @return a list of class \code{"spec"} with two elements: the frequency axis
 #'   (element `freq`) and the estimate noise PSD (element `spec`).
 #'

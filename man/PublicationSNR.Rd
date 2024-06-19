@@ -29,14 +29,14 @@ additional smoothing for visual purposes; \code{NULL} suppresses smoothing.}
 }
 \value{
 A list with the components \code{dml} and \code{wais}, where each is
-a list containing three elements of class \code{"spec"} and one numeric
-vector:
-\describe{
-\item{\code{signal}:}{the signal spectrum.}
-\item{\code{noise}:}{the noise spectrum.}
-\item{\code{snr}:}{the frequency-dependent signal-to-noise ratio.}
-\item{\code{f.cutoff}:}{a two-element vector with the index and value of the
-cutoff frequency from constraining the diffusion correction.}
+  a list containing three elements of class \code{"spec"} and one numeric
+  vector:
+  \describe{
+  \item{\code{signal}:}{the signal spectrum.}
+  \item{\code{noise}:}{the noise spectrum.}
+  \item{\code{snr}:}{the frequency-dependent signal-to-noise ratio.}
+  \item{\code{f.cutoff}:}{a two-element vector with the index and value of
+    the cutoff frequency from constraining the diffusion correction.}
 }
 }
 \description{

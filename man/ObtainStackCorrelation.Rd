@@ -16,19 +16,19 @@ ObtainStackCorrelation(
 \arguments{
 \item{input}{a list of the spectral objects lists \code{signal} and
 \code{noise}, usually to be obtained from a call to
-\code{\link{SeparateSignalFromNoise}}}
+\code{\link{SeparateSignalFromNoise}}.}
 
 \item{N}{integer vector with the number of records in the assumed stack;
-correlations are then calculated for stacks with record numbers according to
-each element of \code{N}}
+correlations are then calculated for stacks with record numbers according
+to each element of \code{N}.}
 
 \item{f1}{index of the the minimum frequency from which to integrate the
 signal and noise spectra for calculating the correlation; per default the
-lowest frequency of the spectral estimates is omitted}
+lowest frequency of the spectral estimates is omitted.}
 
 \item{f2}{index of the maximum frequency until which to integrate the signal
 and noise spectra for calculating the correlation; defaults to use the
-maximum frequency of the given spectral estimates}
+maximum frequency of the given spectral estimates.}
 
 \item{freq.cut.lower}{lower frequency (not index!) at which to cut the
 spectra: this provides a direct way for specifying a minimum frequency for
@@ -44,13 +44,14 @@ corresponding to the index set in \code{f2}.}
 }
 \value{
 a list of two components:
-\describe{
-\item{freq:}{numeric vector of frequencies corresponding to the upper ends
-of the cumulative integrations}
-\item{correlation:}{a \code{n * m} matrix where \code{n} corresponds to
-\code{length(N)} and \code{m} is given by \code{length(freq)} providing
-the correlation values as a function of the number of averaged records and
-the record resolution (= increasing upper frequency of the integration)}
+  \describe{
+  \item{freq:}{numeric vector of frequencies corresponding to the upper ends
+    of the cumulative integrations;}
+  \item{correlation:}{a \code{n * m} matrix where \code{n} corresponds to
+    \code{length(N)} and \code{m} is given by \code{length(freq)} providing
+    the correlation values as a function of the number of averaged records
+    and the record resolution (= increasing upper frequency of the
+    integration).}
 }
 }
 \description{

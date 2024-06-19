@@ -58,10 +58,10 @@ positions to override the default setting.}
 positions to override the default setting.}
 
 \item{xtl}{x axis tick mark labels. If \code{xtm} is not \code{NULL},
-\code{xtl} is used for the \code{labels} parameter of the \code{\link{axis}}
-function: if \code{xtl} is set to \code{NULL}, the labels are determined
-automatically, else set it explicitly by specifying a vector of labels of
-the same length as \code{xtm}; see also \code{?axis}.}
+\code{xtl} is used for the \code{labels} parameter of the
+\code{\link{axis}} function: if \code{xtl} is set to \code{NULL}, the
+labels are determined automatically, else set it explicitly by specifying a
+vector of labels of the same length as \code{xtm}; see also \code{?axis}.}
 
 \item{ytl}{equivalent to \code{xtl} for the y axis tick mark labels.}
 }
@@ -70,6 +70,7 @@ Plot the timescale dependence of proxy signal-to-noise ratios, such as in
 Fig. 3 in Münch and Laepple, 2018.
 }
 \examples{
+
 # Plot Figure 3 in Münch and Laepple (2018)
 # (DML and WAIS oxygen isotope data sets):
 
@@ -88,14 +89,12 @@ SNR <- proxysnr:::PublicationSNR(DWS$dml1$corr.full, DWS$dml2$corr.full,
 PlotSNR(SNR, f.cut = TRUE,
         names = c("DML", "WAIS"),
         col = c("black", "dodgerblue4"))
+
 }
 \references{
 Münch, T. and Laepple, T.: What climate signal is contained in
 decadal- to centennial-scale isotope variations from Antarctic ice cores?
 Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
-}
-\seealso{
-\code{\link{PublicationSNR}}
 }
 \author{
 Thomas Münch

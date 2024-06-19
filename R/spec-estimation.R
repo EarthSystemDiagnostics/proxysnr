@@ -2,18 +2,22 @@
 ## Collection of spectral estimation functions; based on R PaleoSpec package
 ##
 
-##' Spectral smoothing
-##'
-##' Smooth spectrum using Gaussian kernel with constant width in logarithmic
-##' frequency space.
-##' @param x the spectrum as an object of class \code{"spec"} with the degrees
-##' of freedom of the spectrum as an additional list element \code{dof}; or
-##' simply a list with elements \code{spec}, \code{freq} and \code{dof}.
-##' @param df.log smoothing width in logarithmic frequency units.
-##' @return an object of class \code{"spec"} with the smoothed spectrum
-##' including the average degrees of freedom.
-##' @author Thomas Laepple
-##' @noRd
+#' Spectral smoothing
+#'
+#' Smooth spectrum using Gaussian kernel with constant width in logarithmic
+#' frequency space.
+#'
+#' @param x the spectrum as an object of class \code{"spec"} with the degrees
+#'   of freedom of the spectrum as an additional list element \code{dof}; or
+#'   simply a list with elements \code{spec}, \code{freq} and \code{dof}.
+#' @param df.log smoothing width in logarithmic frequency units.
+#'
+#' @return an object of class \code{"spec"} with the smoothed spectrum
+#'   including the average degrees of freedom.
+#'
+#' @author Thomas Laepple
+#' @noRd
+#'
 LogSmooth <- function(x, df.log=0.05) {
 
   # Gaussian kernel
@@ -75,30 +79,35 @@ LogSmooth <- function(x, df.log=0.05) {
 
 }
 
-##' Multitaper spectral estimate
-##' 
-##' This is a wrapper for the \code{\link[multitaper]{spec.mtm}} function from
-##' package multitaper, which sets convenient defaults for the spectral estimate
-##' and makes the degrees of freedom accessible as a direct list element of the
-##' output.
-##' @inheritParams multitaper::spec.mtm
-##' @param detrend Shall the time series data be linearly detrended before
-##' computing the spectrum? Defaults to \code{TRUE}.
-##' @param bPad Shall the time series data be padded before computing the
-##' spectrum? Defaults to \code{FALSE}.
-##' @param ... further parameters passed to \code{\link[multitaper]{spec.mtm}}.
-##' @return an object of class \code{"spec"}, with the additional list component
-##' \code{dof}: a numeric vector of the same length as the spectrum with
-##' the degrees of freedom of the spectral estimate (copied from the
-##' \code{spec.mtm} default output).
-##' @author Thomas Laepple
-##' @seealso \code{\link[multitaper]{spec.mtm}}
-##' @references
-##' Thomson, D.J (1982) Spectrum estimation and harmonic analysis. _Proceedings
-##' of the IEEE_ Volume *70*, Number 9, pp. 1055-1096.
-##'
-##' Percival, D.B. and Walden, A.T. (1993) _Spectral analysis for physical
-##' applications_ Cambridge University Press.
+#' Multitaper spectral estimate
+#' 
+#' This is a wrapper for the \code{\link[multitaper]{spec.mtm}} function from
+#' package multitaper, which sets convenient defaults for the spectral estimate
+#' and makes the degrees of freedom accessible as a direct list element of the
+#' output.
+#'
+#' @inheritParams multitaper::spec.mtm
+#' @param detrend Shall the time series data be linearly detrended before
+#'   computing the spectrum? Defaults to \code{TRUE}.
+#' @param bPad Shall the time series data be padded before computing the
+#'   spectrum? Defaults to \code{FALSE}.
+#' @param ... further parameters passed to \code{\link[multitaper]{spec.mtm}}.
+#' @return an object of class \code{"spec"}, with the additional list component
+#'   \code{dof}: a numeric vector of the same length as the spectrum with
+#'   the degrees of freedom of the spectral estimate (copied from the
+#'   \code{spec.mtm} default output).
+#'
+#' @author Thomas Laepple
+#' @seealso \code{\link[multitaper]{spec.mtm}}
+#'
+#' @references
+#'
+#' Thomson, D.J (1982) Spectrum estimation and harmonic analysis. _Proceedings
+#' of the IEEE_ Volume *70*, Number 9, pp. 1055-1096.
+#'
+#' Percival, D.B. and Walden, A.T. (1993) _Spectral analysis for physical
+#' applications_ Cambridge University Press.
+#'
 SpecMTM <- function(timeSeries, k = 3, nw = 2, nFFT = "default",
                     centre = c("Slepian"), dpssIN = NULL,
                     returnZeroFreq = FALSE, Ftest = FALSE, jackknife = FALSE,
@@ -132,21 +141,25 @@ SpecMTM <- function(timeSeries, k = 3, nw = 2, nFFT = "default",
   return(result)
 }
 
-##' Mean spectrum
-##'
-##' Calculate the mean spectrum of all supplied individual spectra.
-##'
-##' The mean spectrum is calculated as a simple average across all power
-##' spectral densities from the individual spectra. Degrees of freedom
-##' (\code{dof}) of the mean spectrum are obtained from the sum of the
-##' individual dof's at each frequency.
-##' @param speclist a list of objects of class \code{"spec"}, or lists with
-##' minimum components \code{freq}, \code{spec} and \code{dof}, that supply the
-##' spectra which are to be averaged.
-##' @return an object of class \code{"spec"} with components \code{freq},
-##' \code{spec} and \code{dof}.
-##' @author Thomas Laepple, Thomas Münch
-##' @noRd
+#' Mean spectrum
+#'
+#' Calculate the mean spectrum of all supplied individual spectra.
+#'
+#' The mean spectrum is calculated as a simple average across all power
+#' spectral densities from the individual spectra. Degrees of freedom
+#' (\code{dof}) of the mean spectrum are obtained from the sum of the
+#' individual dof's at each frequency.
+#'
+#' @param speclist a list of objects of class \code{"spec"}, or lists with
+#'   minimum components \code{freq}, \code{spec} and \code{dof}, that supply the
+#'   spectra which are to be averaged.
+#'
+#' @return an object of class \code{"spec"} with components \code{freq},
+#'   \code{spec} and \code{dof}.
+#'
+#' @author Thomas Laepple, Thomas Münch
+#' @noRd
+#'
 MeanSpectrum <- function(speclist) {
 
   # check for equal lengths of supplied spectra

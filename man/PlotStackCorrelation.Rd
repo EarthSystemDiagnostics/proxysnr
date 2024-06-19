@@ -37,8 +37,8 @@ the number of rows, \code{n}, to the total number of records averaged.}
 plot.}
 
 \item{n}{the total number of records averaged; thus, the correlation map is
-shown for records averaged from 1 to \code{n}. Per default set to the number
-of rows in \code{correlation}.}
+shown for records averaged from 1 to \code{n}. Per default set to the
+number of rows in \code{correlation}.}
 
 \item{label}{an optional label of the data set to be displayed at the top
 of the plot.}
@@ -60,10 +60,10 @@ positions to override the default setting.}
 positions to override the default setting.}
 
 \item{xtl}{x axis tick mark labels. If \code{xtm} is not \code{NULL},
-\code{xtl} is used for the \code{labels} parameter of the \code{\link{axis}}
-function: if \code{xtl} is set to \code{NULL}, the labels are determined
-automatically, else set it explicitly by specifying a vector of labels of
-the same length as \code{xtm}; see also \code{?axis}.}
+\code{xtl} is used for the \code{labels} parameter of the
+\code{\link{axis}} function: if \code{xtl} is set to \code{NULL}, the
+labels are determined automatically, else set it explicitly by specifying a
+vector of labels of the same length as \code{xtm}; see also \code{?axis}.}
 
 \item{ytl}{equivalent to \code{xtl} for the y axis tick mark labels.}
 
@@ -87,6 +87,7 @@ averaged and their temporal resolution, such as in Fig. 4 in Münch and
 Laepple, 2018.
 }
 \examples{
+
 # Plot Figure 5 in Münch and Laepple (2018)
 # (DML and WAIS oxygen isotope data sets):
 
@@ -111,6 +112,7 @@ library(RColorBrewer)
 palette <- colorRampPalette(rev(RColorBrewer::brewer.pal(10, "RdYlBu")))
 PlotStackCorrelation(freq = crl$freq, correlation = crl$correlation,
           col.pal = palette, label = "DML", ylim = c(NA, log(50)))
+
 }
 \references{
 Münch, T. and Laepple, T.: What climate signal is contained in

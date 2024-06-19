@@ -18,8 +18,8 @@ sufficient is a named list of two components giving the \code{mean} and
 \code{stack} spectra.}
 
 \item{neff}{the effective number of records (e.g. to account for an expected
-spatial correlation of the local noise). Per default set to element \code{N}
-in \code{spectra}, otherwise supply it explicitly here.}
+spatial correlation of the local noise). Per default set to element
+\code{N} in \code{spectra}, otherwise supply it explicitly here.}
 
 \item{diffusion}{numeric vector of diffusion correction values (inverse
 transfer function); must be of the same length as the spectral estimates in
@@ -32,11 +32,11 @@ correction.}
 }
 \value{
 A list of three components, each of class \code{"spec"}:
-\describe{
-\item{\code{signal}:}{the raw or corrected signal spectrum.}
-\item{\code{noise}:}{the raw or corrected noise spectrum.}
-\item{\code{snr}:}{the signal-to-noise ratio as calculated from the previous
-components.}
+  \describe{
+  \item{\code{signal}:}{the raw or corrected signal spectrum;}
+  \item{\code{noise}:}{the raw or corrected noise spectrum;}
+  \item{\code{snr}:}{the signal-to-noise ratio as calculated from the previous
+    components.}
 }
 }
 \description{
