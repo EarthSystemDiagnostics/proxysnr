@@ -433,8 +433,7 @@ spectra are returned for these data sets (see
 <p>Obtain the final signal-to-noise ratio “spectra” by combining both
 DML data sets and applying additional logarithmic smoothing for visual
 purposes:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>SNR <span class="ot">&lt;-</span> proxysnr<span class="sc">:::</span><span class="fu">PublicationSNR</span>(DWS<span class="sc">$</span>dml1<span class="sc">$</span>corr.full, DWS<span class="sc">$</span>dml2<span class="sc">$</span>corr.full,</span>
-<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>                                 DWS<span class="sc">$</span>wais<span class="sc">$</span>corr.full)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>SNR <span class="ot">&lt;-</span> proxysnr<span class="sc">:::</span><span class="fu">PublicationSNR</span>(DWS)</span></code></pre></div>
 <p>Plot the figure:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">PlotSNR</span>(SNR, <span class="at">f.cut =</span> <span class="cn">TRUE</span>,</span>
 <span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>        <span class="at">names =</span> <span class="fu">c</span>(<span class="st">&quot;DML&quot;</span>, <span class="st">&quot;WAIS&quot;</span>), <span class="at">col =</span> <span class="fu">c</span>(<span class="st">&quot;black&quot;</span>, <span class="st">&quot;dodgerblue4&quot;</span>))</span></code></pre></div>

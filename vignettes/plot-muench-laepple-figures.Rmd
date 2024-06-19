@@ -97,8 +97,7 @@ Obtain the final signal-to-noise ratio "spectra" by combining both DML data sets
 and applying additional logarithmic smoothing for visual purposes:
 
 ```{r}
-SNR <- proxysnr:::PublicationSNR(DWS$dml1$corr.full, DWS$dml2$corr.full,
-                                 DWS$wais$corr.full)
+SNR <- proxysnr:::PublicationSNR(DWS)
 ```
 
 Plot the figure:

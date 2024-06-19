@@ -8,10 +8,11 @@
 #' SNR) used for Figs. (3) and (4) in Münch and Laepple (2018). The DML spectra
 #' are a combination of the results from the DML1 and DML2 data sets.
 #'
-#' @param spec.dml1 DML1 spectral data (e.g. the raw or any of the corrected
-#'   spectra for DML1 as obtained from \code{\link{WrapSpectralResults}}).
-#' @param spec.dml2 as `DML1` for the DML2 spectral data.
-#' @param spec.wais as `DML1` for the WAIS spectral data.
+#' @param spec spectral results for the DML and WAIS firn core data as output
+#'   from \code{\link{WrapSpectralResults}}.
+#' @param data character string naming the version of the spectral results in
+#'   \code{spec} to use; one of "corr.full", "corr.diff.only",
+#'   "corr.t.unc.only", and "raw"; defaults to "corr.full".
 #' @param dml.knit.f frequency at which to combine the spectra from the DML1
 #'   and DML2 data sets (defaults to 1/10 yr^(-1)); DML2 spectra are used for
 #'   lower frequencies than \code{dml.knit.f}, DML1 for the higher frequencies.
@@ -36,8 +37,29 @@
 #' decadal- to centennial-scale isotope variations from Antarctic ice cores?
 #' Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
 #'
-PublicationSNR <- function(spec.dml1, spec.dml2, spec.wais,
+PublicationSNR <- function(spec,
+                           data = c("corr.full", "corr.diff.only",
+                                    "corr.t.unc.only", "raw"),
                            dml.knit.f = 0.1, df.log = 0.125) {
+
+  # Get correction version
+
+  names.spec <- names(spec)
+  nm <- match.arg(data,
+                  c("corr.full", "corr.diff.only", "corr.t.unc.only", "raw"))
+
+  for (i in 1 : length(spec)) {
+
+    if (!hasName(spec[[i]], nm)) {
+      stop(paste0("No version `", nm, "` available for dataset `",
+                  names.spec[i], "`."), call. = FALSE)
+    }
+  }
+
+  spec.dml1 <- spec$dml1[[nm]]
+  spec.dml2 <- spec$dml2[[nm]]
+  spec.wais <- spec$wais[[nm]]
+
 
   # Combine DML1 and DML2 spectra
 

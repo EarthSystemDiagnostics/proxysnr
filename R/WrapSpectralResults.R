@@ -31,8 +31,8 @@
 #'   data sets and where each of these lists contains up to five elements:
 #'   \describe{
 #'   \item{\code{raw}:}{a list with four elements: three objects of class
-#'   \code{"spec"} (the raw signal, noise and corresponding SNR spectra), and a
-#'     two-element vector (\code{f.cutoff}) with the index and value of the
+#'     \code{"spec"} (the raw signal, noise and corresponding SNR spectra), and
+#'     a two-element vector (\code{f.cutoff}) with the index and value of the
 #'     cutoff frequency.}
 #'   \item{\code{corr.diff.only}:}{as item \code{raw} but with the spectra after
 #'     correction for the effect of diffusion.}

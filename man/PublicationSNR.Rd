@@ -5,20 +5,19 @@
 \title{Final DML and WAIS spectra}
 \usage{
 PublicationSNR(
-  spec.dml1,
-  spec.dml2,
-  spec.wais,
+  spec,
+  data = c("corr.full", "corr.diff.only", "corr.t.unc.only", "raw"),
   dml.knit.f = 0.1,
   df.log = 0.125
 )
 }
 \arguments{
-\item{spec.dml1}{DML1 spectral data (e.g. the raw or any of the corrected
-spectra for DML1 as obtained from \code{\link{WrapSpectralResults}}).}
+\item{spec}{spectral results for the DML and WAIS firn core data as output
+from \code{\link{WrapSpectralResults}}.}
 
-\item{spec.dml2}{as `DML1` for the DML2 spectral data.}
-
-\item{spec.wais}{as `DML1` for the WAIS spectral data.}
+\item{data}{character string naming the version of the spectral results in
+\code{spec} to use; one of "corr.full", "corr.diff.only",
+"corr.t.unc.only", and "raw"; defaults to "corr.full".}
 
 \item{dml.knit.f}{frequency at which to combine the spectra from the DML1
 and DML2 data sets (defaults to 1/10 yr^(-1)); DML2 spectra are used for
