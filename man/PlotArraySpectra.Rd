@@ -2,19 +2,18 @@
 % Please edit documentation in R/plotting.R
 \name{PlotArraySpectra}
 \alias{PlotArraySpectra}
-\title{Plot proxy array spectra}
+\title{Plot spectra from spatial proxy data array}
 \usage{
 PlotArraySpectra(
   spec,
-  f.cutoff = NA,
+  marker = NA,
   xlim = c(100, 2),
   ylim = c(0.005, 50),
   col = c("darkgrey", "black", "burlywood4"),
   col.sn = c("dodgerblue4", "firebrick4"),
   alpha.sn = 0.2,
-  plt.ann = "default",
-  xlab = NULL,
-  ylab = NULL,
+  xlab = "Time period (yr)",
+  ylab = "Power spectral density",
   xtm = NULL,
   ytm = NULL,
   xtl = NULL,
@@ -24,8 +23,8 @@ PlotArraySpectra(
 \arguments{
 \item{spec}{output from \code{\link{ObtainArraySpectra}}.}
 
-\item{f.cutoff}{optional frequency value to draw a vertical line symbolising
-a cutoff frequency.}
+\item{marker}{vector of optional frequency values to mark certain parts of
+the plot, e.g. a cutoff frequency, in form of vertical grey dashed lines.}
 
 \item{xlim}{the x limits (x1, x2) of the plot.}
 
@@ -41,38 +40,32 @@ signal (\code{col[1]}) and noise shading (\code{col[2]}).}
 \item{alpha.sn}{opacity factor for the colours in \code{col.sn} within
 [0,1].}
 
-\item{plt.ann}{if \code{"default"} use axis annotation as in Fig. 1 of Münch
-and Laepple (2018). Since no other fixed annotation scheme is implemented,
-setting \code{plt.ann} to a different value will result in an error.}
+\item{xlab}{x axis label.}
 
-\item{xlab}{if not \code{NULL} use this specific x axis label to override
-the default setting.}
+\item{ylab}{y axis label.}
 
-\item{ylab}{if not \code{NULL} use this specific y axis label to override
-the default setting.}
+\item{xtm}{x axis tick mark positions; if \code{NULL} computed by
+\code{\link[graphics]{axis}}.}
 
-\item{xtm}{if not \code{NULL} use this vector of specific x axis tick mark
-positions to override the default setting.}
+\item{ytm}{y axis tick mark positions; if \code{NULL} computed from the
+\code{ylim} range in steps of powers of 10.}
 
-\item{ytm}{if not \code{NULL} use this vector of specific y axis tick mark
-positions to override the default setting.}
-
-\item{xtl}{x axis tick mark labels. If \code{xtm} is not \code{NULL},
-\code{xtl} is used for the \code{labels} parameter of the
-\code{\link{axis}} function: if \code{xtl} is set to \code{NULL}, the
-labels are determined automatically, else set it explicitly by specifying a
-vector of labels of the same length as \code{xtm}; see also \code{?axis}.}
+\item{xtl}{x axis tick mark labels; if \code{NULL} determined automatically
+from \code{xtm}, else it must be a vector of labels of the same length as
+\code{xtm}.}
 
 \item{ytl}{equivalent to \code{xtl} for the y axis tick mark labels.}
 }
 \description{
-Plot the spectral estimates from a spatial proxy core array, such as in
-Fig. 1 in Münch and Laepple, 2018.
+Plot the spectral estimates from a spatial proxy data array (e.g., as in the
+firn core analysis of Münch and Laepple, 2018, Fig. 1).
 }
 \examples{
 
 # Plot Figure 1 in Münch and Laepple (2018) (DML1 oxygen isotope data set):
-PlotArraySpectra(ObtainArraySpectra(dml$dml1, df.log = 0.12))
+PlotArraySpectra(ObtainArraySpectra(dml$dml1, df.log = 0.12),
+                 ylab = expression(
+                   "Power spectral density " * "(\u2030"^{2}\%.\%"yr)"))
 
 }
 \references{

@@ -8,17 +8,16 @@ PlotStackCorrelation(
   data,
   col.pal = NULL,
   label = "",
-  plt.ann = "default",
-  xlab = NULL,
-  ylab = NULL,
+  xlim = NA,
+  ylim = NA,
+  xlab = "Number of cores",
+  ylab = "Averaging period (yr)",
   xtm = NULL,
   ytm = NULL,
   xtl = NULL,
   ytl = NULL,
   xtm.min = NULL,
-  ytm.min = NULL,
-  xlim = NA,
-  ylim = NA
+  ytm.min = NULL
 )
 }
 \arguments{
@@ -40,52 +39,45 @@ from ten colours of the diverging \code{RdYlBu} palette in the ColorBrewer
 \item{label}{an optional label of the data set to be displayed at the top
 of the plot.}
 
-\item{plt.ann}{if \code{"default"} use axis annotation as in Fig. 4 of Münch
-and Laepple (2018). Since no other fixed annotation scheme is implemented,
-setting \code{plt.ann} to a different value will result in an error.}
+\item{xlim}{the x limits (x1, x2) of the plot. Set to \code{NA} to use
+default limits calculated from the x data range, or supply a numeric vector
+of length 2 with custom limits. In the latter case, setting either of the
+elements to \code{NA} results in using the default limit for this element
+only; see the example.}
 
-\item{xlab}{if not \code{NULL} use this specific x axis label to override
-the default setting.}
+\item{ylim}{as \code{xlim} for the y limits of the plot.}
 
-\item{ylab}{if not \code{NULL} use this specific y axis label to override
-the default setting.}
+\item{xlab}{x axis label.}
 
-\item{xtm}{if not \code{NULL} use this vector of specific x axis tick mark
-positions to override the default setting.}
+\item{ylab}{y axis label.}
 
-\item{ytm}{if not \code{NULL} use this vector of specific y axis tick mark
-positions to override the default setting.}
+\item{xtm}{x axis tick mark positions; default setting (\code{NULL}) uses
+\code{c(1, 2, 5, 10, 20)}.}
 
-\item{xtl}{x axis tick mark labels. If \code{xtm} is not \code{NULL},
-\code{xtl} is used for the \code{labels} parameter of the
-\code{\link{axis}} function: if \code{xtl} is set to \code{NULL}, the
-labels are determined automatically, else set it explicitly by specifying a
-vector of labels of the same length as \code{xtm}; see also \code{?axis}.}
+\item{ytm}{y axis tick mark positions; default setting (\code{NULL}) uses
+\code{c(2, 5, 10, 20, 50)}.}
+
+\item{xtl}{x axis tick mark labels; if \code{NULL} determined automatically
+from \code{xtm}, else it must be a vector of labels of the same length as
+\code{xtm}.}
 
 \item{ytl}{equivalent to \code{xtl} for the y axis tick mark labels.}
 
-\item{xtm.min}{if not \code{NULL} use these specific x axis minor tick marks
-to override the default setting. Set to \code{NA} to omit minor ticks at
-all.}
+\item{xtm.min}{x axis minor tick marks; default setting \code{NULL} uses
+minor tick marks that are adapted to the default x major tick marks. Set to
+\code{NA} to omit minor ticks at all.}
 
 \item{ytm.min}{as \code{xtm.min} for minor y axis tick marks.}
-
-\item{xlim}{the x limits (x1, x2) of the plot. Set to \code{NA} to use
-default limits, or supply a numeric vector of length 2 with custom
-limits in log units. In the latter case, setting either of the elements to
-\code{NA} results in using the default limit for this element only.}
-
-\item{ylim}{as \code{xlim} for the y limits of the plot.}
 }
 \description{
 Plot the correlation of the spatial average of a certain number of proxy
 records with the underlying common signal depending on the number of records
-averaged and their temporal resolution, such as in Fig. 4 in Münch and
-Laepple, 2018.
+averaged and their temporal resolution (e.g., as in the firn core analysis of
+Münch and Laepple, 2018, Fig. 4).
 }
 \examples{
 
-# Plot Figure 5 in Münch and Laepple (2018)
+# Plot Figure 4 in Münch and Laepple (2018)
 # (DML and WAIS oxygen isotope data sets):
 
 # Load main spectral results
@@ -104,7 +96,7 @@ crl <- ObtainStackCorrelation(SNR$dml, N = 1 : 20,
                               freq.cut.upper = SNR$dml$f.cutoff[2])
 
 # Plot it
-PlotStackCorrelation(data = crl, label = "DML", ylim = c(NA, log(50)))
+PlotStackCorrelation(data = crl, label = "DML", ylim = c(NA, 50))
 
 }
 \references{

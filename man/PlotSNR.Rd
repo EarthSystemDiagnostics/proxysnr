@@ -11,9 +11,8 @@ PlotSNR(
   col = 1:length(spec),
   xlim = c(500, 2),
   ylim = c(0.05, 5),
-  plt.ann = "default",
-  xlab = NULL,
-  ylab = NULL,
+  xlab = "Time period (yr)",
+  ylab = "Signal-to-Noise Ratio",
   xtm = NULL,
   ytm = NULL,
   xtl = NULL,
@@ -41,33 +40,26 @@ with length recycled to match \code{length(spec)}.}
 
 \item{ylim}{the y limits (y1, y2) of the plot.}
 
-\item{plt.ann}{if \code{"default"} use axis annotation as in Fig. 3 of Münch
-and Laepple (2018). Since no other fixed annotation scheme is implemented,
-setting \code{plt.ann} to a different value will result in an error.}
+\item{xlab}{x axis label.}
 
-\item{xlab}{if not \code{NULL} use this specific x axis label to override
-the default setting.}
+\item{ylab}{y axis label.}
 
-\item{ylab}{if not \code{NULL} use this specific y axis label to override
-the default setting.}
+\item{xtm}{x axis tick mark positions; if \code{NULL} computed by
+\code{\link[graphics]{axis}}.}
 
-\item{xtm}{if not \code{NULL} use this vector of specific x axis tick mark
-positions to override the default setting.}
+\item{ytm}{y axis tick mark positions; default setting (\code{NULL}) uses
+\code{c(0.05, 0.1, 0.5, 1, 5)}.}
 
-\item{ytm}{if not \code{NULL} use this vector of specific y axis tick mark
-positions to override the default setting.}
-
-\item{xtl}{x axis tick mark labels. If \code{xtm} is not \code{NULL},
-\code{xtl} is used for the \code{labels} parameter of the
-\code{\link{axis}} function: if \code{xtl} is set to \code{NULL}, the
-labels are determined automatically, else set it explicitly by specifying a
-vector of labels of the same length as \code{xtm}; see also \code{?axis}.}
+\item{xtl}{x axis tick mark labels; if \code{NULL} determined automatically
+from \code{xtm}, else it must be a vector of labels of the same length as
+\code{xtm}.}
 
 \item{ytl}{equivalent to \code{xtl} for the y axis tick mark labels.}
 }
 \description{
-Plot the timescale dependence of proxy signal-to-noise ratios, such as in
-Fig. 3 in Münch and Laepple, 2018.
+Plot proxy signal-to-noise ratios of several datasets as a function of
+timescale (e.g., as in the firn core analysis of Münch and Laepple, 2018,
+Fig. 3).
 }
 \examples{
 

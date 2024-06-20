@@ -143,14 +143,14 @@ LLines<-function(x, conf = TRUE, bPeriod = FALSE, col = "black", alpha = 0.2,
 # ------------------------------------------------------------------------------
 # generic functions to plot results from applying proxysnr method
 
-#' Plot proxy array spectra
+#' Plot spectra from spatial proxy data array
 #'
-#' Plot the spectral estimates from a spatial proxy core array, such as in
-#' Fig. 1 in Münch and Laepple, 2018.
+#' Plot the spectral estimates from a spatial proxy data array (e.g., as in the
+#' firn core analysis of Münch and Laepple, 2018, Fig. 1).
 #'
 #' @param spec output from \code{\link{ObtainArraySpectra}}.
-#' @param f.cutoff optional frequency value to draw a vertical line symbolising
-#'   a cutoff frequency.
+#' @param marker vector of optional frequency values to mark certain parts of
+#'   the plot, e.g. a cutoff frequency, in form of vertical grey dashed lines.
 #' @param xlim the x limits (x1, x2) of the plot.
 #' @param ylim the y limits (y1, y2) of the plot.
 #' @param col a three-element vector with the colours for the individual
@@ -160,22 +160,15 @@ LLines<-function(x, conf = TRUE, bPeriod = FALSE, col = "black", alpha = 0.2,
 #'   signal (\code{col[1]}) and noise shading (\code{col[2]}).
 #' @param alpha.sn opacity factor for the colours in \code{col.sn} within
 #'   [0,1].
-#' @param plt.ann if \code{"default"} use axis annotation as in Fig. 1 of Münch
-#'   and Laepple (2018). Since no other fixed annotation scheme is implemented,
-#'   setting \code{plt.ann} to a different value will result in an error.
-#' @param xlab if not \code{NULL} use this specific x axis label to override
-#'   the default setting.
-#' @param ylab if not \code{NULL} use this specific y axis label to override
-#'   the default setting.
-#' @param xtm if not \code{NULL} use this vector of specific x axis tick mark
-#'   positions to override the default setting.
-#' @param ytm if not \code{NULL} use this vector of specific y axis tick mark
-#'   positions to override the default setting.
-#' @param xtl x axis tick mark labels. If \code{xtm} is not \code{NULL},
-#'   \code{xtl} is used for the \code{labels} parameter of the
-#'   \code{\link{axis}} function: if \code{xtl} is set to \code{NULL}, the
-#'   labels are determined automatically, else set it explicitly by specifying a
-#'   vector of labels of the same length as \code{xtm}; see also \code{?axis}.
+#' @param xlab x axis label.
+#' @param ylab y axis label.
+#' @param xtm x axis tick mark positions; if \code{NULL} computed by
+#'   \code{\link[graphics]{axis}}.
+#' @param ytm y axis tick mark positions; if \code{NULL} computed from the
+#'   \code{ylim} range in steps of powers of 10.
+#' @param xtl x axis tick mark labels; if \code{NULL} determined automatically
+#'   from \code{xtm}, else it must be a vector of labels of the same length as
+#'   \code{xtm}.
 #' @param ytl equivalent to \code{xtl} for the y axis tick mark labels.
 #'
 #' @author Thomas Münch
@@ -189,17 +182,19 @@ LLines<-function(x, conf = TRUE, bPeriod = FALSE, col = "black", alpha = 0.2,
 #' @examples
 #'
 #' # Plot Figure 1 in Münch and Laepple (2018) (DML1 oxygen isotope data set):
-#' PlotArraySpectra(ObtainArraySpectra(dml$dml1, df.log = 0.12))
+#' PlotArraySpectra(ObtainArraySpectra(dml$dml1, df.log = 0.12),
+#'                  ylab = expression(
+#'                    "Power spectral density " * "(\u2030"^{2}%.%"yr)"))
 #'
 #' @export
 #'
-PlotArraySpectra <- function(spec, f.cutoff = NA,
+PlotArraySpectra <- function(spec, marker = NA,
                              xlim = c(100, 2), ylim = c(0.005, 50),
                              col = c("darkgrey", "black", "burlywood4"),
                              col.sn = c("dodgerblue4", "firebrick4"),
                              alpha.sn = 0.2,
-                             plt.ann = "default",
-                             xlab = NULL, ylab = NULL,
+                             xlab = "Time period (yr)",
+                             ylab = "Power spectral density",
                              xtm = NULL, ytm = NULL,
                              xtl = NULL, ytl = NULL) {
 
@@ -213,21 +208,10 @@ PlotArraySpectra <- function(spec, f.cutoff = NA,
 
   # Axis settings
 
-  if (plt.ann == "default") {
-    set.xlab <- "Time period (yr)"
-    set.ylab <- expression("Power spectral density " * "(\u2030"^{2}%.%"yr)")
-    set.xtm <- NULL
-    set.xtl <- NULL
-    set.ytm <- 10^(seq(log10(ylim[1]), log10(ylim[2]), by = 1))
-    set.ytl <- format(set.ytm,
-                      scientific = FALSE, trim = TRUE, drop0trailing = TRUE)
-  } else {
-    stop("Invalid axis annotation setting.")
-  }
-  if (!is.null(xlab)) set.xlab = xlab
-  if (!is.null(ylab)) set.ylab = ylab
-  if (!is.null(xtm)) {set.xtm = xtm; set.xtl = xtl}
-  if (!is.null(ytm)) {set.ytm = ytm; set.ytl = ytl}
+  if (is.null(xtl)) xtl <- xtm
+  if (is.null(ytm)) ytm <- 10^(seq(log10(ylim[1]), log10(ylim[2]), by = 1))
+  if (is.null(ytl))
+    ytl <- format(ytm, scientific = FALSE, trim = TRUE, drop0trailing = TRUE)
   
   # Plot parameters
 
@@ -251,10 +235,12 @@ PlotArraySpectra <- function(spec, f.cutoff = NA,
            psd2$spec[-i.remove], psd3$spec[-i.remove],
            col = col.sn[1], alpha = alpha.sn)
 
-  # Frequency cutoff line
+  # Horizontal marker line(s)
 
-  graphics::lines(x = rep(1 / f.cutoff, 2), y = c(ylim[1]/10, ylim[2]),
-                  lty = 2, col = "darkgrey")
+  lapply(marker, function(m) {
+    graphics::lines(x = rep(1 / m, 2), y = c(ylim[1]/10, ylim[2]),
+                    lty = 2, col = "darkgrey")
+  })
 
   # Individual spectra
 
@@ -279,13 +265,12 @@ PlotArraySpectra <- function(spec, f.cutoff = NA,
 
   # Axis and legend settings
 
-  graphics::axis(1, at = set.xtm, labels = set.xtl)
-  graphics::axis(2, at = set.ytm, labels = set.ytl)
+  graphics::axis(1, at = xtm, labels = xtl)
+  graphics::axis(2, at = ytm, labels = ytl)
 
-  graphics::mtext(set.xlab, side = 1, line = 3.5,
-                  cex = graphics::par()$cex.lab)
-  graphics::mtext(set.ylab, side = 2, line = 4.5,
-                  cex = graphics::par()$cex.lab, las = 0)
+  graphics::mtext(xlab, side = 1, line = 3.5, cex = graphics::par()$cex.lab)
+  graphics::mtext(ylab, side = 2, line = 4.5, cex = graphics::par()$cex.lab,
+                  las = 0)
 
   graphics::legend("bottomleft",
                    c("Individual spectra", "Mean spectrum",
@@ -298,24 +283,26 @@ PlotArraySpectra <- function(spec, f.cutoff = NA,
 
 #' Plot proxy signal-to-noise ratios
 #'
-#' Plot the timescale dependence of proxy signal-to-noise ratios, such as in
-#' Fig. 3 in Münch and Laepple, 2018.
+#' Plot proxy signal-to-noise ratios of several datasets as a function of
+#' timescale (e.g., as in the firn core analysis of Münch and Laepple, 2018,
+#' Fig. 3).
 #'
 #' @param spec a (named) list of signal-to-noise ratio data sets: each data set
 #'   itself should be list containing at least a named element \code{snr} which
 #'   is an object of class \code{"spec"} providing signal-to-noise ratios as a
 #'   function of frequency. For Figure 3 in Münch and Laepple (2018) set
 #'   \code{spec} to the output from \code{\link{PublicationSNR}}.
+#' @param f.cut Shall the spectra be cut at the cutoff frequency constrained
+#'   by the diffusion correction strength? Defaults to \code{FALSE}.
 #' @param names an optional character vector of names of the proxy data
 #'   sets. If \code{NULL}, the names of \code{spec} are used or, if not present,
 #'   default names.
-#' @param f.cut Shall the spectra be cut at the cutoff frequency constrained
-#'   by the diffusion correction strength? Defaults to \code{FALSE}.
 #' @param col a numeric or character vector of colors to use for the plotting
 #'   with length recycled to match \code{length(spec)}.
-#' @param plt.ann if \code{"default"} use axis annotation as in Fig. 3 of Münch
-#'   and Laepple (2018). Since no other fixed annotation scheme is implemented,
-#'   setting \code{plt.ann} to a different value will result in an error.
+#' @param xlab x axis label.
+#' @param ylab y axis label.
+#' @param ytm y axis tick mark positions; default setting (\code{NULL}) uses
+#'   \code{c(0.05, 0.1, 0.5, 1, 5)}.
 #' @inheritParams PlotArraySpectra
 #'
 #' @author Thomas Münch
@@ -350,29 +337,17 @@ PlotArraySpectra <- function(spec, f.cutoff = NA,
 PlotSNR <- function(spec, f.cut = FALSE,
                     names = NULL, col = 1 : length(spec),
                     xlim = c(500, 2), ylim = c(0.05, 5),
-                    plt.ann = "default",
-                    xlab = NULL, ylab = NULL,
+                    xlab = "Time period (yr)", ylab = "Signal-to-Noise Ratio",
                     xtm = NULL, ytm = NULL,
                     xtl = NULL, ytl = NULL) {
 
   if (length(col) != length(spec)) col <- rep(col, length.out = length(spec))
 
-  # Axis settings
-  
-  if (plt.ann == "default") {
-    set.xlab <- "Time period (yr)"
-    set.ylab <- "Signal-to-Noise Ratio"
-    set.xtm <- NULL
-    set.xtl <- NULL
-    set.ytm <- c(0.05, 0.1, 0.5, 1, 5)
-    set.ytl <- set.ytm
-  } else {
-    stop("Invalid axis annotation setting.")
-  }
-  if (!is.null(xlab)) set.xlab = xlab
-  if (!is.null(ylab)) set.ylab = ylab
-  if (!is.null(xtm)) {set.xtm = xtm; set.xtl = xtl}
-  if (!is.null(ytm)) {set.ytm = ytm; set.ytl = ytl}
+  # Graphics settings
+
+  if (is.null(xtl)) xtl <- xtm
+  if (is.null(ytm)) ytm <- c(0.05, 0.1, 0.5, 1, 5)
+  if (is.null(ytl)) ytl <- ytm
 
   op <- graphics::par(mar = c(5, 6, 0.5, 0.5), las = 1,
                       cex.main = 1.5, cex.lab = 1.5, cex.axis = 1.25)
@@ -417,12 +392,11 @@ PlotSNR <- function(spec, f.cut = FALSE,
 
   # Axis and legends settings
   
-  graphics::axis(1, at = set.xtm, labels = set.xtl)
-  graphics::axis(2, at = set.ytm, labels = set.ytl)
-  graphics::mtext(set.xlab, side = 1, line = 3.5,
-                  cex = graphics::par()$cex.lab)
-  graphics::mtext(set.ylab, side = 2, line = 4.25,
-                  cex = graphics::par()$cex.lab, las = 0)
+  graphics::axis(1, at = xtm, labels = xtl)
+  graphics::axis(2, at = ytm, labels = ytl)
+  graphics::mtext(xlab, side = 1, line = 3.5, cex = graphics::par()$cex.lab)
+  graphics::mtext(ylab, side = 2, line = 4.25, cex = graphics::par()$cex.lab,
+                  las = 0)
 
   if (is.null(names)) {
     names <- names(spec)
@@ -441,8 +415,8 @@ PlotSNR <- function(spec, f.cut = FALSE,
 #'
 #' Plot the correlation of the spatial average of a certain number of proxy
 #' records with the underlying common signal depending on the number of records
-#' averaged and their temporal resolution, such as in Fig. 4 in Münch and
-#' Laepple, 2018.
+#' averaged and their temporal resolution (e.g., as in the firn core analysis of
+#' Münch and Laepple, 2018, Fig. 4).
 #'
 #' @param data a list of the correlation data (e.g. as output by
 #'   \code{\link{ObtainStackCorrelation}}), which must have two elements:
@@ -459,19 +433,21 @@ PlotSNR <- function(spec, f.cut = FALSE,
 #'   2.0 collection.
 #' @param label an optional label of the data set to be displayed at the top
 #'   of the plot.
-#' @param plt.ann if \code{"default"} use axis annotation as in Fig. 4 of Münch
-#'   and Laepple (2018). Since no other fixed annotation scheme is implemented,
-#'   setting \code{plt.ann} to a different value will result in an error.
-#' @inheritParams PlotArraySpectra
-#' @param xtm.min if not \code{NULL} use these specific x axis minor tick marks
-#'   to override the default setting. Set to \code{NA} to omit minor ticks at
-#'   all.
-#' @param ytm.min as \code{xtm.min} for minor y axis tick marks.
 #' @param xlim the x limits (x1, x2) of the plot. Set to \code{NA} to use
-#'   default limits, or supply a numeric vector of length 2 with custom
-#'   limits in log units. In the latter case, setting either of the elements to
-#'   \code{NA} results in using the default limit for this element only.
+#'   default limits calculated from the x data range, or supply a numeric vector
+#'   of length 2 with custom limits. In the latter case, setting either of the
+#'   elements to \code{NA} results in using the default limit for this element
+#'   only; see the example.
 #' @param ylim as \code{xlim} for the y limits of the plot.
+#' @param xtm x axis tick mark positions; default setting (\code{NULL}) uses
+#'   \code{c(1, 2, 5, 10, 20)}.
+#' @param ytm y axis tick mark positions; default setting (\code{NULL}) uses
+#'   \code{c(2, 5, 10, 20, 50)}.
+#' @inheritParams PlotSNR
+#' @param xtm.min x axis minor tick marks; default setting \code{NULL} uses
+#'   minor tick marks that are adapted to the default x major tick marks. Set to
+#'   \code{NA} to omit minor ticks at all.
+#' @param ytm.min as \code{xtm.min} for minor y axis tick marks.
 #'
 #' @author Thomas Münch
 #' @seealso \code{\link{ObtainStackCorrelation}}; <https://colorbrewer2.org/>
@@ -483,7 +459,7 @@ PlotSNR <- function(spec, f.cut = FALSE,
 #'
 #' @examples
 #'
-#' # Plot Figure 5 in Münch and Laepple (2018)
+#' # Plot Figure 4 in Münch and Laepple (2018)
 #' # (DML and WAIS oxygen isotope data sets):
 #'
 #' # Load main spectral results
@@ -502,18 +478,17 @@ PlotSNR <- function(spec, f.cut = FALSE,
 #'                               freq.cut.upper = SNR$dml$f.cutoff[2])
 #'
 #' # Plot it
-#' PlotStackCorrelation(data = crl, label = "DML", ylim = c(NA, log(50)))
+#' PlotStackCorrelation(data = crl, label = "DML", ylim = c(NA, 50))
 #'
 #' @export
 #'
-PlotStackCorrelation <- function(data, col.pal = NULL,
-                                 label = "",
-                                 plt.ann = "default",
-                                 xlab = NULL, ylab = NULL,
+PlotStackCorrelation <- function(data, col.pal = NULL, label = "",
+                                 xlim = NA, ylim = NA,
+                                 xlab = "Number of cores",
+                                 ylab = "Averaging period (yr)",
                                  xtm = NULL, ytm = NULL,
                                  xtl = NULL, ytl = NULL,
-                                 xtm.min = NULL, ytm.min = NULL,
-                                 xlim = NA, ylim = NA) {
+                                 xtm.min = NULL, ytm.min = NULL) {
 
   # Error checking
   if (!is.list(data)) stop("'data' must be a list.", call. = FALSE)
@@ -526,24 +501,12 @@ PlotStackCorrelation <- function(data, col.pal = NULL,
          "of element 'correlation'.", call. = FALSE)
   }
 
-  if (plt.ann == "default") {
-    set.xlab <- "Number of cores"
-    set.ylab <- "Averaging period (yr)"
-    set.xtm <- c(1, 2, 5, 10, 20)
-    set.xtl <- set.xtm
-    set.ytm <- c(2, 5, 10, 20, 50)
-    set.ytl <- set.ytm
-    set.xtm.min <- c(3, 4, 6 : 9, 11 : 19)
-    set.ytm.min <- c(3, 4, 6 : 9, 30, 40)
-  } else {
-    stop("Invalid axis annotation setting.")
-  }
-  if (!is.null(xlab)) set.xlab = xlab
-  if (!is.null(ylab)) set.ylab = ylab
-  if (!is.null(xtm)) {set.xtm = xtm; set.xtl = xtl}
-  if (!is.null(ytm)) {set.ytm = ytm; set.ytl = ytl}
-  if (!is.null(xtm.min)) set.xtm.min <- xtm.min
-  if (!is.null(ytm.min)) set.ytm.min <- ytm.min
+  if (is.null(xtm)) xtm <- c(1, 2, 5, 10, 20)
+  if (is.null(ytm)) ytm <- c(2, 5, 10, 20, 50)
+  if (is.null(xtl)) xtl <- xtm
+  if (is.null(ytl)) ytl <- ytm
+  if (is.null(xtm.min)) xtm.min <- c(3, 4, 6 : 9, 11 : 19)
+  if (is.null(ytm.min)) ytm.min <- c(3, 4, 6 : 9, 30, 40)
 
   # Set default color palette function
 
@@ -578,6 +541,7 @@ PlotStackCorrelation <- function(data, col.pal = NULL,
       stop("Invalid x limit setting.")
     }
   } else {
+    xlim <- log(xlim)
     idx <- which(is.na(xlim))
     xlim[idx] <- range(x, finite = TRUE)[idx]
   }
@@ -588,6 +552,7 @@ PlotStackCorrelation <- function(data, col.pal = NULL,
       stop("Invalid y limit setting.")
     }
   } else {
+    ylim <- log(ylim)
     idx <- which(is.na(ylim))
     ylim[idx] <- range(y, finite = TRUE)[idx]
   }
@@ -597,16 +562,16 @@ PlotStackCorrelation <- function(data, col.pal = NULL,
                            color.palette = col.pal,
                            xlim = xlim, ylim = ylim,
                            zlim = c(0, 1),
-                           plot.title = graphics::title(xlab = set.xlab, ylab = set.ylab),
+                           plot.title = graphics::title(xlab = xlab, ylab = ylab),
                            plot.axes =
                              {
                                graphics::contour(x, y, z,
                                                  add = TRUE, labcex = 1, lwd = 1);
-                               graphics::axis(1, at = log(set.xtm), label = set.xtl);
-                               graphics::axis(1, at = log(set.xtm.min), label = FALSE,
+                               graphics::axis(1, at = log(xtm), label = xtl);
+                               graphics::axis(1, at = log(xtm.min), label = FALSE,
                                               tcl = 0.5 * graphics::par("tcl"));
-                               graphics::axis(2, at = log(set.ytm), label = set.ytl);
-                               graphics::axis(2, at = log(set.ytm.min), label = FALSE,
+                               graphics::axis(2, at = log(ytm), label = ytl);
+                               graphics::axis(2, at = log(ytm.min), label = FALSE,
                                               tcl = 0.5 * graphics::par("tcl"));
                              }
                            )
@@ -624,7 +589,7 @@ PlotStackCorrelation <- function(data, col.pal = NULL,
 #' Plot transfer functions
 #'
 #' Plot the spectral transfer functions of the effects of diffusion and time
-#' uncertainty, such as in Fig. B1 in Münch and Laepple, 2018.
+#' uncertainty (e.g., as in the analysis of Münch and Laepple, 2018, Fig. B1).
 #'
 #' @param dtf A list of transfer function data sets: each data set is an object
 #'   of class \code{"spec"} (see \code{?spectrum}) with minimum components
@@ -632,38 +597,40 @@ PlotStackCorrelation <- function(data, col.pal = NULL,
 #'   component \code{freq} is a numeric vector providing a frequency axis and
 #'   component \code{spec} a numeric vector with the corresponding diffusion
 #'   transfer function values. If \code{NULL} (the default), the diffusion
-#'   transfer function provided with the package is plotted, which corresponds
+#'   transfer functions provided with the package are plotted, which corresponds
 #'   to Figure B1 in Münch and Laepple (2018).
 #' @param ttf As \code{dtf} but providing time uncertainty transfer
 #'   functions. If \code{NULL} (the default), the time uncertainty transfer
-#'   function provided with the package is plotted, which corresponds to Figure
-#'   B1 in Münch and Laepple (2018).
+#'   functions provided with the package are plotted, which corresponds to
+#'   Figure B1 in Münch and Laepple (2018).
 #' @param names an optional character vector of names for the transfer function
 #'   data sets. If \code{NULL}, the names of \code{dtf} and \code{ttf} are used
 #'   or, if not present, default names. If the diffusion and time uncertainty
-#'   data sets differ in number, you can provide a list of two vectors of names.
+#'   data sets differ in number, provide a list of two vectors of names.
 #' @param col a numeric or character vector of colors to use for the plotting;
 #'   if \code{NULL} default colors are used.
 #' @param dtf.threshold optional critical diffusion transfer function
 #'   value to plot a corresponding horizontal line and vertical lines of
 #'   corresponding frequency cutoff values (omitted for \code{NULL}).
+#' @param xlab x axis label.
+#' @param ylab1 y axis label for the diffusion transfer function.
+#' @param ylab2 y axis label for the time uncertainty transfer function.
 #' @param xlim the x limits (x1, x2) of the plot.
 #' @param ylim1 the y limits (y1, y2) of the diffusion transfer function plot.
 #' @param ylim2 the y limits (y1, y2) of the time uncertainty transfer function
 #'   plot.
-#' @param plt.ann if \code{"default"} use axis annotation as in Fig. B1 of
-#'   Münch and Laepple (2018). Since no other fixed annotation scheme is
-#'   implemented, setting \code{plt.ann} to a different value will result in an
-#'   error.
+#' @param ytm1 y axis tick mark positions on the diffusion transfer function
+#'   plot; default setting (\code{NULL}) uses
+#'   \code{c(0.01, 0.05, 0.1, 0.5, 1, 5)}.
+#' @param ytm2 y axis tick mark positions on the time uncertainty transfer
+#'   function plot; default setting (\code{NULL}) uses
+#'   \code{c(0.2, 0.4, 0.6, 0.8, 1, 1.2)}.
 #' @inheritParams PlotArraySpectra
-#' @param ylab1 if not ‘NULL’ use this specific y axis label for the first plot
-#'   to override the default setting.
-#' @param ylab2 if not ‘NULL’ use this specific y axis label for the second
-#'   plot to override the default setting.
-#' @param ytm1 as \code{xtm} for the first y axis.
-#' @param ytm2 as \code{xtm} for the second y axis.
-#' @param ytl1 as \code{xtl} for the first y axis.
-#' @param ytl2 as \code{xtl} for the second y axis.
+#' @param ytl1 y axis tick mark labels on the diffusion transfer function plot;
+#'   if \code{NULL} determined automatically from \code{ytm1}, else it must be a
+#'   vector of labels of the same length as \code{ytm1}.
+#' @param ytl2 as \code{ytl1} for the y axis on the time uncertainty transfer
+#'   function plot.
 #'
 #' @author Thomas Münch
 #'
@@ -684,10 +651,9 @@ PlotStackCorrelation <- function(data, col.pal = NULL,
 PlotTF <- function(dtf = NULL, ttf = NULL,
                    names = NULL, col = NULL,
                    dtf.threshold = NULL,
-                   xlim = c(500, 2),
-                   ylim1 = c(0.005, 5), ylim2 = c(0.2, 1.5),
-                   plt.ann = "default",
-                   xlab = NULL, ylab1 = NULL, ylab2 = NULL,
+                   xlab = "Time period (yr)",
+                   ylab1 = expression(bar(G)), ylab2 = expression(Phi),
+                   xlim = c(500, 2), ylim1 = c(0.005, 5), ylim2 = c(0.2, 1.5),
                    xtm = NULL, ytm1 = NULL, ytm2 = NULL,
                    xtl = NULL, ytl1 = NULL, ytl2 = NULL) {
 
@@ -698,25 +664,11 @@ PlotTF <- function(dtf = NULL, ttf = NULL,
 
   # Axis settings
 
-  if (plt.ann == "default") {
-    set.xlab <- "Time period (yr)"
-    set.ylab1 <- expression(bar(G))
-    set.ylab2 <- expression(Phi)
-    set.xtm <- NULL
-    set.xtl <- NULL
-    set.ytm1 <- c(0.01, 0.05, 0.1, 0.5, 1, 5)
-    set.ytl1 <- set.ytm1
-    set.ytm2 <- c(0.2, 0.4, 0.6, 0.8, 1, 1.2)
-    set.ytl2 <- NULL
-  } else {
-    stop("Invalid axis annotation setting.")
-  }
-  if (!is.null(xlab)) set.xlab <- xlab
-  if (!is.null(ylab1)) set.ylab1 <- ylab1
-  if (!is.null(ylab2)) set.ylab2 <- ylab2
-  if (!is.null(xtm)) {set.xtm = xtm; set.xtl = xtl}
-  if (!is.null(ytm1)) {set.ytm1 = ytm1; set.ytl1 = ytl1}
-  if (!is.null(ytm2)) {set.ytm2 = ytm2; set.ytl2 = ytl2}
+  if (is.null(xtl)) xtl <- xtm
+  if (is.null(ytm1)) ytm1 <- c(0.01, 0.05, 0.1, 0.5, 1, 5)
+  if (is.null(ytl1)) ytl1 <- ytm1
+  if (is.null(ytm2)) ytm2 <- c(0.2, 0.4, 0.6, 0.8, 1, 1.2)
+  if (is.null(ytl1)) ytl1 <- ytm1
 
   # Plot parameters
 
@@ -789,10 +741,10 @@ PlotTF <- function(dtf = NULL, ttf = NULL,
 
   graphics::mtext("a", side = 3, adj = 0.01, padj = 0.5,
                   line = -1, font = 2, cex = graphics::par()$cex.lab)
-  graphics::mtext(set.ylab1, side = 2, line = 3.5,
+  graphics::mtext(ylab1, side = 2, line = 3.5,
                   las = 0, cex = graphics::par()$cex.lab)
 
-  graphics::axis(2, at = set.ytm1, labels = set.ytl1)
+  graphics::axis(2, at = ytm1, labels = ytl1)
   graphics::box()
 
   # Place an extra legend if different number of data sets are used
@@ -810,13 +762,13 @@ PlotTF <- function(dtf = NULL, ttf = NULL,
 
   graphics::mtext("b", side = 3, adj = 0.01, padj = 0.5,
                   line = -1, font = 2, cex = graphics::par()$cex.lab)
-  graphics::mtext(set.ylab2, side = 2, line = 3.5,
+  graphics::mtext(ylab2, side = 2, line = 3.5,
                   las = 0, cex = graphics::par()$cex.lab)
-  graphics::mtext(set.xlab, side = 1, line = 3.5,
+  graphics::mtext(xlab, side = 1, line = 3.5,
                   las = 0, cex = graphics::par()$cex.lab)
 
-  graphics::axis(1, at = set.xtm, labels = set.xtl)
-  graphics::axis(2, at = set.ytm2, labels = set.ytl2)
+  graphics::axis(1, at = xtm, labels = xtl)
+  graphics::axis(2, at = ytm2, labels = ytl2)
   graphics::box()
 
   leg(nam2, col)

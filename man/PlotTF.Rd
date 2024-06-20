@@ -10,13 +10,12 @@ PlotTF(
   names = NULL,
   col = NULL,
   dtf.threshold = NULL,
+  xlab = "Time period (yr)",
+  ylab1 = expression(bar(G)),
+  ylab2 = expression(Phi),
   xlim = c(500, 2),
   ylim1 = c(0.005, 5),
   ylim2 = c(0.2, 1.5),
-  plt.ann = "default",
-  xlab = NULL,
-  ylab1 = NULL,
-  ylab2 = NULL,
   xtm = NULL,
   ytm1 = NULL,
   ytm2 = NULL,
@@ -32,18 +31,18 @@ of class \code{"spec"} (see \code{?spectrum}) with minimum components
 component \code{freq} is a numeric vector providing a frequency axis and
 component \code{spec} a numeric vector with the corresponding diffusion
 transfer function values. If \code{NULL} (the default), the diffusion
-transfer function provided with the package is plotted, which corresponds
+transfer functions provided with the package are plotted, which corresponds
 to Figure B1 in Münch and Laepple (2018).}
 
 \item{ttf}{As \code{dtf} but providing time uncertainty transfer
 functions. If \code{NULL} (the default), the time uncertainty transfer
-function provided with the package is plotted, which corresponds to Figure
-B1 in Münch and Laepple (2018).}
+functions provided with the package are plotted, which corresponds to
+Figure B1 in Münch and Laepple (2018).}
 
 \item{names}{an optional character vector of names for the transfer function
 data sets. If \code{NULL}, the names of \code{dtf} and \code{ttf} are used
 or, if not present, default names. If the diffusion and time uncertainty
-data sets differ in number, you can provide a list of two vectors of names.}
+data sets differ in number, provide a list of two vectors of names.}
 
 \item{col}{a numeric or character vector of colors to use for the plotting;
 if \code{NULL} default colors are used.}
@@ -52,6 +51,12 @@ if \code{NULL} default colors are used.}
 value to plot a corresponding horizontal line and vertical lines of
 corresponding frequency cutoff values (omitted for \code{NULL}).}
 
+\item{xlab}{x axis label.}
+
+\item{ylab1}{y axis label for the diffusion transfer function.}
+
+\item{ylab2}{y axis label for the time uncertainty transfer function.}
+
 \item{xlim}{the x limits (x1, x2) of the plot.}
 
 \item{ylim1}{the y limits (y1, y2) of the diffusion transfer function plot.}
@@ -59,40 +64,31 @@ corresponding frequency cutoff values (omitted for \code{NULL}).}
 \item{ylim2}{the y limits (y1, y2) of the time uncertainty transfer function
 plot.}
 
-\item{plt.ann}{if \code{"default"} use axis annotation as in Fig. B1 of
-Münch and Laepple (2018). Since no other fixed annotation scheme is
-implemented, setting \code{plt.ann} to a different value will result in an
-error.}
+\item{xtm}{x axis tick mark positions; if \code{NULL} computed by
+\code{\link[graphics]{axis}}.}
 
-\item{xlab}{if not \code{NULL} use this specific x axis label to override
-the default setting.}
+\item{ytm1}{y axis tick mark positions on the diffusion transfer function
+plot; default setting (\code{NULL}) uses
+\code{c(0.01, 0.05, 0.1, 0.5, 1, 5)}.}
 
-\item{ylab1}{if not ‘NULL’ use this specific y axis label for the first plot
-to override the default setting.}
+\item{ytm2}{y axis tick mark positions on the time uncertainty transfer
+function plot; default setting (\code{NULL}) uses
+\code{c(0.2, 0.4, 0.6, 0.8, 1, 1.2)}.}
 
-\item{ylab2}{if not ‘NULL’ use this specific y axis label for the second
-plot to override the default setting.}
+\item{xtl}{x axis tick mark labels; if \code{NULL} determined automatically
+from \code{xtm}, else it must be a vector of labels of the same length as
+\code{xtm}.}
 
-\item{xtm}{if not \code{NULL} use this vector of specific x axis tick mark
-positions to override the default setting.}
+\item{ytl1}{y axis tick mark labels on the diffusion transfer function plot;
+if \code{NULL} determined automatically from \code{ytm1}, else it must be a
+vector of labels of the same length as \code{ytm1}.}
 
-\item{ytm1}{as \code{xtm} for the first y axis.}
-
-\item{ytm2}{as \code{xtm} for the second y axis.}
-
-\item{xtl}{x axis tick mark labels. If \code{xtm} is not \code{NULL},
-\code{xtl} is used for the \code{labels} parameter of the
-\code{\link{axis}} function: if \code{xtl} is set to \code{NULL}, the
-labels are determined automatically, else set it explicitly by specifying a
-vector of labels of the same length as \code{xtm}; see also \code{?axis}.}
-
-\item{ytl1}{as \code{xtl} for the first y axis.}
-
-\item{ytl2}{as \code{xtl} for the second y axis.}
+\item{ytl2}{as \code{ytl1} for the y axis on the time uncertainty transfer
+function plot.}
 }
 \description{
 Plot the spectral transfer functions of the effects of diffusion and time
-uncertainty, such as in Fig. B1 in Münch and Laepple, 2018.
+uncertainty (e.g., as in the analysis of Münch and Laepple, 2018, Fig. B1).
 }
 \examples{
 

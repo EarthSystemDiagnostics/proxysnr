@@ -12,7 +12,7 @@
 
 <meta name="author" content="Thomas Münch" />
 
-<meta name="date" content="2024-06-18" />
+<meta name="date" content="2024-06-20" />
 
 <title>Calculate diffusion and time uncertainty transfer functions</title>
 
@@ -341,7 +341,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <h1 class="title toc-ignore">Calculate diffusion and time uncertainty
 transfer functions</h1>
 <h4 class="author">Thomas Münch</h4>
-<h4 class="date">2024-06-18</h4>
+<h4 class="date">2024-06-20</h4>
 
 
 
@@ -597,13 +597,13 @@ and Laepple, 2018). Plotted is in each case the average transfer
 function from 10 Monte Carlo simulations.</div>
 </div>
 <p>The transfer functions for simulations with <code>ns = 10^5</code> as
-used and shown in Münch and Laepple (2018) are provided along
+used and shown in Münch and Laepple (2018), Fig. B1, are provided along
 <strong>proxysnr</strong> in the variables <code>diffusion.tf</code> and
-<code>time.uncertainty.tf</code>; see <code>?diffusion.tf</code>,
-<code>?time.uncertainty.tf</code>, <code>str(diffusion.tf)</code>,
-<code>str(time.uncertainty.tf)</code> for details.</p>
-<p>These can be plotted by simply calling</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="fu">PlotTF</span>(<span class="at">names =</span> <span class="fu">c</span>(<span class="st">&quot;DML1&quot;</span>, <span class="st">&quot;DML2&quot;</span>, <span class="st">&quot;WAIS&quot;</span>),</span>
+<code>time.uncertainty.tf</code>; see <code>?diffusion.tf</code> and
+<code>?time.uncertainty.tf</code> for details.</p>
+<p>These can be plotted by simply omitting the transfer function
+parameters in the plot call:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="fu">PlotTF</span>(<span class="at">names =</span> <span class="fu">c</span>(<span class="st">&quot;DML1&quot;</span>, <span class="st">&quot;DML2&quot;</span>, <span class="st">&quot;WAIS&quot;</span>), <span class="at">dtf.threshold =</span> <span class="fl">0.5</span>,</span>
 <span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">c</span>(<span class="st">&quot;black&quot;</span>, <span class="st">&quot;firebrick&quot;</span>, <span class="st">&quot;dodgerblue&quot;</span>))</span></code></pre></div>
 </div>
 <div id="literature-cited" class="section level2">

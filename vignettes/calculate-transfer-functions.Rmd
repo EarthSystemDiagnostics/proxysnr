@@ -305,14 +305,14 @@ PlotTF(dtf = dtf, ttf = ttf,
 ```
 
 The transfer functions for simulations with `ns = 10^5` as used and shown in
-Münch and Laepple (2018) are provided along **proxysnr** in the variables
-`diffusion.tf` and `time.uncertainty.tf`; see `?diffusion.tf`,
-`?time.uncertainty.tf`, `str(diffusion.tf)`, `str(time.uncertainty.tf)`
-for details.
+Münch and Laepple (2018), Fig. B1, are provided along **proxysnr** in the
+variables `diffusion.tf` and `time.uncertainty.tf`; see `?diffusion.tf` and
+`?time.uncertainty.tf` for details.
 
-These can be plotted by simply calling
+These can be plotted by simply omitting the transfer function parameters in the
+plot call:
 ```{r, eval = FALSE}
-PlotTF(names = c("DML1", "DML2", "WAIS"),
+PlotTF(names = c("DML1", "DML2", "WAIS"), dtf.threshold = 0.5,
        col = c("black", "firebrick", "dodgerblue"))
 ```
 
