@@ -125,24 +125,16 @@ crl2 <- ObtainStackCorrelation(SNR$wais, N = 1 : 20,
                                freq.cut.upper = SNR$wais$f.cutoff[2])
 ```
 
-Specify a function to create a colour palette for the contour plots:
-
-```{r}
-palette <- colorRampPalette(rev(RColorBrewer::brewer.pal(10, "RdYlBu")))
-```
-
 Plot the figure for DML:
 
 ```{r, fig.width = 8, fig.height = 6.3}
-PlotStackCorrelation(data = crl1, col.pal = palette,
-                     label = expression(bold("a.")~"DML"),
+PlotStackCorrelation(data = crl1, label = expression(bold("a.")~"DML"),
                      ylim = c(NA, log(50)))
 ```
 
 Plot the figure for WAIS:
 ```{r, fig.width = 8, fig.height = 6.3}
-PlotStackCorrelation(data = crl2, col.pal = palette,
-                     label = expression(bold("b.")~"WAIS"),
+PlotStackCorrelation(data = crl2, label = expression(bold("b.")~"WAIS"),
                      ylim = c(NA, log(50)))
 ```
 

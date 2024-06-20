@@ -6,7 +6,7 @@
 \usage{
 PlotStackCorrelation(
   data,
-  col.pal,
+  col.pal = NULL,
   label = "",
   plt.ann = "default",
   xlab = NULL,
@@ -33,7 +33,9 @@ length of \code{freq}), and the row index stands for the number of proxy
 records averaged.}
 
 \item{col.pal}{a color palette function to be used to assign colors in the
-plot.}
+plot; the default `NULL` means to calculate the palette function internally
+from ten colours of the diverging \code{RdYlBu} palette in the ColorBrewer
+2.0 collection.}
 
 \item{label}{an optional label of the data set to be displayed at the top
 of the plot.}
@@ -102,10 +104,7 @@ crl <- ObtainStackCorrelation(SNR$dml, N = 1 : 20,
                               freq.cut.upper = SNR$dml$f.cutoff[2])
 
 # Plot it
-library(RColorBrewer)
-palette <- colorRampPalette(rev(RColorBrewer::brewer.pal(10, "RdYlBu")))
-PlotStackCorrelation(data = crl, col.pal = palette,
-                     label = "DML", ylim = c(NA, log(50)))
+PlotStackCorrelation(data = crl, label = "DML", ylim = c(NA, log(50)))
 
 }
 \references{
@@ -114,7 +113,7 @@ decadal- to centennial-scale isotope variations from Antarctic ice cores?
 Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
 }
 \seealso{
-\code{\link{ObtainStackCorrelation}}
+\code{\link{ObtainStackCorrelation}}; <https://colorbrewer2.org/>
 }
 \author{
 Thomas Münch

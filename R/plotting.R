@@ -453,8 +453,10 @@ PlotSNR <- function(spec, f.cut = FALSE,
 #'   \code{correlation} must match the number of frequency values (i.e. the
 #'   length of \code{freq}), and the row index stands for the number of proxy
 #'   records averaged.
-#' @param col.pal  a color palette function to be used to assign colors in the
-#'   plot.
+#' @param col.pal a color palette function to be used to assign colors in the
+#'   plot; the default `NULL` means to calculate the palette function internally
+#'   from ten colours of the diverging \code{RdYlBu} palette in the ColorBrewer
+#'   2.0 collection.
 #' @param label an optional label of the data set to be displayed at the top
 #'   of the plot.
 #' @param plt.ann if \code{"default"} use axis annotation as in Fig. 4 of Münch
@@ -472,7 +474,7 @@ PlotSNR <- function(spec, f.cut = FALSE,
 #' @param ylim as \code{xlim} for the y limits of the plot.
 #'
 #' @author Thomas Münch
-#' @seealso \code{\link{ObtainStackCorrelation}}
+#' @seealso \code{\link{ObtainStackCorrelation}}; <https://colorbrewer2.org/>
 #'
 #' @references
 #' Münch, T. and Laepple, T.: What climate signal is contained in
@@ -500,14 +502,11 @@ PlotSNR <- function(spec, f.cut = FALSE,
 #'                               freq.cut.upper = SNR$dml$f.cutoff[2])
 #'
 #' # Plot it
-#' library(RColorBrewer)
-#' palette <- colorRampPalette(rev(RColorBrewer::brewer.pal(10, "RdYlBu")))
-#' PlotStackCorrelation(data = crl, col.pal = palette,
-#'                      label = "DML", ylim = c(NA, log(50)))
+#' PlotStackCorrelation(data = crl, label = "DML", ylim = c(NA, log(50)))
 #'
 #' @export
 #'
-PlotStackCorrelation <- function(data, col.pal,
+PlotStackCorrelation <- function(data, col.pal = NULL,
                                  label = "",
                                  plt.ann = "default",
                                  xlab = NULL, ylab = NULL,
@@ -545,6 +544,13 @@ PlotStackCorrelation <- function(data, col.pal,
   if (!is.null(ytm)) {set.ytm = ytm; set.ytl = ytl}
   if (!is.null(xtm.min)) set.xtm.min <- xtm.min
   if (!is.null(ytm.min)) set.ytm.min <- ytm.min
+
+  # Set default color palette function
+
+  if (!length(col.pal)) {
+    col.pal <- grDevices::colorRampPalette(
+                            rev(RColorBrewer::brewer.pal(10, "RdYlBu")))
+  }
 
   # Gather input data and transform to log scale
 
