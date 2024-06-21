@@ -12,7 +12,7 @@
 
 <meta name="author" content="Thomas Münch" />
 
-<meta name="date" content="2024-06-20" />
+<meta name="date" content="2024-06-21" />
 
 <title>Calculate diffusion and time uncertainty transfer functions</title>
 
@@ -341,7 +341,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <h1 class="title toc-ignore">Calculate diffusion and time uncertainty
 transfer functions</h1>
 <h4 class="author">Thomas Münch</h4>
-<h4 class="date">2024-06-20</h4>
+<h4 class="date">2024-06-21</h4>
 
 
 
@@ -360,30 +360,23 @@ in the case of time uncertainty and to stable isotope records from
 firn/ice cores in the case of diffusion.</p>
 <p>The documentation utilises as examples the code for calculating the
 transfer functions for the DML and WAIS isotope records studied in Münch
-and Laepple (2018). In there, you will also find a detailed description
-of the basic method (see Appendix B).</p>
+and Laepple (2018). There, you will also find a detailed description of
+the basic method (see Appendix B).</p>
 </div>
 <div id="dependencies" class="section level2">
 <h2>Dependencies</h2>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(proxysnr)</span></code></pre></div>
-<p>For the modelling of time uncertainty we need the package
-<strong>simproxyage</strong>:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co"># check if package is available</span></span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>pkg.flag <span class="ot">&lt;-</span> <span class="fu">requireNamespace</span>(<span class="st">&quot;simproxyage&quot;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span>pkg.flag) {</span>
-<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>   <span class="fu">message</span>(<span class="fu">paste</span>(<span class="st">&quot;Package </span><span class="sc">\&quot;</span><span class="st">simproxyage</span><span class="sc">\&quot;</span><span class="st"> not found.&quot;</span>,</span>
-<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>                 <span class="st">&quot;No time uncertainty transfer functions will be calculated.&quot;</span>))</span>
-<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>} <span class="cf">else</span> {</span>
-<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>  <span class="fu">library</span>(simproxyage)</span>
-<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>}</span></code></pre></div>
-<p>If you have installed <strong>proxysnr</strong> without additionally
-installing the package <strong>simproxyage</strong> and you try to
-rebuild this vignette, you will receive the warning message here that
-<strong>simproxyage</strong> is not available; then, no time uncertainty
-transfer functions can be calculated. To do so, head over to the <a href="https://github.com/EarthSystemDiagnostics/simproxyage">github
-page</a> for <strong>simproxyage</strong> and install the package using
-<code>remotes::install_github</code>.</p>
+<p>For the modelling of time uncertainty the suggested package
+<strong>simproxyage</strong> is required, so we need to check whether it
+is available:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>has.simproxyage <span class="ot">&lt;-</span> proxysnr<span class="sc">:::</span><span class="fu">check.simproxyage</span>()</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="co">#&gt; Checking simproxyage availability... ok.</span></span></code></pre></div>
+<p>In case you have not installed <strong>simproxyage</strong> and you
+try to rebuild this vignette, you will receive a message with
+installation instructions here. The vignette will still build, though,
+but without actually calculating any time uncertainty transfer
+function.</p>
 </div>
 <div id="general-settings" class="section level2">
 <h2>General settings</h2>
@@ -487,7 +480,7 @@ meta data on the simulations:</p>
 <span id="cb13-10"><a href="#cb13-10" tabindex="-1"></a><span class="fu">class</span>(dtf<span class="sc">$</span>dml1) <span class="ot">&lt;-</span> <span class="st">&quot;spec&quot;</span></span></code></pre></div>
 <p>Run the time uncertainty model with Gaussian white noise as the
 surrogate data and document the meta data:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="cf">if</span> (pkg.flag) {</span>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="cf">if</span> (has.simproxyage) {</span>
 <span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>   ttf<span class="sc">$</span>dml1 <span class="ot">&lt;-</span> <span class="fu">CalculateTimeUncertaintyTF</span>(<span class="at">t =</span> t, <span class="at">acp =</span> acp, <span class="at">nt =</span> nt, <span class="at">nc =</span> nc,</span>
 <span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a>                                          <span class="at">ns =</span> ns, <span class="at">rate =</span> rate,</span>
 <span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a>                      <span class="at">surrogate.fun =</span> rnorm)<span class="sc">$</span>ratio</span>
@@ -521,7 +514,7 @@ surrogate data and document the meta data:</p>
 <span id="cb15-12"><a href="#cb15-12" tabindex="-1"></a>dtf<span class="sc">$</span>dml2<span class="sc">$</span>freq <span class="ot">&lt;-</span> ff<span class="sc">$</span>dml2</span>
 <span id="cb15-13"><a href="#cb15-13" tabindex="-1"></a>dtf<span class="sc">$</span>dml2<span class="sc">$</span>spec <span class="ot">&lt;-</span> <span class="fu">approx</span>(tmp<span class="sc">$</span>freq, tmp<span class="sc">$</span>spec, dtf<span class="sc">$</span>dml2<span class="sc">$</span>freq)<span class="sc">$</span>y</span>
 <span id="cb15-14"><a href="#cb15-14" tabindex="-1"></a></span>
-<span id="cb15-15"><a href="#cb15-15" tabindex="-1"></a><span class="cf">if</span> (pkg.flag) {</span>
+<span id="cb15-15"><a href="#cb15-15" tabindex="-1"></a><span class="cf">if</span> (has.simproxyage) {</span>
 <span id="cb15-16"><a href="#cb15-16" tabindex="-1"></a>   ttf<span class="sc">$</span>dml2 <span class="ot">&lt;-</span> <span class="fu">CalculateTimeUncertaintyTF</span>(<span class="at">t =</span> t, <span class="at">acp =</span> acp, <span class="at">nt =</span> nt, <span class="at">nc =</span> nc,</span>
 <span id="cb15-17"><a href="#cb15-17" tabindex="-1"></a>                                          <span class="at">ns =</span> ns, <span class="at">rate =</span> rate,</span>
 <span id="cb15-18"><a href="#cb15-18" tabindex="-1"></a>                      <span class="at">surrogate.fun =</span> rnorm)<span class="sc">$</span>ratio</span>
@@ -558,7 +551,7 @@ surrogate data and document the meta data:</p>
 <span id="cb16-12"><a href="#cb16-12" tabindex="-1"></a>dtf<span class="sc">$</span>wais<span class="sc">$</span>freq <span class="ot">&lt;-</span> ff<span class="sc">$</span>wais</span>
 <span id="cb16-13"><a href="#cb16-13" tabindex="-1"></a>dtf<span class="sc">$</span>wais<span class="sc">$</span>spec <span class="ot">&lt;-</span> <span class="fu">approx</span>(tmp<span class="sc">$</span>freq, tmp<span class="sc">$</span>spec, dtf<span class="sc">$</span>wais<span class="sc">$</span>freq)<span class="sc">$</span>y</span>
 <span id="cb16-14"><a href="#cb16-14" tabindex="-1"></a></span>
-<span id="cb16-15"><a href="#cb16-15" tabindex="-1"></a><span class="cf">if</span> (pkg.flag) {</span>
+<span id="cb16-15"><a href="#cb16-15" tabindex="-1"></a><span class="cf">if</span> (has.simproxyage) {</span>
 <span id="cb16-16"><a href="#cb16-16" tabindex="-1"></a>   ttf<span class="sc">$</span>wais <span class="ot">&lt;-</span> <span class="fu">CalculateTimeUncertaintyTF</span>(<span class="at">t =</span> t, <span class="at">acp =</span> acp, <span class="at">nt =</span> nt, <span class="at">nc =</span> nc,</span>
 <span id="cb16-17"><a href="#cb16-17" tabindex="-1"></a>                                          <span class="at">ns =</span> ns, <span class="at">rate =</span> rate,</span>
 <span id="cb16-18"><a href="#cb16-18" tabindex="-1"></a>                      <span class="at">surrogate.fun =</span> rnorm)<span class="sc">$</span>ratio</span>

@@ -83,7 +83,9 @@ a list of the components \code{input}, \code{stack} and
 \description{
 This function implements an empirical Monte Carlo approach to estimate the
 spectral transfer function for the effect of time uncertainty on the spatial
-average of a common proxy signal recorded by a given core array.
+average of a common proxy signal recorded by a given core array. It requires
+the suggested package \code{simproxyage}; if the package is not installed,
+you will receive installation instructions upon calling this function.
 }
 \details{
 The approach is described in detail in Münch and Laepple (2018). In brief,
@@ -95,11 +97,11 @@ spectral transfer function.
 
 The modelling of the time uncertainty follows the approach presented in
 Comboul et al. (2014) which is implemented in the package
-\code{simproxyage} and hence needed for this function to work. The package
-is available on GitHub under
-\url{https://github.com/EarthSystemDiagnostics/simproxyage}
-and can be installed directly using
-\code{remotes::install_github("EarthSystemDiagnostics/simproxyage")}.
+\code{simproxyage}. The package can be installed from GitHub via\cr
+`remotes::install_github("EarthSystemDiagnostics/simproxyage")`\cr
+or you can download the package repository from\cr
+<https://doi.org/10.5281/zenodo.2025204>\cr
+and install the package via `devtools::install()`.
 
 The spectral estimates are calculated using Thomson’s multitaper method with
 three windows with linear detrending before analysis.
@@ -139,9 +141,6 @@ https://doi.org/10.5194/cp-10-825-2014, 2014.
 Münch, T. and Laepple, T.: What climate signal is contained in
 decadal- to centennial-scale isotope variations from Antarctic ice cores?
 Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
-}
-\seealso{
-\code{[simproxyage]{MonteCarloArray}}
 }
 \author{
 Thomas Münch

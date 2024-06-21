@@ -31,7 +31,7 @@ the case of diffusion.
 
 The documentation utilises as examples the code for calculating the transfer
 functions for the DML and WAIS isotope records studied in Münch and Laepple
-(2018). In there, you will also find a detailed description of the basic method
+(2018). There, you will also find a detailed description of the basic method
 (see Appendix B).
 
 ## Dependencies
@@ -40,26 +40,16 @@ functions for the DML and WAIS isotope records studied in Münch and Laepple
 library(proxysnr)
 ```
 
-For the modelling of time uncertainty we need the package **simproxyage**:
+For the modelling of time uncertainty the suggested package **simproxyage** is
+required, so we need to check whether it is available:
 ```{r}
-# check if package is available
-pkg.flag <- requireNamespace("simproxyage", quietly = TRUE)
-
-if (!pkg.flag) {
-   message(paste("Package \"simproxyage\" not found.",
-                 "No time uncertainty transfer functions will be calculated."))
-} else {
-  library(simproxyage)
-}
-
+has.simproxyage <- proxysnr:::check.simproxyage()
 ```
 
-If you have installed **proxysnr** without additionally installing the package
-**simproxyage** and you try to rebuild this vignette, you will receive the
-warning message here that **simproxyage** is not available; then, no time
-uncertainty transfer functions can be calculated. To do so, head over to the
-[github page](https://github.com/EarthSystemDiagnostics/simproxyage) for
-**simproxyage** and install the package using `remotes::install_github`.
+In case you have not installed **simproxyage** and you try to rebuild this
+vignette, you will receive a message with installation instructions here. The
+vignette will still build, though, but without actually calculating any time
+uncertainty transfer function.
 
 ## General settings
 
@@ -192,7 +182,7 @@ class(dtf$dml1) <- "spec"
 Run the time uncertainty model with Gaussian white noise as the surrogate data
 and document the meta data:
 ```{r}
-if (pkg.flag) {
+if (has.simproxyage) {
    ttf$dml1 <- CalculateTimeUncertaintyTF(t = t, acp = acp, nt = nt, nc = nc,
                                           ns = ns, rate = rate,
 					  surrogate.fun = rnorm)$ratio
@@ -229,7 +219,7 @@ dtf$dml2 <- tmp
 dtf$dml2$freq <- ff$dml2
 dtf$dml2$spec <- approx(tmp$freq, tmp$spec, dtf$dml2$freq)$y
 
-if (pkg.flag) {
+if (has.simproxyage) {
    ttf$dml2 <- CalculateTimeUncertaintyTF(t = t, acp = acp, nt = nt, nc = nc,
                                           ns = ns, rate = rate,
 					  surrogate.fun = rnorm)$ratio
@@ -270,7 +260,7 @@ dtf$wais <- tmp
 dtf$wais$freq <- ff$wais
 dtf$wais$spec <- approx(tmp$freq, tmp$spec, dtf$wais$freq)$y
 
-if (pkg.flag) {
+if (has.simproxyage) {
    ttf$wais <- CalculateTimeUncertaintyTF(t = t, acp = acp, nt = nt, nc = nc,
                                           ns = ns, rate = rate,
 					  surrogate.fun = rnorm)$ratio

@@ -2,7 +2,9 @@
 #' 
 #' This function implements an empirical Monte Carlo approach to estimate the
 #' spectral transfer function for the effect of time uncertainty on the spatial
-#' average of a common proxy signal recorded by a given core array.
+#' average of a common proxy signal recorded by a given core array. It requires
+#' the suggested package \code{simproxyage}; if the package is not installed,
+#' you will receive installation instructions upon calling this function.
 #'
 #' The approach is described in detail in Münch and Laepple (2018). In brief,
 #' \code{nc} identical surrogate time series are created and age perturbed and
@@ -13,11 +15,11 @@
 #'
 #' The modelling of the time uncertainty follows the approach presented in
 #' Comboul et al. (2014) which is implemented in the package
-#' \code{simproxyage} and hence needed for this function to work. The package
-#' is available on GitHub under
-#' \url{https://github.com/EarthSystemDiagnostics/simproxyage}
-#' and can be installed directly using
-#' \code{remotes::install_github("EarthSystemDiagnostics/simproxyage")}.
+#' \code{simproxyage}. The package can be installed from GitHub via\cr
+#' `remotes::install_github("EarthSystemDiagnostics/simproxyage")`\cr
+#' or you can download the package repository from\cr
+#' <https://doi.org/10.5281/zenodo.2025204>\cr
+#' and install the package via `devtools::install()`.
 #'
 #' The spectral estimates are calculated using Thomson’s multitaper method with
 #' three windows with linear detrending before analysis.
@@ -96,7 +98,6 @@
 #' }
 #'
 #' @author Thomas Münch
-#' @seealso \code{[simproxyage]{MonteCarloArray}}
 #'
 #' @references
 #'
@@ -119,13 +120,7 @@ CalculateTimeUncertaintyTF <- function(t = 100 : 1, acp = c(t[1], NA),
                                        fun.par = NULL, pad = TRUE, ...) {
 
   # check if package simproxyage is available
-  if (!requireNamespace("simproxyage", quietly = TRUE)) {
-    stop(paste("Package \"simproxyage\" not found.",
-               "Please install from GitHub;",
-               "see '?CalculateTimeUncertaintyTF'"),
-         call. = FALSE)
-  }
-
+  has.simproxyage <- proxysnr:::check.simproxyage(stop.on.false = TRUE)
 
   # Monte Carlo simulation of age uncertainty for a core array
   arg <- c(list(
@@ -180,3 +175,46 @@ CalculateTimeUncertaintyTF <- function(t = 100 : 1, acp = c(t[1], NA),
 
 }
 
+#' Check if `simproxyage` package is installed
+#'
+#' @param stop.on.false logical whether to stop when package is not installed;
+#'   defaults to `FALSE` which only prints the message with the installation
+#'   instructions.
+#' @return a logical signalling whether the package is installed.
+#'
+#' @author Thomas Münch
+#' @noRd
+#'
+check.simproxyage <- function(stop.on.false = FALSE) {
+
+  cat("\n")
+  cat("Checking simproxyage availability... ")
+
+  has.simproxyage <- requireNamespace("simproxyage", quietly = TRUE)
+
+  if (has.simproxyage) {
+
+    cat("ok.\n")
+
+  } else {
+
+    msg <- paste0(
+      "Package not found.\n",
+      "Install via ",
+      "`remotes::install_github(\"EarthSystemDiagnostics/simproxyage\")`\n",
+      "or download package repository from ",
+      "<https://doi.org/10.5281/zenodo.2025204>\n",
+      "and install via `devtools::install()`.\n\n"
+    )
+
+    if (stop.on.false) {
+      cat("\n\n")
+      stop(msg, call. = FALSE)
+    } else {
+      cat("\n\n", msg, sep = "")
+    }
+  }
+
+  return(has.simproxyage)
+
+}
