@@ -44,7 +44,7 @@ GetIntegratedSNR <- function(input, N = 1, f1 = 2, f2 = "max",
     stop("'input' list needs to contain the elements 'signal' and 'noise'.",
          call. = FALSE)
   }
-  if (class(input$signal) != "spec" | class(input$noise) != "spec") {
+  if (!inherits(input$signal, "spec") | !inherits(input$noise, "spec")) {
     stop("Input 'signal' and 'noise' must be of class 'spec'.", call. = FALSE)
   }
   if (length(input$signal$freq) != length(input$noise$freq)) {
