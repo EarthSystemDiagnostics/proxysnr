@@ -120,7 +120,7 @@ CalculateTimeUncertaintyTF <- function(t = 100 : 1, acp = c(t[1], NA),
                                        fun.par = NULL, pad = TRUE, ...) {
 
   # check if package simproxyage is available
-  has.simproxyage <- proxysnr:::check.simproxyage(stop.on.false = TRUE)
+  has.simproxyage <- check.simproxyage(stop.on.false = TRUE)
 
   # Monte Carlo simulation of age uncertainty for a core array
   arg <- c(list(
