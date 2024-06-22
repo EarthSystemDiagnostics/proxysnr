@@ -5,17 +5,11 @@
 \alias{time.uncertainty.tf}
 \title{Calculated time uncertainty transfer functions}
 \format{
-A list with 3 elements:
-\tabular{rll}{
-  \code{dml1}: \tab a list with 2 numeric vectors of length 97: \tab  \cr
-    \tab \code{freq}: frequency axis, in yr^{-1} \tab  \cr
-    \tab \code{spec}: transfer function value at each frequency \tab  \cr
-  \code{dml2}: \tab a list with 2 numeric vectors of length 497: \tab  \cr
-    \tab \code{freq}: frequency axis, in yr^{-1} \tab  \cr
-    \tab \code{spec}: transfer function value at each frequency \tab  \cr
-  \code{wais}: \tab a list with 2 numeric vectors of length 100: \tab  \cr
-    \tab \code{freq}: frequency axis, in yr^{-1} \tab  \cr
-    \tab \code{spec}: transfer function value at each frequency \tab  \cr
+A named list with the 3 elements \code{dml1}, \code{dml2}, and
+  \code{wais}, where each element is a list of 2 numeric vectors:
+  \describe{
+  \item{\code{freq}:}{the frequency axis in units of \code{1 / yr},}
+  \item{\code{spec}:}{the transfer function value at each frequency.}
 }
 }
 \source{

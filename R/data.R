@@ -68,18 +68,13 @@
 #' diffusion has on the mean of the spectra from \code{N} spatially distributed
 #' oxygen isotope records.
 #'
-#' @format A list with 3 elements:
-#' \tabular{rll}{
-#'   \code{dml1}: \tab a list with 2 numeric vectors of length 97: \tab  \cr
-#'     \tab \code{freq}: frequency axis, in yr^{-1} \tab  \cr
-#'     \tab \code{spec}: transfer function value at each frequency \tab  \cr
-#'   \code{dml2}: \tab a list with 2 numeric vectors of length 497: \tab  \cr
-#'     \tab \code{freq}: frequency axis, in yr^{-1} \tab  \cr
-#'     \tab \code{spec}: transfer function value at each frequency \tab  \cr
-#'   \code{wais}: \tab a list with 2 numeric vectors of length 100: \tab  \cr
-#'     \tab \code{freq}: frequency axis, in yr^{-1} \tab  \cr
-#'     \tab \code{spec}: transfer function value at each frequency \tab  \cr
+#' @format A named list with the 3 elements \code{dml1}, \code{dml2}, and
+#'   \code{wais}, where each element is a list of 2 numeric vectors:
+#'   \describe{
+#'   \item{\code{freq}:}{the frequency axis in units of \code{1 / yr},}
+#'   \item{\code{spec}:}{the transfer function value at each frequency.}
 #' }
+#'
 #' @source
 #' The transfer functions were obtained using \code{?CalculateDiffusionTF} for
 #' the site-specific diffusion lengths provided by
@@ -105,18 +100,13 @@
 #' uncertainty has on the spectrum of the average (in the time domain) of
 #' \code{N} proxy records.
 #'
-#' @format A list with 3 elements:
-#' \tabular{rll}{
-#'   \code{dml1}: \tab a list with 2 numeric vectors of length 97: \tab  \cr
-#'     \tab \code{freq}: frequency axis, in yr^{-1} \tab  \cr
-#'     \tab \code{spec}: transfer function value at each frequency \tab  \cr
-#'   \code{dml2}: \tab a list with 2 numeric vectors of length 497: \tab  \cr
-#'     \tab \code{freq}: frequency axis, in yr^{-1} \tab  \cr
-#'     \tab \code{spec}: transfer function value at each frequency \tab  \cr
-#'   \code{wais}: \tab a list with 2 numeric vectors of length 100: \tab  \cr
-#'     \tab \code{freq}: frequency axis, in yr^{-1} \tab  \cr
-#'     \tab \code{spec}: transfer function value at each frequency \tab  \cr
+#' @format A named list with the 3 elements \code{dml1}, \code{dml2}, and
+#'   \code{wais}, where each element is a list of 2 numeric vectors:
+#'   \describe{
+#'   \item{\code{freq}:}{the frequency axis in units of \code{1 / yr},}
+#'   \item{\code{spec}:}{the transfer function value at each frequency.}
 #' }
+#'
 #' @source
 #' The transfer functions were obtained using
 #' \code{?CalculateTimeUncertaintyTF}. See also the respective package
