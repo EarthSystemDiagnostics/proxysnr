@@ -87,6 +87,10 @@ test_that("integration for snr calculation works", {
 
   expect_equal(actual, expected)
 
+  # test deprecated function name
+  expect_warning(actual <- IntegratedSNR(input))
+  expect_equal(actual, expected)
+
   expected <- list(freq = 4 : 6, spec = rep(1, 3))
   class(expected) <- "spec"
   actual <- GetIntegratedSNR(input, f1 = 4, f2 = 6)
@@ -97,6 +101,11 @@ test_that("integration for snr calculation works", {
   class(expected) <- "spec"
   actual <- GetIntegratedSNR(input, limits = c(1, 7))
 
+  expect_equal(actual, expected)
+
+  # test deprecated function name
+  expect_warning(actual <- IntegratedSNR(input, freq.cut.lower = 1,
+                                         freq.cut.upper = 7))
   expect_equal(actual, expected)
 
 })
