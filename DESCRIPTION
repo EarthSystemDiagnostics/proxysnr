@@ -17,12 +17,14 @@ LazyData: true
 RoxygenNote: 7.2.3
 VignetteBuilder: knitr
 Imports: multitaper
-Suggests: Hmisc,
+Suggests:
+    Hmisc,
     knitr,
     pangaear,
     rmarkdown,
     RColorBrewer,
     simproxyage,
+    testthat (>= 3.0.0),
     TrenchR,
     usethis
 Remotes:
@@ -32,3 +34,4 @@ URL: https://github.com/EarthSystemDiagnostics/proxysnr
 BugReports: https://github.com/EarthSystemDiagnostics/proxysnr/issues
 SystemRequirements: Package vignettes based on R Markdown v2 or
     reStructuredText require Pandoc (http://pandoc.org).
+Config/testthat/edition: 3
