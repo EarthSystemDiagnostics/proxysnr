@@ -39,22 +39,26 @@
 GetIntegratedSNR <- function(input, N = 1, f1 = 2, f2 = "max",
                              freq.cut.lower = NULL, freq.cut.upper = NULL) {
 
-  if (!is.list(input)) stop("'input' needs to be a list.", call. = FALSE)
-  if (length(stats::na.omit(match(names(input), c("signal", "noise")))) != 2) {
-    stop("'input' list needs to contain the elements 'signal' and 'noise'.",
-         call. = FALSE)
-  }
-  if (!inherits(input$signal, "spec") | !inherits(input$noise, "spec")) {
-    stop("Input 'signal' and 'noise' must be of class 'spec'.", call. = FALSE)
-  }
+  # error checking
+
+  if (!is.list(input)) stop("`input` must be a list.", call. = FALSE)
+
+  if (!all(hasName(input, c("signal", "noise"))))
+    stop("`input` must have elements `signal` and `noise`.", call. = FALSE)
+
+  is.spectrum(input$signal)
+  is.spectrum(input$noise)
+
   if (length(input$signal$freq) != length(input$noise$freq)) {
-    stop("'signal' and 'noise' spectra must have the same length.",
+    stop("`signal` and `noise` must have the same number of spectral estimates.",
          call. = FALSE)
   }
+
   if (!all(input$signal$freq == input$noise$freq)) {
     stop("Frequency axes of 'signal' and 'noise' must match.")
   }
-  if (!N >= 1) stop("'N' needs to be >= 1.", call. = FALSE)
+
+  if (length(N) != 1) stop("`N` must have length 1.", call. = FALSE)
 
   if (!is.null(freq.cut.lower)) {
     f1 <- which.min(abs(input$signal$freq - freq.cut.lower))
