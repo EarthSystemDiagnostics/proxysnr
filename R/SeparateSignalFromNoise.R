@@ -54,7 +54,7 @@ SeparateSignalFromNoise <- function(spectra, neff = spectra$N,
 
   if (!is.list(spectra)) stop("`spectra` must be a list.", call. = FALSE)
 
-  if (!all(hasName(spectra, c("mean", "stack"))))
+  if (!all(utils::hasName(spectra, c("mean", "stack"))))
     stop("`spectra` must have elements `mean` and `stack`.", call. = FALSE)
 
   is.spectrum(spectra$mean)

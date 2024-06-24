@@ -38,7 +38,7 @@ GetIntegratedSNR <- function(input, N = 1, f1 = 2, f2 = "max", limits = NULL) {
 
   if (!is.list(input)) stop("`input` must be a list.", call. = FALSE)
 
-  if (!all(hasName(input, c("signal", "noise"))))
+  if (!all(utils::hasName(input, c("signal", "noise"))))
     stop("`input` must have elements `signal` and `noise`.", call. = FALSE)
 
   is.spectrum(input$signal)
