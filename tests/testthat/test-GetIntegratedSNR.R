@@ -91,6 +91,12 @@ test_that("integration for snr calculation works", {
   expect_warning(actual <- IntegratedSNR(input))
   expect_equal(actual, expected)
 
+  expected <- list(freq = 2 : 10, spec = rep(4, 9))
+  class(expected) <- "spec"
+  actual <- GetIntegratedSNR(input, N = 4)
+
+  expect_equal(actual, expected)
+
   expected <- list(freq = 4 : 6, spec = rep(1, 3))
   class(expected) <- "spec"
   actual <- GetIntegratedSNR(input, f1 = 4, f2 = 6)
