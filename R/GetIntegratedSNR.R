@@ -15,14 +15,10 @@
 #'   \code{noise}, usually to be obtained from a call to
 #'   \code{\link{SeparateSignalFromNoise}}.
 #' @param N integer; number of proxy records averaged. The default returns the
-#'   SNR assuming a single proxy record. For a different number, the SNR is
-#'   scaled by this number, assuming independent noise between the records.
-#' @param f1 index of the the minimum frequency from which to integrate the
-#'   signal and noise spectra for calculating the SNR; per default the
-#'   lowest frequency of the spectral estimates is omitted.
-#' @param f2 index of the maximum frequency until which to integrate the signal
-#'   and noise spectra for calculating the SNR; defaults to use the
-#'   maximum frequency of the given spectral estimates.
+#'   SNR of a single proxy record. For a different number, the SNR is calculated
+#'   for a "stack" averaged across \code{N} individual proxy records with the same
+#'   signal and equivalent noise characteristics, assuming independent noise
+#'   between the records.
 #' @inheritParams ObtainStackCorrelation
 #'
 #' @return a spectral object list of the SNR.
@@ -36,8 +32,7 @@
 #'
 #' @export
 #'
-GetIntegratedSNR <- function(input, N = 1, f1 = 2, f2 = "max",
-                             freq.cut.lower = NULL, freq.cut.upper = NULL) {
+GetIntegratedSNR <- function(input, N = 1, f1 = 2, f2 = "max", limits = NULL) {
 
   # error checking
 
@@ -59,18 +54,38 @@ GetIntegratedSNR <- function(input, N = 1, f1 = 2, f2 = "max",
   }
 
   if (length(N) != 1) stop("`N` must have length 1.", call. = FALSE)
+  if (N < 1) stop("`N` must be >= 1.", call. = FALSE)
 
-  if (!is.null(freq.cut.lower)) {
-    f1 <- which.min(abs(input$signal$freq - freq.cut.lower))
-  }
+  if (!is.null(limits)) {
 
-  if (!is.null(freq.cut.upper)) {
-    f2 <- which.min(abs(input$signal$freq - freq.cut.upper))
+    if (length(limits) != 2) stop("`limits` must have length 2.", call. = FALSE)
+    if (diff(limits) <= 0)
+      stop("`limits[2]` must be > `limits[1]`.", call. = FALSE)
+
+    f1 <- which.min(abs(input$signal$freq - limits[1]))
+    f2 <- which.min(abs(input$signal$freq - limits[2]))
+
   } else {
-    if (f2 == "max") {
+
+    if (length(f1) != 1) stop("`f1` must have length 1.", call. = FALSE)
+    if (length(f2) != 1) stop("`f2` must have length 1.", call. = FALSE)
+
+    if (f1 < 1) stop("`f1` must be >= 1.", call. = FALSE)
+
+    if (is.character(f2)) {
+      if (f2 != "max")
+        stop("`f2` must be set to \"max\" or to an index.", call. = FALSE)
       f2 <- length(input$signal$freq)
+    } else {
+      if (f2 > length(input$signal$freq))
+        stop("`f2` larger than length of data.", call. = FALSE)
     }
+
+    if (f2 <= f1) stop("`f2` must be > `f1`.", call. = FALSE)
+
   }
+
+  # do the integration
 
   freq <- input$signal$freq
 
