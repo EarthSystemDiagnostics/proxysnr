@@ -42,14 +42,15 @@
 ObtainArraySpectra <- function(cores, res = 1, neff = length(cores),
                                df.log = NULL, ...) {
 
+  # error checking
   if (!is.list(cores))
-    stop("'cores' must be a list or a data frame.", call. = FALSE)
+    stop("`cores` must be a list or a data frame.", call. = FALSE)
 
   if (!is.data.frame(cores)) {
 
     # data vectors in list must be of the same length
     if (stats::sd(lengths(cores)) > 0) {
-      stop("Data in list must all have the same length.", call. = FALSE)
+      stop("Elements of `cores` must all have the same length.", call. = FALSE)
     }
 
   }
