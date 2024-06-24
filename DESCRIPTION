@@ -18,6 +18,7 @@ RoxygenNote: 7.2.3
 VignetteBuilder: knitr
 Imports: multitaper
 Suggests:
+    covr,
     Hmisc,
     knitr,
     pangaear,
