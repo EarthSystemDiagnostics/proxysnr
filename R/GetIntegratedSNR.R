@@ -50,7 +50,7 @@ GetIntegratedSNR <- function(input, N = 1, f1 = 2, f2 = "max", limits = NULL) {
   }
 
   if (!all(input$signal$freq == input$noise$freq)) {
-    stop("Frequency axes of 'signal' and 'noise' must match.")
+    stop("Frequency axes of `signal` and `noise` do not match.")
   }
 
   if (length(N) != 1) stop("`N` must have length 1.", call. = FALSE)

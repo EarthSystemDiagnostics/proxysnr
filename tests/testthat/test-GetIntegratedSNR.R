@@ -22,6 +22,11 @@ test_that("GetIntegratedSNR error checks work", {
   expect_error(GetIntegratedSNR(list(signal = short_signal, noise = noise)),
                m, fixed = TRUE)
 
+  m <- "Frequency axes of `signal` and `noise` do not match."
+  wrong_freq <- list(freq = 2 : 11, spec = 1 : 10)
+  expect_error(GetIntegratedSNR(list(signal = signal, noise = wrong_freq)),
+               m, fixed = TRUE)
+
   m <- "`N` must have length 1."
   expect_error(
     GetIntegratedSNR(list(signal = signal, noise = noise), N = 1 : 5),
@@ -68,5 +73,30 @@ test_that("GetIntegratedSNR error checks work", {
   expect_error(
     GetIntegratedSNR(list(signal = signal, noise = noise), f1 = 6, f2 = 4),
     m, fixed = TRUE)
+
+})
+
+test_that("integration for snr calculation works", {
+
+  signal <- noise <- list(freq = 1 : 10, spec = 1 : 10)
+  input <- list(signal = signal, noise = noise)
+
+  expected <- list(freq = 2 : 10, spec = rep(1, 9))
+  class(expected) <- "spec"
+  actual <- GetIntegratedSNR(input)
+
+  expect_equal(actual, expected)
+
+  expected <- list(freq = 4 : 6, spec = rep(1, 3))
+  class(expected) <- "spec"
+  actual <- GetIntegratedSNR(input, f1 = 4, f2 = 6)
+
+  expect_equal(actual, expected)
+
+  expected <- list(freq = 1 : 7, spec = rep(1, 7))
+  class(expected) <- "spec"
+  actual <- GetIntegratedSNR(input, limits = c(1, 7))
+
+  expect_equal(actual, expected)
 
 })
