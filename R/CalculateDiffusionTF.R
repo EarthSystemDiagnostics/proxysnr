@@ -87,9 +87,9 @@ CalculateDiffusionTF <- function(nt, nc, ns, sigma, res = 1, window = NULL,
     if (nw != 2) stop("`window` must have length two.", call. = FALSE)
     if (window[2] <= window[1])
       stop("`window[2]` must be > `window[1]`.", call. = FALSE)
-    if (window[1] < 1) stop("`window[1] must be >= 1.", call. = FALSE)
+    if (window[1] < 1) stop("`window[1]` must be >= 1.", call. = FALSE)
     if (window[2] > nt)
-      stop("`window[2] is > total number of time points.", call. = FALSE)
+      stop("`window[2]` is > total number of time points.", call. = FALSE)
 
     k <- window[1] : window[2]
 

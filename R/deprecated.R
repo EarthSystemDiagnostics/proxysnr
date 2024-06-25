@@ -88,7 +88,7 @@ DiffusionTF <- function(nt, nc, ns, sigma, res = 1, window = NULL,
                         coherent = FALSE, ...) {
 
   .Deprecated("CalculateDiffusionTF", "proxysnr")
-  CalculateDiffusionTF(nt, nc, ns, sigma, res, window, coherent)
+  CalculateDiffusionTF(nt, nc, ns, sigma, res, window, coherent, ...)
 
 }
 
