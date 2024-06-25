@@ -187,16 +187,15 @@ CalculateTimeUncertaintyTF <- function(t = 100 : 1, acp = c(t[1], NA),
 #'
 check.simproxyage <- function(stop.on.false = FALSE) {
 
-  cat("\n")
-  cat("Checking simproxyage availability... ")
-
   has.simproxyage <- requireNamespace("simproxyage", quietly = TRUE)
 
   if (has.simproxyage) {
 
-    cat("ok.\n")
+    message("\nChecking simproxyage availability... ok.")
 
   } else {
+
+    message("\nChecking simproxyage availability...")
 
     msg <- paste0(
       "Package not found.\n",
@@ -204,17 +203,19 @@ check.simproxyage <- function(stop.on.false = FALSE) {
       "`remotes::install_github(\"EarthSystemDiagnostics/simproxyage\")`\n",
       "or download package repository from ",
       "<https://doi.org/10.5281/zenodo.2025204>\n",
-      "and install via `devtools::install()`.\n\n"
+      "and install via `devtools::install()`.\n"
     )
 
     if (stop.on.false) {
-      cat("\n\n")
+      cat("\n")
+      msg <- paste0(msg, "\n")
       stop(msg, call. = FALSE)
     } else {
-      cat("\n\n", msg, sep = "")
+      msg <- paste0("\n", msg)
+      message(msg)
     }
   }
 
-  return(has.simproxyage)
+  invisible(has.simproxyage)
 
 }
