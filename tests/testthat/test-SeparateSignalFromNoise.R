@@ -22,6 +22,11 @@ test_that("SeparateSignalFromNoise error checks work", {
   expect_error(SeparateSignalFromNoise(list(mean = mean, stack = short_stack)),
                m, fixed = TRUE)
 
+  m <- "Frequency axes of `mean` and `stack` do not match."
+  wrong_freq <- list(freq = 2 : 11, spec = 1 : 10)
+  expect_error(SeparateSignalFromNoise(list(mean = wrong_freq, stack = stack)),
+               m, fixed = TRUE)
+
   m <- "Supply (effective) number of records."
   expect_error(SeparateSignalFromNoise(list(mean = mean, stack = stack)),
                m, fixed = TRUE)

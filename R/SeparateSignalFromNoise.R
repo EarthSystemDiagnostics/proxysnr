@@ -65,6 +65,10 @@ SeparateSignalFromNoise <- function(spectra, neff = spectra$N,
          call. = FALSE)
   }
 
+  if (!all(spectra$mean$freq == spectra$stack$freq)) {
+    stop("Frequency axes of `mean` and `stack` do not match.")
+  }
+
   if (is.null(neff)) {
     stop("Supply (effective) number of records.")
   }
