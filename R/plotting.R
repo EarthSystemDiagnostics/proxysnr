@@ -373,7 +373,7 @@ PlotSNR <- function(spec, f.cut = FALSE,
 
     add <- ifelse(i == 1, FALSE, TRUE)
 
-    removeL <- 0
+    removeLast <- 0
     if (f.cut) {
       idx <- spec[[i]]$f.cutoff[1]
       if (is.null(idx)) {
