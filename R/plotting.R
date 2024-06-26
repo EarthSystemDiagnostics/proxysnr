@@ -369,6 +369,13 @@ PlotSNR <- function(spec, f.cut = FALSE,
 
   }
 
+  if (f.cut) {
+
+    if (any(sapply(spec, function(x) {!utils::hasName(x, "f.cutoff")})))
+      warning("`f.cut = TRUE` but cutoff frequency missing in input.",
+              call. = FALSE)
+  }
+
   for (i in 1 : length(spec)) {
 
     add <- ifelse(i == 1, FALSE, TRUE)
@@ -376,12 +383,8 @@ PlotSNR <- function(spec, f.cut = FALSE,
     removeLast <- 0
     if (f.cut) {
       idx <- spec[[i]]$f.cutoff[1]
-      if (is.null(idx)) {
-        warning(
-          "f.cut = TRUE but no cutoff frequency specified in input.")
-      } else {
-        removeLast <-
-          length(idx : length(spec[[i]]$snr$freq))
+      if (!is.null(idx)) {
+        removeLast <- length(idx : length(spec[[i]]$snr$freq))
       }
     }
     
@@ -404,7 +407,7 @@ PlotSNR <- function(spec, f.cut = FALSE,
       names <- paste("data", 1 : length(spec), sep = "")
   }
   if (length(names) != length(spec))
-    warning("Number of data sets does not match given nuber of names.",
+    warning("Number of data sets does not match supplied number of names.",
             call. = FALSE)
   graphics::legend("topleft", legend = names, col = col,
                    seg.len = 3, lty = 1, lwd = 2, bty = "n")
