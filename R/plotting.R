@@ -198,6 +198,18 @@ PlotArraySpectra <- function(spec, marker = NA,
                              xtm = NULL, ytm = NULL,
                              xtl = NULL, ytl = NULL) {
 
+  # Error checking
+
+  if (!is.list(spec)) stop("`spec` must be a list.", call. = FALSE)
+  if (!all(utils::hasName(spec, c("single", "mean", "stack")))) {
+      stop("`spec` must have elements `single`, `mean` and `stack`.",
+           call. = FALSE)
+  }
+  is.spectrum(spec$mean)
+  is.spectrum(spec$stack)
+  if (!is.list(spec$single))
+    stop("`spec$single` must be a list of spectra.", call. = FALSE)
+
   # Gather input
   
   N <- length(spec$single)    
@@ -245,10 +257,16 @@ PlotArraySpectra <- function(spec, marker = NA,
   # Individual spectra
 
   for (i in 1 : N) {
-    
-    LLines(spec$single[[i]], conf = FALSE, bPeriod = TRUE,
-           removeFirst = 1, removeLast = 1,
-           col = col[1])
+
+    tryCatch(
+    {
+      LLines(spec$single[[i]], conf = FALSE, bPeriod = TRUE,
+             removeFirst = 1, removeLast = 1,
+             col = col[1])
+    }, error = function(cond) {
+      msg <- sprintf("Cannot plot `spec$single[[%s]]`: no spectral object.", i)
+      stop(msg, call. = FALSE)
+    })
   }
 
   # Main spectra
@@ -341,6 +359,9 @@ PlotSNR <- function(spec, f.cut = FALSE,
                     xtm = NULL, ytm = NULL,
                     xtl = NULL, ytl = NULL) {
 
+  # Error checking
+  if (!is.list(spec)) stop("`spec` must be a list.", call. = FALSE)
+
   if (length(col) != length(spec)) col <- rep(col, length.out = length(spec))
 
   # Graphics settings
@@ -387,6 +408,19 @@ PlotSNR <- function(spec, f.cut = FALSE,
         removeLast <- length(idx : length(spec[[i]]$snr$freq))
       }
     }
+
+    if (!is.list(spec[[i]]))
+      stop(sprintf("`spec[[%s]]` must be a list.", i), call. = FALSE)
+
+    if (!utils::hasName(spec[[i]], "snr")) {
+      stop(sprintf("`spec[[%s]]` must have an element `snr`.", i),
+           call. = FALSE)
+    }
+
+    tryCatch(is.spectrum(spec[[i]]$snr), error = function(cond) {
+      stop(sprintf("Cannot plot `spec[[%s]]$snr`: no spectral object.", i),
+           call. = FALSE)
+    })
     
     plot.snr(spec[[i]]$snr, xlim = xlim, ylim = ylim, lwd = 2, col = col[i],
              conf = FALSE, removeF = 1, removeL = removeLast, add = add)
