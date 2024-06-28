@@ -56,16 +56,18 @@ ObtainArraySpectra <- function(cores, res = 1, neff = length(cores),
   }
   
   # estimate individual spectra
-  cores <- lapply(cores, stats::ts, deltat = res)
-  single <- lapply(cores, SpecMTM, ...)
+  single <- cores %>%
+    lapply(stats::ts, deltat = res) %>%
+    lapply(SpecMTM, ...)
 
   # estimate spectrum of stacked record
-  ts.stack <- rowMeans(simplify2array(cores))
-  stack <- SpecMTM(stats::ts(ts.stack, deltat = res), ...)
+  stack <- simplify2array(cores) %>%
+    rowMeans %>%
+    stats::ts(deltat = res) %>%
+    SpecMTM(...)
 
   # calculate mean spectrum across individual record's spectra
   mean <- MeanSpectrum(single)
-
 
   # log-smooth spectra
   if (!is.null(df.log)) {
@@ -75,14 +77,12 @@ ObtainArraySpectra <- function(cores, res = 1, neff = length(cores),
     stack  <- LogSmooth(stack, df.log = df.log)
   }
 
-  
   # return results as a list
-  res <- list(
+  list(
     N          = neff,
     single     = single,
     mean       = mean,
-    stack      = stack)
-
-  return(res)
+    stack      = stack
+  )
 
 }

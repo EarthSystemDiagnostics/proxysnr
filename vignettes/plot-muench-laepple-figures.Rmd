@@ -26,7 +26,7 @@ main figures.
 
 ```{r, message = FALSE, warning = FALSE}
 library(proxysnr)
-library(RColorBrewer)
+library(magrittr)
 ```
 
 Produce the main spectral results for the DML1, DML2 and WAIS oxygen isotope
@@ -81,10 +81,11 @@ are returned for these data sets (see `?WrapSpectralResults` for details).
 ### Plot DML1 isotope array spectra (Figure 1)
 
 ```{r, fig.width = 7, fig.height = 6}
-PlotArraySpectra(ObtainArraySpectra(dml$dml1, df.log = 0.12),
-                 marker = DWS$dml1$corr.full$f.cutoff[2],
-		 ylab = expression(
-		   "Power spectral density " * "(\u2030"^{2}%.%"yr)"))
+dml$dml1 %>%
+  ObtainArraySpectra(df.log = 0.12) %>%
+  PlotArraySpectra(marker = DWS$dml1$corr.full$f.cutoff[2],
+                   ylab = expression(
+                     "Power spectral density " * "(\u2030"^{2}%.%"yr)"))
 ```
 
 ### Plot DML and WAIS signal and noise spectra (Figure 2)
@@ -95,47 +96,37 @@ proxysnr:::muench_laepple_fig02(DWS)
 
 ### Plot frequency dependence of signal-to-noise ratios (Figure 3)
 
-Obtain the final signal-to-noise ratio "spectra" by combining both DML data sets
-and applying additional logarithmic smoothing for visual purposes:
-
-```{r}
-SNR <- proxysnr:::PublicationSNR(DWS)
-```
-
-Plot the figure:
+Plot the final signal-to-noise ratio "spectra" from combining both DML data sets
+including additional logarithmic smoothing for visual purposes:
 
 ```{r, fig.width = 7, fig.height = 6}
-PlotSNR(SNR, f.cut = TRUE, names = c("DML", "WAIS"),
-        col = c("black", "dodgerblue4"))
+(SNR <- proxysnr:::PublicationSNR(DWS)) %>%
+  PlotSNR(f.cut = TRUE, names = c("DML", "WAIS"),
+          col = c("black", "dodgerblue4"))
 ```
 
 ### Plot estimated correlation with common signal (Figure 4)
 
 Calculate the estimated correlation of a stacked isotope record with the
 underlying common signal as a function of records averaged and the temporal
-averaging period (i.e. resolution) of the records:
+averaging period (i.e. resolution) of the records, and plot it:
 
-```{r}
+```{r, fig.width = 8, fig.height = 6.3}
 # for the DMl data
-crl1 <- ObtainStackCorrelation(SNR$dml, N = 1 : 20,
-                               limits = c(1 / 100, SNR$dml$f.cutoff[2]))
+SNR$dml %>%
+  ObtainStackCorrelation(N = 1 : 20,
+                         limits = c(1 / 100, SNR$dml$f.cutoff[2])) %>%
+  PlotStackCorrelation(label = expression(bold("a.")~"DML"),
+                       ylim = c(NA, 50))
+```
 
+```{r, fig.width = 8, fig.height = 6.3}
 # for the WAIS data
-crl2 <- ObtainStackCorrelation(SNR$wais, N = 1 : 20,
-                               limits = c(1 / 100, SNR$wais$f.cutoff[2]))
-```
-
-Plot the figure for DML:
-
-```{r, fig.width = 8, fig.height = 6.3}
-PlotStackCorrelation(data = crl1, label = expression(bold("a.")~"DML"),
-                     ylim = c(NA, 50))
-```
-
-Plot the figure for WAIS:
-```{r, fig.width = 8, fig.height = 6.3}
-PlotStackCorrelation(data = crl2, label = expression(bold("b.")~"WAIS"),
-                     ylim = c(NA, 50))
+SNR$wais %>%
+  ObtainStackCorrelation(N = 1 : 20,
+                         limits = c(1 / 100, SNR$wais$f.cutoff[2])) %>%
+  PlotStackCorrelation(label = expression(bold("b.")~"WAIS"),
+                       ylim = c(NA, 50))
 ```
 
 ### Plot comparison of DML and Trench noise spectra (Figure 5)

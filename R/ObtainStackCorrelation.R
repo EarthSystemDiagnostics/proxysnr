@@ -53,13 +53,13 @@ ObtainStackCorrelation <- function(input, N = 1, f1 = 2, f2 = "max",
 
   snr <- GetIntegratedSNR(input, N = 1, f1 = f1, f2 = f2, limits = limits)
 
-  correlation <- t(sapply(N, function(x) {
-    1 / sqrt(1 + 1 / (x * rev(snr$spec)))
-  }))
+  getR <- function(n, x) {1 / sqrt(1 + 1 / (n * rev(x)))}
 
-  res <- list(freq = snr$freq, correlation = correlation)
-  
-  return(res)
+  correlation <- N %>%
+    sapply(getR, x = snr$spec) %>%
+    t()
+
+  list(freq = snr$freq, correlation = correlation)
 
 }
 
