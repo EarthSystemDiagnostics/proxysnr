@@ -63,23 +63,17 @@ Fig. 3).
 }
 \examples{
 
-# Plot Figure 3 in Münch and Laepple (2018)
-# (DML and WAIS oxygen isotope data sets):
+# create toy data
+n <- 100
+spec <- list(
+  data1 = list(snr = list(freq = seq(0.01, 0.5, length.out = n),
+                          spec = seq(1, 0.1, length.out = n))),
+  data2 = list(snr = list(freq = seq(0.005, 0.5, length.out = n),
+                          spec = seq(5, 0.1, length.out = n)))
+)
 
-# Load main spectral results
-DWS <- WrapSpectralResults(
-       dml1 = dml$dml1, dml2 = dml$dml2, wais = wais,
-       diffusion = diffusion.tf,
-       time.uncertainty = time.uncertainty.tf,
-       df.log = c(0.15, 0.15, 0.1))
-
-# Calculate the final signal-to-noise ratio spectra
-SNR <- proxysnr:::PublicationSNR(DWS)
-
-# Plot it
-PlotSNR(SNR, f.cut = TRUE,
-        names = c("DML", "WAIS"),
-        col = c("black", "dodgerblue4"))
+# plot SNR data
+PlotSNR(spec)
 
 }
 \references{

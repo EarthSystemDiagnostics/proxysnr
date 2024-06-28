@@ -35,7 +35,7 @@
 #' }
 #'
 #' @author Thomas Münch
-#' @seealso \code{\link{SpecMTM}}
+#' @seealso \code{\link{PlotArraySpectra}}, \code{\link{SpecMTM}}
 #'
 #' @export
 #'

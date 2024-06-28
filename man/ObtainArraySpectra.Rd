@@ -49,7 +49,7 @@ of class \code{"spec"} with the minimum elements \code{freq} and
 \code{spec}.
 }
 \seealso{
-\code{\link{SpecMTM}}
+\code{\link{PlotArraySpectra}}, \code{\link{SpecMTM}}
 }
 \author{
 Thomas Münch

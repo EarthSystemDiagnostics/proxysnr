@@ -62,10 +62,21 @@ firn core analysis of Münch and Laepple, 2018, Fig. 1).
 }
 \examples{
 
-# Plot Figure 1 in Münch and Laepple (2018) (DML1 oxygen isotope data set):
-PlotArraySpectra(ObtainArraySpectra(dml$dml1, df.log = 0.12),
-                 ylab = expression(
-                   "Power spectral density " * "(\u2030"^{2}\%.\%"yr)"))
+library(magrittr)
+
+# create artificial proxy data as a showcase dataset
+nc <- 5
+nt <- 1000
+clim <- as.numeric(stats::arima.sim(model = list(ar = 0.7), n = nt))
+noise <- as.data.frame(replicate(nc, rnorm(n = nt)))
+
+# array of five "cores" recording the same climate but independent noise:
+cores <- clim + noise
+
+# obtain the spectra and plot them
+cores \%>\%
+  ObtainArraySpectra(df.log = 0.05) \%>\%
+  PlotArraySpectra(xlim = c(500, 2))
 
 }
 \references{

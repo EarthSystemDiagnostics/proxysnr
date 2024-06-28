@@ -40,6 +40,7 @@
 #' }
 #'
 #' @author Thomas Münch
+#' @seealso \code{\link{PlotStackCorrelation}}
 #'
 #' @references
 #' Münch, T. and Laepple, T.: What climate signal is contained in

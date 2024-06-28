@@ -77,25 +77,26 @@ Münch and Laepple, 2018, Fig. 4).
 }
 \examples{
 
-# Plot Figure 4 in Münch and Laepple (2018)
-# (DML and WAIS oxygen isotope data sets):
+# create a toy correlation dataset, which mimicks an increase
+# in correlation with timescale and with the number of cores
+# averaged, and plot it:
 
-# Load main spectral results
-DWS <- WrapSpectralResults(
-       dml1 = dml$dml1, dml2 = dml$dml2, wais = wais,
-       diffusion = diffusion.tf,
-       time.uncertainty = time.uncertainty.tf,
-       df.log = c(0.15, 0.15, 0.1))
+nf <- 20
+nc <- 5
 
-# Calculate the final signal-to-noise ratio spectra
-SNR <- proxysnr:::PublicationSNR(DWS)
+data <- list(
+  freq = seq(0.01, 0.5, length.out = nf),
+  correlation =
+    matrix(seq(0.05, 0.9, length.out = nf), nrow = nc, ncol = nf,
+           byrow = TRUE) +
+    matrix(seq(0, 0.3, length.out = nc), nrow = nc, ncol = nf) +
+    matrix(rnorm(nf * nc, sd = 0.02), nrow = nc, ncol = nf)
+)
+data$correlation[data$correlation > 1] <- 1
+data$correlation[data$correlation < 0] <- 0
 
-# Calculate the correlations
-crl <- ObtainStackCorrelation(SNR$dml, N = 1 : 20,
-                              limits = c(1 / 100, SNR$dml$f.cutoff[2]))
+PlotStackCorrelation(data)
 
-# Plot it
-PlotStackCorrelation(data = crl, label = "DML", ylim = c(NA, 50))
 
 }
 \references{

@@ -181,10 +181,21 @@ LLines<-function(x, conf = TRUE, bPeriod = FALSE, col = "black", alpha = 0.2,
 #'
 #' @examples
 #'
-#' # Plot Figure 1 in Münch and Laepple (2018) (DML1 oxygen isotope data set):
-#' PlotArraySpectra(ObtainArraySpectra(dml$dml1, df.log = 0.12),
-#'                  ylab = expression(
-#'                    "Power spectral density " * "(\u2030"^{2}%.%"yr)"))
+#' library(magrittr)
+#'
+#' # create artificial proxy data as a showcase dataset
+#' nc <- 5
+#' nt <- 1000
+#' clim <- as.numeric(stats::arima.sim(model = list(ar = 0.7), n = nt))
+#' noise <- as.data.frame(replicate(nc, rnorm(n = nt)))
+#'
+#' # array of five "cores" recording the same climate but independent noise:
+#' cores <- clim + noise
+#'
+#' # obtain the spectra and plot them
+#' cores %>%
+#'   ObtainArraySpectra(df.log = 0.05) %>%
+#'   PlotArraySpectra(xlim = c(500, 2))
 #'
 #' @export
 #'
@@ -332,23 +343,17 @@ PlotArraySpectra <- function(spec, marker = NA,
 #'
 #' @examples
 #'
-#' # Plot Figure 3 in Münch and Laepple (2018)
-#' # (DML and WAIS oxygen isotope data sets):
+#' # create toy data
+#' n <- 100
+#' spec <- list(
+#'   data1 = list(snr = list(freq = seq(0.01, 0.5, length.out = n),
+#'                           spec = seq(1, 0.1, length.out = n))),
+#'   data2 = list(snr = list(freq = seq(0.005, 0.5, length.out = n),
+#'                           spec = seq(5, 0.1, length.out = n)))
+#' )
 #'
-#' # Load main spectral results
-#' DWS <- WrapSpectralResults(
-#'        dml1 = dml$dml1, dml2 = dml$dml2, wais = wais,
-#'        diffusion = diffusion.tf,
-#'        time.uncertainty = time.uncertainty.tf,
-#'        df.log = c(0.15, 0.15, 0.1))
-#'
-#' # Calculate the final signal-to-noise ratio spectra
-#' SNR <- proxysnr:::PublicationSNR(DWS)
-#'
-#' # Plot it
-#' PlotSNR(SNR, f.cut = TRUE,
-#'         names = c("DML", "WAIS"),
-#'         col = c("black", "dodgerblue4"))
+#' # plot SNR data
+#' PlotSNR(spec)
 #'
 #' @export
 #'
@@ -496,25 +501,26 @@ PlotSNR <- function(spec, f.cut = FALSE,
 #'
 #' @examples
 #'
-#' # Plot Figure 4 in Münch and Laepple (2018)
-#' # (DML and WAIS oxygen isotope data sets):
+#' # create a toy correlation dataset, which mimicks an increase
+#' # in correlation with timescale and with the number of cores
+#' # averaged, and plot it:
 #'
-#' # Load main spectral results
-#' DWS <- WrapSpectralResults(
-#'        dml1 = dml$dml1, dml2 = dml$dml2, wais = wais,
-#'        diffusion = diffusion.tf,
-#'        time.uncertainty = time.uncertainty.tf,
-#'        df.log = c(0.15, 0.15, 0.1))
+#' nf <- 20
+#' nc <- 5
 #'
-#' # Calculate the final signal-to-noise ratio spectra
-#' SNR <- proxysnr:::PublicationSNR(DWS)
+#' data <- list(
+#'   freq = seq(0.01, 0.5, length.out = nf),
+#'   correlation =
+#'     matrix(seq(0.05, 0.9, length.out = nf), nrow = nc, ncol = nf,
+#'            byrow = TRUE) +
+#'     matrix(seq(0, 0.3, length.out = nc), nrow = nc, ncol = nf) +
+#'     matrix(rnorm(nf * nc, sd = 0.02), nrow = nc, ncol = nf)
+#' )
+#' data$correlation[data$correlation > 1] <- 1
+#' data$correlation[data$correlation < 0] <- 0
 #'
-#' # Calculate the correlations
-#' crl <- ObtainStackCorrelation(SNR$dml, N = 1 : 20,
-#'                               limits = c(1 / 100, SNR$dml$f.cutoff[2]))
+#' PlotStackCorrelation(data)
 #'
-#' # Plot it
-#' PlotStackCorrelation(data = crl, label = "DML", ylim = c(NA, 50))
 #'
 #' @export
 #'
