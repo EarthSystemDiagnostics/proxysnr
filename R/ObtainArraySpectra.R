@@ -56,9 +56,8 @@ ObtainArraySpectra <- function(cores, res = 1, neff = length(cores),
   }
   
   # estimate individual spectra
-  single <- lapply(cores, function(lst) {
-    SpecMTM(stats::ts(lst, deltat = res), ...)
-  })
+  cores <- lapply(cores, stats::ts, deltat = res)
+  single <- lapply(cores, SpecMTM, ...)
 
   # estimate spectrum of stacked record
   ts.stack <- rowMeans(simplify2array(cores))
