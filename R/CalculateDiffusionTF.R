@@ -99,6 +99,50 @@ CalculateDiffusionTF <- function(nt, nc, ns, sigma, res = 1, window = NULL,
 
   }
 
+  # function for forward diffusion
+  .diffuse <- function(rec, sigma, res = 1){
+
+    n <- length(rec)
+
+    # scale diffusion length according to resolution of record
+    sigma <- sigma / res
+
+    # pad end of record with mean of record to avoid NA's
+    # at the end of diffused record
+    rec <- c(rec, rep(mean(rec, na.rm = TRUE), 10 * max(sigma)))
+
+    # vector to store diffused data
+    rec.diffused <- rep(NA, n)
+
+    # loop over record
+    for (i in 1 : n) {
+
+      # diffusion length for current depth
+      sig <- sigma[i]
+
+      # set range of convolution integral (= 2*imax + 1) to ~ 10*sig
+      imax <- ceiling(5 * sig)
+      ran <- (i - imax) : (i + imax)
+
+      # skip part of range in convolution integral which extends above surface
+      ran <- ran[ran > 0]
+      # relative range for convolution kernel
+      rel.ran <- i - ran
+
+      # convolution kernel
+      kernel <- exp(-(rel.ran)^2 / (2 * sig^2))
+      kernel <- kernel / sum(kernel)
+
+      # diffuse data at current depth bin
+      diff.value <- sum(rec[ran] * kernel)
+
+      rec.diffused[i] <- diff.value
+    }
+
+    return(rec.diffused)
+
+  }
+
   # create 'nc' white noise time series, diffuse them, and calculate their
   # average; repeat 'ns' times
   
@@ -117,7 +161,7 @@ CalculateDiffusionTF <- function(nt, nc, ns, sigma, res = 1, window = NULL,
 
     for (j in 1 : nc) {
 
-      Xdiff[, j] <- DiffuseRecord(X[, j], sigma = sigma[, j], res = res)
+      Xdiff[, j] <- .diffuse(X[, j], sigma = sigma[, j], res = res)
     }
 
     stack.signal[, i] <- rowMeans(X)
@@ -154,81 +198,4 @@ CalculateDiffusionTF <- function(nt, nc, ns, sigma, res = 1, window = NULL,
 
   return(res)
   
-}
-
-#' Diffuse a record
-#'
-#' Diffuse a time series or record with a given depth (or time)-dependent
-#' diffusion length by convolution with a Gaussian kernel.
-#'
-#' This function expects a numeric vector with the depth-dependent diffusion
-#' lengths of the same length as \code{rec}. To calculate the simple case of a
-#' constant diffusion length \code{sigma.const}, provide
-#' \code{sigma = rep(sigma.const, length(rec))} as input.
-#'
-#' @param rec numeric vector containing the record that is to be diffused.
-#' @param sigma numeric vector of the diffusion lengths corresponding to the
-#'   points at which \code{rec} is tabulated; in units of the resolution of
-#'   \code{rec} (typically [cm]).
-#' @param res resolution of \code{rec} in the same units as \code{sigma}.
-#'
-#' @return Numeric vector containing the diffused version of \code{rec}.
-#'
-#' @author Thomas Münch, Thomas Laepple
-#' @noRd
-#'
-DiffuseRecord <- function(rec, sigma, res = 1){
-
-  debug <- FALSE
-
-  n <- length(rec)
-
-  # record and sigma must have same length
-  if (n != length(sigma))
-    stop("Conflicting INPUT: rec and sigma must have same length.")
-
-  # scale diffusion length according to resolution of record
-  sigma <- sigma / res
-
-  # pad end of record with mean of record to avoid NA's
-  # at the end of diffused record
-  if (!debug) rec <- c(rec, rep(mean(rec, na.rm = TRUE), 10 * max(sigma)))
-
-  # vector to store diffused data
-  rec.diffused <- rep(NA, n)
-
-  # loop over record
-  for (i in 1 : n) {
-
-    # diffusion length for current depth
-    sig <- sigma[i]
-
-    # set range of convolution integral (= 2*imax + 1) to ~ 10*sig
-    imax <- ceiling(5 * sig)
-    ran <- (i - imax) : (i + imax)
-
-    # if part of range extends above surface, set diffused value to 'NA' for
-    # 'debug = TRUE', else skip that part of range in the convolution
-    # integral
-
-    if (!all(ran > 0) & debug) {
-      diff.value <- NA
-    } else {
-      ran <- ran[ran > 0]
-      # relative range for convolution kernel
-      rel.ran <- i - ran
-
-      # convolution kernel
-      kernel <- exp(-(rel.ran)^2 / (2 * sig^2))
-      kernel <- kernel / sum(kernel)
-
-      # diffuse data at current depth bin
-      diff.value <- sum(rec[ran] * kernel)
-    }
-
-    rec.diffused[i] <- diff.value
-  }
-
-  return(rec.diffused)
-
 }
