@@ -4,14 +4,7 @@
 \alias{ObtainStackCorrelation}
 \title{Correlation with common signal}
 \usage{
-ObtainStackCorrelation(
-  input,
-  N = 1,
-  f1 = 2,
-  f2 = "max",
-  freq.cut.lower = NULL,
-  freq.cut.upper = NULL
-)
+ObtainStackCorrelation(input, N = 1, f1 = 2, f2 = "max", limits = NULL)
 }
 \arguments{
 \item{input}{a list of the spectral objects lists \code{signal} and
@@ -22,25 +15,18 @@ ObtainStackCorrelation(
 correlations are then calculated for stacks with record numbers according
 to each element of \code{N}.}
 
-\item{f1}{index of the the minimum frequency from which to integrate the
-signal and noise spectra for calculating the correlation; per default the
+\item{f1}{index of the signal (and noise) frequency axis to specify the lower
+integration limit from which to integrate the spectra; per default the
 lowest frequency of the spectral estimates is omitted.}
 
-\item{f2}{index of the maximum frequency until which to integrate the signal
-and noise spectra for calculating the correlation; defaults to use the
+\item{f2}{as \code{f1} for the upper integration limit; defaults to use the
 maximum frequency of the given spectral estimates.}
 
-\item{freq.cut.lower}{lower frequency (not index!) at which to cut the
-spectra: this provides a direct way for specifying a minimum frequency for
-the integration different from the minimum frequency of the spectral
-estimates. Setting \code{freq.cut.lower} overrides the frequency
-corresponding to the index set in \code{f1}.}
-
-\item{freq.cut.upper}{upper frequency (not index!) at which to cut the
-spectra: this provides a direct way for specifying a maximum frequency for
-the integration different from the maximum frequency of the spectral
-estimates. Setting \code{freq.cut.upper} overrides the frequency
-corresponding to the index set in \code{f2}.}
+\item{limits}{numeric vector with a frequency range of the integration: this
+is an alternative way of specifying the integration limits and overrides
+the setting by \code{f1} and \code{f2}. If not `NULL` it must be a length-2
+vector with the lower integration limit as first and the upper integration
+limit as second element.}
 }
 \value{
 a list of two components:

@@ -52,20 +52,33 @@ SeparateSignalFromNoise <- function(spectra, neff = spectra$N,
 
   # error checking
 
-  if (is.null(neff)) {
-    stop("Supply (effective) number of records.")
+  if (!is.list(spectra)) stop("`spectra` must be a list.", call. = FALSE)
+
+  if (!all(utils::hasName(spectra, c("mean", "stack"))))
+    stop("`spectra` must have elements `mean` and `stack`.", call. = FALSE)
+
+  is.spectrum(spectra$mean)
+  is.spectrum(spectra$stack)
+
+  if (length(spectra$mean$freq) != length(spectra$stack$freq)) {
+    stop("`mean` and `stack` must have the same number of spectral estimates.",
+         call. = FALSE)
   }
 
-  if (any(is.na(match(c("mean", "stack"), names(spectra))))) {
-    stop("Input list of spectra does not seem to have the right format.")
+  if (!all(spectra$mean$freq == spectra$stack$freq)) {
+    stop("Frequency axes of `mean` and `stack` do not match.")
+  }
+
+  if (is.null(neff)) {
+    stop("Supply (effective) number of records.")
   }
 
   if (is.null(diffusion)) {
     diffusion <- 1
   } else {
     if (length(diffusion) != length(spectra$mean$freq)) {
-      stop("Length of diffusion correction does not match length of
-        spectral estimates.")
+      stop("Length of diffusion correction ",
+           "does not match length of spectral estimates.")
     }
   }
 
@@ -73,8 +86,8 @@ SeparateSignalFromNoise <- function(spectra, neff = spectra$N,
     time.uncertainty <- 1
   } else {
     if (length(time.uncertainty) != length(spectra$mean$freq)) {
-      stop("Length of time uncertainty correction does not match length of
-        spectral estimates.")
+      stop("Length of time uncertainty correction ",
+           "does not match length of spectral estimates.")
     }
   }
 

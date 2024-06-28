@@ -92,8 +92,7 @@ SNR <- proxysnr:::PublicationSNR(DWS)
 
 # Calculate the correlations
 crl <- ObtainStackCorrelation(SNR$dml, N = 1 : 20,
-                              freq.cut.lower = 1 / 100,
-                              freq.cut.upper = SNR$dml$f.cutoff[2])
+                              limits = c(1 / 100, SNR$dml$f.cutoff[2]))
 
 # Plot it
 PlotStackCorrelation(data = crl, label = "DML", ylim = c(NA, 50))

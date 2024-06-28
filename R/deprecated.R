@@ -59,8 +59,11 @@ SeparateSpectra <- function(spectra, neff = spectra$N,
 StackCorrelation <- function(input, N = 1, f1 = 2, f2 = "max",
                              freq.cut.lower = NULL, freq.cut.upper = NULL) {
 
+  limits <- c(freq.cut.lower, freq.cut.upper)
+    # <- does not work when only one of the two is specified, but best I can do
+
   .Deprecated("ObtainStackCorrelation", "proxysnr")
-  ObtainStackCorrelation(input, N, f1, f2, freq.cut.lower, freq.cut.upper)
+  ObtainStackCorrelation(input, N, f1, f2, limits)
 
 }
 
@@ -70,8 +73,11 @@ StackCorrelation <- function(input, N = 1, f1 = 2, f2 = "max",
 IntegratedSNR <- function(input, N = 1, f1 = 2, f2 = "max",
                           freq.cut.lower = NULL, freq.cut.upper = NULL) {
 
+  limits <- c(freq.cut.lower, freq.cut.upper)
+    # <- does not work when only one of the two is specified, but best I can do
+
   .Deprecated("GetIntegratedSNR", "proxysnr")
-  GetIntegratedSNR(input, N, f1, f2, freq.cut.lower, freq.cut.upper)
+  GetIntegratedSNR(input, N, f1, f2, limits)
 
 }
 
@@ -82,7 +88,7 @@ DiffusionTF <- function(nt, nc, ns, sigma, res = 1, window = NULL,
                         coherent = FALSE, ...) {
 
   .Deprecated("CalculateDiffusionTF", "proxysnr")
-  CalculateDiffusionTF(nt, nc, ns, sigma, res, window, coherent)
+  CalculateDiffusionTF(nt, nc, ns, sigma, res, window, coherent, ...)
 
 }
 

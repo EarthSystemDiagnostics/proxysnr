@@ -118,13 +118,11 @@ averaging period (i.e. resolution) of the records:
 ```{r}
 # for the DMl data
 crl1 <- ObtainStackCorrelation(SNR$dml, N = 1 : 20,
-                               freq.cut.lower = 1 / 100,
-                               freq.cut.upper = SNR$dml$f.cutoff[2])
+                               limits = c(1 / 100, SNR$dml$f.cutoff[2]))
 
 # for the WAIS data
 crl2 <- ObtainStackCorrelation(SNR$wais, N = 1 : 20,
-                               freq.cut.lower = 1 / 100,
-                               freq.cut.upper = SNR$wais$f.cutoff[2])
+                               limits = c(1 / 100, SNR$wais$f.cutoff[2]))
 ```
 
 Plot the figure for DML:
