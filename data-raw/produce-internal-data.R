@@ -15,11 +15,13 @@
 # available on request from the `proxysnr` authors
 library(FirnR)
 
-# require package 'TrenchR' for access to t15 trench data
-# remotes::install_github("EarthSystemDiagnostics/TrenchR")
-library(TrenchR)
+# for data access
+library(proxysnr)
 
 library(usethis)
+library(pangaear)
+library(dplyr)
+library(tidyr)
 
 # ==============================================================================
 # I. Calculate DML and WAIS diffusion lengths
@@ -231,6 +233,60 @@ diffusion.length$wais <- sigma
 # II. Calculate DML 2015 trench oxygen isotope noise spectra
 # ==============================================================================
 
+#' Download from PANGAEA archive and parse T15 trench data
+#'
+#' @param name character string to signal which trench data to download: either
+#'   "T15-1" or "T15-2".
+#' @param first.sample integer; number of the first depth bin on the absolute
+#'   trench depth scale from which onwards the data are used; the default
+#'   setting removes the incomplete trench surface region but else uses all
+#'   data.
+#' @param resolution depth resolution in cm for the interpolation onto an
+#'   equidistant depth axis.
+#' @param verbose logical; if `TRUE`, print messages on the download process.
+#'
+#' @return a matrix of the trench profiles.
+#'
+#' @author Thomas Münch
+#'
+parseTrench <- function(name = "T15-1", first.sample = 7, resolution = 3,
+                        verbose = FALSE) {
+
+  # set PANGAEA DOI
+  name <- match.arg(name, c("T15-1", "T15-2"))
+  doi <- ifelse(name == "T15-1", "10.1594/PANGAEA.876637",
+                "10.1594/PANGAEA.876638")
+
+  # download data
+  data <- pangaear::pg_data(doi = doi, mssgs = verbose)[[1]]$data
+
+  # clear local pangaea data cache
+  pangaear::pg_cache$delete_all()
+
+  parsed <- data %>%
+    dplyr::select(sampleNumber = "Sample ID", profileName = "Profile ID",
+                  depth = "Depth ice/snow [m]", d18O = "δ18O H2O [‰ SMOW]") %>%
+    dplyr::filter(sampleNumber >= first.sample) %>% # remove surface region
+    dplyr::mutate(depth = depth * 100) %>%          # depth in cm
+    tidyr::pivot_wider(names_from = "profileName",  # convert to wide table
+                       values_from = dplyr::all_of("d18O"))
+
+  # output data interpolated onto even resolution (also interpolates NA's)
+
+  intpl <- function(x, depth.orig, res = 3) {
+      depth.new <- seq(min(depth.orig), max(depth.orig), by = res)
+      approx(depth.orig, x, depth.new)$y
+    }
+
+  depth.orig <- parsed$depth
+
+  parsed %>%
+    dplyr::select(-depth, -sampleNumber) %>%
+    as.matrix %>%
+    apply(2, intpl, depth.orig = depth.orig, res = resolution)
+
+}
+
 #' Calculate trench noise spectrum given a constant accumulation rate
 #'
 #' @param acc.rate assumed mean accumulation rate at the trench site [cm/yr] to
@@ -239,7 +295,7 @@ diffusion.length$wais <- sigma
 #' @param neff effective number of trench records to account for the spatial
 #'   autocorrelation of the stratigraphic noise; defaults to 19 for the total
 #'   available number of 22 profiles (see Münch et al., 2017,
-#'   https://doi.org/10.5194/tc-11-2175-2017).
+#'   <https://doi.org/10.5194/tc-11-2175-2017>).
 #' @param df.log Gaussian kernel width in log space to smooth the spectral
 #'   estimate; defaults to 0.1.
 #'
@@ -251,35 +307,21 @@ diffusion.length$wais <- sigma
 getTrenchNoise <- function(t15, acc.rate = 25, res = 3,
                            neff = 19, df.log = 0.1) {
 
-  SeparateSignalFromNoise(
-    ObtainArraySpectra(
-      t15, res = res / acc.rate, neff = neff, df.log = df.log))$noise
+  t15 %>%
+    ObtainArraySpectra(res = res / acc.rate, neff = neff, df.log = df.log) %>%
+    SeparateSignalFromNoise() %>%
+    .$noise
 
 }
 
-# approximate trench data onto even vertical resolution of 3 cm
-res <- 3
-depth.orig <- TrenchR::getZ(TrenchR::t15.trench1) # same as for trench2
-depth <- seq(min(depth.orig), max(depth.orig), res)
+# download and parse trench data and interpolate it to even 3 cm resolution
+t15.1 <- parseTrench(name = "T15-1", verbose = TRUE)
+t15.2 <- parseTrench(name = "T15-2", verbose = TRUE)
 
-t15.1 <- apply(TrenchR::make2D(TrenchR::t15.trench1, simplify = TRUE), 2,
-               function(prf) {
-                 approx(depth.orig, prf, depth)$y
-               })
-t15.2 <- apply(TrenchR::make2D(TrenchR::t15.trench2, simplify = TRUE), 2,
-               function(prf) {
-                 approx(depth.orig, prf, depth)$y
-               })
-
-# cut upper incomplete region and neglect excess T15-1 profile #7
-t15.1 <- t15.1[-(1 : 6), -7]
-t15.2 <- t15.2[-(1 : 6), ]
-
-# combine all trench profiles into one data frame
+# combine both trenches into one data frame
 t15 <- as.data.frame(cbind(t15.1, t15.2))
 
 # estimate noise spectra for three different accumulation rates
-
 t15.noise <- list(
 
   # lower bound accumulation rate

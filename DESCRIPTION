@@ -28,11 +28,9 @@ Suggests:
     RColorBrewer,
     simproxyage,
     testthat (>= 3.0.0),
-    TrenchR,
     usethis
 Remotes:
-    earthsystemdiagnostics/simproxyage,
-    earthsystemdiagnostics/TrenchR
+    earthsystemdiagnostics/simproxyage
 URL: https://github.com/EarthSystemDiagnostics/proxysnr
 BugReports: https://github.com/EarthSystemDiagnostics/proxysnr/issues
 SystemRequirements: Package vignettes based on R Markdown v2 or
