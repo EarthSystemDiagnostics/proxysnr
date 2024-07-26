@@ -1,23 +1,23 @@
 ## load.WAIS.R: Download and process WAIS oxygen isotope data
 ##
 ## Author: Thomas Münch (thomas.muench@awi.de), Alfred-Wegener-Institut, 2018
+##         Update: 2024/07/26
 ##
 
 library(usethis)
 library(Hmisc)
 
-# URL of the entire WAIS data sets
-addr <- "http://www.usap-dc.org/dataset/nsidc/nsidc0536_steig/" 
-url <- paste(addr, "Steig_2013_IsotopeAnnualAverages.txt", sep = "")
+# directory path with the entire WAIS data sets
+path <- "./data-raw/wais/"
 
 # Names of cores to select
 cores <- c("WDC05A", "ITASE_1999_1",
            "ITASE_2000_1", "ITASE_2000_4", "ITASE_2000_5")
 
-# Download and process WAIS data
-wais <- load.WAIS(url = url,
+# Process downloaded raw WAIS data (load first utility functions from below)
+wais <- load.WAIS(path = path,
                   cores = cores,
-                  cores.seasonal2annual = cores[4 : 5],
+                  cores.seasonal2annual = c("ITASE_2000_4", "ITASE_2000_5"),
                   fillNA = TRUE, verbose = TRUE)
 
 usethis::use_data(wais, overwrite = TRUE)
@@ -31,12 +31,13 @@ usethis::use_data(wais, overwrite = TRUE)
 #' Download WAIS isotope data from repository and process them for the spectral
 #' analyses.
 #'
-#' @param url URL of the UASAP-DC repository data file with the WAIS annual
-#'   averages data.
-#' @param cores name of the WAIS cores to extract from the data file.
+#' @param path path, relative to the proxysnr working directory, to the folder
+#'   that contains the raw WAIS data.
+#' @param cores name of the WAIS cores to extract from the annual averages data
+#'   file.
 #' @param cores.seasonal2annual name of the cores for which annual data has to
-#'   be obtained from high-resolution seasonal data (will be downloaded
-#'   additionally).
+#'   be obtained from high-resolution seasonal data (must be available from the
+#'   same `path` as the other data).
 #' @param setStart set common start date (year) for all cores; if `NULL` the
 #'   original start date is used.
 #' @param setEnd set common end date (year) for all cores; if `NULL` the
@@ -49,7 +50,7 @@ usethis::use_data(wais, overwrite = TRUE)
 #'
 #' @author Thomas Münch
 #'
-load.WAIS <- function(url, cores,
+load.WAIS <- function(path, cores,
                       cores.seasonal2annual = NULL,
                       setStart = 2000, setEnd = 1800,
                       fillNA = FALSE,
@@ -57,12 +58,12 @@ load.WAIS <- function(url, cores,
 
   seasonal2annual <- function(path, file, start, end) {
 
-    url <- file.path(path, file)
+    filePath <- file.path(path, file)
 
-    r <- readLines(url)
+    r <- readLines(filePath)
     i <- grep("% Depth_top", r)
 
-    data <- read.table(url, skip = i - 1, header = TRUE,
+    data <- read.table(filePath, skip = i - 1, header = TRUE,
                        sep = "\t", na.strings = "999999")
 
     # Mean age of data
@@ -77,11 +78,13 @@ load.WAIS <- function(url, cores,
 
   }
 
+  filePath <- file.path(path, "Steig_2013_IsotopeAnnualAverages.txt")
+
   # Header info has to be read explicitly for this file
-  header <- read.table(url, skip = 26, nrow = 1, sep = "\t",
+  header <- read.table(filePath, skip = 26, nrow = 1, sep = "\t",
                        stringsAsFactors = FALSE)
   # Read actual data
-  raw <- read.table(url, skip = 28, sep = "\t", na.strings = "999999")
+  raw <- read.table(filePath, skip = 28, sep = "\t", na.strings = "999999")
   # Add proper header
   colnames(raw) <- c("Year", unlist(header)[-1])
 
@@ -92,8 +95,6 @@ load.WAIS <- function(url, cores,
 
   # Bin-average high-resolution data to annual resolution if needed
   if (!is.null(cores.seasonal2annual)) {
-
-    path <- dirname(url)
 
     for (cr in cores.seasonal2annual) {
 
