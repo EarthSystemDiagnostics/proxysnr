@@ -40,6 +40,12 @@
 #' @param coherent if \code{TRUE}, \code{nc} identical white noise time series
 #'   are assumed to estimate the transfer function; else (the default) \code{nc}
 #'   independent noise series.
+#' @param df.log width of the Gaussian kernel in logarithmic frequency units to
+#'   smooth the spectral estimates; \code{NULL} (the default) suppresses
+#'   smoothing. In general, smoothing should not be necessary when a
+#'   sufficiently large number of Monte Carlo simulations (parameter \code{ns})
+#'   is used; nevertheless, it can be switched on here when the transfer
+#'   function still appears too noisy.
 #' @param ... additional parameters which are passed to the spectral estimation
 #'   function \code{\link{SpecMTM}}.
 #'
@@ -63,7 +69,7 @@
 #' @export
 #'
 CalculateDiffusionTF <- function(nt, nc, ns, sigma, res = 1, window = NULL,
-                                 coherent = FALSE, ...) {
+                                 coherent = FALSE, df.log = NULL, ...) {
 
   # convert sigma vector into array if necessary and check for dimensions
   if (is.null(dim(sigma))) {
@@ -98,6 +104,11 @@ CalculateDiffusionTF <- function(nt, nc, ns, sigma, res = 1, window = NULL,
     k <- seq_len(nt)
 
   }
+
+  if ((nsmooth <- length(df.log)) > 1)
+    stop("`df.log` must be of length 1 or `NULL`.")
+
+  apply.smoothing <- nsmooth == 1
 
   # function for forward diffusion
   .diffuse <- function(rec, sigma, res = 1){
@@ -188,11 +199,13 @@ CalculateDiffusionTF <- function(nt, nc, ns, sigma, res = 1, window = NULL,
   # return average undiffused and diffused spectra and the corresponding
   # ratio (transfer function) as a list
   
-  res <- list()
-  res$signal     <- signal.spec.mean
-  res$diffused   <- diff.spec.mean
-  res$ratio$freq <- res$signal$freq
-  res$ratio$spec <- res$diff$spec / res$signal$spec
+  res <- list(
+  signal   = signal.spec.mean,
+  diffused = diff.spec.mean,
+  ratio    = list(freq = signal.spec.mean$freq,
+                  spec = diff.spec.mean$spec / signal.spec.mean$spec)
+  ) %>%
+    {if (apply.smoothing) {lapply(., LogSmooth, df.log = df.log)} else {.}}
 
   class(res$ratio) <- "spec"
 

@@ -83,8 +83,7 @@
 #'   spectral estimation? Defaults to \code{TRUE}. This should not influence the
 #'   spectral estimation provided the number of \code{NA} values is small
 #'   compared to the total length of the time series.
-#' @param ... additional parameters which are passed to the spectral estimation
-#'   function \code{\link{SpecMTM}}.
+#' @inheritParams CalculateDiffusionTF
 #'
 #' @return a list of the components \code{input}, \code{stack} and
 #'   \code{ratio} which are objects of class \code{"spec"} providing averages
@@ -117,10 +116,16 @@ CalculateTimeUncertaintyTF <- function(t = 100 : 1, acp = c(t[1], NA),
                                        nt = length(t), nc = 1, ns = 100,
                                        model = "poisson", rate = 0.05,
                                        resize = 1, surrogate.fun = stats::rnorm,
-                                       fun.par = NULL, pad = TRUE, ...) {
+                                       fun.par = NULL, pad = TRUE,
+                                       df.log = NULL, ...) {
 
   # check if package simproxyage is available
   has.simproxyage <- check.simproxyage(stop.on.false = TRUE)
+
+  if ((nsmooth <- length(df.log)) > 1)
+    stop("`df.log` must be of length 1 or `NULL`.")
+
+  apply.smoothing <- nsmooth == 1
 
   # Monte Carlo simulation of age uncertainty for a core array
   arg <- c(list(
@@ -163,11 +168,13 @@ CalculateTimeUncertaintyTF <- function(t = 100 : 1, acp = c(t[1], NA),
   # return average input and age-perturbed spectra and the corresponding
   # ratio (transfer function) as a list
 
-  res <- list()
-  res$input <- input.spec.mean
-  res$stack <- stacks.spec.mean
-  res$ratio$freq <- stacks.spec.mean$freq
-  res$ratio$spec <- stacks.spec.mean$spec / input.spec.mean$spec
+  res <- list(
+  input = input.spec.mean,
+  stack = stacks.spec.mean,
+  ratio = list(freq = stacks.spec.mean$freq,
+               spec = stacks.spec.mean$spec / input.spec.mean$spec)
+  ) %>%
+    {if (apply.smoothing) {lapply(., LogSmooth, df.log = df.log)} else {.}}
 
   class(res$ratio) <- "spec"
 

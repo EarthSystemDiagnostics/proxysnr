@@ -12,6 +12,7 @@ CalculateDiffusionTF(
   res = 1,
   window = NULL,
   coherent = FALSE,
+  df.log = NULL,
   ...
 )
 }
@@ -44,6 +45,13 @@ of `NULL` means to use the records' entire lengths.}
 \item{coherent}{if \code{TRUE}, \code{nc} identical white noise time series
 are assumed to estimate the transfer function; else (the default) \code{nc}
 independent noise series.}
+
+\item{df.log}{width of the Gaussian kernel in logarithmic frequency units to
+smooth the spectral estimates; \code{NULL} (the default) suppresses
+smoothing. In general, smoothing should not be necessary when a
+sufficiently large number of Monte Carlo simulations (parameter \code{ns})
+is used; nevertheless, it can be switched on here when the transfer
+function still appears too noisy.}
 
 \item{...}{additional parameters which are passed to the spectral estimation
 function \code{\link{SpecMTM}}.}

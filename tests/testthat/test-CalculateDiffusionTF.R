@@ -33,6 +33,10 @@ test_that("CalculateDiffusionTF error checks work", {
   expect_error(CalculateDiffusionTF(nt = nt, nc = nc, ns = 1, sigma = sigma,
                                     window = c(11, 145)), m, fixed = TRUE)
 
+  m <- "`df.log` must be of length 1 or `NULL`."
+  expect_error(CalculateDiffusionTF(nt = nt, nc = nc, ns = 1, sigma = sigma,
+                                    df.log = c(0.05, 0.05)), m, fixed = TRUE)
+
 })
 
 test_that("CalculateDiffusionTF runs as expected", {
@@ -63,6 +67,13 @@ test_that("CalculateDiffusionTF runs as expected", {
   # test if coherent = TRUE
   actual <- CalculateDiffusionTF(nt = nt, nc = nc, ns = ns, sigma = sigma,
                                  coherent = TRUE)
+
+  expect_equal(lengths(lapply(actual, "[[", "freq"), use.names = FALSE),
+               rep(nt / 2, 3))
+
+  # test with smoothing
+  actual <- CalculateDiffusionTF(nt = nt, nc = nc, ns = ns, sigma = sigma,
+                                 df.log = 0.05)
 
   expect_equal(lengths(lapply(actual, "[[", "freq"), use.names = FALSE),
                rep(nt / 2, 3))

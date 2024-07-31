@@ -16,6 +16,7 @@ CalculateTimeUncertaintyTF(
   surrogate.fun = stats::rnorm,
   fun.par = NULL,
   pad = TRUE,
+  df.log = NULL,
   ...
 )
 }
@@ -64,6 +65,13 @@ reach the final age of the reference chronology -- shall the resulting
 spectral estimation? Defaults to \code{TRUE}. This should not influence the
 spectral estimation provided the number of \code{NA} values is small
 compared to the total length of the time series.}
+
+\item{df.log}{width of the Gaussian kernel in logarithmic frequency units to
+smooth the spectral estimates; \code{NULL} (the default) suppresses
+smoothing. In general, smoothing should not be necessary when a
+sufficiently large number of Monte Carlo simulations (parameter \code{ns})
+is used; nevertheless, it can be switched on here when the transfer
+function still appears too noisy.}
 
 \item{...}{additional parameters which are passed to the spectral estimation
 function \code{\link{SpecMTM}}.}
