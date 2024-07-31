@@ -161,23 +161,14 @@ tmp <- CalculateDiffusionTF(nt = nt / res, nc = nc, ns = ns,
 ```
 
 Since we used a certain simulation resolution, we have to interpolate onto the
-target resolution of our proxy data. Additionally, we store meta data on the
-simulations:
+target resolution of our proxy data:
 ```{r}
-dtf$dml1 <- tmp
+dtf$dml1 <- tmp # copy first to preserve attributes
 dtf$dml1$freq <- ff$dml1
 dtf$dml1$spec <- approx(tmp$freq, tmp$spec, dtf$dml1$freq)$y
-
-attr(dtf$dml1, "version") <- sprintf("Creation date: %s.", Sys.time())
-attr(dtf$dml1, "N.sim") <- sprintf("Number of simulations used: N = %s",
-	       		   	   formatC(ns, big.mark = ",", format = "d"))
-attr(dtf$dml1, "log-smooth") <- "Log-smooth applied: No."
-
-class(dtf$dml1) <- "spec"
 ```
 
-Run the time uncertainty model with Gaussian white noise as the surrogate data
-and document the meta data:
+Run the time uncertainty model with Gaussian white noise as surrogate data:
 ```{r}
 set.seed(4122018)
 if (has.simproxyage) {
@@ -190,14 +181,6 @@ if (has.simproxyage) {
   ttf$dml1$freq <- dtf$dml1$freq
   ttf$dml1$spec <- rep(NA, length(dtf$dml1$freq))
 }
-
-attr(ttf$dml1, "version") <- sprintf("Creation date: %s.", Sys.time())
-attr(ttf$dml1, "rate") <- sprintf("Process rate used: %1.3f.", rate)
-attr(ttf$dml1, "N.sim") <- sprintf("Number of simulations used: N = %s",
-	       		   	   formatC(ns, big.mark = ",", format = "d"))
-attr(ttf$dml1, "log-smooth") <- "Log-smooth applied: No."
-
-class(ttf$dml1) <- "spec"
 ```
 
 ## The other isotope records
@@ -231,20 +214,6 @@ if (has.simproxyage) {
   ttf$dml2$freq <- dtf$dml2$freq
   ttf$dml2$spec <- rep(NA, length(dtf$dml2$freq))
 }
-
-attr(dtf$dml2, "version") <- sprintf("Creation date: %s.", Sys.time())
-attr(dtf$dml2, "N.sim") <- sprintf("Number of simulations used: N = %s",
-	       		   	   formatC(ns, big.mark = ",", format = "d"))
-attr(dtf$dml2, "log-smooth") <- "Log-smooth applied: No."
-
-attr(ttf$dml2, "version") <- sprintf("Creation date: %s.", Sys.time())
-attr(ttf$dml2, "rate") <- sprintf("Process rate used: %1.3f.", rate)
-attr(ttf$dml2, "N.sim") <- sprintf("Number of simulations used: N = %s",
-	       		   	   formatC(ns, big.mark = ",", format = "d"))
-attr(ttf$dml2, "log-smooth") <- "Log-smooth applied: No."
-
-class(dtf$dml2) <- "spec"
-class(ttf$dml2) <- "spec"
 ```
 
 ... and the WAIS isotope records:
@@ -276,20 +245,6 @@ if (has.simproxyage) {
   ttf$wais$freq <- dtf$wais$freq
   ttf$wais$spec <- rep(NA, length(dtf$wais$freq))
 }
-
-attr(dtf$wais, "version") <- sprintf("Creation date: %s.", Sys.time())
-attr(dtf$wais, "N.sim") <- sprintf("Number of simulations used: N = %s",
-	       		   	   formatC(ns, big.mark = ",", format = "d"))
-attr(dtf$wais, "log-smooth") <- "Log-smooth applied: No."
-
-attr(ttf$wais, "version") <- sprintf("Creation date: %s.", Sys.time())
-attr(ttf$wais, "rate") <- sprintf("Process rate used: %1.3f.", rate)
-attr(ttf$wais, "N.sim") <- sprintf("Number of simulations used: N = %s",
-	       		   	   formatC(ns, big.mark = ",", format = "d"))
-attr(ttf$wais, "log-smooth") <- "Log-smooth applied: No."
-
-class(dtf$wais) <- "spec"
-class(ttf$wais) <- "spec"
 ```
 
 ## Plot the transfer functions

@@ -198,6 +198,19 @@ CalculateDiffusionTF <- function(nt, nc, ns, sigma, res = 1, window = NULL,
 
   # return average undiffused and diffused spectra and the corresponding
   # ratio (transfer function) as a list
+
+  version <- sprintf("Creation date: %s.", Sys.time())
+  nsim <- sprintf("Number of simulations used: N = %s.",
+                  formatC(ns, big.mark = ",", format = "d"))
+  smoothing <- paste("Log-smooth applied:",
+    if (apply.smoothing) sprintf("Yes (df.log = %1.2f).", df.log) else "No.")
+
+  setAttr <- function(x) {
+    attr(x, "version") <- version
+    attr(x, "N.sim") <- nsim
+    attr(x, "log-smooth") <- smoothing
+    return(x)
+  }
   
   res <- list(
   signal   = signal.spec.mean,
@@ -205,7 +218,8 @@ CalculateDiffusionTF <- function(nt, nc, ns, sigma, res = 1, window = NULL,
   ratio    = list(freq = signal.spec.mean$freq,
                   spec = diff.spec.mean$spec / signal.spec.mean$spec)
   ) %>%
-    {if (apply.smoothing) {lapply(., LogSmooth, df.log = df.log)} else {.}}
+    {if (apply.smoothing) {lapply(., LogSmooth, df.log = df.log)} else {.}} %>%
+    lapply(setAttr)
 
   class(res$ratio) <- "spec"
 

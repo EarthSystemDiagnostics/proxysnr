@@ -168,13 +168,31 @@ CalculateTimeUncertaintyTF <- function(t = 100 : 1, acp = c(t[1], NA),
   # return average input and age-perturbed spectra and the corresponding
   # ratio (transfer function) as a list
 
+  version <- sprintf("Creation date: %s.", Sys.time())
+  nsim <- sprintf("Number of simulations used: N = %s.",
+                  formatC(ns, big.mark = ",", format = "d"))
+  prc.model <- sprintf("Process model used: `%s`.", model)
+  prc.rate <-sprintf("Process rate used: %1.3f.", rate)
+  smoothing <- paste("Log-smooth applied:",
+    if (apply.smoothing) sprintf("Yes (df.log = %1.2f).", df.log) else "No.")
+
+  setAttr <- function(x) {
+    attr(x, "version") <- version
+    attr(x, "N.sim") <- nsim
+    attr(x, "model") <- prc.model
+    attr(x, "rate") <- prc.rate
+    attr(x, "log-smooth") <- smoothing
+    return(x)
+  }
+
   res <- list(
   input = input.spec.mean,
   stack = stacks.spec.mean,
   ratio = list(freq = stacks.spec.mean$freq,
                spec = stacks.spec.mean$spec / input.spec.mean$spec)
   ) %>%
-    {if (apply.smoothing) {lapply(., LogSmooth, df.log = df.log)} else {.}}
+    {if (apply.smoothing) {lapply(., LogSmooth, df.log = df.log)} else {.}} %>%
+    lapply(setAttr)
 
   class(res$ratio) <- "spec"
 

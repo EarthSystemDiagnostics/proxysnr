@@ -31,6 +31,24 @@ test_that("CalculateTimeUncertaintyTF runs as expected", {
   expect_equal(lengths(lapply(actual, "[[", "freq"), use.names = FALSE),
                rep(nt / 2, 3))
 
+  # check attributes
+  actualAttr <- attributes(actual$input)
+  expect_named(actualAttr,
+               c("names", "class", "version", "N.sim",
+                 "model", "rate", "log-smooth"))
+  expect_true(class(actual$ratio) == "spec")
+  expect_true(startsWith(actualAttr$version, "Creation date:"))
+  expect_equal(actualAttr$N.sim, "Number of simulations used: N = 100.")
+  expect_equal(actualAttr$model, "Process model used: `poisson`.")
+  expect_equal(actualAttr$rate, "Process rate used: 0.050.")
+  expect_equal(actualAttr$`log-smooth`, "Log-smooth applied: No.")
+
+  expect_equal(actualAttr, attributes(actual$stack))
+  expect_equal(actualAttr[c("class", "version", "N.sim",
+                            "model", "rate", "log-smooth")],
+               attributes(actual$ratio)[c("class", "version", "N.sim",
+                                          "model", "rate", "log-smooth")])
+
   # test with smoothing
   suppressMessages(
     actual <- CalculateTimeUncertaintyTF(nc = 3, acp = c(100, 50),
@@ -45,6 +63,8 @@ test_that("CalculateTimeUncertaintyTF runs as expected", {
   expect_true(is.spectrum(actual$ratio))
   expect_equal(lengths(lapply(actual, "[[", "freq"), use.names = FALSE),
                rep(nt / 2, 3))
+  expect_equal(attr(actual$ratio, "log-smooth"),
+               "Log-smooth applied: Yes (df.log = 0.05).")
 
   # test deprecated function name
   expect_warning(

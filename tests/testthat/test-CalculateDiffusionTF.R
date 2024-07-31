@@ -59,6 +59,20 @@ test_that("CalculateDiffusionTF runs as expected", {
   expect_equal(lengths(lapply(actual, "[[", "freq"), use.names = FALSE),
                rep(nt / 2, 3))
 
+  # check attributes
+  actualAttr <- attributes(actual$signal)
+  expect_named(actualAttr,
+               c("names", "class", "version", "N.sim", "log-smooth"))
+  expect_true(class(actual$ratio) == "spec")
+  expect_true(startsWith(actualAttr$version, "Creation date:"))
+  expect_equal(actualAttr$N.sim, "Number of simulations used: N = 5.")
+  expect_equal(actualAttr$`log-smooth`, "Log-smooth applied: No.")
+
+  expect_equal(actualAttr, attributes(actual$diffused))
+  expect_equal(actualAttr[c("class", "version", "N.sim", "log-smooth")],
+               attributes(actual$ratio)[c("class", "version",
+                                          "N.sim", "log-smooth")])
+
   # test deprecated function name
   expect_warning(
     actual.depr <- DiffusionTF(nt = nt, nc = nc, ns = ns, sigma = sigma))
@@ -77,6 +91,8 @@ test_that("CalculateDiffusionTF runs as expected", {
 
   expect_equal(lengths(lapply(actual, "[[", "freq"), use.names = FALSE),
                rep(nt / 2, 3))
+  expect_equal(attr(actual$ratio, "log-smooth"),
+               "Log-smooth applied: Yes (df.log = 0.05).")
 
   # test with subsetting window set
   window <- c(11, 110)

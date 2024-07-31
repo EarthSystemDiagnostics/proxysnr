@@ -12,7 +12,7 @@
 
 <meta name="author" content="Thomas Münch" />
 
-<meta name="date" content="2024-06-28" />
+<meta name="date" content="2024-07-31" />
 
 <title>Calculate diffusion and time uncertainty transfer functions</title>
 
@@ -341,7 +341,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <h1 class="title toc-ignore">Calculate diffusion and time uncertainty
 transfer functions</h1>
 <h4 class="author">Thomas Münch</h4>
-<h4 class="date">2024-06-28</h4>
+<h4 class="date">2024-07-31</h4>
 
 
 
@@ -465,20 +465,12 @@ output over input spectra, i.e. the transfer function.</p>
 <span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a>                            <span class="at">sigma =</span> proxysnr<span class="sc">:::</span>diffusion.length<span class="sc">$</span>dml1[, <span class="sc">-</span><span class="dv">1</span>],</span>
 <span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a>                            <span class="at">res =</span> res)<span class="sc">$</span>ratio</span></code></pre></div>
 <p>Since we used a certain simulation resolution, we have to interpolate
-onto the target resolution of our proxy data. Additionally, we store
-meta data on the simulations:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>dtf<span class="sc">$</span>dml1 <span class="ot">&lt;-</span> tmp</span>
+onto the target resolution of our proxy data:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>dtf<span class="sc">$</span>dml1 <span class="ot">&lt;-</span> tmp <span class="co"># copy first to preserve attributes</span></span>
 <span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>dtf<span class="sc">$</span>dml1<span class="sc">$</span>freq <span class="ot">&lt;-</span> ff<span class="sc">$</span>dml1</span>
-<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>dtf<span class="sc">$</span>dml1<span class="sc">$</span>spec <span class="ot">&lt;-</span> <span class="fu">approx</span>(tmp<span class="sc">$</span>freq, tmp<span class="sc">$</span>spec, dtf<span class="sc">$</span>dml1<span class="sc">$</span>freq)<span class="sc">$</span>y</span>
-<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a></span>
-<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a><span class="fu">attr</span>(dtf<span class="sc">$</span>dml1, <span class="st">&quot;version&quot;</span>) <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(<span class="st">&quot;Creation date: %s.&quot;</span>, <span class="fu">Sys.time</span>())</span>
-<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a><span class="fu">attr</span>(dtf<span class="sc">$</span>dml1, <span class="st">&quot;N.sim&quot;</span>) <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(<span class="st">&quot;Number of simulations used: N = %s&quot;</span>,</span>
-<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a>                       <span class="fu">formatC</span>(ns, <span class="at">big.mark =</span> <span class="st">&quot;,&quot;</span>, <span class="at">format =</span> <span class="st">&quot;d&quot;</span>))</span>
-<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a><span class="fu">attr</span>(dtf<span class="sc">$</span>dml1, <span class="st">&quot;log-smooth&quot;</span>) <span class="ot">&lt;-</span> <span class="st">&quot;Log-smooth applied: No.&quot;</span></span>
-<span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a></span>
-<span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a><span class="fu">class</span>(dtf<span class="sc">$</span>dml1) <span class="ot">&lt;-</span> <span class="st">&quot;spec&quot;</span></span></code></pre></div>
-<p>Run the time uncertainty model with Gaussian white noise as the
-surrogate data and document the meta data:</p>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>dtf<span class="sc">$</span>dml1<span class="sc">$</span>spec <span class="ot">&lt;-</span> <span class="fu">approx</span>(tmp<span class="sc">$</span>freq, tmp<span class="sc">$</span>spec, dtf<span class="sc">$</span>dml1<span class="sc">$</span>freq)<span class="sc">$</span>y</span></code></pre></div>
+<p>Run the time uncertainty model with Gaussian white noise as surrogate
+data:</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">4122018</span>)</span>
 <span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a><span class="cf">if</span> (has.simproxyage) {</span>
 <span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a>  <span class="fu">suppressMessages</span>(</span>
@@ -489,15 +481,7 @@ surrogate data and document the meta data:</p>
 <span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a>} <span class="cf">else</span> {</span>
 <span id="cb13-9"><a href="#cb13-9" tabindex="-1"></a>  ttf<span class="sc">$</span>dml1<span class="sc">$</span>freq <span class="ot">&lt;-</span> dtf<span class="sc">$</span>dml1<span class="sc">$</span>freq</span>
 <span id="cb13-10"><a href="#cb13-10" tabindex="-1"></a>  ttf<span class="sc">$</span>dml1<span class="sc">$</span>spec <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="fu">length</span>(dtf<span class="sc">$</span>dml1<span class="sc">$</span>freq))</span>
-<span id="cb13-11"><a href="#cb13-11" tabindex="-1"></a>}</span>
-<span id="cb13-12"><a href="#cb13-12" tabindex="-1"></a></span>
-<span id="cb13-13"><a href="#cb13-13" tabindex="-1"></a><span class="fu">attr</span>(ttf<span class="sc">$</span>dml1, <span class="st">&quot;version&quot;</span>) <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(<span class="st">&quot;Creation date: %s.&quot;</span>, <span class="fu">Sys.time</span>())</span>
-<span id="cb13-14"><a href="#cb13-14" tabindex="-1"></a><span class="fu">attr</span>(ttf<span class="sc">$</span>dml1, <span class="st">&quot;rate&quot;</span>) <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(<span class="st">&quot;Process rate used: %1.3f.&quot;</span>, rate)</span>
-<span id="cb13-15"><a href="#cb13-15" tabindex="-1"></a><span class="fu">attr</span>(ttf<span class="sc">$</span>dml1, <span class="st">&quot;N.sim&quot;</span>) <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(<span class="st">&quot;Number of simulations used: N = %s&quot;</span>,</span>
-<span id="cb13-16"><a href="#cb13-16" tabindex="-1"></a>                       <span class="fu">formatC</span>(ns, <span class="at">big.mark =</span> <span class="st">&quot;,&quot;</span>, <span class="at">format =</span> <span class="st">&quot;d&quot;</span>))</span>
-<span id="cb13-17"><a href="#cb13-17" tabindex="-1"></a><span class="fu">attr</span>(ttf<span class="sc">$</span>dml1, <span class="st">&quot;log-smooth&quot;</span>) <span class="ot">&lt;-</span> <span class="st">&quot;Log-smooth applied: No.&quot;</span></span>
-<span id="cb13-18"><a href="#cb13-18" tabindex="-1"></a></span>
-<span id="cb13-19"><a href="#cb13-19" tabindex="-1"></a><span class="fu">class</span>(ttf<span class="sc">$</span>dml1) <span class="ot">&lt;-</span> <span class="st">&quot;spec&quot;</span></span></code></pre></div>
+<span id="cb13-11"><a href="#cb13-11" tabindex="-1"></a>}</span></code></pre></div>
 </div>
 <div id="the-other-isotope-records" class="section level2">
 <h2>The other isotope records</h2>
@@ -527,21 +511,7 @@ surrogate data and document the meta data:</p>
 <span id="cb14-23"><a href="#cb14-23" tabindex="-1"></a>} <span class="cf">else</span> {</span>
 <span id="cb14-24"><a href="#cb14-24" tabindex="-1"></a>  ttf<span class="sc">$</span>dml2<span class="sc">$</span>freq <span class="ot">&lt;-</span> dtf<span class="sc">$</span>dml2<span class="sc">$</span>freq</span>
 <span id="cb14-25"><a href="#cb14-25" tabindex="-1"></a>  ttf<span class="sc">$</span>dml2<span class="sc">$</span>spec <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="fu">length</span>(dtf<span class="sc">$</span>dml2<span class="sc">$</span>freq))</span>
-<span id="cb14-26"><a href="#cb14-26" tabindex="-1"></a>}</span>
-<span id="cb14-27"><a href="#cb14-27" tabindex="-1"></a></span>
-<span id="cb14-28"><a href="#cb14-28" tabindex="-1"></a><span class="fu">attr</span>(dtf<span class="sc">$</span>dml2, <span class="st">&quot;version&quot;</span>) <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(<span class="st">&quot;Creation date: %s.&quot;</span>, <span class="fu">Sys.time</span>())</span>
-<span id="cb14-29"><a href="#cb14-29" tabindex="-1"></a><span class="fu">attr</span>(dtf<span class="sc">$</span>dml2, <span class="st">&quot;N.sim&quot;</span>) <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(<span class="st">&quot;Number of simulations used: N = %s&quot;</span>,</span>
-<span id="cb14-30"><a href="#cb14-30" tabindex="-1"></a>                       <span class="fu">formatC</span>(ns, <span class="at">big.mark =</span> <span class="st">&quot;,&quot;</span>, <span class="at">format =</span> <span class="st">&quot;d&quot;</span>))</span>
-<span id="cb14-31"><a href="#cb14-31" tabindex="-1"></a><span class="fu">attr</span>(dtf<span class="sc">$</span>dml2, <span class="st">&quot;log-smooth&quot;</span>) <span class="ot">&lt;-</span> <span class="st">&quot;Log-smooth applied: No.&quot;</span></span>
-<span id="cb14-32"><a href="#cb14-32" tabindex="-1"></a></span>
-<span id="cb14-33"><a href="#cb14-33" tabindex="-1"></a><span class="fu">attr</span>(ttf<span class="sc">$</span>dml2, <span class="st">&quot;version&quot;</span>) <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(<span class="st">&quot;Creation date: %s.&quot;</span>, <span class="fu">Sys.time</span>())</span>
-<span id="cb14-34"><a href="#cb14-34" tabindex="-1"></a><span class="fu">attr</span>(ttf<span class="sc">$</span>dml2, <span class="st">&quot;rate&quot;</span>) <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(<span class="st">&quot;Process rate used: %1.3f.&quot;</span>, rate)</span>
-<span id="cb14-35"><a href="#cb14-35" tabindex="-1"></a><span class="fu">attr</span>(ttf<span class="sc">$</span>dml2, <span class="st">&quot;N.sim&quot;</span>) <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(<span class="st">&quot;Number of simulations used: N = %s&quot;</span>,</span>
-<span id="cb14-36"><a href="#cb14-36" tabindex="-1"></a>                       <span class="fu">formatC</span>(ns, <span class="at">big.mark =</span> <span class="st">&quot;,&quot;</span>, <span class="at">format =</span> <span class="st">&quot;d&quot;</span>))</span>
-<span id="cb14-37"><a href="#cb14-37" tabindex="-1"></a><span class="fu">attr</span>(ttf<span class="sc">$</span>dml2, <span class="st">&quot;log-smooth&quot;</span>) <span class="ot">&lt;-</span> <span class="st">&quot;Log-smooth applied: No.&quot;</span></span>
-<span id="cb14-38"><a href="#cb14-38" tabindex="-1"></a></span>
-<span id="cb14-39"><a href="#cb14-39" tabindex="-1"></a><span class="fu">class</span>(dtf<span class="sc">$</span>dml2) <span class="ot">&lt;-</span> <span class="st">&quot;spec&quot;</span></span>
-<span id="cb14-40"><a href="#cb14-40" tabindex="-1"></a><span class="fu">class</span>(ttf<span class="sc">$</span>dml2) <span class="ot">&lt;-</span> <span class="st">&quot;spec&quot;</span></span></code></pre></div>
+<span id="cb14-26"><a href="#cb14-26" tabindex="-1"></a>}</span></code></pre></div>
 <p>… and the WAIS isotope records:</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">4122018</span>)</span>
 <span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a></span>
@@ -568,21 +538,7 @@ surrogate data and document the meta data:</p>
 <span id="cb15-23"><a href="#cb15-23" tabindex="-1"></a>} <span class="cf">else</span> {</span>
 <span id="cb15-24"><a href="#cb15-24" tabindex="-1"></a>  ttf<span class="sc">$</span>wais<span class="sc">$</span>freq <span class="ot">&lt;-</span> dtf<span class="sc">$</span>wais<span class="sc">$</span>freq</span>
 <span id="cb15-25"><a href="#cb15-25" tabindex="-1"></a>  ttf<span class="sc">$</span>wais<span class="sc">$</span>spec <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="fu">length</span>(dtf<span class="sc">$</span>wais<span class="sc">$</span>freq))</span>
-<span id="cb15-26"><a href="#cb15-26" tabindex="-1"></a>}</span>
-<span id="cb15-27"><a href="#cb15-27" tabindex="-1"></a></span>
-<span id="cb15-28"><a href="#cb15-28" tabindex="-1"></a><span class="fu">attr</span>(dtf<span class="sc">$</span>wais, <span class="st">&quot;version&quot;</span>) <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(<span class="st">&quot;Creation date: %s.&quot;</span>, <span class="fu">Sys.time</span>())</span>
-<span id="cb15-29"><a href="#cb15-29" tabindex="-1"></a><span class="fu">attr</span>(dtf<span class="sc">$</span>wais, <span class="st">&quot;N.sim&quot;</span>) <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(<span class="st">&quot;Number of simulations used: N = %s&quot;</span>,</span>
-<span id="cb15-30"><a href="#cb15-30" tabindex="-1"></a>                       <span class="fu">formatC</span>(ns, <span class="at">big.mark =</span> <span class="st">&quot;,&quot;</span>, <span class="at">format =</span> <span class="st">&quot;d&quot;</span>))</span>
-<span id="cb15-31"><a href="#cb15-31" tabindex="-1"></a><span class="fu">attr</span>(dtf<span class="sc">$</span>wais, <span class="st">&quot;log-smooth&quot;</span>) <span class="ot">&lt;-</span> <span class="st">&quot;Log-smooth applied: No.&quot;</span></span>
-<span id="cb15-32"><a href="#cb15-32" tabindex="-1"></a></span>
-<span id="cb15-33"><a href="#cb15-33" tabindex="-1"></a><span class="fu">attr</span>(ttf<span class="sc">$</span>wais, <span class="st">&quot;version&quot;</span>) <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(<span class="st">&quot;Creation date: %s.&quot;</span>, <span class="fu">Sys.time</span>())</span>
-<span id="cb15-34"><a href="#cb15-34" tabindex="-1"></a><span class="fu">attr</span>(ttf<span class="sc">$</span>wais, <span class="st">&quot;rate&quot;</span>) <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(<span class="st">&quot;Process rate used: %1.3f.&quot;</span>, rate)</span>
-<span id="cb15-35"><a href="#cb15-35" tabindex="-1"></a><span class="fu">attr</span>(ttf<span class="sc">$</span>wais, <span class="st">&quot;N.sim&quot;</span>) <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(<span class="st">&quot;Number of simulations used: N = %s&quot;</span>,</span>
-<span id="cb15-36"><a href="#cb15-36" tabindex="-1"></a>                       <span class="fu">formatC</span>(ns, <span class="at">big.mark =</span> <span class="st">&quot;,&quot;</span>, <span class="at">format =</span> <span class="st">&quot;d&quot;</span>))</span>
-<span id="cb15-37"><a href="#cb15-37" tabindex="-1"></a><span class="fu">attr</span>(ttf<span class="sc">$</span>wais, <span class="st">&quot;log-smooth&quot;</span>) <span class="ot">&lt;-</span> <span class="st">&quot;Log-smooth applied: No.&quot;</span></span>
-<span id="cb15-38"><a href="#cb15-38" tabindex="-1"></a></span>
-<span id="cb15-39"><a href="#cb15-39" tabindex="-1"></a><span class="fu">class</span>(dtf<span class="sc">$</span>wais) <span class="ot">&lt;-</span> <span class="st">&quot;spec&quot;</span></span>
-<span id="cb15-40"><a href="#cb15-40" tabindex="-1"></a><span class="fu">class</span>(ttf<span class="sc">$</span>wais) <span class="ot">&lt;-</span> <span class="st">&quot;spec&quot;</span></span></code></pre></div>
+<span id="cb15-26"><a href="#cb15-26" tabindex="-1"></a>}</span></code></pre></div>
 </div>
 <div id="plot-the-transfer-functions" class="section level2">
 <h2>Plot the transfer functions</h2>
