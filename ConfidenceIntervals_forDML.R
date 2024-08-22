@@ -110,7 +110,7 @@ sims_mean_df$noise_0.1<-sims_mean_df$noise_0.1/sims_mean_df$noise_sim
 sims_mean_df$noise_0.9<-sims_mean_df$noise_0.9/sims_mean_df$noise_sim
 
 
-#smooth to create nice confidence intervals with no noise
+#smooth to create nice confidence intervals
 freq<-sims_mean_df$freq
 sims_mean_df<-sims_mean_df[2:10]
 sims_smooth<-lapply(sims_mean_df, function(x) loess(x ~ freq, span = 0.2))
