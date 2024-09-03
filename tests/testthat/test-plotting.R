@@ -166,7 +166,8 @@ test_that("plotting tranfer functions works", {
   expect_no_error(PlotTF())
 
   # plot different number of datasets
-  expect_no_error(PlotTF(dtf = diffusion.tf["dml1"]))
+  expect_no_error(PlotTF(dtf = diffusion.tf["dml1"],
+                         ttf = time.uncertainty.tf[c("dml1", "wais")]))
 
   # plot with diffusion correction threshold
   expect_no_error(PlotTF(dtf.threshold = 0.67))
@@ -186,13 +187,18 @@ test_that("plotting tranfer functions works", {
   )
 
   # name number mismatch
-  msg <- "ttf: Number of data sets does not match number of names."
-  expect_warning(PlotTF(dtf = diffusion.tf["dml1"], names = "dml1"),
-                 msg, fixed = TRUE)
-  msg <- "dtf: Number of data sets does not match number of names."
-  expect_warning(PlotTF(dtf = diffusion.tf["dml1"],
-                        names = list(c("spock", "sybok"),
-                                     c("dml1", "dml2", "wais"))),
-                 msg, fixed = TRUE)
+  msg1 <- "dtf: Number of data sets does not match number of names."
+  expect_warning(PlotTF(dtf = diffusion.tf["dml1"], names = c("dml1", "wais")),
+                 msg1, fixed = TRUE)
+  msg2 <- "ttf: Number of data sets does not match number of names."
+  expect_warning(PlotTF(ttf = time.uncertainty.tf,
+                        names = c("spock", "sybok")),
+                 msg2, fixed = TRUE)
+  expect_warning(
+    expect_warning(
+      PlotTF(dtf = diffusion.tf["dml1"], ttf = time.uncertainty.tf,
+             names = list(c("spock", "sybok"), c("dml1"))),
+      msg1, fixed = TRUE),
+    msg2, fixed = TRUE)
 
 })
