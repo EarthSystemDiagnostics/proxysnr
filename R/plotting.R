@@ -700,9 +700,16 @@ PlotTF <- function(dtf = NULL, ttf = NULL,
                    xtl = NULL, ytl1 = NULL, ytl2 = NULL) {
 
   # Gather or load transfer functions
-  
-  if (is.null(dtf)) dtf <- proxysnr::diffusion.tf
-  if (is.null(ttf)) ttf <- proxysnr::time.uncertainty.tf
+
+  if (is.null(dtf) & is.null(ttf)) {
+    dtf <- proxysnr::diffusion.tf
+    ttf <- proxysnr::time.uncertainty.tf
+  }
+
+  plot.dtf <- !is.null(dtf)
+  plot.ttf <- !is.null(ttf)
+
+  plot.both <- plot.dtf & plot.ttf
 
   # Axis settings
 
@@ -713,11 +720,6 @@ PlotTF <- function(dtf = NULL, ttf = NULL,
   if (is.null(ytl1)) ytl1 <- ytm1
 
   # Plot parameters
-
-  op <- graphics::par(mar = c(0, 0, 0, 0), las = 1,
-                      oma = c(5, 5, 0.5, 0.5), mfrow = c(2,1),
-                      cex.main = 1.5, cex.lab = 1.5, cex.axis = 1.25)
-  on.exit(graphics::par(op))
 
   if (is.null(col)) col <- 1 : max(length(dtf), length(ttf))
 
@@ -735,85 +737,125 @@ PlotTF <- function(dtf = NULL, ttf = NULL,
     nam1 <- nam2 <- names
   }
 
-  if (length(nam1) != length(dtf))
-    warning("dtf: Number of data sets does not match number of names.",
-            call. = FALSE)
-  if (length(nam2) != length(ttf))
-    warning("ttf: Number of data sets does not match number of names.",
-            call. = FALSE)
+  # wrapper function for plot legend
 
-  if (!is.null(dtf.threshold)) {
-    f.cutoff <- sapply(dtf, function(x) {
-      x$freq[which(x$spec <= dtf.threshold)[1]]}
-      )
-  }
-  
-  # Wrapper function for the legend
-  
   leg <- function(names, col) {
     graphics::legend("bottomleft", legend = names,
                      lwd = 2, lty = 1, col = col, bty = "n")
   }
 
-  
-  # Plot diffusion transfer functions
+  # wrapper function to plot transfer functions
 
-  ii <- length(dtf)
-  jj <- length(ttf)
-  
-  LPlot(dtf[[1]], bNoPlot = TRUE, bPeriod = TRUE, axes = FALSE,
-        xlab = "", ylab = "", xlim = xlim, ylim = ylim1)
+  .plottf <- function(tf, col, xlab, ylab, xlim, ylim, xtm, ytm, xtl, ytl,
+                      nam, dtf.threshold = NULL, plot.legend = TRUE,
+                      plot.xax = TRUE, ch = "") {
 
-  for (i in 1 : ii) {
-    
-    LLines(dtf[[i]], bPeriod = TRUE, lwd = 2, col = col[i])
+    if (length(nam) != length(tf)) {
+      warning(
+        sprintf("%s: Number of data sets does not match number of names.", ch),
+        call. = FALSE)
+    }
+
+    LPlot(tf[[1]], bNoPlot = TRUE, bPeriod = TRUE, axes = FALSE,
+          xlab = "", ylab = "", xlim = xlim, ylim = ylim)
+
+    sapply(seq(length(tf)), function(i) {
+      LLines(tf[[i]], bPeriod = TRUE, lwd = 2, col = col[i])
+    })
 
     if (!is.null(dtf.threshold)) {
-      graphics::lines(x = rep(1 / f.cutoff[i], 2),
-                      y = c(ylim1[1] / 10, dtf.threshold),
-                      lwd = 1, lty = 2, col = col[i])
+
+      f.cutoff <- sapply(tf, function(x) {
+        x$freq[which(x$spec <= dtf.threshold)[1]]
+      })
+
+      sapply(seq(length(tf)), function(i) {
+        graphics::lines(x = rep(1 / f.cutoff[i], 2),
+                        y = c(ylim[1] / 10, dtf.threshold),
+                        lwd = 1, lty = 2, col = col[i])
+      })
+
+      graphics::lines(x = c(2 * xlim[1], min(1 / f.cutoff[!is.na(f.cutoff)])),
+                      y = rep(dtf.threshold, 2),
+                      lwd = 1, lty = 2, col = "darkgrey")
+
     }
+
+    if (plot.xax) {
+
+      graphics::axis(1, at = xtm, labels = xtl)
+      graphics::mtext(xlab, side = 1, line = 3.5, las = 0,
+                      cex = graphics::par()$cex.lab)
+
+    }
+
+    graphics::axis(2, at = ytm, labels = ytl)
+    graphics::mtext(ylab, side = 2, line = 3.5, las = 0,
+                    cex = graphics::par()$cex.lab)
+
+    graphics::box()
+
+    if (plot.legend) leg(nam, col)
+
   }
 
-  if (!is.null(dtf.threshold)) {
-    graphics::lines(x = c(2 * xlim[1], min(1 / f.cutoff[!is.na(f.cutoff)])),
-                    y = rep(dtf.threshold, 2),
-                    lwd = 1, lty = 2, col = "darkgrey")
+  if (!plot.both) {
+
+    op <- graphics::par(mar = c(0, 0, 0, 0), las = 1,
+                        oma = c(5, 5, 0.5, 0.5),
+                        cex.main = 1.5, cex.lab = 1.5, cex.axis = 1.25)
+    on.exit(graphics::par(op))
+
+    if (plot.dtf) {
+
+      # Plot diffusion transfer functions
+
+      .plottf(dtf, col = col, xlab = xlab, ylab = ylab1,
+              xlim = xlim, ylim = ylim1, xtm = xtm, ytm = ytm1,
+              xtl = xtl, ytl = ytl1, nam = nam1,
+              dtf.threshold = dtf.threshold, plot.legend = TRUE, ch = "dtf")
+
+    }
+
+    if (plot.ttf) {
+
+      # Plot time uncertainty transfer functions
+
+      .plottf(ttf, col = col, xlab = xlab, ylab = ylab2,
+              xlim = xlim, ylim = ylim2, xtm = xtm, ytm = ytm2,
+              xtl = xtl, ytl = ytl2, nam = nam2,
+              plot.legend = TRUE, ch = "ttf")
+
+    }
+
+  } else {
+
+    # Plot both transfer functions
+
+    op <- graphics::par(mar = c(0, 0, 0, 0), las = 1,
+                        oma = c(5, 5, 0.5, 0.5), mfrow = c(2,1),
+                        cex.main = 1.5, cex.lab = 1.5, cex.axis = 1.25)
+    on.exit(graphics::par(op))
+
+    plot.legend <- length(dtf) != length(ttf)
+
+    .plottf(dtf, col = col, xlab = xlab, ylab = ylab1,
+            xlim = xlim, ylim = ylim1, xtm = xtm, ytm = ytm1,
+            xtl = xtl, ytl = ytl1, nam = nam1,
+            dtf.threshold = dtf.threshold, plot.legend = plot.legend,
+            plot.xax = FALSE, ch = "dtf")
+
+    graphics::mtext("a", side = 3, adj = 0.01, padj = 0.5,
+                    line = -1, font = 2, cex = graphics::par()$cex.lab)
+
+    .plottf(ttf, col = col, xlab = xlab, ylab = ylab2,
+            xlim = xlim, ylim = ylim2, xtm = xtm, ytm = ytm2,
+            xtl = xtl, ytl = ytl2, nam = nam2,
+            plot.legend = TRUE, ch = "ttf")
+
+    graphics::mtext("b", side = 3, adj = 0.01, padj = 0.5,
+                    line = -1, font = 2, cex = graphics::par()$cex.lab)
+
   }
-
-  graphics::mtext("a", side = 3, adj = 0.01, padj = 0.5,
-                  line = -1, font = 2, cex = graphics::par()$cex.lab)
-  graphics::mtext(ylab1, side = 2, line = 3.5,
-                  las = 0, cex = graphics::par()$cex.lab)
-
-  graphics::axis(2, at = ytm1, labels = ytl1)
-  graphics::box()
-
-  # Place an extra legend if different number of data sets are used
-  if (ii != jj) leg(nam1, col)
-
-
-  # Plot time uncertainty transfer functions
-
-  LPlot(ttf$dml1, bNoPlot = TRUE, bPeriod = TRUE, axes = FALSE,
-        xlab = "", ylab = "", xlim = xlim, ylim = ylim2)
-
-  for (i in 1 : jj) {
-    LLines(ttf[[i]], bPeriod = TRUE, lwd = 2, col = col[i])
-  }
-
-  graphics::mtext("b", side = 3, adj = 0.01, padj = 0.5,
-                  line = -1, font = 2, cex = graphics::par()$cex.lab)
-  graphics::mtext(ylab2, side = 2, line = 3.5,
-                  las = 0, cex = graphics::par()$cex.lab)
-  graphics::mtext(xlab, side = 1, line = 3.5,
-                  las = 0, cex = graphics::par()$cex.lab)
-
-  graphics::axis(1, at = xtm, labels = xtl)
-  graphics::axis(2, at = ytm2, labels = ytl2)
-  graphics::box()
-
-  leg(nam2, col)
 
 }
-
