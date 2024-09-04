@@ -177,3 +177,34 @@ MeanSpectrum <- function(speclist) {
 
 }
 
+#' Interpolate spectrum
+#'
+#' Interpolate a spectrum onto a given frequency axis.
+#'
+#' @param x a spectral object of class \code{"spec"} or a named list of the
+#'   equal-length elements `freq` and `spec`, which is to be interpolated onto
+#'   the frequency axis given by the \code{target} spectrum.
+#' @param target as \code{x}, used to supply the target frequency axis for the
+#'   interpolation.
+#' @return a spectral object of class \code{"spec"} with the spectrum in
+#'   \code{x} interpolated onto the target frequency axis.
+#'
+#' @author Thomas Münch
+#' @noRd
+#'
+InterpolateSpectrum <- function(x, target) {
+
+  if (!has.common.freq(x, target))
+    warning("NAs produced in interpolation as frequency axes do not overlap.",
+            call. = FALSE)
+
+  result <- list(
+    freq = target$freq,
+    spec = approx(x$freq, x$spec, target$freq)$y
+  )
+
+  class(result) <- "spec"
+
+  return(result)
+
+}
