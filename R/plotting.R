@@ -216,8 +216,8 @@ PlotArraySpectra <- function(spec, marker = NA,
       stop("`spec` must have elements `single`, `mean` and `stack`.",
            call. = FALSE)
   }
-  is.spectrum(spec$mean)
-  is.spectrum(spec$stack)
+  check.if.spectrum(spec$mean)
+  check.if.spectrum(spec$stack)
   if (!is.list(spec$single))
     stop("`spec$single` must be a list of spectra.", call. = FALSE)
 
@@ -422,10 +422,10 @@ PlotSNR <- function(spec, f.cut = FALSE,
            call. = FALSE)
     }
 
-    tryCatch(is.spectrum(spec[[i]]$snr), error = function(cond) {
+    if (!is.spectrum(spec[[i]]$snr)) {
       stop(sprintf("Cannot plot `spec[[%s]]$snr`: no spectral object.", i),
            call. = FALSE)
-    })
+    }
     
     plot.snr(spec[[i]]$snr, xlim = xlim, ylim = ylim, lwd = 2, col = col[i],
              conf = FALSE, removeF = 1, removeL = removeLast, add = add)

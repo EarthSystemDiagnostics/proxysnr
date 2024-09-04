@@ -57,8 +57,8 @@ SeparateSignalFromNoise <- function(spectra, neff = spectra$N,
   if (!all(utils::hasName(spectra, c("mean", "stack"))))
     stop("`spectra` must have elements `mean` and `stack`.", call. = FALSE)
 
-  is.spectrum(spectra$mean)
-  is.spectrum(spectra$stack)
+  check.if.spectrum(spectra$mean)
+  check.if.spectrum(spectra$stack)
 
   if (length(spectra$mean$freq) != length(spectra$stack$freq)) {
     stop("`mean` and `stack` must have the same number of spectral estimates.",

@@ -1,7 +1,8 @@
-#' Test for spectral object
+#' Check if argument is a spectral object
 #'
-#' Test passes if object is a named list with the two elements `freq` and
-#' `spec` which have equal length, otherwise an error is issued.
+#' Check passes if object is a named list with the two elements `freq` and
+#' `spec` which have equal length, otherwise an error is issued informing about
+#' the required object structure.
 #' 
 #' @param x an object to test.
 #' @return \code{TRUE} invisibly if test passes.
@@ -9,7 +10,7 @@
 #' @author Thomas Münch
 #' @noRd
 #'
-is.spectrum <- function(x) {
+check.if.spectrum <- function(x) {
 
   nm <- deparse(substitute(x))
   msg <- paste0("`", nm, "` ", "must be a list with elements ",
@@ -21,6 +22,23 @@ is.spectrum <- function(x) {
     stop(msg, call. = FALSE)
 
   invisible(TRUE)
+
+}
+
+#' Test for spectral object
+#'
+#' Function returns \code{TRUE} if object is a named list of the equal-length
+#' elements `freq` and `spec`.
+#'
+#' @param x an object to test whether it is as spectral object.
+#' @return \code{TRUE} or \code{FALSE}.
+#'
+#' @author Thomas Münch
+#' @noRd
+#'
+is.spectrum <- function(x) {
+
+  (tryCatch(check.if.spectrum(x), error = function(cond) {FALSE}))
 
 }
 

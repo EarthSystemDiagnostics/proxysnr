@@ -41,8 +41,8 @@ GetIntegratedSNR <- function(input, N = 1, f1 = 2, f2 = "max", limits = NULL) {
   if (!all(utils::hasName(input, c("signal", "noise"))))
     stop("`input` must have elements `signal` and `noise`.", call. = FALSE)
 
-  is.spectrum(input$signal)
-  is.spectrum(input$noise)
+  check.if.spectrum(input$signal)
+  check.if.spectrum(input$noise)
 
   if (length(input$signal$freq) != length(input$noise$freq)) {
     stop("`signal` and `noise` must have the same number of spectral estimates.",
