@@ -35,3 +35,28 @@ test_that("testing for spectral object works", {
   expect_true(is.spectrum(list(freq = 1 : 10, spec = rnorm(10))))
 
 })
+
+test_that("checking of common frequency axes works", {
+
+  target <- list(freq = seq(0.12, 0.2, 0.01))
+
+  # target has lower bound than x
+  expect_false(has.common.freq(x = list(freq = c(0.15, 0.3)), target))
+
+  # target has higher bound than x
+  expect_false(has.common.freq(x = list(freq = c(0.1, 0.15)), target))
+
+  # target has both lower and higher bound than x
+  expect_false(has.common.freq(x = list(freq = seq(0.15, 0.19, 0.001)), target))
+
+  # target is completely outside range of x
+  expect_false(has.common.freq(x = list(freq = seq(0.05, 0.1, 0.02)), target))
+  expect_false(has.common.freq(x = list(freq = seq(0.3, 0.5, 0.1)), target))
+
+  # matching axes
+  expect_true(has.common.freq(x = list(freq = seq(0.12, 0.2, 0.005)), target))
+  expect_true(has.common.freq(x = list(freq = seq(0, 0.5, 0.1)), target))
+  expect_true(has.common.freq(x = list(freq = seq(0, 0.2, 0.001)), target))
+  expect_true(has.common.freq(x = list(freq = seq(0.12, 1, 0.02)), target))
+
+})
