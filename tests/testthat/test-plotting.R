@@ -186,6 +186,13 @@ test_that("plotting tranfer functions works", {
            names = list("bla", c("bloo", "blawp")))
   )
 
+  # same number of datasets but names supplied as list -> still plot two legends
+  expect_no_error(
+    PlotTF(dtf = diffusion.tf[c("dml1", "wais")],
+           ttf = time.uncertainty.tf[c("dml2", "wais")],
+           names = list(c("Site A", "Site B"), c("Site C", "Site B")))
+  )
+
   # name number mismatch
   msg1 <- "dtf: Number of data sets does not match number of names."
   expect_warning(PlotTF(dtf = diffusion.tf["dml1"], names = c("dml1", "wais")),

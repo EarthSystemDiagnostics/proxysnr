@@ -631,7 +631,7 @@ PlotStackCorrelation <- function(data, col.pal = NULL, label = "",
 #' Plot transfer functions
 #'
 #' Plot the spectral transfer functions of the effects of diffusion and/or time
-#' uncertainty (e.g., as in the analysis of Münch and Laepple, 2018, Fig. B1).
+#' uncertainty.
 #'
 #' You can plot only diffusion transfer functions by supplying the respective
 #' data to the \code{dtf} parameter and leaving the \code{ttf} parameter as
@@ -644,11 +644,11 @@ PlotStackCorrelation <- function(data, col.pal = NULL, label = "",
 #' package, which corresponds to Figure B1 in Münch and Laepple (2018).
 #'
 #' @param dtf A list of transfer function data sets: each data set is an object
-#'   of class \code{"spec"} (see \code{?spectrum}) with minimum components
-#'   \code{freq} and \code{spec}, or simply a named list with these two, where
-#'   component \code{freq} is a numeric vector providing a frequency axis and
-#'   component \code{spec} a numeric vector with the corresponding diffusion
-#'   transfer function values. See Details for the meaning of \code{NULL}.
+#'   of class \code{"spec"} (see \code{?spectrum}) or a named list with minimum
+#'   components \code{freq} and \code{spec}, where component \code{freq} is a
+#'   numeric vector providing a frequency axis and component \code{spec} a
+#'   numeric vector with the corresponding diffusion transfer function
+#'   values. See Details for the meaning of \code{NULL}.
 #' @param ttf As \code{dtf} but providing time uncertainty transfer
 #'   functions. See Details for the meaning of \code{NULL}.
 #' @param names an optional character vector of names for the transfer function
@@ -845,7 +845,7 @@ PlotTF <- function(dtf = NULL, ttf = NULL,
                         cex.main = 1.5, cex.lab = 1.5, cex.axis = 1.25)
     on.exit(graphics::par(op))
 
-    plot.legend <- length(dtf) != length(ttf)
+    plot.legend <- is.list(names) | length(dtf) != length(ttf)
 
     .plottf(dtf, col = col, xlab = xlab, ylab = ylab1,
             xlim = xlim, ylim = ylim1, xtm = xtm, ytm = ytm1,

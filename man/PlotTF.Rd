@@ -26,11 +26,11 @@ PlotTF(
 }
 \arguments{
 \item{dtf}{A list of transfer function data sets: each data set is an object
-of class \code{"spec"} (see \code{?spectrum}) with minimum components
-\code{freq} and \code{spec}, or simply a named list with these two, where
-component \code{freq} is a numeric vector providing a frequency axis and
-component \code{spec} a numeric vector with the corresponding diffusion
-transfer function values. See Details for the meaning of \code{NULL}.}
+of class \code{"spec"} (see \code{?spectrum}) or a named list with minimum
+components \code{freq} and \code{spec}, where component \code{freq} is a
+numeric vector providing a frequency axis and component \code{spec} a
+numeric vector with the corresponding diffusion transfer function
+values. See Details for the meaning of \code{NULL}.}
 
 \item{ttf}{As \code{dtf} but providing time uncertainty transfer
 functions. See Details for the meaning of \code{NULL}.}
@@ -86,7 +86,7 @@ function plot.}
 }
 \description{
 Plot the spectral transfer functions of the effects of diffusion and/or time
-uncertainty (e.g., as in the analysis of Münch and Laepple, 2018, Fig. B1).
+uncertainty.
 }
 \details{
 You can plot only diffusion transfer functions by supplying the respective
