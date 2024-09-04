@@ -26,23 +26,21 @@ PlotTF(
 }
 \arguments{
 \item{dtf}{A list of transfer function data sets: each data set is an object
-of class \code{"spec"} (see \code{?spectrum}) with minimum components
-\code{freq} and \code{spec}, or simply a named list with these two, where
-component \code{freq} is a numeric vector providing a frequency axis and
-component \code{spec} a numeric vector with the corresponding diffusion
-transfer function values. If \code{NULL} (the default), the diffusion
-transfer functions provided with the package are plotted, which corresponds
-to Figure B1 in Münch and Laepple (2018).}
+of class \code{"spec"} (see \code{?spectrum}) or a named list with minimum
+components \code{freq} and \code{spec}, where component \code{freq} is a
+numeric vector providing a frequency axis and component \code{spec} a
+numeric vector with the corresponding diffusion transfer function
+values. See Details for the meaning of \code{NULL}.}
 
 \item{ttf}{As \code{dtf} but providing time uncertainty transfer
-functions. If \code{NULL} (the default), the time uncertainty transfer
-functions provided with the package are plotted, which corresponds to
-Figure B1 in Münch and Laepple (2018).}
+functions. See Details for the meaning of \code{NULL}.}
 
 \item{names}{an optional character vector of names for the transfer function
 data sets. If \code{NULL}, the names of \code{dtf} and \code{ttf} are used
-or, if not present, default names. If the diffusion and time uncertainty
-data sets differ in number, provide a list of two vectors of names.}
+or, if not present, default names. Provide a list of two vectors of names,
+if the diffusion and time uncertainty data sets differ in number, or, if
+they do **not** differ in number but belong to different underlying
+datasets.}
 
 \item{col}{a numeric or character vector of colors to use for the plotting;
 if \code{NULL} default colors are used.}
@@ -87,8 +85,19 @@ vector of labels of the same length as \code{ytm1}.}
 function plot.}
 }
 \description{
-Plot the spectral transfer functions of the effects of diffusion and time
-uncertainty (e.g., as in the analysis of Münch and Laepple, 2018, Fig. B1).
+Plot the spectral transfer functions of the effects of diffusion and/or time
+uncertainty.
+}
+\details{
+You can plot only diffusion transfer functions by supplying the respective
+data to the \code{dtf} parameter and leaving the \code{ttf} parameter as
+\code{NULL}, or vice versa for plotting only time uncertainty transfer
+functions. Supplying both parameters will plot the supplied diffusion as well
+as time uncertainty transfer functions (which can differ in number) on a
+single plot with a shared x axis. Leaving both the \code{dtf} and \code{ttf}
+parameters as \code{NULL} (the default) will plot the diffusion and time
+uncertainty transfer functions that are provided with the \code{proxysnr}
+package, which corresponds to Figure B1 in Münch and Laepple (2018).
 }
 \examples{
 
