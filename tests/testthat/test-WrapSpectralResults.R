@@ -22,7 +22,7 @@ test_that("WrapSpectralResults works", {
   m <- "No data sets supplied."
   expect_error(WrapSpectralResults(), m)
 
-  m <- "Mismatch of dimensions of input data and correction function(s)."
+  m <- "Number of transfer functions must match number of datasets."
   expect_error(WrapSpectralResults(data[[1]], data[[2]], data[[3]],
                                    diffusion = NA),
                m, fixed = TRUE)

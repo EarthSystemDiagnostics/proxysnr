@@ -9,7 +9,7 @@ WrapSpectralResults(
   diffusion = NULL,
   time.uncertainty = NULL,
   df.log = 0.05,
-  crit.diffusion = 2
+  crit.diffusion = 0.5
 )
 }
 \arguments{
@@ -33,9 +33,10 @@ correct for the effect of time uncertainty
 spectral estimates from each data set. If dimensions do not fit, its length
 is recycled to match the number of data sets.}
 
-\item{crit.diffusion}{maximum diffusion correction value to obtain cutoff
-frequencies until which results are analysed to avoid large uncertainties
-at the high-frequency end of the spectra.}
+\item{crit.diffusion}{minimum diffusion transfer function value constraining
+the corresponding correction which determines a cutoff frequency until
+which results are analysed to avoid large uncertainties at the
+high-frequency end of the spectra; defaults to 0.5.}
 }
 \value{
 A list of \code{N} lists, where \code{N} is the number of provided
@@ -44,7 +45,7 @@ A list of \code{N} lists, where \code{N} is the number of provided
   \item{\code{raw}:}{a list with four elements: three objects of class
     \code{"spec"} (the raw signal, noise and corresponding SNR spectra), and
     a two-element vector (\code{f.cutoff}) with the index and value of the
-    cutoff frequency.}
+    cutoff frequency from constraining the diffusion correction.}
   \item{\code{corr.diff.only}:}{as item \code{raw} but with the spectra after
     correction for the effect of diffusion.}
   \item{\code{corr.t.unc.only}:}{as item \code{raw} but with the spectra

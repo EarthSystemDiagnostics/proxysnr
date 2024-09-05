@@ -21,9 +21,10 @@
 #' @param df.log a vector of Gaussian kernel widths in log space to smooth the
 #'   spectral estimates from each data set. If dimensions do not fit, its length
 #'   is recycled to match the number of data sets.
-#' @param crit.diffusion maximum diffusion correction value to obtain cutoff
-#'   frequencies until which results are analysed to avoid large uncertainties
-#'   at the high-frequency end of the spectra.
+#' @param crit.diffusion minimum diffusion transfer function value constraining
+#'   the corresponding correction which determines a cutoff frequency until
+#'   which results are analysed to avoid large uncertainties at the
+#'   high-frequency end of the spectra; defaults to 0.5.
 #'
 #' @return A list of \code{N} lists, where \code{N} is the number of provided
 #'   data sets and where each of these lists contains up to five elements:
@@ -31,7 +32,7 @@
 #'   \item{\code{raw}:}{a list with four elements: three objects of class
 #'     \code{"spec"} (the raw signal, noise and corresponding SNR spectra), and
 #'     a two-element vector (\code{f.cutoff}) with the index and value of the
-#'     cutoff frequency.}
+#'     cutoff frequency from constraining the diffusion correction.}
 #'   \item{\code{corr.diff.only}:}{as item \code{raw} but with the spectra after
 #'     correction for the effect of diffusion.}
 #'   \item{\code{corr.t.unc.only}:}{as item \code{raw} but with the spectra
@@ -66,7 +67,7 @@
 #' @export
 #'
 WrapSpectralResults <- function(..., diffusion = NULL, time.uncertainty = NULL,
-                                df.log = 0.05, crit.diffusion = 2) {
+                                df.log = 0.05, crit.diffusion = 0.5) {
 
   # Gather input data
   dat <- list(...)
@@ -79,7 +80,7 @@ WrapSpectralResults <- function(..., diffusion = NULL, time.uncertainty = NULL,
 
   # Check for correct dimensions
   if ((n != length(diffusion)) | (n != length(time.uncertainty))) {
-    stop("Mismatch of dimensions of input data and correction function(s).")
+    stop("Number of transfer functions must match number of datasets.")
   }
   
   if (length(df.log) == 1) df.log = rep(df.log, length.out = n)
@@ -92,21 +93,23 @@ WrapSpectralResults <- function(..., diffusion = NULL, time.uncertainty = NULL,
 
     tmp <- list()
 
-    # get diffusion/time-uncertainty correction functions
+    # check if valid diffusion/time-uncertainty transfer function is supplied
     d.flag <- !is.na(diffusion[i])
     if (d.flag) {
-      d.crr <- 1 / diffusion[[i]]$spec
+      dtf <- diffusion[[i]]
+      check.if.spectrum(dtf)
     }
 
     t.flag <- !is.na(time.uncertainty[i])
-    if (t.flag) {            
-      t.crr <- 1 / time.uncertainty[[i]]$spec
+    if (t.flag) {
+      ttf <- time.uncertainty[[i]]
+      check.if.spectrum(ttf)
     }
     
     # critical cutoff frequency for diffusion correction
     if (d.flag) {
-      idx <- which(d.crr >= crit.diffusion)[1]
-      f.cutoff <- c(idx, diffusion[[i]]$freq[idx])
+      idx <- which(dtf$spec <= crit.diffusion)[1]
+      f.cutoff <- c(idx, dtf$freq[idx])
     }
 
     # mean and stack spectra
@@ -119,18 +122,18 @@ WrapSpectralResults <- function(..., diffusion = NULL, time.uncertainty = NULL,
     # corrected signal and noise spectra
     if (d.flag) {
       tmp$corr.diff.only <-
-        SeparateSignalFromNoise(spec, diffusion = d.crr)
+        SeparateSignalFromNoise(spec, diffusion = dtf)
       tmp$corr.diff.only$f.cutoff <- f.cutoff
     }
     if (t.flag) {
       tmp$corr.t.unc.only <-
-        SeparateSignalFromNoise(spec, time.uncertainty = t.crr)
+        SeparateSignalFromNoise(spec, time.uncertainty = ttf)
       tmp$corr.t.unc.only$f.cutoff <- NA_real_
     }
     if (d.flag & t.flag) {
       tmp$corr.full <-
-        SeparateSignalFromNoise(spec, time.uncertainty = t.crr,
-                                diffusion = d.crr)
+        SeparateSignalFromNoise(spec, time.uncertainty = ttf,
+                                diffusion = dtf)
       tmp$corr.full$f.cutoff <- f.cutoff
     }
 
