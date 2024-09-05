@@ -6,28 +6,30 @@
 #' uncertainty and water vapour diffusion (relevant for firn and ice cores).
 #'
 #' This function is an implementation of Eq. (4) in Münch and Laepple
-#' (2018). While the diffusion correction is relevant only for diffusing
-#' proxies such as stable isotopes from firn and ice cores, this function can
-#' be applied to a large set of proxy data since only one of the two
-#' correction functions, or none, need to be supplied; thus, e.g., it can also
-#' be used for non-diffusing proxy data where only time uncertainty is
-#' relevant, or for estimating raw signal and noise spectra by supplying no
-#' correction functions at all.
+#' (2018). While the diffusion correction via a diffusion transfer function is
+#' relevant only for diffusing proxies such as stable isotopes from firn and ice
+#' cores, this function can be applied to a large set of proxy data since only
+#' one of the two transfer functions, or none, need to be supplied; thus, e.g.,
+#' it can also be used for non-diffusing proxy data where only time uncertainty
+#' is relevant, or for estimating raw signal and noise spectra by supplying no
+#' transfer functions at all.
 #'
 #' @param spectra a list of the raw spectral estimates from a proxy core
-#'   array. Expected is the output from \code{\link{ObtainArraySpectra}}, but
-#'   sufficient is a named list of two components giving the \code{mean} and
-#'   \code{stack} spectra.
+#'   array as output from \code{\link{ObtainArraySpectra}}, but sufficient is a
+#'   named list of two components giving the \code{mean} and the \code{stack}
+#'   spectrum.
 #' @param neff the effective number of records (e.g. to account for an expected
 #'   spatial correlation of the local noise). Per default set to element
 #'   \code{N} in \code{spectra}, otherwise supply it explicitly here.
-#' @param diffusion numeric vector of diffusion correction values (inverse
-#'   transfer function); must be of the same length as the spectral estimates in
-#'   \code{spectra}. The default `NULL` is to apply no correction.
-#' @param time.uncertainty numeric vector of time uncertainty correction
-#'   values (inverse transfer function); must be of the same length as the
-#'   spectral estimates in \code{spectra}. The default `NULL` is to apply no
-#'   correction.
+#' @param diffusion a spectral object (= a list of the equal-length vectors
+#'   `freq` and `spec`) of a diffusion transfer function (see also
+#'   \code{\link{CalculateDiffusionTF}}) to correct for the effect of diffusion;
+#'   i.e., internally the inverse of the transfer function values are used to
+#'   correct the spectra (see Eq. 4 in Münch and Laepple, 2018). The default
+#'   `NULL` is to apply no correction.
+#' @param time.uncertainty as \code{diffusion} a transfer function of the
+#'   effect of time uncertainty (see also
+#'   \code{\link{CalculateTimeUncertaintyTF}}).
 #'
 #' @return A list of three components, each of class \code{"spec"}:
 #'   \describe{
@@ -38,7 +40,8 @@
 #' }
 #'
 #' @author Thomas Münch
-#' @seealso \code{\link{ObtainArraySpectra}}
+#' @seealso \code{\link{ObtainArraySpectra}}, \code{\link{CalculateDiffusionTF}},
+#'   \code{\link{CalculateTimeUncertaintyTF}}
 #'
 #' @references
 #' Münch, T. and Laepple, T.: What climate signal is contained in
@@ -74,56 +77,60 @@ SeparateSignalFromNoise <- function(spectra, neff = spectra$N,
   }
 
   if (is.null(diffusion)) {
-    diffusion <- 1
+
+    dtf.corr <- 1
+
   } else {
-    if (length(diffusion) != length(spectra$mean$freq)) {
+
+    check.if.spectrum(diffusion)
+
+    if (length(diffusion$freq) != length(spectra$mean$freq)) {
       stop("Length of diffusion correction ",
            "does not match length of spectral estimates.")
+
     }
+
+    dtf.corr <- 1 / diffusion$spec
+
   }
 
   if (is.null(time.uncertainty)) {
-    time.uncertainty <- 1
+
+    ttf.corr <- 1
+
   } else {
-    if (length(time.uncertainty) != length(spectra$mean$freq)) {
+
+    check.if.spectrum(time.uncertainty)
+
+    if (length(time.uncertainty$freq) != length(spectra$mean$freq)) {
       stop("Length of time uncertainty correction ",
            "does not match length of spectral estimates.")
+
     }
+
+    ttf.corr <- 1 / time.uncertainty$spec
+
   }
 
+  # calculate the signal, noise, and snr (signal/noise) spectra
 
-  # calculate the signal and noise spectra
-  
-  d.corr <- diffusion
-  t.corr <- time.uncertainty
+  N     <- neff
+  eta   <- N / (N - ttf.corr)
+  mean  <- spectra$mean$spec
+  stack <- spectra$stack$spec
 
-  N <- neff
-  n <- N / (N - t.corr)
+  signal <- noise  <- snr <- list()
 
-  corr.fac <- n * d.corr
+  signal$freq <- noise$freq <- snr$freq <- spectra$mean$freq
 
-  mean  <- spectra$mean
-  stack <- spectra$stack
-  
-  signal <- list()
-  noise  <- list()
-  snr    <- list()
-
-  signal$freq <- mean$freq
-  noise$freq  <- mean$freq
-  snr$freq    <- mean$freq
-
-  signal$spec <- t.corr * corr.fac * (stack$spec - mean$spec / N)
-  noise$spec  <- corr.fac * (mean$spec - t.corr * stack$spec)
+  signal$spec <- eta * ttf.corr * dtf.corr * (stack - mean / N)
+  noise$spec  <- eta * dtf.corr * (mean - ttf.corr * stack)
 
   snr$spec <- signal$spec / noise$spec
-
   
-  # Organize output
+  # organize output
 
-  class(signal) <- "spec"
-  class(noise)  <- "spec"
-  class(snr)    <- "spec"
+  class(signal) <- class(noise) <- class(snr) <- "spec"
   
   res <- list(
     signal  = signal,

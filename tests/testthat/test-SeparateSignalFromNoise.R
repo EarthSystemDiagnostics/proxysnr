@@ -31,14 +31,28 @@ test_that("SeparateSignalFromNoise error checks work", {
   expect_error(SeparateSignalFromNoise(list(mean = mean, stack = stack)),
                m, fixed = TRUE)
 
+  m <- paste("`diffusion` must be a list with elements",
+             "`freq` and `spec` of equal length.")
+  tf <- list(a = 1)
+  expect_error(SeparateSignalFromNoise(list(mean = mean, stack = stack, N = 1),
+                                       diffusion = tf), m, fixed = TRUE)
+  tf <- list(freq = 1, spec = 1 : 5)
+  expect_error(SeparateSignalFromNoise(list(mean = mean, stack = stack, N = 1),
+                                       diffusion = tf), m, fixed = TRUE)
+  m <- paste("`time.uncertainty` must be a list with elements",
+             "`freq` and `spec` of equal length.")
+  expect_error(SeparateSignalFromNoise(list(mean = mean, stack = stack, N = 1),
+                                       time.uncertainty = tf), m, fixed = TRUE)
+
+  tf <- list(freq = 1 : 5, spec = 1 : 5)
   m <- paste("Length of diffusion correction does not match",
              "length of spectral estimates.")
   expect_error(SeparateSignalFromNoise(list(mean = mean, stack = stack, N = 1),
-                                       diffusion = 1), m, fixed = TRUE)
+                                       diffusion = tf), m, fixed = TRUE)
   m <- paste("Length of time uncertainty correction does not match",
              "length of spectral estimates.")
   expect_error(SeparateSignalFromNoise(list(mean = mean, stack = stack, N = 1),
-                                       time.uncertainty = 1), m, fixed = TRUE)
+                                       time.uncertainty = tf), m, fixed = TRUE)
 
 })
 
@@ -67,13 +81,13 @@ test_that("SeparateSignalFromNoise calculations work", {
 
   # with diffusion and time uncertainty correction and N included in input
 
-  diff <- rep(1.5, length(signal$freq))
-  tunc <- rep(1.1, length(signal$freq))
+  diff <- list(freq = signal$freq, spec = rep(1 / 1.5, length(signal$freq)))
+  tunc <- list(freq = signal$freq, spec = rep(1 / 1.1, length(signal$freq)))
 
   mean <- list(freq = signal$freq,
-               spec = (signal$spec + noise$spec) / diff)
+               spec = diff$spec * (signal$spec + noise$spec))
   stack <- list(freq = signal$freq,
-                spec = (signal$spec / tunc + noise$spec / n) / diff)
+                spec = diff$spec * (tunc$spec * signal$spec + noise$spec / n))
 
   actual <- SeparateSignalFromNoise(
     spectra = list(mean = mean, stack = stack, N = n),
@@ -82,6 +96,5 @@ test_that("SeparateSignalFromNoise calculations work", {
   expected <- list(signal = signal, noise = noise, snr = snr)
 
   expect_equal(actual, expected)
-
 
 })
