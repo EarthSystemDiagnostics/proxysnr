@@ -6,26 +6,24 @@
 #' data sets.
 #'
 #' @param ... a comma separated list of named proxy data sets to analyse.
-#' @param diffusion a list of (inverse) transfer functions to correct for the
-#'   effect of diffusion. The length of the list has to match the number of
-#'   provided data sets, thus, one transfer function per data set is assumed. If
-#'   \code{NULL}, no diffusion correction is applied. If you want to omit the
-#'   diffusion correction only for some specific data set(s), set the
-#'   corresponding list element(s) to \code{NA}.
-#' @param time.uncertainty similar to \code{diffusion} a list of (inverse)
-#'   transfer functions to correct for the effect of time uncertainty.
+#' @param diffusion a list the same length as the number of datasets with each
+#'   list element a spectral object of a transfer function (see also
+#'   \code{\link{CalculateDiffusionTF}}) to correct the corresponding dataset
+#'   for the effect of diffusion; i.e., internally the inverse of the transfer
+#'   function values are used to correct for the diffusional smoothing (see
+#'   Eq. 4 in Münch and Laepple, 2018). If \code{NULL}, no diffusion correction
+#'   is applied at all; if instead you want to omit the diffusion correction
+#'   only for some specific data set(s), set the corresponding list element(s)
+#'   to \code{NA}.
+#' @param time.uncertainty as \code{diffusion} a list of transfer functions to
+#'   correct for the effect of time uncertainty
+#'   (see also \code{\link{CalculateTimeUncertaintyTF}}).
 #' @param df.log a vector of Gaussian kernel widths in log space to smooth the
 #'   spectral estimates from each data set. If dimensions do not fit, its length
 #'   is recycled to match the number of data sets.
 #' @param crit.diffusion maximum diffusion correction value to obtain cutoff
 #'   frequencies until which results are analysed to avoid large uncertainties
 #'   at the high-frequency end of the spectra.
-#' @param inverse.tf logical; if \code{TRUE}, it is assumed that
-#'   \code{diffusion} and \code{time.uncertainty} provide the inverse transfer
-#'   functions which can be readily used to correct the spectra. If \code{FALSE}
-#'   (the default), the inverse of the provided transfer functions is calculated
-#'   within the function and used for the corrections. See Eqs. (4) in Münch and
-#'   Laepple (2018) for the definitions.
 #'
 #' @return A list of \code{N} lists, where \code{N} is the number of provided
 #'   data sets and where each of these lists contains up to five elements:
@@ -46,6 +44,8 @@
 #' \code{diffusion} and \code{time.uncertainty} or not. Also, the element
 #' \code{f.cutoff} is `NA` if diffusion has not been corrected for.
 #'
+#' @seealso \code{\link{CalculateDiffusionTF}},
+#'   \code{\link{CalculateTimeUncertaintyTF}}
 #' @author Thomas Münch
 #'
 #' @references
@@ -66,8 +66,7 @@
 #' @export
 #'
 WrapSpectralResults <- function(..., diffusion = NULL, time.uncertainty = NULL,
-                                df.log = 0.05, crit.diffusion = 2,
-                                inverse.tf = FALSE) {
+                                df.log = 0.05, crit.diffusion = 2) {
 
   # Gather input data
   dat <- list(...)
@@ -96,14 +95,12 @@ WrapSpectralResults <- function(..., diffusion = NULL, time.uncertainty = NULL,
     # get diffusion/time-uncertainty correction functions
     d.flag <- !is.na(diffusion[i])
     if (d.flag) {
-      d.crr <- diffusion[[i]]$spec
-      if (!inverse.tf) d.crr <- 1 / d.crr
+      d.crr <- 1 / diffusion[[i]]$spec
     }
 
     t.flag <- !is.na(time.uncertainty[i])
     if (t.flag) {            
-      t.crr <- time.uncertainty[[i]]$spec
-      if (!inverse.tf) t.crr <- 1 / t.crr
+      t.crr <- 1 / time.uncertainty[[i]]$spec
     }
     
     # critical cutoff frequency for diffusion correction

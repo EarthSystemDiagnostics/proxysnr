@@ -9,22 +9,25 @@ WrapSpectralResults(
   diffusion = NULL,
   time.uncertainty = NULL,
   df.log = 0.05,
-  crit.diffusion = 2,
-  inverse.tf = FALSE
+  crit.diffusion = 2
 )
 }
 \arguments{
 \item{...}{a comma separated list of named proxy data sets to analyse.}
 
-\item{diffusion}{a list of (inverse) transfer functions to correct for the
-effect of diffusion. The length of the list has to match the number of
-provided data sets, thus, one transfer function per data set is assumed. If
-\code{NULL}, no diffusion correction is applied. If you want to omit the
-diffusion correction only for some specific data set(s), set the
-corresponding list element(s) to \code{NA}.}
+\item{diffusion}{a list the same length as the number of datasets with each
+list element a spectral object of a transfer function (see also
+\code{\link{CalculateDiffusionTF}}) to correct the corresponding dataset
+for the effect of diffusion; i.e., internally the inverse of the transfer
+function values are used to correct for the diffusional smoothing (see
+Eq. 4 in Münch and Laepple, 2018). If \code{NULL}, no diffusion correction
+is applied at all; if instead you want to omit the diffusion correction
+only for some specific data set(s), set the corresponding list element(s)
+to \code{NA}.}
 
-\item{time.uncertainty}{similar to \code{diffusion} a list of (inverse)
-transfer functions to correct for the effect of time uncertainty.}
+\item{time.uncertainty}{as \code{diffusion} a list of transfer functions to
+correct for the effect of time uncertainty
+(see also \code{\link{CalculateTimeUncertaintyTF}}).}
 
 \item{df.log}{a vector of Gaussian kernel widths in log space to smooth the
 spectral estimates from each data set. If dimensions do not fit, its length
@@ -33,13 +36,6 @@ is recycled to match the number of data sets.}
 \item{crit.diffusion}{maximum diffusion correction value to obtain cutoff
 frequencies until which results are analysed to avoid large uncertainties
 at the high-frequency end of the spectra.}
-
-\item{inverse.tf}{logical; if \code{TRUE}, it is assumed that
-\code{diffusion} and \code{time.uncertainty} provide the inverse transfer
-functions which can be readily used to correct the spectra. If \code{FALSE}
-(the default), the inverse of the provided transfer functions is calculated
-within the function and used for the corrections. See Eqs. (4) in Münch and
-Laepple (2018) for the definitions.}
 }
 \value{
 A list of \code{N} lists, where \code{N} is the number of provided
@@ -82,6 +78,10 @@ results <- WrapSpectralResults(
 Münch, T. and Laepple, T.: What climate signal is contained in
 decadal- to centennial-scale isotope variations from Antarctic ice cores?
 Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
+}
+\seealso{
+\code{\link{CalculateDiffusionTF}},
+  \code{\link{CalculateTimeUncertaintyTF}}
 }
 \author{
 Thomas Münch
