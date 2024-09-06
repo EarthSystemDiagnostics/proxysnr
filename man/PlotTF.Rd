@@ -25,22 +25,19 @@ PlotTF(
 )
 }
 \arguments{
-\item{dtf}{A list of transfer function data sets: each data set is an object
-of class \code{"spec"} (see \code{?spectrum}) or a named list with minimum
-components \code{freq} and \code{spec}, where component \code{freq} is a
-numeric vector providing a frequency axis and component \code{spec} a
-numeric vector with the corresponding diffusion transfer function
-values. See Details for the meaning of \code{NULL}.}
+\item{dtf}{a list of spectral objects (`?spec.object`) of the transfer
+function datasets that describe a diffusion-type smoothing process. See
+Details for the meaning of \code{NULL}.}
 
-\item{ttf}{As \code{dtf} but providing time uncertainty transfer
+\item{ttf}{as \code{dtf} but providing time uncertainty transfer
 functions. See Details for the meaning of \code{NULL}.}
 
 \item{names}{an optional character vector of names for the transfer function
-data sets. If \code{NULL}, the names of \code{dtf} and \code{ttf} are used
+datasets. If \code{NULL}, the names of \code{dtf} and \code{ttf} are used
 or, if not present, default names. Provide a list of two vectors of names,
-if the diffusion and time uncertainty data sets differ in number, or, if
-they do **not** differ in number but belong to different underlying
-datasets.}
+if the diffusional smoothing and time uncertainty datasets differ in
+number, or, if they do **not** differ in number but belong to different
+underlying datasets.}
 
 \item{col}{a numeric or character vector of colors to use for the plotting;
 if \code{NULL} default colors are used.}
@@ -85,19 +82,20 @@ vector of labels of the same length as \code{ytm1}.}
 function plot.}
 }
 \description{
-Plot the spectral transfer functions of the effects of diffusion and/or time
-uncertainty.
+Plot the spectral transfer functions of the effects of diffusion-like
+smoothing and/or time uncertainty.
 }
 \details{
-You can plot only diffusion transfer functions by supplying the respective
-data to the \code{dtf} parameter and leaving the \code{ttf} parameter as
-\code{NULL}, or vice versa for plotting only time uncertainty transfer
-functions. Supplying both parameters will plot the supplied diffusion as well
-as time uncertainty transfer functions (which can differ in number) on a
-single plot with a shared x axis. Leaving both the \code{dtf} and \code{ttf}
-parameters as \code{NULL} (the default) will plot the diffusion and time
-uncertainty transfer functions that are provided with the \code{proxysnr}
-package, which corresponds to Figure B1 in Münch and Laepple (2018).
+You can plot only transfer functions describing diffusion-like smoothing
+processes by supplying the respective data to the \code{dtf} parameter and
+leaving the \code{ttf} parameter as \code{NULL}, or vice versa for plotting
+only time uncertainty transfer functions. Supplying both parameters will plot
+the supplied diffusional smoothing as well as time uncertainty transfer
+functions (which can differ in number) on a single plot with a shared x
+axis. Leaving both the \code{dtf} and \code{ttf} parameters as \code{NULL}
+(the default) will plot the firn diffusion and time uncertainty transfer
+functions that are provided with the \code{proxysnr} package, which
+corresponds to Figure B1 in Münch and Laepple (2018).
 }
 \examples{
 
@@ -112,6 +110,9 @@ PlotTF(names = c("DML1", "DML2", "WAIS"), dtf.threshold = 0.5,
 Münch, T. and Laepple, T.: What climate signal is contained in
 decadal- to centennial-scale isotope variations from Antarctic ice cores?
 Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
+}
+\seealso{
+`?spec.object` for the definition of a "proxysnr" spectral object.
 }
 \author{
 Thomas Münch

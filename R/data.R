@@ -65,11 +65,11 @@
 #' A dataset containing the calculated diffusion transfer functions for the
 #' DML1, DML2 and WAIS data sets from Münch and Laepple (2018) based on
 #' numerical simulations. The transfer function describes the average effect
-#' diffusion has on the mean of the spectra from \code{N} spatially distributed
-#' oxygen isotope records.
+#' firn diffusion has on the mean of the spectra from \code{N} spatially
+#' distributed oxygen isotope records.
 #'
 #' @format A named list with the 3 elements \code{dml1}, \code{dml2}, and
-#'   \code{wais}, where each element is a list of 2 numeric vectors:
+#'   \code{wais}, where each element is a spectral object:
 #'   \describe{
 #'   \item{\code{freq}:}{the frequency axis in units of \code{1 / yr},}
 #'   \item{\code{spec}:}{the transfer function value at each frequency.}
@@ -101,7 +101,7 @@
 #' \code{N} proxy records.
 #'
 #' @format A named list with the 3 elements \code{dml1}, \code{dml2}, and
-#'   \code{wais}, where each element is a list of 2 numeric vectors:
+#'   \code{wais}, where each element is a spectral object:
 #'   \describe{
 #'   \item{\code{freq}:}{the frequency axis in units of \code{1 / yr},}
 #'   \item{\code{spec}:}{the transfer function value at each frequency.}
@@ -122,3 +122,16 @@
 #' 2018.
 "time.uncertainty.tf"
 
+#' "proxysnr" spectral object
+#'
+#' @description{
+#' A spectral object is a named list of the two elements `freq` and `spec`,
+#' which are numeric vectors of the same length holding a frequency axis and the
+#' corresponding power spectral densities.
+#'
+#' Optionally, the list can in addition include a vector with the degrees of
+#' freedom of the spectrum (list element \code{dof}) and be of class "spec", but
+#' "proxysnr" does not include any methods generic to that class as of now.
+#' }
+#' @name spec.object
+NULL

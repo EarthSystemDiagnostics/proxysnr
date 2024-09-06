@@ -6,7 +6,7 @@
 \title{Calculated time uncertainty transfer functions}
 \format{
 A named list with the 3 elements \code{dml1}, \code{dml2}, and
-  \code{wais}, where each element is a list of 2 numeric vectors:
+  \code{wais}, where each element is a spectral object:
   \describe{
   \item{\code{freq}:}{the frequency axis in units of \code{1 / yr},}
   \item{\code{spec}:}{the transfer function value at each frequency.}

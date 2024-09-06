@@ -49,9 +49,9 @@
 #' @param ... additional parameters which are passed to the spectral estimation
 #'   function \code{\link{SpecMTM}}.
 #'
-#' @return a list of the components \code{signal}, \code{diffused} and
-#'   \code{ratio} which are objects of class \code{"spec"} providing the
-#'   averages over the \code{ns} simulations of:
+#' @return a list of the spectral objects (`?spec.object`) \code{signal},
+#'   \code{diffused} and \code{ratio}, providing the averages over the \code{ns}
+#'   simulations of:
 #'   \describe{
 #'   \item{\code{signal}:}{the undiffused noise spectrum;}
 #'   \item{\code{diffused}:}{the diffused noise spectrum;}
@@ -59,6 +59,7 @@
 #'     function.}
 #' }
 #'
+#' @seealso `?spec.object` for the definition of a "proxysnr" spectral object.
 #' @author Thomas Münch
 #'
 #' @references

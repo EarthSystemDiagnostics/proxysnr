@@ -18,19 +18,18 @@
 #'
 #' @param spectra a list of the spectral estimates from a proxy core array as
 #'   output from \code{\link{ObtainArraySpectra}}, or, as minimum requirement, a
-#'   named list (components `mean` and `stack`) supplying the mean spectrum of
-#'   the `n` proxy records and the spectrum of the record stacked across the `n`
-#'   records.
+#'   named list (components `mean` and `stack` as spectral objects; see
+#'   `?spec.object`) supplying the mean spectrum of the `n` proxy records and
+#'   the spectrum of the record stacked across the `n` records.
 #' @param neff the effective number of records (e.g. to account for an expected
 #'   spatial correlation of the local noise). Per default set to element
 #'   \code{N} in \code{spectra}, otherwise supply it explicitly here.
-#' @param diffusion a spectral object (= a list of the equal-length vectors
-#'   `freq` and `spec`) of a transfer function desribing a diffusion-like proxy
-#'   smoothing process (see Details), e.g. diffusion in ice cores (see also
-#'   \code{\link{CalculateDiffusionTF}}). Internally, the inverse of the
-#'   transfer function values are applied to correct for the smoothing effect on
-#'   the estimated signal and noise spectra (see Eq. 4 in Münch and Laepple,
-#'   2018). The default `NULL` is to apply no correction.
+#' @param diffusion a spectral object of a transfer function desribing a
+#'   diffusion-like proxy smoothing process (see Details), e.g. diffusion in ice
+#'   cores (see also \code{\link{CalculateDiffusionTF}}). Internally, the
+#'   inverse of the transfer function values are applied to correct for the
+#'   smoothing effect on the estimated signal and noise spectra (see Eq. 4 in
+#'   Münch and Laepple, 2018). The default `NULL` is to apply no correction.
 #' @param time.uncertainty as \code{diffusion} but for a transfer function
 #'   that describes the effect of time uncertainty (see also
 #'   \code{\link{CalculateTimeUncertaintyTF}} for calculating transfer functions
@@ -38,7 +37,7 @@
 #'   correct the effect it has on the estimated signal spectrum. The default
 #'   `NULL` is to apply no correction.
 #'
-#' @return A list of three components, each of class \code{"spec"}:
+#' @return A list of three spectral objects:
 #'   \describe{
 #'   \item{\code{signal}:}{the raw or corrected signal spectrum;}
 #'   \item{\code{noise}:}{the raw or corrected noise spectrum;}
@@ -48,7 +47,8 @@
 #'
 #' @author Thomas Münch
 #' @seealso \code{\link{ObtainArraySpectra}}, \code{\link{CalculateDiffusionTF}},
-#'   \code{\link{CalculateTimeUncertaintyTF}}
+#'   \code{\link{CalculateTimeUncertaintyTF}}, `?spec.object` for the definition
+#'   of a "proxysnr" spectral object.
 #'
 #' @references
 #' Münch, T. and Laepple, T.: What climate signal is contained in

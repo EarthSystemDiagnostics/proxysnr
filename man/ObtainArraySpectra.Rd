@@ -30,26 +30,23 @@ function \code{\link{SpecMTM}}.}
 A list of the following components:
   \describe{
   \item{N:}{the number of (effective) proxy records of the core array;}
-  \item{single:}{a list of length \code{N} with the spectra of each
-    individual proxy record;}
-  \item{mean:}{the mean spectrum across all individual spectra;}
-  \item{stack:}{the spectrum of the average proxy record in the time domain
-    ("stacked record").}
+  \item{single:}{a list of \code{N} spectral objects (`?spec.object`) with
+    the spectra of each individual proxy record;}
+  \item{mean:}{spectral object of the mean spectrum across all individual
+    spectra;}
+  \item{stack:}{spectral object of the spectrum of the average proxy record
+    in the time domain ("stacked record").}
 }
 }
 \description{
 Calculate all relevant spectral estimates for a given array of \code{n}
-proxy records. The spectral estimates can be smoothed in logarithmic space.
-}
-\details{
-The spectral estimates are calculated using Thomson’s multitaper method with
-three windows with linear detrending before analysis
-(see \code{\link{SpecMTM}}). Each spectral result is returned as an object
-of class \code{"spec"} with the minimum elements \code{freq} and
-\code{spec}.
+proxy records. The spectral estimates can be smoothed in logarithmic space
+and are calculated using Thomson’s multitaper method with three windows with
+linear detrending before analysis.
 }
 \seealso{
-\code{\link{PlotArraySpectra}}, \code{\link{SpecMTM}}
+\code{\link{PlotArraySpectra}}, \code{\link{SpecMTM}},
+  `?spec.object` for the definition of a "proxysnr" spectral object.
 }
 \author{
 Thomas Münch

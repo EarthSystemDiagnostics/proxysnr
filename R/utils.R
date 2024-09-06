@@ -48,7 +48,7 @@ is.spectrum <- function(x) {
 #' frequency axis of a target spectrum. This check is useful before
 #' interpolating a spectrum onto some target frequency axis.
 #'
-#' @param x a spectral object or list with components `freq` and `spec`.
+#' @param x a spectral object.
 #' @param target as \code{x} for the target spectrum.
 #' @return \code{TRUE} when the target frequency axis falls within the range of
 #'   the frequency axis of \code{x}, \code{FALSE} otherwise.

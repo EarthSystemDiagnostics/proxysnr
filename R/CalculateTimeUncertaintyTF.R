@@ -85,9 +85,9 @@
 #'   compared to the total length of the time series.
 #' @inheritParams CalculateDiffusionTF
 #'
-#' @return a list of the components \code{input}, \code{stack} and
-#'   \code{ratio} which are objects of class \code{"spec"} providing averages
-#'   over the \code{ns} simulations of:
+#' @return a list of the spectral objects (`?spec.object`) \code{input},
+#'   \code{stack} and \code{ratio}, providing averages over the \code{ns}
+#'   simulations of:
 #'   \describe{
 #'   \item{\code{input}:}{the original spectrum of the surrogate data;}
 #'   \item{\code{stack}:}{the spectrum of the spatial average of the
@@ -96,6 +96,7 @@
 #'         function.}
 #' }
 #'
+#' @seealso `?spec.object` for the definition of a "proxysnr" spectral object.
 #' @author Thomas Münch
 #'
 #' @references

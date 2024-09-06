@@ -57,9 +57,9 @@ function still appears too noisy.}
 function \code{\link{SpecMTM}}.}
 }
 \value{
-a list of the components \code{signal}, \code{diffused} and
-  \code{ratio} which are objects of class \code{"spec"} providing the
-  averages over the \code{ns} simulations of:
+a list of the spectral objects (`?spec.object`) \code{signal},
+  \code{diffused} and \code{ratio}, providing the averages over the \code{ns}
+  simulations of:
   \describe{
   \item{\code{signal}:}{the undiffused noise spectrum;}
   \item{\code{diffused}:}{the diffused noise spectrum;}
@@ -91,6 +91,9 @@ analysis.
 Münch, T. and Laepple, T.: What climate signal is contained in
 decadal- to centennial-scale isotope variations from Antarctic ice cores?
 Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
+}
+\seealso{
+`?spec.object` for the definition of a "proxysnr" spectral object.
 }
 \author{
 Thomas Münch

@@ -28,7 +28,7 @@ additional smoothing for visual purposes; \code{NULL} suppresses smoothing.}
 }
 \value{
 A list with the components \code{dml} and \code{wais}, where each is
-  a list containing three elements of class \code{"spec"} and one numeric
+  a list containing three spectral objects (`?spec.object`) and one numeric
   vector:
   \describe{
   \item{\code{signal}:}{the signal spectrum.}

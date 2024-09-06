@@ -77,9 +77,9 @@ function still appears too noisy.}
 function \code{\link{SpecMTM}}.}
 }
 \value{
-a list of the components \code{input}, \code{stack} and
-  \code{ratio} which are objects of class \code{"spec"} providing averages
-  over the \code{ns} simulations of:
+a list of the spectral objects (`?spec.object`) \code{input},
+  \code{stack} and \code{ratio}, providing averages over the \code{ns}
+  simulations of:
   \describe{
   \item{\code{input}:}{the original spectrum of the surrogate data;}
   \item{\code{stack}:}{the spectrum of the spatial average of the
@@ -149,6 +149,9 @@ https://doi.org/10.5194/cp-10-825-2014, 2014.
 Münch, T. and Laepple, T.: What climate signal is contained in
 decadal- to centennial-scale isotope variations from Antarctic ice cores?
 Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
+}
+\seealso{
+`?spec.object` for the definition of a "proxysnr" spectral object.
 }
 \author{
 Thomas Münch

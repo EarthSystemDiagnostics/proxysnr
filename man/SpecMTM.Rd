@@ -83,10 +83,8 @@ spectrum? Defaults to \code{FALSE}.}
 \item{...}{further parameters passed to \code{\link[multitaper]{spec.mtm}}.}
 }
 \value{
-an object of class \code{"spec"}, with the additional list component
-  \code{dof}: a numeric vector of the same length as the spectrum with
-  the degrees of freedom of the spectral estimate (copied from the
-  \code{spec.mtm} default output).
+a spectral object including the degrees of freedom of the spectral
+  estimate (copied from the \code{spec.mtm} default output).
 }
 \description{
 This is a wrapper for the \code{\link[multitaper]{spec.mtm}} function from

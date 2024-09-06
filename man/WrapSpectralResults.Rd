@@ -16,12 +16,12 @@ WrapSpectralResults(
 \item{...}{a comma separated list of named proxy data sets to analyse.}
 
 \item{diffusion}{a list the same length as the number of datasets with each
-list element a spectral object of a transfer function to correct the
-corresponding dataset for the effect of diffusion-like smoothing (see
-\code{?SeparateSignalFromNoise} for more details on this, and see
+list element a spectral object (`?spec.object`) of a transfer function to
+correct the corresponding dataset for the effect of diffusion-like
+smoothing (see `?SeparateSignalFromNoise` for more details on this, and see
 \code{\link{CalculateDiffusionTF}} for calculating transfer functions
-specifically for the firn diffusion process). Internally, the inverse
-of the transfer function values are applied to correct for the smoothing
+specifically for the firn diffusion process). Internally, the inverse of
+the transfer function values are applied to correct for the smoothing
 effect on the estimated signal and noise spectra (see Eq. 4 in Münch and
 Laepple, 2018). If \code{NULL}, no correction is applied at all; if instead
 you want to omit the correction only for some specific data set(s), set the
@@ -46,18 +46,18 @@ large uncertainties at the high-frequency end of the spectra; defaults to
 A list of \code{N} lists, where \code{N} is the number of provided
   data sets and where each of these lists contains up to five elements:
   \describe{
-  \item{\code{raw}:}{a list with four elements: three objects of class
-    \code{"spec"} (the raw signal, noise and corresponding SNR spectra), and
-    a two-element vector (\code{f.cutoff}) with the index and value of the
-    cutoff frequency from constraining the smoothing correction (see the
-  \code{crit.diffusion} parameter).}
+  \item{\code{raw}:}{a list with four elements: three spectral objects (the
+    raw signal, noise and corresponding SNR spectra), and a two-element
+    vector (\code{f.cutoff}) with the index and value of the cutoff frequency
+    from constraining the smoothing correction (see the \code{crit.diffusion}
+    parameter).}
   \item{\code{corr.diff.only}:}{as item \code{raw} but with the spectra after
     correction for the effect of diffusion-like smoothing.}
   \item{\code{corr.t.unc.only}:}{as item \code{raw} but with the spectra
     after correction for the effect of time uncertainty.}
   \item{\code{corr.full}:}{as item \code{raw} but with the spectra after
     correction for both the effects of diffusion-like smoothing and time
-  uncertainty.}
+    uncertainty.}
 }
 The number of the returned list elements for each data set depends on
 whether transfer functions for the corrections have been provided in
@@ -90,7 +90,8 @@ Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
 \seealso{
 \code{\link{SeparateSignalFromNoise}},
   \code{\link{CalculateDiffusionTF}},
-  \code{\link{CalculateTimeUncertaintyTF}}
+  \code{\link{CalculateTimeUncertaintyTF}}, `?spec.object` for the definition
+  of a "proxysnr" spectral object.
 }
 \author{
 Thomas Münch
