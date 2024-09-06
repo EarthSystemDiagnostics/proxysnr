@@ -12,25 +12,30 @@ SeparateSignalFromNoise(
 )
 }
 \arguments{
-\item{spectra}{a list of the raw spectral estimates from a proxy core
-array as output from \code{\link{ObtainArraySpectra}}, but sufficient is a
-named list of two components giving the \code{mean} and the \code{stack}
-spectrum.}
+\item{spectra}{a list of the spectral estimates from a proxy core array as
+output from \code{\link{ObtainArraySpectra}}, or, as minimum requirement, a
+named list (components `mean` and `stack`) supplying the mean spectrum of
+the `n` proxy records and the spectrum of the record stacked across the `n`
+records.}
 
 \item{neff}{the effective number of records (e.g. to account for an expected
 spatial correlation of the local noise). Per default set to element
 \code{N} in \code{spectra}, otherwise supply it explicitly here.}
 
 \item{diffusion}{a spectral object (= a list of the equal-length vectors
-`freq` and `spec`) of a diffusion transfer function (see also
-\code{\link{CalculateDiffusionTF}}) to correct for the effect of diffusion;
-i.e., internally the inverse of the transfer function values are used to
-correct the spectra (see Eq. 4 in Münch and Laepple, 2018). The default
-`NULL` is to apply no correction.}
+`freq` and `spec`) of a transfer function desribing a diffusion-like proxy
+smoothing process (see Details), e.g. diffusion in ice cores (see also
+\code{\link{CalculateDiffusionTF}}). Internally, the inverse of the
+transfer function values are applied to correct for the smoothing effect on
+the estimated signal and noise spectra (see Eq. 4 in Münch and Laepple,
+2018). The default `NULL` is to apply no correction.}
 
-\item{time.uncertainty}{as \code{diffusion} a transfer function of the
-effect of time uncertainty (see also
-\code{\link{CalculateTimeUncertaintyTF}}).}
+\item{time.uncertainty}{as \code{diffusion} but for a transfer function
+that describes the effect of time uncertainty (see also
+\code{\link{CalculateTimeUncertaintyTF}} for calculating transfer functions
+in the case of layer-counted proxy chronologies) and which is used to
+correct the effect it has on the estimated signal spectrum. The default
+`NULL` is to apply no correction.}
 }
 \value{
 A list of three components, each of class \code{"spec"}:
@@ -42,20 +47,22 @@ A list of three components, each of class \code{"spec"}:
 }
 }
 \description{
-Calculate the raw signal and noise spectra, and the corresponding
-signal-to-noise ratio, as estimated from a core array of \code{n} proxy
-records, and correct these, where applicable, for the effects of time
-uncertainty and water vapour diffusion (relevant for firn and ice cores).
+Calculate the raw signal and noise spectra and the corresponding
+signal-to-noise ratio spectrum from the spectral estimates of a core array of
+\code{n} proxy records. Where applicable, these raw results can be corrected
+for the effects of time uncertainty and diffusion-like smoothing.
 }
 \details{
 This function is an implementation of Eq. (4) in Münch and Laepple
-(2018). While the diffusion correction via a diffusion transfer function is
-relevant only for diffusing proxies such as stable isotopes from firn and ice
-cores, this function can be applied to a large set of proxy data since only
-one of the two transfer functions, or none, need to be supplied; thus, e.g.,
-it can also be used for non-diffusing proxy data where only time uncertainty
-is relevant, or for estimating raw signal and noise spectra by supplying no
-transfer functions at all.
+(2018). While the diffusion transfer function there specifically refers to
+the diffusional smoothing of stable isotopes from firn and ice cores, it can
+be interpreted in a much more general sense as a transfer function that
+describes any smoothing process affecting a proxy record (e.g., bioturbation
+in marine sediment or biological memory in tree ring records). Therefore,
+this function can be applied to a large set of proxy data, also because the
+application of the transfer functions is flexible: e.g., it can be applied on
+proxy data where only time uncertainty is relevant, or for estimating raw
+signal and noise spectra by supplying no transfer functions at all.
 }
 \references{
 Münch, T. and Laepple, T.: What climate signal is contained in

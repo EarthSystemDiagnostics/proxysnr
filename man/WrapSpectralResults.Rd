@@ -16,27 +16,31 @@ WrapSpectralResults(
 \item{...}{a comma separated list of named proxy data sets to analyse.}
 
 \item{diffusion}{a list the same length as the number of datasets with each
-list element a spectral object of a transfer function (see also
-\code{\link{CalculateDiffusionTF}}) to correct the corresponding dataset
-for the effect of diffusion; i.e., internally the inverse of the transfer
-function values are used to correct for the diffusional smoothing (see
-Eq. 4 in Münch and Laepple, 2018). If \code{NULL}, no diffusion correction
-is applied at all; if instead you want to omit the diffusion correction
-only for some specific data set(s), set the corresponding list element(s)
-to \code{NA}.}
+list element a spectral object of a transfer function to correct the
+corresponding dataset for the effect of diffusion-like smoothing (see
+\code{?SeparateSignalFromNoise} for more details on this, and see
+\code{\link{CalculateDiffusionTF}} for calculating transfer functions
+specifically for the firn diffusion process). Internally, the inverse
+of the transfer function values are applied to correct for the smoothing
+effect on the estimated signal and noise spectra (see Eq. 4 in Münch and
+Laepple, 2018). If \code{NULL}, no correction is applied at all; if instead
+you want to omit the correction only for some specific data set(s), set the
+corresponding list element(s) to \code{NA}.}
 
 \item{time.uncertainty}{as \code{diffusion} a list of transfer functions to
 correct for the effect of time uncertainty
-(see also \code{\link{CalculateTimeUncertaintyTF}}).}
+(see also \code{\link{CalculateTimeUncertaintyTF}} for calculating transfer
+functions in the case of layer-counted proxy chronologies).}
 
 \item{df.log}{a vector of Gaussian kernel widths in log space to smooth the
 spectral estimates from each data set. If dimensions do not fit, its length
 is recycled to match the number of data sets.}
 
-\item{crit.diffusion}{minimum diffusion transfer function value constraining
-the corresponding correction which determines a cutoff frequency until
-which results are analysed to avoid large uncertainties at the
-high-frequency end of the spectra; defaults to 0.5.}
+\item{crit.diffusion}{minimum transfer function value for the diffusion-like
+smoothing process to constrain the corresponding correction. This
+determines a cutoff frequency until which results are analysed to avoid
+large uncertainties at the high-frequency end of the spectra; defaults to
+0.5.}
 }
 \value{
 A list of \code{N} lists, where \code{N} is the number of provided
@@ -45,18 +49,21 @@ A list of \code{N} lists, where \code{N} is the number of provided
   \item{\code{raw}:}{a list with four elements: three objects of class
     \code{"spec"} (the raw signal, noise and corresponding SNR spectra), and
     a two-element vector (\code{f.cutoff}) with the index and value of the
-    cutoff frequency from constraining the diffusion correction.}
+    cutoff frequency from constraining the smoothing correction (see the
+  \code{crit.diffusion} parameter).}
   \item{\code{corr.diff.only}:}{as item \code{raw} but with the spectra after
-    correction for the effect of diffusion.}
+    correction for the effect of diffusion-like smoothing.}
   \item{\code{corr.t.unc.only}:}{as item \code{raw} but with the spectra
     after correction for the effect of time uncertainty.}
   \item{\code{corr.full}:}{as item \code{raw} but with the spectra after
-    correction for both the effects of diffusion and time uncertainty.}
+    correction for both the effects of diffusion-like smoothing and time
+  uncertainty.}
 }
 The number of the returned list elements for each data set depends on
 whether transfer functions for the corrections have been provided in
 \code{diffusion} and \code{time.uncertainty} or not. Also, the element
-\code{f.cutoff} is `NA` if diffusion has not been corrected for.
+\code{f.cutoff} is `NA` if diffusion-like smoothing has not been corrected
+  for.
 }
 \description{
 This wrapper function is used to combine all main spectral results for the
@@ -81,7 +88,8 @@ decadal- to centennial-scale isotope variations from Antarctic ice cores?
 Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
 }
 \seealso{
-\code{\link{CalculateDiffusionTF}},
+\code{\link{SeparateSignalFromNoise}},
+  \code{\link{CalculateDiffusionTF}},
   \code{\link{CalculateTimeUncertaintyTF}}
 }
 \author{
