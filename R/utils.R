@@ -61,7 +61,7 @@ has.common.freq <- function(x, target) {
   ftarget <- target$freq
   fx <- x$freq
 
-  min(fx) <= min(ftarget) & max(fx) >= max(ftarget)
+  min(fx) %<=% min(ftarget) & max(fx) %>=% max(ftarget)
 
 }
 
