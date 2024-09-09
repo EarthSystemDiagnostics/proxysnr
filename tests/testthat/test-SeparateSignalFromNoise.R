@@ -99,7 +99,7 @@ test_that("SeparateSignalFromNoise calculations work", {
 
   # test interpolation of transfer functions
 
-  data <- ObtainArraySpectra(dml$dml2, df.log = 0.15)
+  data <- ObtainArraySpectra(dml$dml2)
 
   dtf <- diffusion.tf$dml2
   ttf <- time.uncertainty.tf$dml2
