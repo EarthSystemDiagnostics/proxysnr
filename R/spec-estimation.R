@@ -178,13 +178,16 @@ MeanSpectrum <- function(speclist) {
 #'   axis given by the \code{target} spectrum.
 #' @param target as \code{x}, used to supply the target frequency axis for the
 #'   interpolation.
+#' @param num.prec number of decimal places to round the frequency axes in order
+#'   to prevent erroneous NA values in the interpolation from floating point
+#'   machine representation accuracy. Be careful when changing this value!
 #' @return a spectral object with the spectrum in \code{x} interpolated onto the
 #'   target frequency axis.
 #'
 #' @author Thomas Münch
 #' @noRd
 #'
-InterpolateSpectrum <- function(x, target) {
+InterpolateSpectrum <- function(x, target, num.prec = 8) {
 
   if (!has.common.freq(x, target))
     warning("NAs produced in interpolation as frequency axes do not overlap.",
@@ -192,7 +195,8 @@ InterpolateSpectrum <- function(x, target) {
 
   result <- list(
     freq = target$freq,
-    spec = approx(x$freq, x$spec, target$freq)$y
+    spec = approx(round(x$freq, num.prec), x$spec,
+                  round(target$freq, num.prec))$y
   )
 
   class(result) <- "spec"
