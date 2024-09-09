@@ -27,6 +27,18 @@ test_that("checking if argument is a spectral object works", {
   expect_true(check.if.spectrum(s))
   expect_true(check.if.spectrum(as.data.frame(s)))
 
+  # test on actual data
+
+  spec <- ObtainArraySpectra(dml$dml1, df.log = 0.05)
+  check.if.spectrum(spec$mean)
+  check.if.spectrum(spec$stack)
+
+  spec <- ObtainArraySpectra(dml$dml1)
+  # <- without log-smooth, spec$stack is a more complex list with many elements
+  # from spec.mtm function, so test needs to acount for this
+  check.if.spectrum(spec$mean)
+  check.if.spectrum(spec$stack)
+
 })
 
 test_that("testing for spectral object works", {
@@ -60,12 +72,12 @@ test_that("checking of common frequency axes works", {
   expect_true(has.common.freq(x = list(freq = seq(0.12, 1, 0.02)), target))
 
   # tests related to floating point representation issues
-  spec <- ObtainArraySpectra(dml$dml2, df.log = 0.05)
+  spec <- ObtainArraySpectra(dml$dml2)
   tf <- time.uncertainty.tf[[2]]
 
   expect_true(has.common.freq(tf, spec$mean))
 
-  spec <- ObtainArraySpectra(wais, df.log = 0.05)
+  spec <- ObtainArraySpectra(wais)
   tf <- time.uncertainty.tf[[3]]
 
   expect_true(has.common.freq(tf, spec$mean))
