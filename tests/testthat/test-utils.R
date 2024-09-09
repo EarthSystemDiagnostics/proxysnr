@@ -59,4 +59,16 @@ test_that("checking of common frequency axes works", {
   expect_true(has.common.freq(x = list(freq = seq(0, 0.2, 0.001)), target))
   expect_true(has.common.freq(x = list(freq = seq(0.12, 1, 0.02)), target))
 
+  # tests related to floating point representation issues
+  spec <- ObtainArraySpectra(dml$dml2, df.log = 0.05)
+  tf <- time.uncertainty.tf[[2]]
+
+  expect_true(has.common.freq(tf, spec$mean))
+
+  spec <- ObtainArraySpectra(wais, df.log = 0.05)
+  tf <- time.uncertainty.tf[[3]]
+
+  expect_true(has.common.freq(tf, spec$mean))
+  # <- is FALSE for base >= type comparison due to floating point representation
+
 })
