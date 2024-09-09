@@ -91,10 +91,11 @@ SeparateSignalFromNoise <- function(spectra, neff = spectra$N,
 
     check.if.spectrum(diffusion)
 
-    if (length(diffusion$freq) != length(spectra$mean$freq)) {
-      stop("Length of diffusion correction ",
-           "does not match length of spectral estimates.")
-
+    if (has.common.freq(diffusion, spectra$mean)) {
+      diffusion <- InterpolateSpectrum(diffusion, spectra$mean)
+    } else {
+      stop("No sufficient frequency axis overlap between proxy data ",
+           "and diffusion transfer function.")
     }
 
     dtf.corr <- 1 / diffusion$spec
@@ -109,10 +110,11 @@ SeparateSignalFromNoise <- function(spectra, neff = spectra$N,
 
     check.if.spectrum(time.uncertainty)
 
-    if (length(time.uncertainty$freq) != length(spectra$mean$freq)) {
-      stop("Length of time uncertainty correction ",
-           "does not match length of spectral estimates.")
-
+    if (has.common.freq(time.uncertainty, spectra$mean)) {
+      time.uncertainty <- InterpolateSpectrum(time.uncertainty, spectra$mean)
+    } else {
+      stop("No sufficient frequency axis overlap between proxy data ",
+           "and time uncertainty transfer function.")
     }
 
     ttf.corr <- 1 / time.uncertainty$spec

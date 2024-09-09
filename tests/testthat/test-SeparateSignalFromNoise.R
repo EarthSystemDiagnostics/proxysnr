@@ -45,12 +45,12 @@ test_that("SeparateSignalFromNoise error checks work", {
                                        time.uncertainty = tf), m, fixed = TRUE)
 
   tf <- list(freq = 1 : 5, spec = 1 : 5)
-  m <- paste("Length of diffusion correction does not match",
-             "length of spectral estimates.")
+  m <- paste("No sufficient frequency axis overlap between proxy data",
+             "and diffusion transfer function.")
   expect_error(SeparateSignalFromNoise(list(mean = mean, stack = stack, N = 1),
                                        diffusion = tf), m, fixed = TRUE)
-  m <- paste("Length of time uncertainty correction does not match",
-             "length of spectral estimates.")
+  m <- paste("No sufficient frequency axis overlap between proxy data",
+             "and time uncertainty transfer function.")
   expect_error(SeparateSignalFromNoise(list(mean = mean, stack = stack, N = 1),
                                        time.uncertainty = tf), m, fixed = TRUE)
 
@@ -94,6 +94,31 @@ test_that("SeparateSignalFromNoise calculations work", {
     diffusion = diff,
     time.uncertainty = tunc)
   expected <- list(signal = signal, noise = noise, snr = snr)
+
+  expect_equal(actual, expected)
+
+  # test interpolation of transfer functions
+
+  data <- ObtainArraySpectra(dml$dml2, df.log = 0.15)
+
+  dtf <- diffusion.tf$dml2
+  ttf <- time.uncertainty.tf$dml2
+  expected <- data %>%
+    SeparateSignalFromNoise(diffusion = dtf, time.uncertainty = ttf)
+
+  # artificially extend transfer functions outside range of data
+  # <- extension part should be exactly removed by interpolation routine
+  dtf.ext <- list(
+    freq = c(0, 0.0005, 0.0006, 0.0009, dtf$freq, 0.5, 0.6, 0.7, 0.9, 1, 10),
+    spec = c(runif(4, 0.1, 1), dtf$spec, runif(6, 0.1, 1))
+  )
+  ttf.ext <- list(
+    freq = c(0, 0.0001, 0.0002, 0.0003, 0.0004, 0.0005, ttf$freq, 1, 10),
+    spec = c(runif(6, 0.1, 1), ttf$spec, runif(2, 0.1, 1))
+  )
+
+  actual <- data %>%
+    SeparateSignalFromNoise(diffusion = dtf.ext, time.uncertainty = ttf.ext)
 
   expect_equal(actual, expected)
 
