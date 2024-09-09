@@ -49,6 +49,12 @@ test_that("CalculateDiffusionTF runs as expected", {
 
   actual <- CalculateDiffusionTF(nt = nt, nc = nc, ns = ns, sigma = sigma)
 
+  expect_true(is.spectrum(actual))
+  expect_length(actual$freq, nt / 2)
+
+  actual <- CalculateDiffusionTF(nt = nt, nc = nc, ns = ns, sigma = sigma,
+                                 verbose.output = TRUE)
+
   expect_type(actual, "list")
   expect_length(actual, 3)
   expect_named(actual, c("signal", "diffused", "ratio"))
@@ -80,14 +86,14 @@ test_that("CalculateDiffusionTF runs as expected", {
 
   # test if coherent = TRUE
   actual <- CalculateDiffusionTF(nt = nt, nc = nc, ns = ns, sigma = sigma,
-                                 coherent = TRUE)
+                                 coherent = TRUE, verbose.output = TRUE)
 
   expect_equal(lengths(lapply(actual, "[[", "freq"), use.names = FALSE),
                rep(nt / 2, 3))
 
   # test with smoothing
   actual <- CalculateDiffusionTF(nt = nt, nc = nc, ns = ns, sigma = sigma,
-                                 df.log = 0.05)
+                                 df.log = 0.05, verbose.output = TRUE)
 
   expect_equal(lengths(lapply(actual, "[[", "freq"), use.names = FALSE),
                rep(nt / 2, 3))
@@ -98,14 +104,15 @@ test_that("CalculateDiffusionTF runs as expected", {
   window <- c(11, 110)
   n <- diff(window) + 1
   actual <- CalculateDiffusionTF(nt = nt, nc = nc, ns = ns, sigma = sigma,
-                                 window = window)
+                                 window = window, verbose.output = TRUE)
 
   expect_equal(lengths(lapply(actual, "[[", "freq"), use.names = FALSE),
                rep(n / 2, 3))
 
   # test for only one core, nc = 1
   nc <- 1
-  actual <- CalculateDiffusionTF(nt = nt, nc = nc, ns = ns, sigma = sigma)
+  actual <- CalculateDiffusionTF(nt = nt, nc = nc, ns = ns, sigma = sigma,
+                                 verbose.output = TRUE)
 
   expect_type(actual, "list")
   expect_length(actual, 3)

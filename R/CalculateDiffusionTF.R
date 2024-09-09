@@ -46,12 +46,16 @@
 #'   sufficiently large number of Monte Carlo simulations (parameter \code{ns})
 #'   is used; nevertheless, it can be switched on here when the transfer
 #'   function still appears too noisy.
+#' @param verbose.output logical controlling the size of the return object; per
+#'   default, only the transfer function spectrum is returned, else also the
+#'   spectra whose ratio determines the transfer function (see Details).
 #' @param ... additional parameters which are passed to the spectral estimation
 #'   function \code{\link{SpecMTM}}.
 #'
-#' @return a list of the spectral objects (`?spec.object`) \code{signal},
-#'   \code{diffused} and \code{ratio}, providing the averages over the \code{ns}
-#'   simulations of:
+#' @return either a spectral object (`?spec.object`) of the transfer function if
+#'   \code{verbose.output = FALSE} (default), or a list of the spectral objects
+#'   \code{signal}, \code{diffused} and \code{ratio}, providing the averages
+#'   over the \code{ns} simulations of:
 #'   \describe{
 #'   \item{\code{signal}:}{the undiffused noise spectrum;}
 #'   \item{\code{diffused}:}{the diffused noise spectrum;}
@@ -70,7 +74,8 @@
 #' @export
 #'
 CalculateDiffusionTF <- function(nt, nc, ns, sigma, res = 1, window = NULL,
-                                 coherent = FALSE, df.log = NULL, ...) {
+                                 coherent = FALSE, df.log = NULL,
+                                 verbose.output = FALSE, ...) {
 
   # convert sigma vector into array if necessary and check for dimensions
   if (is.null(dim(sigma))) {
@@ -224,6 +229,6 @@ CalculateDiffusionTF <- function(nt, nc, ns, sigma, res = 1, window = NULL,
 
   class(res$ratio) <- "spec"
 
-  return(res)
-  
+  if (verbose.output) return(res) else return(res$ratio)
+
 }

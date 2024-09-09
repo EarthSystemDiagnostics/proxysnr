@@ -88,7 +88,8 @@ DiffusionTF <- function(nt, nc, ns, sigma, res = 1, window = NULL,
                         coherent = FALSE, ...) {
 
   .Deprecated("CalculateDiffusionTF", "proxysnr")
-  CalculateDiffusionTF(nt, nc, ns, sigma, res, window, coherent, ...)
+  CalculateDiffusionTF(nt, nc, ns, sigma, res, window, coherent,
+                       verbose.output = TRUE, ...)
 
 }
 
@@ -103,6 +104,7 @@ TimeUncertaintyTF <- function(t = 100 : 1, acp = c(t[1], NA),
 
   .Deprecated("CalculateDiffusionTF", "proxysnr")
   CalculateTimeUncertaintyTF(t, acp, nt, nc, ns, model, rate, resize,
-                             surrogate.fun, fun.par, pad)
+                             surrogate.fun, fun.par, pad, verbose.output = TRUE,
+                             ...)
 
 }

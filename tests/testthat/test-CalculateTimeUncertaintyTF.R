@@ -20,6 +20,16 @@ test_that("CalculateTimeUncertaintyTF runs as expected", {
   # Also setting the acp manually here is necessary to avoid warnings, see same
   # issue.
 
+  expect_true(is.spectrum(actual))
+
+  nt <- 100
+  expect_length(actual$freq, nt / 2)
+
+  suppressMessages(
+    actual <- CalculateTimeUncertaintyTF(nc = 3, acp = c(100, 50),
+                                         verbose.output = TRUE)
+  )
+
   expect_type(actual, "list")
   expect_length(actual, 3)
   expect_named(actual, c("input", "stack", "ratio"))
@@ -27,7 +37,6 @@ test_that("CalculateTimeUncertaintyTF runs as expected", {
   expect_true(is.spectrum(actual$stack))
   expect_true(is.spectrum(actual$ratio))
 
-  nt <- 100
   expect_equal(lengths(lapply(actual, "[[", "freq"), use.names = FALSE),
                rep(nt / 2, 3))
 
@@ -52,7 +61,7 @@ test_that("CalculateTimeUncertaintyTF runs as expected", {
   # test with smoothing
   suppressMessages(
     actual <- CalculateTimeUncertaintyTF(nc = 3, acp = c(100, 50),
-                                         df.log = 0.05)
+                                         df.log = 0.05, verbose.output = TRUE)
   )
 
   expect_type(actual, "list")

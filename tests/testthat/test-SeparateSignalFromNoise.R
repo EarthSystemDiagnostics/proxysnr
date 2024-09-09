@@ -126,7 +126,7 @@ test_that("SeparateSignalFromNoise calculations work", {
   # annual resolution package data
   tf <- CalculateDiffusionTF(nt = length(1994 : 1000) / 0.5, nc = 3, ns = 3,
                              sigma = proxysnr:::diffusion.length$dml2[, -1],
-                             res = 0.5)$ratio
+                             res = 0.5)
 
   expect_no_error(SeparateSignalFromNoise(data, diffusion = tf))
                              

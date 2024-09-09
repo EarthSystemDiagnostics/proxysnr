@@ -17,6 +17,7 @@ CalculateTimeUncertaintyTF(
   fun.par = NULL,
   pad = TRUE,
   df.log = NULL,
+  verbose.output = FALSE,
   ...
 )
 }
@@ -73,13 +74,18 @@ sufficiently large number of Monte Carlo simulations (parameter \code{ns})
 is used; nevertheless, it can be switched on here when the transfer
 function still appears too noisy.}
 
+\item{verbose.output}{logical controlling the size of the return object; per
+default, only the transfer function spectrum is returned, else also the
+spectra whose ratio determines the transfer function (see Details).}
+
 \item{...}{additional parameters which are passed to the spectral estimation
 function \code{\link{SpecMTM}}.}
 }
 \value{
-a list of the spectral objects (`?spec.object`) \code{input},
-  \code{stack} and \code{ratio}, providing averages over the \code{ns}
-  simulations of:
+either a spectral object (`?spec.object`) of the transfer function if
+  \code{verbose.output = FALSE} (default), or a list of the spectral objects
+  \code{input}, \code{stack} and \code{ratio}, providing averages over the
+  \code{ns} simulations of:
   \describe{
   \item{\code{input}:}{the original spectrum of the surrogate data;}
   \item{\code{stack}:}{the spectrum of the spatial average of the
