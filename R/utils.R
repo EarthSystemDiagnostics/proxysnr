@@ -18,8 +18,9 @@ check.if.spectrum <- function(x) {
   
   if (!is.list(x)) stop(msg, call. = FALSE)
 
-  if (!all(utils::hasName(x, c("freq", "spec"))) | stats::sd(lengths(x)) > 0)
-    stop(msg, call. = FALSE)
+  if (!all(utils::hasName(x, c("freq", "spec")))) stop(msg, call. = FALSE)
+
+  if (stats::sd(lengths(x[c("freq", "spec")])) > 0) stop(msg, call. = FALSE)
 
   invisible(TRUE)
 
