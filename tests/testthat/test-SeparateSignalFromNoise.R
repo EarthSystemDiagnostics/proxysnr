@@ -122,4 +122,12 @@ test_that("SeparateSignalFromNoise calculations work", {
 
   expect_equal(actual, expected)
 
+  # test applying transfer function calculated on semi-annual resolution on
+  # annual resolution package data
+  tf <- CalculateDiffusionTF(nt = length(1994 : 1000) / 0.5, nc = 3, ns = 3,
+                             sigma = proxysnr:::diffusion.length$dml2[, -1],
+                             res = 0.5)$ratio
+
+  expect_no_error(SeparateSignalFromNoise(data, diffusion = tf))
+                             
 })
