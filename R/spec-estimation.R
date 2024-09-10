@@ -7,13 +7,11 @@
 #' Smooth spectrum using Gaussian kernel with constant width in logarithmic
 #' frequency space.
 #'
-#' @param x the spectrum as an object of class \code{"spec"} with the degrees
-#'   of freedom of the spectrum as an additional list element \code{dof}; or
-#'   simply a list with elements \code{spec}, \code{freq} and \code{dof}.
+#' @param x a spectral object including the degrees of freedom of the spectrum.
 #' @param df.log smoothing width in logarithmic frequency units.
 #'
-#' @return an object of class \code{"spec"} with the smoothed spectrum
-#'   including the average degrees of freedom.
+#' @return a spectral object with the smoothed spectrum including the average
+#'   degrees of freedom.
 #'
 #' @author Thomas Laepple
 #' @noRd
@@ -92,10 +90,8 @@ LogSmooth <- function(x, df.log=0.05) {
 #' @param bPad Shall the time series data be padded before computing the
 #'   spectrum? Defaults to \code{FALSE}.
 #' @param ... further parameters passed to \code{\link[multitaper]{spec.mtm}}.
-#' @return an object of class \code{"spec"}, with the additional list component
-#'   \code{dof}: a numeric vector of the same length as the spectrum with
-#'   the degrees of freedom of the spectral estimate (copied from the
-#'   \code{spec.mtm} default output).
+#' @return a spectral object including the degrees of freedom of the spectral
+#'   estimate (copied from the \code{spec.mtm} default output).
 #'
 #' @author Thomas Laepple
 #' @seealso \code{\link[multitaper]{spec.mtm}}
@@ -145,17 +141,14 @@ SpecMTM <- function(timeSeries, k = 3, nw = 2, nFFT = "default",
 #'
 #' Calculate the mean spectrum of all supplied individual spectra.
 #'
-#' The mean spectrum is calculated as a simple average across all power
-#' spectral densities from the individual spectra. Degrees of freedom
-#' (\code{dof}) of the mean spectrum are obtained from the sum of the
-#' individual dof's at each frequency.
+#' The mean spectrum is calculated as a simple average across all power spectral
+#' densities from the individual spectra. Degrees of freedom (\code{dof}) of the
+#' mean spectrum are obtained from the sum of the individual dof's at each
+#' frequency.
 #'
-#' @param speclist a list of objects of class \code{"spec"}, or lists with
-#'   minimum components \code{freq}, \code{spec} and \code{dof}, that supply the
-#'   spectra which are to be averaged.
+#' @param speclist a list of spectral objects.
 #'
-#' @return an object of class \code{"spec"} with components \code{freq},
-#'   \code{spec} and \code{dof}.
+#' @return a spectral object with the averaged spectrum.
 #'
 #' @author Thomas Laepple, Thomas Münch
 #' @noRd
@@ -181,18 +174,20 @@ MeanSpectrum <- function(speclist) {
 #'
 #' Interpolate a spectrum onto a given frequency axis.
 #'
-#' @param x a spectral object of class \code{"spec"} or a named list of the
-#'   equal-length elements `freq` and `spec`, which is to be interpolated onto
-#'   the frequency axis given by the \code{target} spectrum.
+#' @param x a spectral object which is to be interpolated onto the frequency
+#'   axis given by the \code{target} spectrum.
 #' @param target as \code{x}, used to supply the target frequency axis for the
 #'   interpolation.
-#' @return a spectral object of class \code{"spec"} with the spectrum in
-#'   \code{x} interpolated onto the target frequency axis.
+#' @param num.prec number of decimal places to round the frequency axes in order
+#'   to prevent erroneous NA values in the interpolation from floating point
+#'   machine representation accuracy. Be careful when changing this value!
+#' @return a spectral object with the spectrum in \code{x} interpolated onto the
+#'   target frequency axis.
 #'
 #' @author Thomas Münch
 #' @noRd
 #'
-InterpolateSpectrum <- function(x, target) {
+InterpolateSpectrum <- function(x, target, num.prec = 8) {
 
   if (!has.common.freq(x, target))
     warning("NAs produced in interpolation as frequency axes do not overlap.",
@@ -200,7 +195,8 @@ InterpolateSpectrum <- function(x, target) {
 
   result <- list(
     freq = target$freq,
-    spec = approx(x$freq, x$spec, target$freq)$y
+    spec = approx(round(x$freq, num.prec), x$spec,
+                  round(target$freq, num.prec))$y
   )
 
   class(result) <- "spec"

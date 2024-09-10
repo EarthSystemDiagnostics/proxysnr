@@ -13,6 +13,7 @@ CalculateDiffusionTF(
   window = NULL,
   coherent = FALSE,
   df.log = NULL,
+  verbose.output = FALSE,
   ...
 )
 }
@@ -53,13 +54,18 @@ sufficiently large number of Monte Carlo simulations (parameter \code{ns})
 is used; nevertheless, it can be switched on here when the transfer
 function still appears too noisy.}
 
+\item{verbose.output}{logical controlling the size of the return object; per
+default, only the transfer function spectrum is returned, else also the
+spectra whose ratio determines the transfer function (see Details).}
+
 \item{...}{additional parameters which are passed to the spectral estimation
 function \code{\link{SpecMTM}}.}
 }
 \value{
-a list of the components \code{signal}, \code{diffused} and
-  \code{ratio} which are objects of class \code{"spec"} providing the
-  averages over the \code{ns} simulations of:
+either a spectral object (`?spec.object`) of the transfer function if
+  \code{verbose.output = FALSE} (default), or a list of the spectral objects
+  \code{signal}, \code{diffused} and \code{ratio}, providing the averages
+  over the \code{ns} simulations of:
   \describe{
   \item{\code{signal}:}{the undiffused noise spectrum;}
   \item{\code{diffused}:}{the diffused noise spectrum;}
@@ -91,6 +97,9 @@ analysis.
 Münch, T. and Laepple, T.: What climate signal is contained in
 decadal- to centennial-scale isotope variations from Antarctic ice cores?
 Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
+}
+\seealso{
+`?spec.object` for the definition of a "proxysnr" spectral object.
 }
 \author{
 Thomas Münch

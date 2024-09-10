@@ -85,9 +85,10 @@
 #'   compared to the total length of the time series.
 #' @inheritParams CalculateDiffusionTF
 #'
-#' @return a list of the components \code{input}, \code{stack} and
-#'   \code{ratio} which are objects of class \code{"spec"} providing averages
-#'   over the \code{ns} simulations of:
+#' @return either a spectral object (`?spec.object`) of the transfer function if
+#'   \code{verbose.output = FALSE} (default), or a list of the spectral objects
+#'   \code{input}, \code{stack} and \code{ratio}, providing averages over the
+#'   \code{ns} simulations of:
 #'   \describe{
 #'   \item{\code{input}:}{the original spectrum of the surrogate data;}
 #'   \item{\code{stack}:}{the spectrum of the spatial average of the
@@ -96,6 +97,7 @@
 #'         function.}
 #' }
 #'
+#' @seealso `?spec.object` for the definition of a "proxysnr" spectral object.
 #' @author Thomas Münch
 #'
 #' @references
@@ -116,8 +118,8 @@ CalculateTimeUncertaintyTF <- function(t = 100 : 1, acp = c(t[1], NA),
                                        nt = length(t), nc = 1, ns = 100,
                                        model = "poisson", rate = 0.05,
                                        resize = 1, surrogate.fun = stats::rnorm,
-                                       fun.par = NULL, pad = TRUE,
-                                       df.log = NULL, ...) {
+                                       fun.par = NULL, pad = TRUE, df.log = NULL,
+                                       verbose.output = FALSE, ...) {
 
   # check if package simproxyage is available
   has.simproxyage <- check.simproxyage(stop.on.false = TRUE)
@@ -196,6 +198,6 @@ CalculateTimeUncertaintyTF <- function(t = 100 : 1, acp = c(t[1], NA),
 
   class(res$ratio) <- "spec"
 
-  return(res)
+  if (verbose.output) return(res) else return(res$ratio)
 
 }

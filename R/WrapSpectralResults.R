@@ -6,46 +6,56 @@
 #' data sets.
 #'
 #' @param ... a comma separated list of named proxy data sets to analyse.
-#' @param diffusion a list of (inverse) transfer functions to correct for the
-#'   effect of diffusion. The length of the list has to match the number of
-#'   provided data sets, thus, one transfer function per data set is assumed. If
-#'   \code{NULL}, no diffusion correction is applied. If you want to omit the
-#'   diffusion correction only for some specific data set(s), set the
+#' @param diffusion a list the same length as the number of datasets with each
+#'   list element a spectral object (`?spec.object`) of a transfer function to
+#'   correct the corresponding dataset for the effect of diffusion-like
+#'   smoothing (see `?SeparateSignalFromNoise` for more details on this, and see
+#'   \code{\link{CalculateDiffusionTF}} for calculating transfer functions
+#'   specifically for the firn diffusion process). Internally, the inverse of
+#'   the transfer function values are applied to correct for the smoothing
+#'   effect on the estimated signal and noise spectra (see Eq. 4 in Münch and
+#'   Laepple, 2018). If \code{NULL}, no correction is applied at all; if instead
+#'   you want to omit the correction only for some specific data set(s), set the
 #'   corresponding list element(s) to \code{NA}.
-#' @param time.uncertainty similar to \code{diffusion} a list of (inverse)
-#'   transfer functions to correct for the effect of time uncertainty.
+#' @param time.uncertainty as \code{diffusion} a list of transfer functions to
+#'   correct for the effect of time uncertainty
+#'   (see also \code{\link{CalculateTimeUncertaintyTF}} for calculating transfer
+#'   functions in the case of layer-counted proxy chronologies).
 #' @param df.log a vector of Gaussian kernel widths in log space to smooth the
 #'   spectral estimates from each data set. If dimensions do not fit, its length
 #'   is recycled to match the number of data sets.
-#' @param crit.diffusion maximum diffusion correction value to obtain cutoff
-#'   frequencies until which results are analysed to avoid large uncertainties
-#'   at the high-frequency end of the spectra.
-#' @param inverse.tf logical; if \code{TRUE}, it is assumed that
-#'   \code{diffusion} and \code{time.uncertainty} provide the inverse transfer
-#'   functions which can be readily used to correct the spectra. If \code{FALSE}
-#'   (the default), the inverse of the provided transfer functions is calculated
-#'   within the function and used for the corrections. See Eqs. (4) in Münch and
-#'   Laepple (2018) for the definitions.
+#' @param crit.diffusion minimum transfer function value for the diffusion-like
+#'   smoothing process to constrain the corresponding correction. This
+#'   determines a cutoff frequency until which results are analysed to avoid
+#'   large uncertainties at the high-frequency end of the spectra; defaults to
+#'   0.5.
 #'
 #' @return A list of \code{N} lists, where \code{N} is the number of provided
 #'   data sets and where each of these lists contains up to five elements:
 #'   \describe{
-#'   \item{\code{raw}:}{a list with four elements: three objects of class
-#'     \code{"spec"} (the raw signal, noise and corresponding SNR spectra), and
-#'     a two-element vector (\code{f.cutoff}) with the index and value of the
-#'     cutoff frequency.}
+#'   \item{\code{raw}:}{a list with four elements: three spectral objects (the
+#'     raw signal, noise and corresponding SNR spectra), and a two-element
+#'     vector (\code{f.cutoff}) with the index and value of the cutoff frequency
+#'     from constraining the smoothing correction (see the \code{crit.diffusion}
+#'     parameter).}
 #'   \item{\code{corr.diff.only}:}{as item \code{raw} but with the spectra after
-#'     correction for the effect of diffusion.}
+#'     correction for the effect of diffusion-like smoothing.}
 #'   \item{\code{corr.t.unc.only}:}{as item \code{raw} but with the spectra
 #'     after correction for the effect of time uncertainty.}
 #'   \item{\code{corr.full}:}{as item \code{raw} but with the spectra after
-#'     correction for both the effects of diffusion and time uncertainty.}
+#'     correction for both the effects of diffusion-like smoothing and time
+#'     uncertainty.}
 #' }
 #' The number of the returned list elements for each data set depends on
 #' whether transfer functions for the corrections have been provided in
 #' \code{diffusion} and \code{time.uncertainty} or not. Also, the element
-#' \code{f.cutoff} is `NA` if diffusion has not been corrected for.
+#' \code{f.cutoff} is `NA` if diffusion-like smoothing has not been corrected
+#'   for.
 #'
+#' @seealso \code{\link{SeparateSignalFromNoise}},
+#'   \code{\link{CalculateDiffusionTF}},
+#'   \code{\link{CalculateTimeUncertaintyTF}}, `?spec.object` for the definition
+#'   of a "proxysnr" spectral object.
 #' @author Thomas Münch
 #'
 #' @references
@@ -66,8 +76,7 @@
 #' @export
 #'
 WrapSpectralResults <- function(..., diffusion = NULL, time.uncertainty = NULL,
-                                df.log = 0.05, crit.diffusion = 2,
-                                inverse.tf = FALSE) {
+                                df.log = 0.05, crit.diffusion = 0.5) {
 
   # Gather input data
   dat <- list(...)
@@ -80,7 +89,7 @@ WrapSpectralResults <- function(..., diffusion = NULL, time.uncertainty = NULL,
 
   # Check for correct dimensions
   if ((n != length(diffusion)) | (n != length(time.uncertainty))) {
-    stop("Mismatch of dimensions of input data and correction function(s).")
+    stop("Number of transfer functions must match number of datasets.")
   }
   
   if (length(df.log) == 1) df.log = rep(df.log, length.out = n)
@@ -93,23 +102,23 @@ WrapSpectralResults <- function(..., diffusion = NULL, time.uncertainty = NULL,
 
     tmp <- list()
 
-    # get diffusion/time-uncertainty correction functions
+    # check if valid diffusion/time-uncertainty transfer function is supplied
     d.flag <- !is.na(diffusion[i])
     if (d.flag) {
-      d.crr <- diffusion[[i]]$spec
-      if (!inverse.tf) d.crr <- 1 / d.crr
+      dtf <- diffusion[[i]]
+      check.if.spectrum(dtf)
     }
 
     t.flag <- !is.na(time.uncertainty[i])
-    if (t.flag) {            
-      t.crr <- time.uncertainty[[i]]$spec
-      if (!inverse.tf) t.crr <- 1 / t.crr
+    if (t.flag) {
+      ttf <- time.uncertainty[[i]]
+      check.if.spectrum(ttf)
     }
     
     # critical cutoff frequency for diffusion correction
     if (d.flag) {
-      idx <- which(d.crr >= crit.diffusion)[1]
-      f.cutoff <- c(idx, diffusion[[i]]$freq[idx])
+      idx <- which(dtf$spec <= crit.diffusion)[1]
+      f.cutoff <- c(idx, dtf$freq[idx])
     }
 
     # mean and stack spectra
@@ -122,18 +131,18 @@ WrapSpectralResults <- function(..., diffusion = NULL, time.uncertainty = NULL,
     # corrected signal and noise spectra
     if (d.flag) {
       tmp$corr.diff.only <-
-        SeparateSignalFromNoise(spec, diffusion = d.crr)
+        SeparateSignalFromNoise(spec, diffusion = dtf)
       tmp$corr.diff.only$f.cutoff <- f.cutoff
     }
     if (t.flag) {
       tmp$corr.t.unc.only <-
-        SeparateSignalFromNoise(spec, time.uncertainty = t.crr)
+        SeparateSignalFromNoise(spec, time.uncertainty = ttf)
       tmp$corr.t.unc.only$f.cutoff <- NA_real_
     }
     if (d.flag & t.flag) {
       tmp$corr.full <-
-        SeparateSignalFromNoise(spec, time.uncertainty = t.crr,
-                                diffusion = d.crr)
+        SeparateSignalFromNoise(spec, time.uncertainty = ttf,
+                                diffusion = dtf)
       tmp$corr.full$f.cutoff <- f.cutoff
     }
 

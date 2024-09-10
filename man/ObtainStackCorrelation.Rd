@@ -7,8 +7,8 @@
 ObtainStackCorrelation(input, N = 1, f1 = 2, f2 = "max", limits = NULL)
 }
 \arguments{
-\item{input}{a list of the spectral objects lists \code{signal} and
-\code{noise}, usually to be obtained from a call to
+\item{input}{a list of the spectral objects (`?spec.object`) \code{signal}
+and \code{noise}, usually to be obtained from a call to
 \code{\link{SeparateSignalFromNoise}}.}
 
 \item{N}{integer vector with the number of records in the assumed stack;
@@ -59,7 +59,8 @@ decadal- to centennial-scale isotope variations from Antarctic ice cores?
 Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
 }
 \seealso{
-\code{\link{PlotStackCorrelation}}
+\code{\link{PlotStackCorrelation}}, `?spec.object` for the
+  definition of a "proxysnr" spectral object.
 }
 \author{
 Thomas Münch

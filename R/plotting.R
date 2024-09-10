@@ -42,7 +42,7 @@ Polyplot <- function(x, y1, y2, col = "black", alpha = 0.2, ...) {
 #' This function plots a spectrum on a double-logarithmic scale and optionally
 #' adds a transparent confidence interval.
 #'
-#' @param x an object of class \code{"spec"}.
+#' @param x a spectral object.
 #' @param conf if \code{TRUE} (the default) add a transparent confidence
 #'   interval (suppressed if \code{x} contains no error limits).
 #' @param bPeriod if \code{TRUE} the x-axis is displayed in units of period
@@ -103,7 +103,7 @@ LPlot <- function(x, conf = TRUE, bPeriod = FALSE, bNoPlot = FALSE, axes = TRUE,
 #' This function adds a spectrum to an existing double-logarithmic plot and
 #' optionally adds a transparent confidence interval.
 #' 
-#' @param x an object of class \code{"spec"}.
+#' @param x a spectral object.
 #' @param conf if \code{TRUE} (the default) add a transparent confidence
 #'   interval (suppressed if \code{x} contains no error limits).
 #' @param bPeriod if \code{TRUE} treat the x-axis values in units of period
@@ -317,10 +317,10 @@ PlotArraySpectra <- function(spec, marker = NA,
 #' Fig. 3).
 #'
 #' @param spec a (named) list of signal-to-noise ratio data sets: each data set
-#'   itself should be list containing at least a named element \code{snr} which
-#'   is an object of class \code{"spec"} providing signal-to-noise ratios as a
-#'   function of frequency. For Figure 3 in Münch and Laepple (2018) set
-#'   \code{spec} to the output from \code{\link{PublicationSNR}}.
+#'   itself should be list containing at least the spectral object
+#'   (`?spec.object`) \code{snr} providing signal-to-noise ratios as a function
+#'   of frequency. For Figure 3 in Münch and Laepple (2018) set \code{spec} to
+#'   the output from \code{\link{PublicationSNR}}.
 #' @param f.cut Shall the spectra be cut at the cutoff frequency constrained
 #'   by the diffusion correction strength? Defaults to \code{FALSE}.
 #' @param names an optional character vector of names of the proxy data
@@ -334,6 +334,7 @@ PlotArraySpectra <- function(spec, marker = NA,
 #'   \code{c(0.05, 0.1, 0.5, 1, 5)}.
 #' @inheritParams PlotArraySpectra
 #'
+#' @seealso `?spec.object` for the definition of a "proxysnr" spectral object.
 #' @author Thomas Münch
 #'
 #' @references
@@ -630,33 +631,31 @@ PlotStackCorrelation <- function(data, col.pal = NULL, label = "",
 
 #' Plot transfer functions
 #'
-#' Plot the spectral transfer functions of the effects of diffusion and/or time
-#' uncertainty.
+#' Plot the spectral transfer functions of the effects of diffusion-like
+#' smoothing and/or time uncertainty.
 #'
-#' You can plot only diffusion transfer functions by supplying the respective
-#' data to the \code{dtf} parameter and leaving the \code{ttf} parameter as
-#' \code{NULL}, or vice versa for plotting only time uncertainty transfer
-#' functions. Supplying both parameters will plot the supplied diffusion as well
-#' as time uncertainty transfer functions (which can differ in number) on a
-#' single plot with a shared x axis. Leaving both the \code{dtf} and \code{ttf}
-#' parameters as \code{NULL} (the default) will plot the diffusion and time
-#' uncertainty transfer functions that are provided with the \code{proxysnr}
-#' package, which corresponds to Figure B1 in Münch and Laepple (2018).
+#' You can plot only transfer functions describing diffusion-like smoothing
+#' processes by supplying the respective data to the \code{dtf} parameter and
+#' leaving the \code{ttf} parameter as \code{NULL}, or vice versa for plotting
+#' only time uncertainty transfer functions. Supplying both parameters will plot
+#' the supplied diffusional smoothing as well as time uncertainty transfer
+#' functions (which can differ in number) on a single plot with a shared x
+#' axis. Leaving both the \code{dtf} and \code{ttf} parameters as \code{NULL}
+#' (the default) will plot the firn diffusion and time uncertainty transfer
+#' functions that are provided with the \code{proxysnr} package, which
+#' corresponds to Figure B1 in Münch and Laepple (2018).
 #'
-#' @param dtf A list of transfer function data sets: each data set is an object
-#'   of class \code{"spec"} (see \code{?spectrum}) or a named list with minimum
-#'   components \code{freq} and \code{spec}, where component \code{freq} is a
-#'   numeric vector providing a frequency axis and component \code{spec} a
-#'   numeric vector with the corresponding diffusion transfer function
-#'   values. See Details for the meaning of \code{NULL}.
-#' @param ttf As \code{dtf} but providing time uncertainty transfer
+#' @param dtf a list of spectral objects (`?spec.object`) of the transfer
+#'   function datasets that describe a diffusion-type smoothing process. See
+#'   Details for the meaning of \code{NULL}.
+#' @param ttf as \code{dtf} but providing time uncertainty transfer
 #'   functions. See Details for the meaning of \code{NULL}.
 #' @param names an optional character vector of names for the transfer function
-#'   data sets. If \code{NULL}, the names of \code{dtf} and \code{ttf} are used
+#'   datasets. If \code{NULL}, the names of \code{dtf} and \code{ttf} are used
 #'   or, if not present, default names. Provide a list of two vectors of names,
-#'   if the diffusion and time uncertainty data sets differ in number, or, if
-#'   they do **not** differ in number but belong to different underlying
-#'   datasets.
+#'   if the diffusional smoothing and time uncertainty datasets differ in
+#'   number, or, if they do **not** differ in number but belong to different
+#'   underlying datasets.
 #' @param col a numeric or character vector of colors to use for the plotting;
 #'   if \code{NULL} default colors are used.
 #' @param dtf.threshold optional critical diffusion transfer function
@@ -682,6 +681,7 @@ PlotStackCorrelation <- function(data, col.pal = NULL, label = "",
 #' @param ytl2 as \code{ytl1} for the y axis on the time uncertainty transfer
 #'   function plot.
 #'
+#' @seealso `?spec.object` for the definition of a "proxysnr" spectral object.
 #' @author Thomas Münch
 #'
 #' @references Münch, T. and Laepple, T.: What climate signal is contained in

@@ -31,14 +31,28 @@ test_that("SeparateSignalFromNoise error checks work", {
   expect_error(SeparateSignalFromNoise(list(mean = mean, stack = stack)),
                m, fixed = TRUE)
 
-  m <- paste("Length of diffusion correction does not match",
-             "length of spectral estimates.")
+  m <- paste("`diffusion` must be a list with elements",
+             "`freq` and `spec` of equal length.")
+  tf <- list(a = 1)
   expect_error(SeparateSignalFromNoise(list(mean = mean, stack = stack, N = 1),
-                                       diffusion = 1), m, fixed = TRUE)
-  m <- paste("Length of time uncertainty correction does not match",
-             "length of spectral estimates.")
+                                       diffusion = tf), m, fixed = TRUE)
+  tf <- list(freq = 1, spec = 1 : 5)
   expect_error(SeparateSignalFromNoise(list(mean = mean, stack = stack, N = 1),
-                                       time.uncertainty = 1), m, fixed = TRUE)
+                                       diffusion = tf), m, fixed = TRUE)
+  m <- paste("`time.uncertainty` must be a list with elements",
+             "`freq` and `spec` of equal length.")
+  expect_error(SeparateSignalFromNoise(list(mean = mean, stack = stack, N = 1),
+                                       time.uncertainty = tf), m, fixed = TRUE)
+
+  tf <- list(freq = 1 : 5, spec = 1 : 5)
+  m <- paste("No sufficient frequency axis overlap between proxy data",
+             "and diffusion transfer function.")
+  expect_error(SeparateSignalFromNoise(list(mean = mean, stack = stack, N = 1),
+                                       diffusion = tf), m, fixed = TRUE)
+  m <- paste("No sufficient frequency axis overlap between proxy data",
+             "and time uncertainty transfer function.")
+  expect_error(SeparateSignalFromNoise(list(mean = mean, stack = stack, N = 1),
+                                       time.uncertainty = tf), m, fixed = TRUE)
 
 })
 
@@ -67,13 +81,13 @@ test_that("SeparateSignalFromNoise calculations work", {
 
   # with diffusion and time uncertainty correction and N included in input
 
-  diff <- rep(1.5, length(signal$freq))
-  tunc <- rep(1.1, length(signal$freq))
+  diff <- list(freq = signal$freq, spec = rep(1 / 1.5, length(signal$freq)))
+  tunc <- list(freq = signal$freq, spec = rep(1 / 1.1, length(signal$freq)))
 
   mean <- list(freq = signal$freq,
-               spec = (signal$spec + noise$spec) / diff)
+               spec = diff$spec * (signal$spec + noise$spec))
   stack <- list(freq = signal$freq,
-                spec = (signal$spec / tunc + noise$spec / n) / diff)
+                spec = diff$spec * (tunc$spec * signal$spec + noise$spec / n))
 
   actual <- SeparateSignalFromNoise(
     spectra = list(mean = mean, stack = stack, N = n),
@@ -83,5 +97,37 @@ test_that("SeparateSignalFromNoise calculations work", {
 
   expect_equal(actual, expected)
 
+  # test interpolation of transfer functions
 
+  data <- ObtainArraySpectra(dml$dml2)
+
+  dtf <- diffusion.tf$dml2
+  ttf <- time.uncertainty.tf$dml2
+  expected <- data %>%
+    SeparateSignalFromNoise(diffusion = dtf, time.uncertainty = ttf)
+
+  # artificially extend transfer functions outside range of data
+  # <- extension part should be exactly removed by interpolation routine
+  dtf.ext <- list(
+    freq = c(0, 0.0005, 0.0006, 0.0009, dtf$freq, 0.5, 0.6, 0.7, 0.9, 1, 10),
+    spec = c(runif(4, 0.1, 1), dtf$spec, runif(6, 0.1, 1))
+  )
+  ttf.ext <- list(
+    freq = c(0, 0.0001, 0.0002, 0.0003, 0.0004, 0.0005, ttf$freq, 1, 10),
+    spec = c(runif(6, 0.1, 1), ttf$spec, runif(2, 0.1, 1))
+  )
+
+  actual <- data %>%
+    SeparateSignalFromNoise(diffusion = dtf.ext, time.uncertainty = ttf.ext)
+
+  expect_equal(actual, expected)
+
+  # test applying transfer function calculated on semi-annual resolution on
+  # annual resolution package data
+  tf <- CalculateDiffusionTF(nt = length(1994 : 1000) / 0.5, nc = 3, ns = 3,
+                             sigma = proxysnr:::diffusion.length$dml2[, -1],
+                             res = 0.5)
+
+  expect_no_error(SeparateSignalFromNoise(data, diffusion = tf))
+                             
 })

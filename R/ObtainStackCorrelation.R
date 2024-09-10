@@ -11,8 +11,8 @@
 #' \code{f.int1 = f1} and \code{f.int2} consecutively increases from \code{f1}
 #' to \code{f2}.
 #'
-#' @param input a list of the spectral objects lists \code{signal} and
-#'   \code{noise}, usually to be obtained from a call to
+#' @param input a list of the spectral objects (`?spec.object`) \code{signal}
+#'   and \code{noise}, usually to be obtained from a call to
 #'   \code{\link{SeparateSignalFromNoise}}.
 #' @param N integer vector with the number of records in the assumed stack;
 #'   correlations are then calculated for stacks with record numbers according
@@ -40,7 +40,8 @@
 #' }
 #'
 #' @author Thomas Münch
-#' @seealso \code{\link{PlotStackCorrelation}}
+#' @seealso \code{\link{PlotStackCorrelation}}, `?spec.object` for the
+#'   definition of a "proxysnr" spectral object.
 #'
 #' @references
 #' Münch, T. and Laepple, T.: What climate signal is contained in

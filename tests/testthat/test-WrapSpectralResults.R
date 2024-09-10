@@ -22,7 +22,7 @@ test_that("WrapSpectralResults works", {
   m <- "No data sets supplied."
   expect_error(WrapSpectralResults(), m)
 
-  m <- "Mismatch of dimensions of input data and correction function(s)."
+  m <- "Number of transfer functions must match number of datasets."
   expect_error(WrapSpectralResults(data[[1]], data[[2]], data[[3]],
                                    diffusion = NA),
                m, fixed = TRUE)
@@ -84,30 +84,5 @@ test_that("WrapSpectralResults works", {
   expect_true(is.na(spec[[3]]$corr.t.unc.only$f.cutoff))
   expect_true(is.numeric(spec[[3]]$corr.diff.only$f.cutoff))
   expect_true(is.numeric(spec[[3]]$corr.full$f.cutoff))
-
-  # test with inverse correction functions as input
-
-  diffusion <- list(
-    list(freq = seq(1 / nt[1], 0.5, length.out = nt[1] / 2),
-         spec = 1 / rep(0.8, nt[1] / 2)),
-    NA,
-    list(freq = seq(1 / nt[3], 0.5, length.out = nt[3] / 2),
-         spec = 1/ rep(0.8, nt[3] / 2))
-  )
-  time.uncertainty <- list(
-    NA,
-    list(freq = seq(1 / nt[2], 0.5, length.out = nt[2] / 2),
-         spec = 1 / rep(0.95, nt[2] / 2)),
-    list(freq = seq(1 / nt[3], 0.5, length.out = nt[3] / 2),
-         spec = 1 / rep(0.95, nt[3] / 2))
-  )
-
-  spec.inv <- WrapSpectralResults(data[[1]], data[[2]], data[[3]],
-                                  diffusion = diffusion,
-                                  time.uncertainty = time.uncertainty,
-                                  crit.diffusion = 1 / 0.9,
-                                  inverse.tf = TRUE)
-
-  expect_equal(spec, spec.inv)
 
 })

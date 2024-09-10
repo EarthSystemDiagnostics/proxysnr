@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 
 ## Overview
 
-This vignette documents the calculation of the spectral transfer functions for
+This vignette describes the calculation of the spectral transfer functions for
 the effects of vapour diffusion and time uncertainty. The transfer functions
 describe the loss in spectral power as a function of frequency that is expected
 due to these two processes: for time uncertainty, the loss applies to the
@@ -77,38 +77,23 @@ stability of the results:
 res <- 1/2
 ```
 
-If the simulation resolution differs from the target resolution, also the
-simulated frequency axis of the diffusion transfer function will differ from the
-respective frequency axis of the proxy spectra. Therefore, the transfer
-functions are interpolated in frequency space on the target frequency axis of
-the proxy spectra, which hence needs to be supplied.
-
-Here, for convenience, we load the required target frequency axes from the data
-supplied with the package.
-```{r}
-ff <- list()
-ff$dml1 <- diffusion.tf$dml1$freq
-ff$dml2 <- diffusion.tf$dml2$freq
-ff$wais <- diffusion.tf$wais$freq
-```
-
 Finally, we specify the number of Monte Carlo simulations used to obtain the
 transfer functions. In general, an average of a large number of simulations is
 needed to reduce the spectral uncertainties and obtain smooth
-estimates. However, since this takes considerable amount of computation time,
-for the vignette building only a small number of simulations is used here:
+estimates. However, to reduce computation time, only a small number of
+simulations is used here for the vignette:
 ```{r}
 ns <- 10
 ```
 
 Note that for the results of Münch and Laepple (2018), `ns` has been set to
-`100,000`, which required a computation time of 1--3 hours depending on the data
-set (using a 2.4 GHz Intel Core i5 processor).
+`100,000`, which required a computation time of 1--3 hours depending on the
+dataset (using a 2.4 GHz Intel Core i5 processor).
 
 ## DML1 isotope records
 
-In the following, we document all data-set-specific parameters needed for the
-calculations along the example of the DML1 data set of isotope records.
+In the following, we document all dataset-specific parameters needed for the
+calculations along the example of the DML1 dataset of isotope records.
 
 Specify the number of proxy records ("cores") in the studied array:
 ```{r}
@@ -132,12 +117,12 @@ acp <- c(1994, 1884, 1816, 1810)
 ```
 
 Set the rate of the random process which perturbs the proxy record chronologies,
-so here the rate of missing or double-counting of a layer. We use symmetric
+so here the rate of missing or double-counting of a layer; we use symmetric
 rates here:
 ```{r}
 rate <- 0.013
 ```
-Specify a numeric vector with two entries to use asymmetric rates.
+(Specify a numeric vector with two entries to use asymmetric rates.)
 
 For the diffusion simulations, estimates of the diffusion length (in units of
 the record resolution) are needed as a function of time since deposition, which
@@ -149,37 +134,25 @@ source under `./data-raw/produce-internal-data.R`, where `.` is the root of the
 package source directory. For further information see the publication Münch and
 Laepple (2018).
 
-Finally, run the calculations and store only the ratio of average output over
-input spectra, i.e. the transfer function.
-
-Run the diffusion model:
+We can now run the diffusion model,
 ```{r}
 set.seed(4122018)
-tmp <- CalculateDiffusionTF(nt = nt / res, nc = nc, ns = ns,
-                            sigma = proxysnr:::diffusion.length$dml1[, -1],
-                            res = res)$ratio
+dtf$dml1 <- CalculateDiffusionTF(nt = nt / res, nc = nc, ns = ns,
+                                 sigma = proxysnr:::diffusion.length$dml1[, -1],
+                                 res = res)
 ```
 
-Since we used a certain simulation resolution, we have to interpolate onto the
-target resolution of our proxy data:
-```{r}
-dtf$dml1 <- tmp # copy first to preserve attributes
-dtf$dml1$freq <- ff$dml1
-dtf$dml1$spec <- approx(tmp$freq, tmp$spec, dtf$dml1$freq)$y
-```
-
-Run the time uncertainty model with Gaussian white noise as surrogate data:
+and the time uncertainty model with Gaussian white noise as surrogate data:
 ```{r}
 set.seed(4122018)
 if (has.simproxyage) {
   suppressMessages(
     ttf$dml1 <- CalculateTimeUncertaintyTF(t = t, acp = acp, nt = nt, nc = nc,
                                            ns = ns, rate = rate,
-                                           surrogate.fun = rnorm)$ratio
+                                           surrogate.fun = rnorm)
   )
 } else {
-  ttf$dml1$freq <- dtf$dml1$freq
-  ttf$dml1$spec <- rep(NA, length(dtf$dml1$freq))
+  ttf <- NULL
 }
 ```
 
@@ -196,23 +169,16 @@ nt <- length(t)
 acp <- c(1994, 1884, 1816, 1810, 1459, 1259)
 rate <- 0.013
 
-tmp <- CalculateDiffusionTF(nt = nt / res, nc = nc, ns = ns,
-                            sigma = proxysnr:::diffusion.length$dml2[, -1],
-                            res = res)$ratio
-
-dtf$dml2 <- tmp
-dtf$dml2$freq <- ff$dml2
-dtf$dml2$spec <- approx(tmp$freq, tmp$spec, dtf$dml2$freq)$y
+dtf$dml2 <- CalculateDiffusionTF(nt = nt / res, nc = nc, ns = ns,
+                                 sigma = proxysnr:::diffusion.length$dml2[, -1],
+                                 res = res)
 
 if (has.simproxyage) {
   suppressMessages(
     ttf$dml2 <- CalculateTimeUncertaintyTF(t = t, acp = acp, nt = nt, nc = nc,
                                            ns = ns, rate = rate,
-                                           surrogate.fun = rnorm)$ratio
+                                           surrogate.fun = rnorm)
   )
-} else {
-  ttf$dml2$freq <- dtf$dml2$freq
-  ttf$dml2$spec <- rep(NA, length(dtf$dml2$freq))
 }
 ```
 
@@ -227,23 +193,16 @@ nt <- length(t)
 acp <- c(2000, 1992, 1964, 1885, 1837, 1816, 1810)
 rate <- 0.027
 
-tmp <- CalculateDiffusionTF(nt = nt / res, nc = nc, ns = ns,
-                            sigma = proxysnr:::diffusion.length$wais[, -1],
-                            res = res)$ratio
-
-dtf$wais <- tmp
-dtf$wais$freq <- ff$wais
-dtf$wais$spec <- approx(tmp$freq, tmp$spec, dtf$wais$freq)$y
+dtf$wais <- CalculateDiffusionTF(nt = nt / res, nc = nc, ns = ns,
+                                 sigma = proxysnr:::diffusion.length$wais[, -1],
+                                 res = res)
 
 if (has.simproxyage) {
   suppressMessages(
     ttf$wais <- CalculateTimeUncertaintyTF(t = t, acp = acp, nt = nt, nc = nc,
                                            ns = ns, rate = rate,
-                                           surrogate.fun = rnorm)$ratio
+                                           surrogate.fun = rnorm)
   )
-} else {
-  ttf$wais$freq <- dtf$wais$freq
-  ttf$wais$spec <- rep(NA, length(dtf$wais$freq))
 }
 ```
 
@@ -275,4 +234,3 @@ Münch, T. and Laepple, T.: What climate signal is contained in decadal- to
 centennial-scale isotope variations from Antarctic ice cores?, Clim. Past, 14,
 2053-2070, doi:
 [10.5194/cp-14-2053-2018](https://doi.org/10.5194/cp-14-2053-2018), 2018.
-

@@ -3,10 +3,10 @@
 \docType{data}
 \name{time.uncertainty.tf}
 \alias{time.uncertainty.tf}
-\title{Calculated time uncertainty transfer functions}
+\title{Time uncertainty transfer functions}
 \format{
 A named list with the 3 elements \code{dml1}, \code{dml2}, and
-  \code{wais}, where each element is a list of 2 numeric vectors:
+  \code{wais}, where each element is a spectral object:
   \describe{
   \item{\code{freq}:}{the frequency axis in units of \code{1 / yr},}
   \item{\code{spec}:}{the transfer function value at each frequency.}
@@ -14,19 +14,18 @@ A named list with the 3 elements \code{dml1}, \code{dml2}, and
 }
 \source{
 The transfer functions were obtained using
-\code{?CalculateTimeUncertaintyTF}. See also the respective package
-vignette:
-\code{vignette(topic = "calculate-transfer-functions", package = "proxysnr")}.
+\code{?CalculateTimeUncertaintyTF}; see also the respective package
+vignette \code{vignette("calculate-transfer-functions")}.
 }
 \usage{
 time.uncertainty.tf
 }
 \description{
 A dataset containing the calculated time uncertainty transfer functions for
-the DML1, DML2 and WAIS data sets from Münch and Laepple (2018) based on
+the DML1, DML2 and WAIS records from Münch and Laepple (2018) based on
 numerical simulations. The transfer function describes the effect time
 uncertainty has on the spectrum of the average (in the time domain) of
-\code{N} proxy records.
+a number of `N` proxy records.
 }
 \references{
 Münch, T. and Laepple, T.: What climate signal is contained in
@@ -36,6 +35,6 @@ Clim. Past, 14, 2053–2070, \url{https://doi.org/10.5194/cp-14-2053-2018},
 }
 \seealso{
 \code{\link{CalculateTimeUncertaintyTF}}\cr
-\code{vignette(topic = "calculate-transfer-functions", package = "proxysnr")}
+\code{vignette("calculate-transfer-functions")}
 }
 \keyword{datasets}

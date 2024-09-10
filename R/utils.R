@@ -18,8 +18,9 @@ check.if.spectrum <- function(x) {
   
   if (!is.list(x)) stop(msg, call. = FALSE)
 
-  if (!all(utils::hasName(x, c("freq", "spec"))) | stats::sd(lengths(x)) > 0)
-    stop(msg, call. = FALSE)
+  if (!all(utils::hasName(x, c("freq", "spec")))) stop(msg, call. = FALSE)
+
+  if (stats::sd(lengths(x[c("freq", "spec")])) > 0) stop(msg, call. = FALSE)
 
   invisible(TRUE)
 
@@ -48,7 +49,7 @@ is.spectrum <- function(x) {
 #' frequency axis of a target spectrum. This check is useful before
 #' interpolating a spectrum onto some target frequency axis.
 #'
-#' @param x a spectral object or list with components `freq` and `spec`.
+#' @param x a spectral object.
 #' @param target as \code{x} for the target spectrum.
 #' @return \code{TRUE} when the target frequency axis falls within the range of
 #'   the frequency axis of \code{x}, \code{FALSE} otherwise.
@@ -61,7 +62,7 @@ has.common.freq <- function(x, target) {
   ftarget <- target$freq
   fx <- x$freq
 
-  min(fx) <= min(ftarget) & max(fx) >= max(ftarget)
+  min(fx) %<=% min(ftarget) & max(fx) %>=% max(ftarget)
 
 }
 

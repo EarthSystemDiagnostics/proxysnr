@@ -60,16 +60,16 @@
 #' 2018.
 "wais"
 
-#' Calculated diffusion transfer functions
+#' Diffusion transfer functions
 #'
 #' A dataset containing the calculated diffusion transfer functions for the
-#' DML1, DML2 and WAIS data sets from Münch and Laepple (2018) based on
-#' numerical simulations. The transfer function describes the average effect
-#' diffusion has on the mean of the spectra from \code{N} spatially distributed
-#' oxygen isotope records.
+#' DML1, DML2 and WAIS records from Münch and Laepple (2018) based on numerical
+#' simulations. The transfer function describes the average effect firn
+#' diffusion has on the mean of the spectra from a number of `N` spatially
+#' distributed oxygen isotope records.
 #'
 #' @format A named list with the 3 elements \code{dml1}, \code{dml2}, and
-#'   \code{wais}, where each element is a list of 2 numeric vectors:
+#'   \code{wais}, where each element is a spectral object:
 #'   \describe{
 #'   \item{\code{freq}:}{the frequency axis in units of \code{1 / yr},}
 #'   \item{\code{spec}:}{the transfer function value at each frequency.}
@@ -78,13 +78,22 @@
 #' @source
 #' The transfer functions were obtained using \code{?CalculateDiffusionTF} for
 #' the site-specific diffusion lengths provided by
-#' \code{proxysnr:::diffusion.length}. Isotope records were simulated at
-#' semiannual resolution and the transfer functions interpolated in frequency
-#' space to annual resolution. See also the respective package vignette:
-#' \code{vignette(topic = "calculate-transfer-functions", package = "proxysnr")}.
+#' \code{proxysnr:::diffusion.length}; see also the respective package
+#' vignette \code{vignette("calculate-transfer-functions")}. Isotope records
+#' were simulated at semi-annual resolution and the transfer functions
+#' interpolated in frequency space to annual resolution. Note here that prior to
+#' `proxysnr` v1.0.0, the transer functions supplied to
+#' `SeparateSignalFromNoise()` needed to match in frequency axis the spectra of 
+#' the analysed data, hence the interpolation step. From `proxysnr` v1.0.0
+#' onwards this is no longer required, as the frequency axis overlap is checked
+#' within `SeparateSignalFromNoise()`, with interpolation taking place there, if
+#' needed. The example firn diffusion transfer functions here were, however,
+#' left as originally produced to maintain consistency with the results
+#' published in Münch and Laepple (2018).
+#'
 #' @seealso
 #' \code{\link{CalculateDiffusionTF}}\cr
-#' \code{vignette(topic = "calculate-transfer-functions", package = "proxysnr")}
+#' \code{vignette("calculate-transfer-functions")}
 #' @references
 #' Münch, T. and Laepple, T.: What climate signal is contained in
 #' decadal- to centennial-scale isotope variations from Antarctic ice cores?
@@ -92,16 +101,16 @@
 #' 2018.
 "diffusion.tf"
 
-#' Calculated time uncertainty transfer functions
+#' Time uncertainty transfer functions
 #'
 #' A dataset containing the calculated time uncertainty transfer functions for
-#' the DML1, DML2 and WAIS data sets from Münch and Laepple (2018) based on
+#' the DML1, DML2 and WAIS records from Münch and Laepple (2018) based on
 #' numerical simulations. The transfer function describes the effect time
 #' uncertainty has on the spectrum of the average (in the time domain) of
-#' \code{N} proxy records.
+#' a number of `N` proxy records.
 #'
 #' @format A named list with the 3 elements \code{dml1}, \code{dml2}, and
-#'   \code{wais}, where each element is a list of 2 numeric vectors:
+#'   \code{wais}, where each element is a spectral object:
 #'   \describe{
 #'   \item{\code{freq}:}{the frequency axis in units of \code{1 / yr},}
 #'   \item{\code{spec}:}{the transfer function value at each frequency.}
@@ -109,12 +118,11 @@
 #'
 #' @source
 #' The transfer functions were obtained using
-#' \code{?CalculateTimeUncertaintyTF}. See also the respective package
-#' vignette:
-#' \code{vignette(topic = "calculate-transfer-functions", package = "proxysnr")}.
+#' \code{?CalculateTimeUncertaintyTF}; see also the respective package
+#' vignette \code{vignette("calculate-transfer-functions")}.
 #' @seealso
 #' \code{\link{CalculateTimeUncertaintyTF}}\cr
-#' \code{vignette(topic = "calculate-transfer-functions", package = "proxysnr")}
+#' \code{vignette("calculate-transfer-functions")}
 #' @references
 #' Münch, T. and Laepple, T.: What climate signal is contained in
 #' decadal- to centennial-scale isotope variations from Antarctic ice cores?
@@ -122,3 +130,16 @@
 #' 2018.
 "time.uncertainty.tf"
 
+#' "proxysnr" spectral object
+#'
+#' @description{
+#' A spectral object is a named list of the two elements `freq` and `spec`,
+#' which are numeric vectors of the same length holding a frequency axis and the
+#' corresponding power spectral densities.
+#'
+#' Optionally, the list can in addition include a vector with the degrees of
+#' freedom of the spectrum (list element \code{dof}) and be of class "spec", but
+#' "proxysnr" does not include any methods generic to that class as of now.
+#' }
+#' @name spec.object
+NULL

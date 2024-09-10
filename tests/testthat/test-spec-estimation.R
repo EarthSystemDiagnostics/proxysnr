@@ -97,4 +97,13 @@ test_that("interpolating spectra works", {
   expect_equal(actual$freq, target$freq)
   expect_equal(actual$spec, c(NA, 2 : 5))
 
+  # test on case where floating point precision is an issue
+
+  spec <- ObtainArraySpectra(wais)
+
+  expected <- time.uncertainty.tf$wais
+  actual   <- InterpolateSpectrum(time.uncertainty.tf$wais, spec$mean)
+
+  expect_equal(actual$spec, expected$spec)
+
 })
