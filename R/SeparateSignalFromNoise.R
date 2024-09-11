@@ -96,7 +96,7 @@ SeparateSignalFromNoise <- function(spectra, neff = spectra$N,
              call. = FALSE)
     }
 
-    mns <- measurement.noise
+    mns <- c(measurement.noise)
 
   } else {
 
@@ -106,7 +106,7 @@ SeparateSignalFromNoise <- function(spectra, neff = spectra$N,
       measurement.noise <- InterpolateSpectrum(measurement.noise, spectra$mean)
     } else {
       stop("No sufficient frequency axis overlap between proxy data ",
-           "and measurement noise.", call. = FALSE)
+           "and measurement noise spectrum.", call. = FALSE)
     }
 
     mns <- measurement.noise$spec
