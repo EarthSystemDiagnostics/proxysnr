@@ -24,6 +24,7 @@
 #' @param neff the effective number of records (e.g. to account for an expected
 #'   spatial correlation of the local noise). Per default set to element
 #'   \code{N} in \code{spectra}, otherwise supply it explicitly here.
+#' @param measurement.noise 
 #' @param diffusion a spectral object of a transfer function desribing a
 #'   diffusion-like proxy smoothing process (see Details), e.g. diffusion in ice
 #'   cores (see also \code{\link{CalculateDiffusionTF}}). Internally, the
@@ -58,6 +59,7 @@
 #' @export
 #'
 SeparateSignalFromNoise <- function(spectra, neff = spectra$N,
+                                    measurement.noise = NULL,
                                     diffusion = NULL, time.uncertainty = NULL) {
 
   # error checking
@@ -83,6 +85,34 @@ SeparateSignalFromNoise <- function(spectra, neff = spectra$N,
     stop("Supply (effective) number of records.")
   }
 
+  if (is.null(measurement.noise)) {
+
+    mns <- 0
+
+  } else if (is.numeric(measurement.noise)) {
+
+    if (length(measurement.noise) != 1) {
+        stop("`measurement.noise` must be a single value or a spectral object.",
+             call. = FALSE)
+    }
+
+    mns <- measurement.noise
+
+  } else {
+
+    check.if.spectrum(measurement.noise)
+
+    if (has.common.freq(measurement.noise, spectra$mean)) {
+      measurement.noise <- InterpolateSpectrum(measurement.noise, spectra$mean)
+    } else {
+      stop("No sufficient frequency axis overlap between proxy data ",
+           "and measurement noise.", call. = FALSE)
+    }
+
+    mns <- measurement.noise$spec
+
+  }
+
   if (is.null(diffusion)) {
 
     dtf.corr <- 1
@@ -95,7 +125,7 @@ SeparateSignalFromNoise <- function(spectra, neff = spectra$N,
       diffusion <- InterpolateSpectrum(diffusion, spectra$mean)
     } else {
       stop("No sufficient frequency axis overlap between proxy data ",
-           "and diffusion transfer function.")
+           "and diffusion transfer function.", call. = FALSE)
     }
 
     dtf.corr <- 1 / diffusion$spec
@@ -114,7 +144,7 @@ SeparateSignalFromNoise <- function(spectra, neff = spectra$N,
       time.uncertainty <- InterpolateSpectrum(time.uncertainty, spectra$mean)
     } else {
       stop("No sufficient frequency axis overlap between proxy data ",
-           "and time uncertainty transfer function.")
+           "and time uncertainty transfer function.", call. = FALSE)
     }
 
     ttf.corr <- 1 / time.uncertainty$spec
@@ -133,7 +163,7 @@ SeparateSignalFromNoise <- function(spectra, neff = spectra$N,
   signal$freq <- noise$freq <- snr$freq <- spectra$mean$freq
 
   signal$spec <- eta * ttf.corr * dtf.corr * (stack - mean / N)
-  noise$spec  <- eta * dtf.corr * (mean - ttf.corr * stack)
+  noise$spec  <- eta * dtf.corr * (mean - ttf.corr * stack - mns / eta)
 
   snr$spec <- signal$spec / noise$spec
   
