@@ -24,7 +24,13 @@
 #' @param neff the effective number of records (e.g. to account for an expected
 #'   spatial correlation of the local noise). Per default set to element
 #'   \code{N} in \code{spectra}, otherwise supply it explicitly here.
-#' @param measurement.noise 
+#' @param measurement.noise a measurement noise level for correcting the proxy
+#'   noise spectrum: either a single value or a spectral object. In the former
+#'   case, the value is used as the total variance of the measurement noise,
+#'   i.e. the level of an assumed white measurement noise spectrum; the latter
+#'   case can be applied if the measurement noise has a different spectral shape
+#'   (but its frequency range must then cover the frequency range of the proxy
+#'   spectra). The default `NULL` assumes no measurement noise.
 #' @param diffusion a spectral object of a transfer function desribing a
 #'   diffusion-like proxy smoothing process (see Details), e.g. diffusion in ice
 #'   cores (see also \code{\link{CalculateDiffusionTF}}). Internally, the
