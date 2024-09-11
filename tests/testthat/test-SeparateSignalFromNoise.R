@@ -1,5 +1,7 @@
 test_that("SeparateSignalFromNoise error checks work", {
 
+  # --- test main input checks -------------------------------------------------
+
   m <- "`spectra` must be a list."
   expect_error(SeparateSignalFromNoise(1), m, fixed = TRUE)
 
@@ -31,6 +33,36 @@ test_that("SeparateSignalFromNoise error checks work", {
   expect_error(SeparateSignalFromNoise(list(mean = mean, stack = stack)),
                m, fixed = TRUE)
 
+  # --- test input checks related to measurement noise -------------------------
+
+  m <- paste("`measurement.noise` must be a single value or a spectral object.")
+  measurement.noise <- rnorm(3)
+  expect_error(SeparateSignalFromNoise(list(mean = mean, stack = stack, N = 1),
+                                       measurement.noise = measurement.noise),
+               m, fixed = TRUE)
+
+  # should also work with length-1 array
+  measurement.noise <- matrix(0.1, 1, 1)
+  expect_no_warning(SeparateSignalFromNoise(
+    list(mean = mean, stack = stack, N = 1),
+    measurement.noise = measurement.noise))
+
+  m <- paste("`measurement.noise` must be a list with elements",
+             "`freq` and `spec` of equal length.")
+  measurement.noise <- list(a = 1)
+  expect_error(SeparateSignalFromNoise(list(mean = mean, stack = stack, N = 1),
+                                       measurement.noise = measurement.noise),
+               m, fixed = TRUE)
+
+  m <- paste("No sufficient frequency axis overlap between proxy data",
+             "and measurement noise spectrum.")
+  measurement.noise <- list(freq = 0.5, spec = 0.1)
+  expect_error(SeparateSignalFromNoise(list(mean = mean, stack = stack, N = 1),
+                                       measurement.noise = measurement.noise),
+               m, fixed = TRUE)
+
+  # --- test input checks related to transfer functions ------------------------
+
   m <- paste("`diffusion` must be a list with elements",
              "`freq` and `spec` of equal length.")
   tf <- list(a = 1)
@@ -58,6 +90,8 @@ test_that("SeparateSignalFromNoise error checks work", {
 
 test_that("SeparateSignalFromNoise calculations work", {
 
+  # --- test default behaviour -------------------------------------------------
+
   signal <- list(freq = 1 : 10, spec = 1 : 10)
   noise <- list(freq = 1 : 10, spec = rep(5, 10))
   snr <- list(freq = 1 : 10, spec = signal$spec / noise$spec)
@@ -73,13 +107,13 @@ test_that("SeparateSignalFromNoise calculations work", {
 
   expect_equal(actual, expected)
 
-  # test deprecated function name
+  # --- test deprecated function name ------------------------------------------
 
   expect_warning(actual <- SeparateSpectra(spectra = list(mean = mean, stack = stack),
                                            neff = n))
   expect_equal(actual, expected)
 
-  # with diffusion and time uncertainty correction and N included in input
+  # --- test including N and transfer function input ---------------------------
 
   diff <- list(freq = signal$freq, spec = rep(1 / 1.5, length(signal$freq)))
   tunc <- list(freq = signal$freq, spec = rep(1 / 1.1, length(signal$freq)))
@@ -97,7 +131,7 @@ test_that("SeparateSignalFromNoise calculations work", {
 
   expect_equal(actual, expected)
 
-  # test interpolation of transfer functions
+  # --- test interpolation of transfer functions -------------------------------
 
   data <- ObtainArraySpectra(dml$dml2)
 
@@ -129,5 +163,36 @@ test_that("SeparateSignalFromNoise calculations work", {
                              res = 0.5)
 
   expect_no_error(SeparateSignalFromNoise(data, diffusion = tf))
-                             
+
+  # --- test measurement noise input -------------------------------------------
+
+  # white measurement noise as a single value
+
+  signal <- list(freq = 1 : 10, spec = 1 : 10)
+  noise <- list(freq = 1 : 10, spec = rep(5, 10))
+  snr <- list(freq = 1 : 10, spec = signal$spec / noise$spec)
+  class(signal) <- class(noise) <- class(snr) <- "spec"
+
+  n <- 5
+  measurement_noise <- 0.25
+  mean <- list(freq = signal$freq,
+               spec = signal$spec + noise$spec + measurement_noise)
+  stack <- list(freq = signal$freq,
+                spec = signal$spec + noise$spec / n + measurement_noise / n)
+
+  actual <- SeparateSignalFromNoise(spectra = list(mean = mean, stack = stack),
+                                    neff = n, measurement.noise = measurement_noise)
+  expected <- list(signal = signal, noise = noise, snr = snr)
+
+  expect_equal(actual, expected)
+
+  # white measurement noise as a spectral object
+
+  measurement_noise <- list(freq = c(0.5, 3, 8, 15), spec = rep(0.25, 4))
+
+  actual <- SeparateSignalFromNoise(spectra = list(mean = mean, stack = stack),
+                                    neff = n, measurement.noise = measurement_noise)
+
+  expect_equal(actual, expected)
+
 })
