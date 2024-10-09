@@ -82,3 +82,33 @@ test_that("extracting relative quantiles from realizations works", {
   expect_true(all(ci$snr$upper > 1))
 
 })
+
+test_that("CI estimation works", {
+
+  spectra <- ObtainArraySpectra(dml$dml2, df.log = 0.15) %>%
+    SeparateSignalFromNoise(diffusion = diffusion.tf$dml2)
+
+  spectra.with.ci <- EstimateCI(spectra, f.end = 0.1, nc = 3, res = 1,
+                                nmc = 3, df.log = NULL, ci.df.log = NULL)
+
+  expect_type(spectra.with.ci, "list")
+  expect_length(spectra.with.ci, 3)
+  expect_named(spectra.with.ci, c("signal", "noise", "snr"))
+
+  nms <- c("freq", "spec", "lim.1", "lim.2")
+
+  expect_type(spectra.with.ci$signal, "list")
+  expect_true(all(utils::hasName(spectra.with.ci$signal, nms)))
+
+  expect_type(spectra.with.ci$noise, "list")
+  expect_true(all(utils::hasName(spectra.with.ci$noise, nms)))
+
+  expect_type(spectra.with.ci$snr, "list")
+  expect_true(all(utils::hasName(spectra.with.ci$snr, nms)))
+
+  # test with log-smoothing switched on
+  expect_no_error(
+    EstimateCI(spectra, f.end = 0.1, nc = 3, res = 1,
+               nmc = 3, df.log = 0.1, ci.df.log = 0.05))
+
+})
