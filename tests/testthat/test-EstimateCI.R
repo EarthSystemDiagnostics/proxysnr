@@ -29,3 +29,14 @@ test_that("simulated signal and noise spectra are valid", {
   expect_true(is.spectrum(sim$snr))
 
 })
+
+test_that("running surrogate signal and noise spectra works", {
+
+  sim <- runSurrogates(signal.par, noise.par, nc = nc, nt = nt,
+                       res = 1, nmc = nmc)
+
+  expect_type(sim, "list")
+  expect_length(sim, nmc)
+  expect_equal(lengths(sim), rep(3, nmc))
+
+})

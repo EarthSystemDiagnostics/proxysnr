@@ -60,3 +60,27 @@ simSignalAndNoise <- function(signal.par, noise.par, nc, nt, res,
     SeparateSignalFromNoise()
 
 }
+
+#' Monte Carlo signal and noise simulations 
+#'
+#' Replicate \code{\link{simSignalAndNoise}} a given number of times.
+#'
+#' @param nmc integer; the number of replications.
+#' @inheritParams simSignalAndNoise
+#' @return a list of length \code{nmc} where each list element is one signal and
+#'   noise estimation realization, i.e. the output of
+#'   \code{\link{simSignalAndNoise}}.
+#' @author Thomas Münch
+#' @seealso \code{\link{simSignalAndNoise}}, \code{\link{simCoreArray}}
+#'
+runSurrogates <- function(signal.par, noise.par, nc, nt, res, nmc = 10,
+                          df.log = NULL) {
+
+  replicate(nmc,
+            simSignalAndNoise(signal.par = signal.par,
+                              noise.par = noise.par,
+                              nc = nc, nt = nt, res = res,
+                              df.log = df.log),
+            simplify = FALSE)
+
+}
