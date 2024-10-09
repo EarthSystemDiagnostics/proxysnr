@@ -84,3 +84,41 @@ test_that("checking of common frequency axes works", {
   # <- is FALSE for base >= type comparison due to floating point representation
 
 })
+
+test_that("subsetting spectrum by frequency range works", {
+
+  s <- list(freq = seq(1 / 100, 0.5, length.out = 50), spec = rnorm(50))
+
+  # per default no subset should be made
+  expect_equal(fwindow(s), s)
+
+  # use lower bound
+  s1 <- list(freq = s$freq[-(1 : 20)], spec = s$spec[-(1 : 20)])
+  expect_equal(fwindow(s, f.start = 0.21), s1)
+
+  # use upper bound
+  s2 <- list(freq = s$freq[1 : 42], spec = s$spec[1 : 42])
+  expect_equal(fwindow(s, f.end = 0.42), s2)
+
+  # use lower and upper bound
+  s3 <- list(freq = s$freq[15 : 30], spec = s$spec[15 : 30])
+  expect_equal(fwindow(s, f.start = 0.15, f.end = 0.3), s3)
+
+})
+
+test_that("fitting a power law to spectrum works", {
+
+  x <- SimPLS(1000, beta = 1, alpha = 10) %>%
+    SpecMTM(deltat = 1)
+
+  plpar <- fit.powerlaw(x)
+
+  expect_type(plpar, "list")
+  expect_length(plpar, 2)
+  expect_named(plpar, c("alpha", "beta"))
+  expect_equal(lengths(plpar, use.names = FALSE), c(1, 1))
+
+  expect_true(plpar$alpha > 0)
+  expect_true(plpar$beta > 0)
+
+})

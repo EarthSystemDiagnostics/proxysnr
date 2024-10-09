@@ -110,3 +110,67 @@ check.simproxyage <- function(stop.on.false = FALSE) {
   invisible(has.simproxyage)
 
 }
+
+#' Spectral object window
+#'
+#' Extract a subset of a given spectral object observed between the specified
+#' lower and upper frequencies.
+#'
+#' @param x a spectral object.
+#' @param f.start the lower frequency of interest; the default \code{NULL} uses
+#'   the lowest frequency of \code{x}.
+#' @param f.end the upper frequency of interest; the default \code{NULL} uses
+#'   the uppermost frequency of \code{x}.
+#' @return a subset of the spectral object as observed between \code{f.start}
+#'   and \code{f.end}. If both \code{f.start} and \code{f.end} are \code{NULL}
+#'   the input \code{x} is returned.
+#'
+#' @author Thomas Münch
+#' @noRd
+#'
+fwindow <- function(x, f.start = NULL, f.end = NULL) {
+
+  if (is.null(f.start) & is.null(f.end)) return(x)
+
+  n <- length(x$freq)
+  i.lo <- if (is.null(f.start)) 1 else min(which(x$freq %>=% f.start))
+  i.hi <- if (is.null(f.end)) n else max(which(x$freq %<=% f.end))
+
+  x$freq <- x$freq[i.lo : i.hi]
+  x$spec <- x$spec[i.lo : i.hi]
+
+  return(x)
+
+}
+
+#' Linear regression on spectral object
+#'
+#' Perform a linear regression of a spectral object in logarithmic space to fit
+#' a power law of the form `alpha * f^{-beta}` where `f` denotes frequency.
+#'
+#' @param s a spectral object.
+#' @param f.start the lower end of the frequency range on which the fit is
+#'   estimated; the default \code{NULL} uses the lowest frequency of \code{s}.
+#' @param f.end the upper end of the frequency range on which the fit is
+#'   estimated; the default \code{NULL} uses the uppermost frequency of
+#'   \code{s}.
+#' @return a list with the `alpha` and `beta` parameters of the power law.
+#'
+#' @author Thomas Münch
+#' @noRd
+#'
+fit.powerlaw <- function(s, f.start = NULL, f.end = NULL) {
+
+  s <- fwindow(s, f.start, f.end)
+
+  x <- s$freq
+  y <- s$spec
+
+  y[y < 0] <- NA
+
+  coefs <- stats::lm(log(y) ~ log(x)) %>%
+    stats::coef()
+
+  list(alpha = exp(coefs[1]), beta = -1 * coefs[2])
+
+}
