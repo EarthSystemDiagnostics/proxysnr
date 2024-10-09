@@ -170,6 +170,62 @@ MeanSpectrum <- function(speclist) {
 
 }
 
+#' Simulate a random time series with a power-law spectrum
+#'
+#' This function creates a power-law series. It has the problem that it
+#' effectively produces (fractional) Brownian bridges, that is, the end is close
+#' to the beginning (cyclic signal), rather than true fBm or fGn series.
+#'
+#' @param N length of time series to be generated.
+#' @param beta slope of the power law: `beta = 1` produces time series with a
+#'   slope of -1 when plotted on log-log power ~ frequency axes.
+#' @param alpha a constant. If `alpha > 0` this is the power-law parameter in
+#'   `alpha * f^(-beta)`. If `alpha < 0`, the variance of the returned
+#'   time series is scaled so that its expected value is `abs(alpha)` and its
+#'   expected PSD is proportional to `f^(-beta)`.
+#' @return a vector of length `N`.
+#'
+#' @author Torben Kunz, Andrew Dolman
+#' @noRd
+#'
+SimPLS <- function(N, beta = 0, alpha = -1) {
+
+  frequency.axis <- function(N) {
+    fax <- 0 : (N - 1) / N
+    fax[fax > 0.5] <- fax[fax > 0.5] - 1
+    fax
+  }
+
+  # Pad the length of the timeseries so that it is highly composite - this speeds
+  # up the FFT operations.
+  N2 <- (3^ceiling(log(N, base = 3)))
+
+  x2 <- rnorm(N2)
+  xfft <- fft(x2)
+
+  fax <- frequency.axis(N2)
+
+  P <- c(0, abs(alpha) * abs(fax[2 : N2])^(-beta))
+
+  if (alpha < 0) P <- P * abs(alpha) * (N2 - 1) / sum(P[1 : N2])
+
+  xfft <- xfft * sqrt(P)
+  x2 <- fft(xfft, inverse=TRUE) / N2
+  x2 <- Re(x2)
+
+  # trim the timeseries back to the requested length
+  x <- x2[1 : N]
+
+  # scale the variance of timeseries at requested length
+  if (alpha < 0) {
+    sdx2 <- sd(x2)
+    x <- sdx2 * x / sd(x)
+  }
+
+  return(x)
+}
+
+
 #' Interpolate spectrum
 #'
 #' Interpolate a spectrum onto a given frequency axis.
