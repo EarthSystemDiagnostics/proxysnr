@@ -200,8 +200,8 @@ SimPLS <- function(N, beta = 0, alpha = -1) {
   # up the FFT operations.
   N2 <- (3^ceiling(log(N, base = 3)))
 
-  x2 <- rnorm(N2)
-  xfft <- fft(x2)
+  x2 <- stats::rnorm(N2)
+  xfft <- stats::fft(x2)
 
   fax <- frequency.axis(N2)
 
@@ -210,7 +210,7 @@ SimPLS <- function(N, beta = 0, alpha = -1) {
   if (alpha < 0) P <- P * abs(alpha) * (N2 - 1) / sum(P[1 : N2])
 
   xfft <- xfft * sqrt(P)
-  x2 <- fft(xfft, inverse=TRUE) / N2
+  x2 <- stats::fft(xfft, inverse = TRUE) / N2
   x2 <- Re(x2)
 
   # trim the timeseries back to the requested length
@@ -218,8 +218,8 @@ SimPLS <- function(N, beta = 0, alpha = -1) {
 
   # scale the variance of timeseries at requested length
   if (alpha < 0) {
-    sdx2 <- sd(x2)
-    x <- sdx2 * x / sd(x)
+    sdx2 <- stats::sd(x2)
+    x <- sdx2 * x / stats::sd(x)
   }
 
   return(x)
@@ -251,8 +251,8 @@ InterpolateSpectrum <- function(x, target, num.prec = 8) {
 
   result <- list(
     freq = target$freq,
-    spec = approx(round(x$freq, num.prec), x$spec,
-                  round(target$freq, num.prec))$y
+    spec = stats::approx(round(x$freq, num.prec), x$spec,
+                         round(target$freq, num.prec))$y
   )
 
   class(result) <- "spec"
