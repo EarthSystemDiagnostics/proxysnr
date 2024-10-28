@@ -43,9 +43,9 @@ test_that("running surrogate signal and noise spectra works", {
 
 test_that("extracting relative quantiles from realizations works", {
 
-  foo <- function(probs = c(0.1, 0.9)) {
+  foo <- function(probs = c(0.1, 0.9), res = 1) {
     runSurrogates(signal.par, noise.par, nc = nc, nt = nt,
-                      res = 1, nmc = nmc) %>%
+                      res = res, nmc = nmc) %>%
       extractQuantiles(probs)
   }
 
@@ -59,18 +59,25 @@ test_that("extracting relative quantiles from realizations works", {
 
   ci <- foo()
 
+  # expected freq axis (valid for deltat = 1, else scale by 1 / deltat)
+  f <- seq(1 / nt, 0.5, by = 1 / nt)
+  nf <- length(f)
+
   expect_type(ci, "list")
   expect_length(ci, 3)
   expect_named(ci, c("signal", "noise", "snr"))
 
-  expect_named(ci$signal, c("lower", "upper"))
-  expect_equal(lengths(ci$signal, use.names = FALSE), rep(nt / 2, 2))
+  expect_named(ci$signal, c("freq", "lower", "upper"))
+  expect_equal(lengths(ci$signal, use.names = FALSE), rep(nf, 3))
+  expect_equal(ci$signal$freq, f)
 
-  expect_named(ci$noise, c("lower", "upper"))
-  expect_equal(lengths(ci$noise, use.names = FALSE), rep(nt / 2, 2))
+  expect_named(ci$noise, c("freq", "lower", "upper"))
+  expect_equal(lengths(ci$noise, use.names = FALSE), rep(nf, 3))
+  expect_equal(ci$noise$freq, f)
 
-  expect_named(ci$snr, c("lower", "upper"))
-  expect_equal(lengths(ci$snr, use.names = FALSE), rep(nt / 2, 2))
+  expect_named(ci$snr, c("freq", "lower", "upper"))
+  expect_equal(lengths(ci$snr, use.names = FALSE), rep(nf, 3))
+  expect_equal(ci$snr$freq, f)
 
   expect_true(all(ci$signal$lower < 1))
   expect_true(all(ci$signal$upper > 1))
@@ -80,6 +87,16 @@ test_that("extracting relative quantiles from realizations works", {
 
   expect_true(all(ci$snr$lower < 1))
   expect_true(all(ci$snr$upper > 1))
+
+  # check with non-unity deltat
+
+  deltat <- 1.7
+  ci <- foo(res = deltat)
+  f <- seq(1 / nt / deltat, 0.5 / deltat, by = 1 / nt / deltat)
+  nf <- length(f)
+
+  expect_equal(lengths(ci$signal, use.names = FALSE), rep(nf, 3))
+  expect_equal(ci$signal$freq, f)
 
 })
 

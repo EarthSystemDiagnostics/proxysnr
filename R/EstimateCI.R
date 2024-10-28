@@ -89,13 +89,13 @@ EstimateCI <- function(spectra, f.start = NULL, f.end = NULL, nc, res,
   }
 
   # log-smooth estimated CI
-  .smooth <- function(ci, freq, df.log = 0.05) {
+  .smooth <- function(ci, df.log = 0.05) {
 
   if (is.null(df.log)) return(ci)
 
-  ci$lower <- LogSmooth(list(freq = freq, spec = ci$lower),
+  ci$lower <- LogSmooth(list(freq = ci$freq, spec = ci$lower),
                         df.log = df.log)$spec
-  ci$upper <- LogSmooth(list(freq = freq, spec = ci$upper),
+  ci$upper <- LogSmooth(list(freq = ci$freq, spec = ci$upper),
                         df.log = df.log)$spec
 
   return(ci)
@@ -116,7 +116,7 @@ EstimateCI <- function(spectra, f.start = NULL, f.end = NULL, nc, res,
                       nt = 1 / spectra$signal$freq[1],
                       res = res, nmc = nmc, df.log = df.log) %>%
     extractQuantiles(probs = probs) %>%
-    lapply(.smooth, freq = spectra$signal$freq, df.log = ci.df.log)
+    lapply(.smooth, df.log = ci.df.log)
 
   # supply quantiles to input data and return
 
@@ -244,13 +244,14 @@ extractQuantiles <- function(surrogates, probs = c(0.1, 0.9)) {
 
   .extract.quantiles <- function(surrogates, name) {
 
+    f <- surrogates[[1]][["signal"]][["freq"]]
     x <- sapply(surrogates, .extract.runs, name = name)
 
     m <- rowMeans(x)
     lower <- apply(x, 1, stats::quantile, probs = probs[1])
     upper <- apply(x, 1, stats::quantile, probs = probs[2])
 
-    list(lower = lower / m, upper = upper / m)
+    list(freq = f, lower = lower / m, upper = upper / m)
 
   }
 
