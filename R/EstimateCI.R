@@ -105,16 +105,11 @@ EstimateCI <- function(spectra, f.start = NULL, f.end = NULL, nc, res,
   # ----------------------------------------------------------------------------
   # run CI estimation
 
-  # estimate powerlaw coefficients
+  # run surrogate signal and noise simulation, extract confidence intervals,
+  # and optionally log-smooth them
 
-  signal.par <- fit.powerlaw(spectra$signal, f.start, f.end)
-  noise.par  <- fit.powerlaw(spectra$noise, f.start, f.end)
-
-  # run surrogate signal and noise estimations and extract confidence intervals
-
-  ci <- runSurrogates(signal.par, noise.par, nc = nc,
-                      nt = 1 / spectra$signal$freq[1],
-                      res = res, nmc = nmc, df.log = df.log) %>%
+  ci <- runSimulation(spectra = spectra, f.start = f.start, f.end = f.end,
+                      nc = nc, res = res, nmc = nmc, df.log = df.log) %>%
     extractQuantiles(probs = probs) %>%
     lapply(.smooth, df.log = ci.df.log)
 
@@ -212,6 +207,34 @@ runSurrogates <- function(signal.par, noise.par, nc, nt, res, nmc = 10,
                               nc = nc, nt = nt, res = res,
                               df.log = df.log),
             simplify = FALSE)
+
+}
+
+#' Run simulation for the CI estimation
+#'
+#' Get the number of time steps underlying the input signal and noise spectra
+#' and their powerlaw parameters, and call the Monte Carlo signal and noise
+#' simulation \code{\link{runSurrogates}}.
+#'
+#' @inheritParams EstimateCI
+#' @return the output of \code{runSurrogates}: a list of length \code{nmc}
+#'   where each list element is one signal and noise estimation realization.
+#' @author Thomas Münch
+#' @seealso \code{\link{runSurrogates}}, \code{\link{EstimateCI}}
+#'
+runSimulation <- function(spectra, f.start = NULL, f.end = NULL,
+                          nc = 1, res = 1, nmc = 10, df.log = NULL) {
+
+  # estimate powerlaw coefficients
+  signal.par <- fit.powerlaw(spectra$signal, f.start, f.end)
+  noise.par  <- fit.powerlaw(spectra$noise, f.start, f.end)
+
+  # get number of time steps
+  nt <- 1 / (res * spectra$signal$freq[1])
+
+  runSurrogates(signal.par = signal.par, noise.par = noise.par,
+                nc = nc, nt = nt, res = res, nmc = nmc,
+                df.log = df.log)
 
 }
 

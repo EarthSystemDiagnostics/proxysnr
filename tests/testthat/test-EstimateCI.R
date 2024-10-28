@@ -100,6 +100,27 @@ test_that("extracting relative quantiles from realizations works", {
 
 })
 
+test_that("simulation produces correct frequency axis", {
+
+  # with default deltat (res) setting
+  spectra <- ObtainArraySpectra(dml$dml2, df.log = 0.15) %>%
+    SeparateSignalFromNoise()
+
+  sim <- runSimulation(spectra, f.end = 0.1, nc = 3, nmc = 1)
+
+  expect_equal(spectra$signal$freq, sim[[1]]$signal$freq)
+
+  # with some custom deltat (res) setting
+  res <- 3.89
+  spectra <- ObtainArraySpectra(dml$dml2, df.log = 0.15, res = res) %>%
+    SeparateSignalFromNoise()
+
+  sim <- runSimulation(spectra, f.end = 0.1, nc = 3, res = res, nmc = 1)
+
+  expect_equal(spectra$signal$freq, sim[[1]]$signal$freq)
+
+})
+
 test_that("CI estimation works", {
 
   spectra <- ObtainArraySpectra(dml$dml2, df.log = 0.15) %>%
