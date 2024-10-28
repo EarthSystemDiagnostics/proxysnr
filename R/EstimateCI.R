@@ -100,18 +100,56 @@ EstimateCI <- function(spectra, f.start = NULL, f.end = NULL, nc, res,
 
   return(ci)
 
-}
+  }
+
+  # interpolate estimated CI
+  .interpolate.ci <- function(ci, target) {
+
+    suppressWarnings(
+      ci$lower <- InterpolateSpectrum(list(freq = ci$freq, spec = ci$lower),
+                                      target)$spec
+    )
+    suppressWarnings(
+      ci$upper <- InterpolateSpectrum(list(freq = ci$freq, spec = ci$upper),
+                                      target)$spec
+    )
+
+    return(ci)
+
+  }
+
+  # check if simulated frequency axis overlaps with input frequency axis and
+  # interpolate if needed
+  .check.frequency.axes <- function(sim, target) {
+
+    if (!has.common.freq(sim$signal, target)) {
+
+      warning("Input and simulated frequency axes differ;\n",
+              "confidence intervals are interpolated possibly ",
+              "producing NA values.",
+              call. = FALSE)
+
+      lapply(sim, .interpolate.ci, target = target)
+
+    } else {
+
+      sim
+
+    }
+
+  }
 
   # ----------------------------------------------------------------------------
   # run CI estimation
 
   # run surrogate signal and noise simulation, extract confidence intervals,
-  # and optionally log-smooth them
+  # optionally smooth them, and interpolate to input frequency axis if needed
 
   ci <- runSimulation(spectra = spectra, f.start = f.start, f.end = f.end,
                       nc = nc, res = res, nmc = nmc, df.log = df.log) %>%
     extractQuantiles(probs = probs) %>%
-    lapply(.smooth, df.log = ci.df.log)
+    lapply(.smooth, df.log = ci.df.log) %>%
+    .check.frequency.axes(spectra$signal)
 
   # supply quantiles to input data and return
 

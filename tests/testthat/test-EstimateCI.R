@@ -123,6 +123,8 @@ test_that("simulation produces correct frequency axis", {
 
 test_that("CI estimation works", {
 
+  # test using DML2 dataset from Muench and Laepple (2018)
+
   spectra <- ObtainArraySpectra(dml$dml2, df.log = 0.15) %>%
     SeparateSignalFromNoise(diffusion = diffusion.tf$dml2)
 
@@ -144,9 +146,46 @@ test_that("CI estimation works", {
   expect_type(spectra.with.ci$snr, "list")
   expect_true(all(utils::hasName(spectra.with.ci$snr, nms)))
 
-  # test with log-smoothing switched on
+  # test same dataset with log-smoothing switched on
+
   expect_no_error(
     EstimateCI(spectra, f.end = 0.1, nc = 3, res = 1,
                nmc = 3, df.log = 0.1, ci.df.log = 0.05))
+
+  # test the combined DML1+DML2 dataset, which has a merged frequency axis, so
+  # that interpolation of the simulated CI should be needed
+
+  w <- paste0("Input and simulated frequency axes differ;\n",
+              "confidence intervals are interpolated possibly ",
+              "producing NA values.")
+
+  spectra <- WrapSpectralResults(
+    dml1 = dml$dml1, dml2 = dml$dml2, wais = wais,
+    diffusion = diffusion.tf,
+    time.uncertainty = time.uncertainty.tf,
+    df.log = c(0.15, 0.15, 0.1)) %>%
+    proxysnr:::PublicationSNR(data = "raw") %>%
+    .$dml
+
+  expect_warning(
+    spectra.with.ci <- EstimateCI(spectra, f.end = 0.1, nc = 3, res = 1,
+                                  df.log = 0.15, ci.df.log = 0.05),
+    w)
+
+  expect_type(spectra.with.ci, "list")
+  expect_length(spectra.with.ci, 4)
+  expect_named(spectra.with.ci, c("signal", "noise", "snr", "f.cutoff"))
+
+  nms <- c("freq", "spec", "lim.1", "lim.2")
+
+  expect_type(spectra.with.ci$signal, "list")
+  expect_true(all(utils::hasName(spectra.with.ci$signal, nms)))
+
+  expect_type(spectra.with.ci$noise, "list")
+  expect_true(all(utils::hasName(spectra.with.ci$noise, nms)))
+
+  expect_type(spectra.with.ci$snr, "list")
+  expect_true(all(utils::hasName(spectra.with.ci$snr, nms)))
+
 
 })
