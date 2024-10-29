@@ -62,6 +62,17 @@ test_that("averaging spectra works", {
 
 })
 
+test_that("running SimPLS works", {
+
+  N <- 100
+
+  expect_length(SimPLS(N), N)
+  expect_length(SimPLS(N, alpha = 1), N)
+  expect_length(SimPLS(N, beta = 1, alpha = 1), N)
+  expect_length(SimPLS(N, beta = -1, alpha = 1), N)
+
+})
+
 test_that("interpolating spectra works", {
 
   target <- list(freq = seq(0.1, 0.5, 0.1))
