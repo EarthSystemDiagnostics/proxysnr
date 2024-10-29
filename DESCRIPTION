@@ -19,14 +19,14 @@ VignetteBuilder: knitr
 Imports:
     fpCompare,
     magrittr,
-    multitaper
+    multitaper,
+    RColorBrewer
 Suggests:
     covr,
     Hmisc,
     knitr,
     pangaear,
     rmarkdown,
-    RColorBrewer,
     simproxyage,
     testthat (>= 3.0.0),
     usethis
