@@ -25,10 +25,11 @@ spatial correlation of the local noise). Per default set to element
 
 \item{measurement.noise}{a measurement noise level for correcting the proxy
 noise spectrum: either a single value or a spectral object. In the former
-case, the value is used as the total variance of the measurement noise,
-i.e. the level of an assumed white measurement noise spectrum; the latter
-case can be applied if the measurement noise has a different spectral shape
-(but its frequency range must then cover the frequency range of the proxy
+case, the measurement noise is assumed to exhibit a white spectrum and the
+given value is interpreted as its total variance; the latter case can be
+applied if the measurement noise has a known spectral shape different from
+white noise (but the frequency range of the given measurement noise
+spectral object must then cover the frequency range of the proxy
 spectra). The default `NULL` assumes no measurement noise.}
 
 \item{diffusion}{a spectral object of a transfer function desribing a

@@ -166,7 +166,10 @@ test_that("SeparateSignalFromNoise calculations work", {
 
   # --- test measurement noise input -------------------------------------------
 
-  # white measurement noise as a single value
+  # PSD measurement noise level of a white spectrum
+  measurement_noise_psd <- 0.25
+
+  # white measurement noise given as a single value
 
   signal <- list(freq = 1 : 10, spec = 1 : 10)
   noise <- list(freq = 1 : 10, spec = rep(5, 10))
@@ -174,21 +177,24 @@ test_that("SeparateSignalFromNoise calculations work", {
   class(signal) <- class(noise) <- class(snr) <- "spec"
 
   n <- 5
-  measurement_noise <- 0.25
   mean <- list(freq = signal$freq,
-               spec = signal$spec + noise$spec + measurement_noise)
+               spec = signal$spec + noise$spec + measurement_noise_psd)
   stack <- list(freq = signal$freq,
-                spec = signal$spec + noise$spec / n + measurement_noise / n)
+                spec = signal$spec + noise$spec / n + measurement_noise_psd / n)
 
+  # measurement noise variance
+  measurement_noise_var <- 2 * max(signal$freq) * measurement_noise_psd
   actual <- SeparateSignalFromNoise(spectra = list(mean = mean, stack = stack),
-                                    neff = n, measurement.noise = measurement_noise)
+                                    neff = n,
+                                    measurement.noise = measurement_noise_var)
   expected <- list(signal = signal, noise = noise, snr = snr)
 
   expect_equal(actual, expected)
 
-  # white measurement noise as a spectral object
+  # white measurement noise given as a spectral object
 
-  measurement_noise <- list(freq = c(0.5, 3, 8, 15), spec = rep(0.25, 4))
+  measurement_noise <- list(freq = c(0.5, 3, 8, 15),
+                            spec = rep(measurement_noise_psd, 4))
 
   actual <- SeparateSignalFromNoise(spectra = list(mean = mean, stack = stack),
                                     neff = n, measurement.noise = measurement_noise)
