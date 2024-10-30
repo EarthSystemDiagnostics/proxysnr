@@ -1,6 +1,17 @@
-##
-## Collection of spectral estimation functions; based on R PaleoSpec package
-##
+# Functions in this file are copied from R package paleospec:
+# https://github.com/EarthSystemDiagnostics/paleospec
+# 
+# Original authors and copyright information follow:
+# 
+# * LogSmooth, SpecMTM, LPlot, LLines:
+#   Written by Thomas Laepple. MIT, Copyright (C) 2019 Earth System Diagnostics
+#   group of the Alfred Wegener Institute
+# * MeanSpectrum:
+#   Written by Thomas Laepple, Thomas Münch. MIT, Copyright (C) 2019 Earth
+#   System Diagnostics group of the Alfred Wegener Institute
+# * SimPLS:
+#   Written by Andrew M Dolman, Torben Kunz. MIT, Copyright (C) 2019 Earth
+#   System Diagnostics group of the Alfred Wegener Institute
 
 #' Spectral smoothing
 #'
@@ -170,6 +181,109 @@ MeanSpectrum <- function(speclist) {
 
 }
 
+#' Log-log spectral plot
+#'
+#' This function plots a spectrum on a double-logarithmic scale and optionally
+#' adds a transparent confidence interval.
+#'
+#' @param x a spectral object.
+#' @param conf if \code{TRUE} (the default) add a transparent confidence
+#'   interval (suppressed if \code{x} contains no error limits).
+#' @param bPeriod if \code{TRUE} the x-axis is displayed in units of period
+#'   (inverse frequency), increasing to the left. Defaults to \code{FALSE}.
+#' @param bNoPlot if \code{TRUE} only produce the plot frame (\code{type = "n"}
+#'   behaviour of function \code{\link{plot}}). Defaults to \code{FALSE}.
+#' @param axes if \code{FALSE} the plotting of the x and y axes is
+#'   suppressed. Defaults to \code{TRUE}.
+#' @param col color for the line plot and the confidence interval.
+#' @param alpha transparency level (between 0 and 1) for the confidence
+#'   interval. Defaults to \code{0.2}.
+#' @param removeFirst omit \code{removeFirst} values on the low frequency side.
+#' @param removeLast omit \code{removeLast} values on the high frequency side.
+#' @param xlab character string for labelling the x-axis.
+#' @param ylab character string for labelling the y-axis.
+#' @param xlim range of x-axis values; if \code{NULL} (the default) it is
+#'   calculated internally and automatically reversed for \code{bPeriod = TRUE}.
+#' @param ylim range of y-axis values; if \code{NULL} (the default) it is
+#'   calculated internally.
+#' @param ... further graphical parameters passed to \code{plot}.
+#'
+#' @author Thomas Laepple
+#' @noRd
+#'
+LPlot <- function(x, conf = TRUE, bPeriod = FALSE, bNoPlot = FALSE, axes = TRUE,
+                  col = "black", alpha = 0.2, removeFirst = 0, removeLast = 0,
+                  xlab = "f", ylab = "PSD", xlim = NULL, ylim = NULL, ...) {
+
+  if (bPeriod) {
+    x$freq <- 1 / x$freq
+    if (is.null(xlim)) xlim <- rev(range(x$freq))
+    if (xlab == "f") xlab <- "period"
+  }
+
+  index <- (removeFirst + 1) : (length(x$freq) - removeLast)
+  
+  x$freq  <- x$freq[index]
+  x$spec  <- x$spec[index]
+  x$lim.1 <- x$lim.1[index]
+  x$lim.2 <- x$lim.2[index]
+
+  graphics::plot(x$freq, x$spec, type = "n", log = "xy",
+                 xlab = xlab, ylab = ylab, xlim = xlim, ylim = ylim,
+                 axes = axes, ...)
+
+  lim <- !is.null(x$lim.1) & !is.null(x$lim.2)
+  if (conf & lim & !bNoPlot) {
+    Polyplot(x = x$freq, y1 = x$lim.1, y2 = x$lim.2,
+             col = col, alpha = alpha)
+  }
+
+  if (!bNoPlot) graphics::lines(x$freq, x$spec, col = col, ...)
+  
+}
+
+#' Add spectrum to existing log-log spectral plot
+#'
+#' This function adds a spectrum to an existing double-logarithmic plot and
+#' optionally adds a transparent confidence interval.
+#' 
+#' @param x a spectral object.
+#' @param conf if \code{TRUE} (the default) add a transparent confidence
+#'   interval (suppressed if \code{x} contains no error limits).
+#' @param bPeriod if \code{TRUE} treat the x-axis values in units of period
+#'   (inverse frequency). Defaults to \code{FALSE}.
+#' @param col color for the line plot and the confidence interval.
+#' @param alpha transparency level (between 0 and 1) for the confidence
+#'   interval. Defaults to \code{0.2}.
+#' @param removeFirst omit \code{removeFirst} values on the low frequency side. 
+#' @param removeLast omit \code{removeLast} values on the high frequency side.
+#' @param ... further graphical parameters passed to \code{lines}.
+#'
+#' @author Thomas Laepple
+#' @noRd
+#'
+LLines<-function(x, conf = TRUE, bPeriod = FALSE, col = "black", alpha = 0.2,
+                 removeFirst = 0, removeLast = 0, ...) {
+
+  if (bPeriod) x$freq <- 1 / x$freq
+  
+  index <- (removeFirst + 1) : (length(x$freq) - removeLast)
+
+  x$freq  <- x$freq[index]
+  x$spec  <- x$spec[index]
+  x$lim.1 <- x$lim.1[index]
+  x$lim.2 <- x$lim.2[index]
+
+  lim <- !is.null(x$lim.1) & !is.null(x$lim.2)
+  if (conf & lim) {
+    Polyplot(x = x$freq, y1 = x$lim.1, y2 = x$lim.2,
+             col = col, alpha = alpha)
+  }
+  
+  graphics::lines(x$freq, x$spec, col = col, ...)
+  
+}
+
 #' Simulate a random time series with a power-law spectrum
 #'
 #' This function creates a power-law series. It has the problem that it
@@ -223,40 +337,4 @@ SimPLS <- function(N, beta = 0, alpha = -1) {
   }
 
   return(x)
-}
-
-
-#' Interpolate spectrum
-#'
-#' Interpolate a spectrum onto a given frequency axis.
-#'
-#' @param x a spectral object which is to be interpolated onto the frequency
-#'   axis given by the \code{target} spectrum.
-#' @param target as \code{x}, used to supply the target frequency axis for the
-#'   interpolation.
-#' @param num.prec number of decimal places to round the frequency axes in order
-#'   to prevent erroneous NA values in the interpolation from floating point
-#'   machine representation accuracy. Be careful when changing this value!
-#' @return a spectral object with the spectrum in \code{x} interpolated onto the
-#'   target frequency axis.
-#'
-#' @author Thomas Münch
-#' @noRd
-#'
-InterpolateSpectrum <- function(x, target, num.prec = 8) {
-
-  if (!has.common.freq(x, target))
-    warning("NAs produced in interpolation as frequency axes do not overlap.",
-            call. = FALSE)
-
-  result <- list(
-    freq = target$freq,
-    spec = stats::approx(round(x$freq, num.prec), x$spec,
-                         round(target$freq, num.prec))$y
-  )
-
-  class(result) <- "spec"
-
-  return(result)
-
 }

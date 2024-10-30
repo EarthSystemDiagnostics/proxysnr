@@ -16,6 +16,9 @@ ITASE-1999-1, ITASE-2000-1, ITASE-2000-4, ITASE-2000-5. Boulder, Colorado
 USA: National Snow and Ice Data Center,
 \url{https://doi.org/10.7265/N5QJ7F8B}, 2013.
 
+License:\cr
+CC-BY-NC-4.0 (\url{https://creativecommons.org/licenses/by-nc/4.0/})
+
 Literature citation:\cr
 Steig, E. J., et al.: Recent climate and ice-sheet changes in West Antarctica
 compared with the past 2,000 years, Nat. Geosci., 6, 372–375,
@@ -33,8 +36,13 @@ A dataset containing the oxygen isotope data of 5 firn cores from the West
 Antarctic Ice Sheet (WAIS), Antarctica, as used in Münch and Laepple (2018).
 }
 \details{
-Data has been processed from the original source data as documented in the
-package source (\code{data-raw/load.WAIS.R}). Cores included are WDC2005A,
-ITASE-1999-1, ITASE-2000-1, ITASE-2000-4 and ITASE-2000-5.
+Original source data was downloaded from
+\url{https://doi.org/10.7265/N5QJ7F8B} including the firn cores WDC2005A,
+ITASE-1999-1, ITASE-2000-1, ITASE-2000-4 and ITASE-2000-5. The source data
+was processed as documented in the package source
+(\code{data-raw/load.WAIS.R}) which inludes the selection of the oxygen
+isotope data and the required time span, bin-averaging to annual resolution
+of the cores ITASE-2000-4 and ITASE-2000-5 from their original
+higher-resolution data, and linear interpolation of missing values.
 }
 \keyword{datasets}

@@ -6,7 +6,7 @@
 \alias{proxysnr-package}
 \title{proxysnr: Separate Signal and Noise in Climate Proxy Records}
 \description{
-This R package implements a method to separate the common signal from local noise in a spatial network of climate proxy records using spectral analyses. The package allows the correction of the estimated signal and noise spectra for the effects of time uncertainty and diffusion.
+A method to separate the common signal from local noise in a spatial network of climate proxy records using spectral analyses. The estimated signal and noise spectra can be corrected for the effects of proxy smoothing processes, time uncertainty, and measurement noise.
 }
 \seealso{
 Useful links:
@@ -19,14 +19,20 @@ Useful links:
 \author{
 \strong{Maintainer}: Thomas Münch \email{thomas.muench@awi.de}
 
-Authors:
-\itemize{
-  \item Thomas Laepple
-}
-
 Other contributors:
 \itemize{
-  \item Andrew Dolman [contributor]
+  \item Thomas Laepple (Author of included functions LogSmooth, SpecMTM, MeanSpectrum, LPlot, LLines.) [copyright holder]
+  \item Andrew M. Dolman (Author of included function SimPLS.) [copyright holder]
+  \item Torben Kunz (Author of included function SimPLS.) [copyright holder]
+  \item Mara Y. McPartland (Drafted code for confidence interval estimation.) [contributor]
+  \item Wolfgang Graf (Creator of included Dronning Maud Land ice-core data.) [copyright holder]
+  \item Hans Oerter (Creator of included Dronning Maud Land ice-core data.) [copyright holder]
+  \item Oskar Reinwarth (Creator of included Dronning Maud Land ice-core data.) [copyright holder]
+  \item Willibald Stichler (Creator of included Dronning Maud Land ice-core data.) [copyright holder]
+  \item Frank Wilhelms (Creator of included Dronning Maud Land ice-core data.) [copyright holder]
+  \item Heinz Miller (Creator of included Dronning Maud Land ice-core data.) [copyright holder]
+  \item Robert Mulvaney (Creator of included Dronning Maud Land ice-core data.) [copyright holder]
+  \item Eric J. Steig (Creator of included WAIS ice-core data.) [copyright holder]
 }
 
 }

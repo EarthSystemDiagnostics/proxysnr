@@ -174,3 +174,39 @@ fit.powerlaw <- function(s, f.start = NULL, f.end = NULL) {
   list(alpha = exp(coefs[1]), beta = -1 * coefs[2])
 
 }
+
+#' Interpolate spectrum
+#'
+#' Interpolate a spectrum onto a given frequency axis.
+#'
+#' @param x a spectral object which is to be interpolated onto the frequency
+#'   axis given by the \code{target} spectrum.
+#' @param target as \code{x}, used to supply the target frequency axis for the
+#'   interpolation.
+#' @param num.prec number of decimal places to round the frequency axes in order
+#'   to prevent erroneous NA values in the interpolation from floating point
+#'   machine representation accuracy. Be careful when changing this value!
+#' @return a spectral object with the spectrum in \code{x} interpolated onto the
+#'   target frequency axis.
+#'
+#' @author Thomas Münch
+#' @noRd
+#'
+InterpolateSpectrum <- function(x, target, num.prec = 8) {
+
+  if (!has.common.freq(x, target))
+    warning("NAs produced in interpolation as frequency axes do not overlap.",
+            call. = FALSE)
+
+  result <- list(
+    freq = target$freq,
+    spec = stats::approx(round(x$freq, num.prec), x$spec,
+                         round(target$freq, num.prec))$y
+  )
+
+  class(result) <- "spec"
+
+  return(result)
+
+}
+

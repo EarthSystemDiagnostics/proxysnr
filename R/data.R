@@ -14,13 +14,19 @@
 #'     1000 CE.}
 #' }
 #' @details
-#' Data has been processed from the original source data as documented in the
-#' package source (\code{data-raw/load.DML.R}). Cores included are FB9804,
-#' FB9805, FB9807–FB9811, FB9813–FB9817, and B31–B33.
+#' Original source data was downloaded from
+#' \url{https://doi.org/10.1594/PANGAEA.728240} including the firn cores FB9804,
+#' FB9805, FB9807–FB9811, FB9813–FB9817, and B31–B33. The source data was
+#' processed as documented in the package source (\code{data-raw/load.DML.R})
+#' which inludes the selection of the oxygen isotope data and the required time
+#' span, and linear interpolation of missing values.
 #' @source
 #' Data citation:\cr
 #' Graf, W., et al.: Stable-isotope records from Dronning Maud Land, Antarctica,
 #' \url{https://doi.org/10.1594/PANGAEA.728240}, 2002.
+#'
+#' License:\cr
+#' CC-BY-3.0 (\url{https://creativecommons.org/licenses/by/3.0/})
 #'
 #' Literature citation:\cr
 #' Graf, W., et al.: Stable-isotope records from Dronning Maud Land, Antarctica,
@@ -40,15 +46,23 @@
 #' time series of oxygen isotope data from one of the firn cores in per mil for
 #' the years from 2000 CE to 1800 CE.
 #' @details
-#' Data has been processed from the original source data as documented in the
-#' package source (\code{data-raw/load.WAIS.R}). Cores included are WDC2005A,
-#' ITASE-1999-1, ITASE-2000-1, ITASE-2000-4 and ITASE-2000-5.
+#' Original source data was downloaded from
+#' \url{https://doi.org/10.7265/N5QJ7F8B} including the firn cores WDC2005A,
+#' ITASE-1999-1, ITASE-2000-1, ITASE-2000-4 and ITASE-2000-5. The source data
+#' was processed as documented in the package source
+#' (\code{data-raw/load.WAIS.R}) which inludes the selection of the oxygen
+#' isotope data and the required time span, bin-averaging to annual resolution
+#' of the cores ITASE-2000-4 and ITASE-2000-5 from their original
+#' higher-resolution data, and linear interpolation of missing values.
 #' @source
 #' Data citation:\cr
 #' Steig, E. J.: West Antarctica Ice Core and Climate Model Data. WDC2005A,
 #' ITASE-1999-1, ITASE-2000-1, ITASE-2000-4, ITASE-2000-5. Boulder, Colorado
 #' USA: National Snow and Ice Data Center,
 #' \url{https://doi.org/10.7265/N5QJ7F8B}, 2013.
+#'
+#' License:\cr
+#' CC-BY-NC-4.0 (\url{https://creativecommons.org/licenses/by-nc/4.0/})
 #'
 #' Literature citation:\cr
 #' Steig, E. J., et al.: Recent climate and ice-sheet changes in West Antarctica

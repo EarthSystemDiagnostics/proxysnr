@@ -4,3 +4,4 @@
 ^doc$
 ^\.github$
 ^Makefile$
+^LICENSE\.md$

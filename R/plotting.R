@@ -3,7 +3,7 @@
 ##
 
 # ------------------------------------------------------------------------------
-# unexported utility functions
+# unexported plotting utility functions
 
 #' Draw error shading
 #'
@@ -34,109 +34,6 @@ Polyplot <- function(x, y1, y2, col = "black", alpha = 0.2, ...) {
 
   graphics::polygon(c(x, rev(x)), c(y1, rev(y2)),
                     col = col, border = NA, ...)
-  
-}
-
-#' Log-log spectral plot
-#'
-#' This function plots a spectrum on a double-logarithmic scale and optionally
-#' adds a transparent confidence interval.
-#'
-#' @param x a spectral object.
-#' @param conf if \code{TRUE} (the default) add a transparent confidence
-#'   interval (suppressed if \code{x} contains no error limits).
-#' @param bPeriod if \code{TRUE} the x-axis is displayed in units of period
-#'   (inverse frequency), increasing to the left. Defaults to \code{FALSE}.
-#' @param bNoPlot if \code{TRUE} only produce the plot frame (\code{type = "n"}
-#'   behaviour of function \code{\link{plot}}). Defaults to \code{FALSE}.
-#' @param axes if \code{FALSE} the plotting of the x and y axes is
-#'   suppressed. Defaults to \code{TRUE}.
-#' @param col color for the line plot and the confidence interval.
-#' @param alpha transparency level (between 0 and 1) for the confidence
-#'   interval. Defaults to \code{0.2}.
-#' @param removeFirst omit \code{removeFirst} values on the low frequency side.
-#' @param removeLast omit \code{removeLast} values on the high frequency side.
-#' @param xlab character string for labelling the x-axis.
-#' @param ylab character string for labelling the y-axis.
-#' @param xlim range of x-axis values; if \code{NULL} (the default) it is
-#'   calculated internally and automatically reversed for \code{bPeriod = TRUE}.
-#' @param ylim range of y-axis values; if \code{NULL} (the default) it is
-#'   calculated internally.
-#' @param ... further graphical parameters passed to \code{plot}.
-#'
-#' @author Thomas Laepple
-#' @noRd
-#'
-LPlot <- function(x, conf = TRUE, bPeriod = FALSE, bNoPlot = FALSE, axes = TRUE,
-                  col = "black", alpha = 0.2, removeFirst = 0, removeLast = 0,
-                  xlab = "f", ylab = "PSD", xlim = NULL, ylim = NULL, ...) {
-
-  if (bPeriod) {
-    x$freq <- 1 / x$freq
-    if (is.null(xlim)) xlim <- rev(range(x$freq))
-    if (xlab == "f") xlab <- "period"
-  }
-
-  index <- (removeFirst + 1) : (length(x$freq) - removeLast)
-  
-  x$freq  <- x$freq[index]
-  x$spec  <- x$spec[index]
-  x$lim.1 <- x$lim.1[index]
-  x$lim.2 <- x$lim.2[index]
-
-  graphics::plot(x$freq, x$spec, type = "n", log = "xy",
-                 xlab = xlab, ylab = ylab, xlim = xlim, ylim = ylim,
-                 axes = axes, ...)
-
-  lim <- !is.null(x$lim.1) & !is.null(x$lim.2)
-  if (conf & lim & !bNoPlot) {
-    Polyplot(x = x$freq, y1 = x$lim.1, y2 = x$lim.2,
-             col = col, alpha = alpha)
-  }
-
-  if (!bNoPlot) graphics::lines(x$freq, x$spec, col = col, ...)
-  
-}
-
-#' Add spectrum to existing log-log spectral plot
-#'
-#' This function adds a spectrum to an existing double-logarithmic plot and
-#' optionally adds a transparent confidence interval.
-#' 
-#' @param x a spectral object.
-#' @param conf if \code{TRUE} (the default) add a transparent confidence
-#'   interval (suppressed if \code{x} contains no error limits).
-#' @param bPeriod if \code{TRUE} treat the x-axis values in units of period
-#'   (inverse frequency). Defaults to \code{FALSE}.
-#' @param col color for the line plot and the confidence interval.
-#' @param alpha transparency level (between 0 and 1) for the confidence
-#'   interval. Defaults to \code{0.2}.
-#' @param removeFirst omit \code{removeFirst} values on the low frequency side. 
-#' @param removeLast omit \code{removeLast} values on the high frequency side.
-#' @param ... further graphical parameters passed to \code{lines}.
-#'
-#' @author Thomas Laepple
-#' @noRd
-#'
-LLines<-function(x, conf = TRUE, bPeriod = FALSE, col = "black", alpha = 0.2,
-                 removeFirst = 0, removeLast = 0, ...) {
-
-  if (bPeriod) x$freq <- 1 / x$freq
-  
-  index <- (removeFirst + 1) : (length(x$freq) - removeLast)
-
-  x$freq  <- x$freq[index]
-  x$spec  <- x$spec[index]
-  x$lim.1 <- x$lim.1[index]
-  x$lim.2 <- x$lim.2[index]
-
-  lim <- !is.null(x$lim.1) & !is.null(x$lim.2)
-  if (conf & lim) {
-    Polyplot(x = x$freq, y1 = x$lim.1, y2 = x$lim.2,
-             col = col, alpha = alpha)
-  }
-  
-  graphics::lines(x$freq, x$spec, col = col, ...)
   
 }
 
