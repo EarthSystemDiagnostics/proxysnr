@@ -30,13 +30,14 @@
 #'   large uncertainties at the high-frequency end of the spectra; defaults to
 #'   0.5.
 #'
-#' @return A list of \code{N} lists, where \code{N} is the number of provided
+#' @return A list of \code{n} lists, where \code{n} is the number of provided
 #'   data sets and where each of these lists contains up to five elements:
 #'   \describe{
-#'   \item{\code{raw}:}{a list with four elements: three spectral objects (the
-#'     raw signal, noise and corresponding SNR spectra), and a two-element
-#'     vector (\code{f.cutoff}) with the index and value of the cutoff frequency
-#'     from constraining the smoothing correction (see the \code{crit.diffusion}
+#'   \item{\code{raw}:}{a list with five elements: the number of records
+#'     underlying the analysis (\code{N}), three spectral objects (the raw
+#'     signal, noise and corresponding SNR spectra), and a two-element vector
+#'     (\code{f.cutoff}) with the index and value of the cutoff frequency from
+#'     constraining the smoothing correction (see the \code{crit.diffusion}
 #'     parameter).}
 #'   \item{\code{corr.diff.only}:}{as item \code{raw} but with the spectra after
 #'     correction for the effect of diffusion-like smoothing.}

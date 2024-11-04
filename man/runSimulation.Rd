@@ -4,21 +4,13 @@
 \alias{runSimulation}
 \title{Run simulation for the CI estimation}
 \usage{
-runSimulation(
-  spectra,
-  f.start = NULL,
-  f.end = NULL,
-  nc = 1,
-  res = 1,
-  nmc = 10,
-  df.log = NULL
-)
+runSimulation(spectra, f.start = NULL, f.end = NULL, nmc = 10, df.log = NULL)
 }
 \arguments{
 \item{spectra}{a list with the spectral objects `signal`, `noise`, and `snr`
-from an investigated proxy record array, e.g. as obtained from
-\code{\link{SeparateSignalFromNoise}}, for which to estimate confidence
-intervals.}
+from an investigated proxy record array for which to estimate confidence
+intervals, together with the number of records, `N`, in the array; this
+list is usually to be obtained from \code{\link{SeparateSignalFromNoise}}.}
 
 \item{f.start}{lower end of the frequency range on which the power-law fit is
 made on the proxy data; the default \code{NULL} uses the lowest frequency
@@ -26,11 +18,6 @@ of the proxy \code{spectra}.}
 
 \item{f.end}{as \code{f.start} for the upper end; the default \code{NULL}
 uses the uppermost frequency of the proxy \code{spectra}.}
-
-\item{nc}{the number of proxy records (`"cores"`) in the array, which the
-results in \code{spectra} are based on.}
-
-\item{res}{the sampling (e.g., temporal) resolution of the proxy records.}
 
 \item{nmc}{integer; the number of replications for the confidence interval
 estimation.}
@@ -48,9 +35,10 @@ the output of \code{runSurrogates}: a list of length \code{nmc}
   where each list element is one signal and noise estimation realization.
 }
 \description{
-Get the number of time steps underlying the input signal and noise spectra
-and their powerlaw parameters, and call the Monte Carlo signal and noise
-simulation \code{\link{runSurrogates}}.
+Get the required parameters from the input spectra (number of observations,
+observation resolution, number of proxy records, and signal and noise
+powerlaw parameters) and call the Monte Carlo signal and noise simulation
+\code{\link{runSurrogates}}.
 }
 \seealso{
 \code{\link{runSurrogates}}, \code{\link{EstimateCI}}

@@ -21,8 +21,8 @@ test_that("simulated signal and noise spectra are valid", {
   sim <- simSignalAndNoise(signal.par, noise.par, nc = nc, nt = nt, res = 1)
 
   expect_type(sim, "list")
-  expect_length(sim, 3)
-  expect_named(sim, c("signal", "noise", "snr"))
+  expect_length(sim, 4)
+  expect_named(sim, c("N", "signal", "noise", "snr"))
 
   expect_true(is.spectrum(sim$signal))
   expect_true(is.spectrum(sim$noise))
@@ -37,7 +37,7 @@ test_that("running surrogate signal and noise spectra works", {
 
   expect_type(sim, "list")
   expect_length(sim, nmc)
-  expect_equal(lengths(sim), rep(3, nmc))
+  expect_equal(lengths(sim), rep(4, nmc))
 
 })
 
@@ -106,7 +106,7 @@ test_that("simulation produces correct frequency axis", {
   spectra <- ObtainArraySpectra(dml$dml2, df.log = 0.15) %>%
     SeparateSignalFromNoise()
 
-  sim <- runSimulation(spectra, f.end = 0.1, nc = 3, nmc = 1)
+  sim <- runSimulation(spectra, f.end = 0.1, nmc = 1)
 
   expect_equal(spectra$signal$freq, sim[[1]]$signal$freq)
 
@@ -115,7 +115,7 @@ test_that("simulation produces correct frequency axis", {
   spectra <- ObtainArraySpectra(dml$dml2, df.log = 0.15, res = res) %>%
     SeparateSignalFromNoise()
 
-  sim <- runSimulation(spectra, f.end = 0.1, nc = 3, res = res, nmc = 1)
+  sim <- runSimulation(spectra, f.end = 0.1, nmc = 1)
 
   expect_equal(spectra$signal$freq, sim[[1]]$signal$freq)
 
@@ -128,12 +128,12 @@ test_that("CI estimation works", {
   spectra <- ObtainArraySpectra(dml$dml2, df.log = 0.15) %>%
     SeparateSignalFromNoise(diffusion = diffusion.tf$dml2)
 
-  spectra.with.ci <- EstimateCI(spectra, f.end = 0.1, nc = 3, res = 1,
-                                nmc = 3, df.log = NULL, ci.df.log = NULL)
+  spectra.with.ci <- EstimateCI(spectra, f.end = 0.1, nmc = 3,
+                                df.log = NULL, ci.df.log = NULL)
 
   expect_type(spectra.with.ci, "list")
-  expect_length(spectra.with.ci, 3)
-  expect_named(spectra.with.ci, c("signal", "noise", "snr"))
+  expect_length(spectra.with.ci, 4)
+  expect_named(spectra.with.ci, c("N", "signal", "noise", "snr"))
 
   nms <- c("freq", "spec", "lim.1", "lim.2")
 
@@ -149,8 +149,7 @@ test_that("CI estimation works", {
   # test same dataset with log-smoothing switched on
 
   expect_no_error(
-    EstimateCI(spectra, f.end = 0.1, nc = 3, res = 1,
-               nmc = 3, df.log = 0.1, ci.df.log = 0.05))
+    EstimateCI(spectra, f.end = 0.1, nmc = 3, df.log = 0.1, ci.df.log = 0.05))
 
   # test the combined DML1+DML2 dataset, which has a merged frequency axis, so
   # that interpolation of the simulated CI should be needed
@@ -167,14 +166,18 @@ test_that("CI estimation works", {
     proxysnr:::PublicationSNR(data = "raw") %>%
     .$dml
 
+  # supply number of records manually: use 3
+  spectra$N <- 3
+
   expect_warning(
-    spectra.with.ci <- EstimateCI(spectra, f.end = 0.1, nc = 3, res = 1,
+    spectra.with.ci <- EstimateCI(spectra, f.end = 0.1,
                                   df.log = 0.15, ci.df.log = 0.05),
     w)
 
   expect_type(spectra.with.ci, "list")
-  expect_length(spectra.with.ci, 4)
-  expect_named(spectra.with.ci, c("signal", "noise", "snr", "f.cutoff"))
+  expect_length(spectra.with.ci, 5)
+  expect_named(spectra.with.ci, c("signal", "noise", "snr", "f.cutoff", "N"))
+  expect_equal(spectra.with.ci$N, spectra$N)
 
   nms <- c("freq", "spec", "lim.1", "lim.2")
 

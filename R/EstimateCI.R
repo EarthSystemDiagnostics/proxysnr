@@ -16,17 +16,14 @@
 #' signal, noise, and SNR to yield the confidence intervals.
 #'
 #' @param spectra a list with the spectral objects `signal`, `noise`, and `snr`
-#'   from an investigated proxy record array, e.g. as obtained from
-#'   \code{\link{SeparateSignalFromNoise}}, for which to estimate confidence
-#'   intervals.
+#'   from an investigated proxy record array for which to estimate confidence
+#'   intervals, together with the number of records, `N`, in the array; this
+#'   list is usually to be obtained from \code{\link{SeparateSignalFromNoise}}.
 #' @param f.start lower end of the frequency range on which the power-law fit is
 #'   made on the proxy data; the default \code{NULL} uses the lowest frequency
 #'   of the proxy \code{spectra}.
 #' @param f.end as \code{f.start} for the upper end; the default \code{NULL}
 #'   uses the uppermost frequency of the proxy \code{spectra}.
-#' @param nc the number of proxy records (`"cores"`) in the array, which the
-#'   results in \code{spectra} are based on.
-#' @param res the sampling (e.g., temporal) resolution of the proxy records.
 #' @param nmc integer; the number of replications for the confidence interval
 #'   estimation.
 #' @param probs length-2 numeric vector of probabilities with values in [0,1]
@@ -51,9 +48,8 @@
 #'
 #' @export
 #'
-EstimateCI <- function(spectra, f.start = NULL, f.end = NULL, nc, res,
-                       nmc = 10, probs = c(0.1, 0.9),
-                       df.log = NULL, ci.df.log = NULL) {
+EstimateCI <- function(spectra, f.start = NULL, f.end = NULL, nmc = 10,
+                       probs = c(0.1, 0.9), df.log = NULL, ci.df.log = NULL) {
 
   # ----------------------------------------------------------------------------
   # input error checking
@@ -146,7 +142,7 @@ EstimateCI <- function(spectra, f.start = NULL, f.end = NULL, nc, res,
   # optionally smooth them, and interpolate to input frequency axis if needed
 
   ci <- runSimulation(spectra = spectra, f.start = f.start, f.end = f.end,
-                      nc = nc, res = res, nmc = nmc, df.log = df.log) %>%
+                      nmc = nmc, df.log = df.log) %>%
     extractQuantiles(probs = probs) %>%
     lapply(.smooth, df.log = ci.df.log) %>%
     .check.frequency.axes(spectra$signal)
@@ -250,9 +246,10 @@ runSurrogates <- function(signal.par, noise.par, nc, nt, res, nmc = 10,
 
 #' Run simulation for the CI estimation
 #'
-#' Get the number of time steps underlying the input signal and noise spectra
-#' and their powerlaw parameters, and call the Monte Carlo signal and noise
-#' simulation \code{\link{runSurrogates}}.
+#' Get the required parameters from the input spectra (number of observations,
+#' observation resolution, number of proxy records, and signal and noise
+#' powerlaw parameters) and call the Monte Carlo signal and noise simulation
+#' \code{\link{runSurrogates}}.
 #'
 #' @inheritParams EstimateCI
 #' @return the output of \code{runSurrogates}: a list of length \code{nmc}
@@ -261,14 +258,18 @@ runSurrogates <- function(signal.par, noise.par, nc, nt, res, nmc = 10,
 #' @seealso \code{\link{runSurrogates}}, \code{\link{EstimateCI}}
 #'
 runSimulation <- function(spectra, f.start = NULL, f.end = NULL,
-                          nc = 1, res = 1, nmc = 10, df.log = NULL) {
+                          nmc = 10, df.log = NULL) {
 
   # estimate powerlaw coefficients
   signal.par <- fit.powerlaw(spectra$signal, f.start, f.end)
   noise.par  <- fit.powerlaw(spectra$noise, f.start, f.end)
 
+  # get time resolution of original proxy records
+  res <- 1 / (2 * max(spectra$signal$freq))
   # get number of time steps
   nt <- 1 / (res * spectra$signal$freq[1])
+  # get number of cores underlying results in `spectra`
+  nc <- spectra$N
 
   runSurrogates(signal.par = signal.par, noise.par = noise.par,
                 nc = nc, nt = nt, res = res, nmc = nmc,

@@ -43,9 +43,9 @@ test_that("WrapSpectralResults works", {
   expect_equal(length(names(spec)), 0)
 
   expect_equal(sapply(spec, names), rep("raw", 3))
-  expect_equal(names(spec[[1]]$raw), c("signal", "noise", "snr", "f.cutoff"))
-  expect_equal(names(spec[[2]]$raw), c("signal", "noise", "snr", "f.cutoff"))
-  expect_equal(names(spec[[3]]$raw), c("signal", "noise", "snr", "f.cutoff"))
+  expect_equal(names(spec[[1]]$raw), c("N", "signal", "noise", "snr", "f.cutoff"))
+  expect_equal(names(spec[[2]]$raw), c("N", "signal", "noise", "snr", "f.cutoff"))
+  expect_equal(names(spec[[3]]$raw), c("N", "signal", "noise", "snr", "f.cutoff"))
 
   expect_true(is.spectrum(spec[[1]]$raw$signal))
   expect_true(is.spectrum(spec[[1]]$raw$noise))

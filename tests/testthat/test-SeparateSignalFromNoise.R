@@ -103,7 +103,7 @@ test_that("SeparateSignalFromNoise calculations work", {
 
   actual <- SeparateSignalFromNoise(spectra = list(mean = mean, stack = stack),
                                     neff = n)
-  expected <- list(signal = signal, noise = noise, snr = snr)
+  expected <- list(N = n, signal = signal, noise = noise, snr = snr)
 
   expect_equal(actual, expected)
 
@@ -127,7 +127,7 @@ test_that("SeparateSignalFromNoise calculations work", {
     spectra = list(mean = mean, stack = stack, N = n),
     diffusion = diff,
     time.uncertainty = tunc)
-  expected <- list(signal = signal, noise = noise, snr = snr)
+  expected <- list(N = n, signal = signal, noise = noise, snr = snr)
 
   expect_equal(actual, expected)
 
@@ -187,7 +187,7 @@ test_that("SeparateSignalFromNoise calculations work", {
   actual <- SeparateSignalFromNoise(spectra = list(mean = mean, stack = stack),
                                     neff = n,
                                     measurement.noise = measurement_noise_var)
-  expected <- list(signal = signal, noise = noise, snr = snr)
+  expected <- list(N = n, signal = signal, noise = noise, snr = snr)
 
   expect_equal(actual, expected)
 

@@ -47,8 +47,10 @@ correct the effect it has on the estimated signal spectrum. The default
 `NULL` is to apply no correction.}
 }
 \value{
-A list of three spectral objects:
+A list of four objects: one integer value and three spectral objects:
   \describe{
+  \item{\code{N}:}{the (effective) number of records underlying the
+    analysis;}
   \item{\code{signal}:}{the raw or corrected signal spectrum;}
   \item{\code{noise}:}{the raw or corrected noise spectrum;}
   \item{\code{snr}:}{the signal-to-noise ratio as calculated from the previous

@@ -45,8 +45,10 @@
 #'   correct the effect it has on the estimated signal spectrum. The default
 #'   `NULL` is to apply no correction.
 #'
-#' @return A list of three spectral objects:
+#' @return A list of four objects: one integer value and three spectral objects:
 #'   \describe{
+#'   \item{\code{N}:}{the (effective) number of records underlying the
+#'     analysis;}
 #'   \item{\code{signal}:}{the raw or corrected signal spectrum;}
 #'   \item{\code{noise}:}{the raw or corrected noise spectrum;}
 #'   \item{\code{snr}:}{the signal-to-noise ratio as calculated from the previous
@@ -181,6 +183,7 @@ SeparateSignalFromNoise <- function(spectra, neff = spectra$N,
   class(signal) <- class(noise) <- class(snr) <- "spec"
   
   res <- list(
+    N = N,
     signal  = signal,
     noise   = noise,
     snr     = snr)
