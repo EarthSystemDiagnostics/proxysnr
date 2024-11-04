@@ -22,6 +22,16 @@ test_that("plotting array spectra works", {
   expect_error(PlotArraySpectra(list(single = 1, mean = mean, stack = stack)),
                m, fixed = TRUE)
 
+  m <- "`remove` must be a single value or a length-2 vector."
+  expect_error(
+    PlotArraySpectra(list(single = list(), mean = mean, stack = stack),
+                     remove = NULL),
+    m, fixed = TRUE)
+  expect_error(
+    PlotArraySpectra(list(single = list(), mean = mean, stack = stack),
+                     remove = c(1, 2, 5)),
+    m, fixed = TRUE)
+
   single <- list(a = list(freq = 1 : 10, spec = 1 : 10), b = "ufp",
                  c = list(freq = 1 : 10, spec = 1 : 10))
   m <- "Cannot plot `spec$single[[2]]`: no spectral object."
@@ -41,6 +51,7 @@ test_that("plotting array spectra works", {
 
   # check if plotting runs without error
   expect_no_error(PlotArraySpectra(spec))
+  expect_no_error(PlotArraySpectra(spec, remove = c(1, 5)))
   expect_no_error(
     PlotArraySpectra(spec, marker = 1 / c(50, 5),
                      xtm = c(50, 10, 5), xtl = c("a", "b", "c"),

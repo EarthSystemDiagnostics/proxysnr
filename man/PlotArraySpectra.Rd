@@ -7,6 +7,7 @@
 PlotArraySpectra(
   spec,
   marker = NA,
+  remove = 1,
   xlim = c(100, 2),
   ylim = c(0.005, 50),
   col = c("darkgrey", "black", "burlywood4"),
@@ -25,6 +26,12 @@ PlotArraySpectra(
 
 \item{marker}{vector of optional frequency values to mark certain parts of
 the plot, e.g. a cutoff frequency, in form of vertical grey dashed lines.}
+
+\item{remove}{number of frequency estimates to omit (to remove values
+potentially biased from detrending or smoothing): either a single integer
+to omit an equal number on both sides, or a length-two vector supplying the
+number of estimates to omit on the low-frequency side and on the
+high-frequency side.}
 
 \item{xlim}{the x limits (x1, x2) of the plot.}
 
@@ -76,7 +83,12 @@ cores <- clim + noise
 # obtain the spectra and plot them
 cores \%>\%
   ObtainArraySpectra(df.log = 0.05) \%>\%
-  PlotArraySpectra(xlim = c(500, 2))
+  PlotArraySpectra(xlim = c(1000, 2))
+
+# do not omit any values on the plot
+cores \%>\%
+  ObtainArraySpectra(df.log = 0.05) \%>\%
+  PlotArraySpectra(remove = 0, xlim = c(1000, 2))
 
 }
 \references{

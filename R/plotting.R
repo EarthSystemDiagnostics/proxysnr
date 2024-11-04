@@ -48,6 +48,11 @@ Polyplot <- function(x, y1, y2, col = "black", alpha = 0.2, ...) {
 #' @param spec output from \code{\link{ObtainArraySpectra}}.
 #' @param marker vector of optional frequency values to mark certain parts of
 #'   the plot, e.g. a cutoff frequency, in form of vertical grey dashed lines.
+#' @param remove number of frequency estimates to omit (to remove values
+#'   potentially biased from detrending or smoothing): either a single integer
+#'   to omit an equal number on both sides, or a length-two vector supplying the
+#'   number of estimates to omit on the low-frequency side and on the
+#'   high-frequency side.
 #' @param xlim the x limits (x1, x2) of the plot.
 #' @param ylim the y limits (y1, y2) of the plot.
 #' @param col a three-element vector with the colours for the individual
@@ -92,11 +97,16 @@ Polyplot <- function(x, y1, y2, col = "black", alpha = 0.2, ...) {
 #' # obtain the spectra and plot them
 #' cores %>%
 #'   ObtainArraySpectra(df.log = 0.05) %>%
-#'   PlotArraySpectra(xlim = c(500, 2))
+#'   PlotArraySpectra(xlim = c(1000, 2))
+#'
+#' # do not omit any values on the plot
+#' cores %>%
+#'   ObtainArraySpectra(df.log = 0.05) %>%
+#'   PlotArraySpectra(remove = 0, xlim = c(1000, 2))
 #'
 #' @export
 #'
-PlotArraySpectra <- function(spec, marker = NA,
+PlotArraySpectra <- function(spec, marker = NA, remove = 1,
                              xlim = c(100, 2), ylim = c(0.005, 50),
                              col = c("darkgrey", "black", "burlywood4"),
                              col.sn = c("dodgerblue4", "firebrick4"),
@@ -117,6 +127,8 @@ PlotArraySpectra <- function(spec, marker = NA,
   check.if.spectrum(spec$stack)
   if (!is.list(spec$single))
     stop("`spec$single` must be a list of spectra.", call. = FALSE)
+  if (!length(remove) %in% c(1, 2))
+    stop("`remove` must be a single value or a length-2 vector.", call. = FALSE)
 
   # Gather input
   
@@ -125,6 +137,8 @@ PlotArraySpectra <- function(spec, marker = NA,
   psd2 <- spec$stack
   psd3 <- psd1
   psd3$spec <- psd3$spec / N
+
+  if (length(remove) == 1) remove <- rep(remove, 2)
 
   # Axis settings
 
@@ -146,13 +160,13 @@ PlotArraySpectra <- function(spec, marker = NA,
 
   # Shadings
   
-  i.remove <- c(1, length(psd1$freq))
+  index <- (remove[1] + 1) : (length(psd1$freq) - remove[2])
 
-  Polyplot(1 / psd1$freq[-i.remove],
-           psd1$spec[-i.remove], psd2$spec[-i.remove],
+  Polyplot(1 / psd1$freq[index],
+           psd1$spec[index], psd2$spec[index],
            col = col.sn[2], alpha = alpha.sn)
-  Polyplot(1 / psd1$freq[-i.remove],
-           psd2$spec[-i.remove], psd3$spec[-i.remove],
+  Polyplot(1 / psd1$freq[index],
+           psd2$spec[index], psd3$spec[index],
            col = col.sn[1], alpha = alpha.sn)
 
   # Horizontal marker line(s)
@@ -169,7 +183,7 @@ PlotArraySpectra <- function(spec, marker = NA,
     tryCatch(
     {
       LLines(spec$single[[i]], conf = FALSE, bPeriod = TRUE,
-             removeFirst = 1, removeLast = 1,
+             removeFirst = remove[1], removeLast = remove[2],
              col = col[1])
     }, error = function(cond) {
       msg <- sprintf("Cannot plot `spec$single[[%s]]`: no spectral object.", i)
@@ -180,13 +194,13 @@ PlotArraySpectra <- function(spec, marker = NA,
   # Main spectra
 
   LLines(psd1, conf = FALSE, bPeriod = TRUE,
-         removeFirst = 1, removeLast = 1,
+         removeFirst = remove[1], removeLast = remove[2],
          col = col[2], lwd = 3)
   LLines(psd2, conf = FALSE, bPeriod = TRUE,
-         removeFirst = 1, removeLast = 1,
+         removeFirst = remove[1], removeLast = remove[2],
          col = col[3], lwd = 3)
   LLines(psd3, conf = FALSE, bPeriod = TRUE,
-         removeFirst = 1, removeLast = 1,
+         removeFirst = remove[1], removeLast = remove[2],
          col = col[2], lwd = 1.5, lty = 5)
 
   # Axis and legend settings
