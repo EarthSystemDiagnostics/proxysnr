@@ -286,6 +286,9 @@ runSimulation <- function(spectra, f.start = NULL, f.end = NULL,
 #' @param surrogates the output from a run of \code{\link{runSurrogates}}.
 #' @param probs length-2 numeric vector of probabilities with values in [0,1];
 #'   default setting extracts the 10 and 90 \% quantiles.
+#' @param minval minimum value assigned to negative estimates of the scaled
+#'   lower and upper quantiles to avoid unphysical negative confidence
+#'   intervals, thereby preventing issues on logarithmic plots.
 #' @return a named list of the three elements `signal`, `noise`, and `snr`, with
 #'   each list element in turn being a named list with the `lower` and `upper`
 #'   quantiles (according to the setting of \code{probs}) across the simulated
@@ -294,7 +297,7 @@ runSimulation <- function(spectra, f.start = NULL, f.end = NULL,
 #' @author Thomas Münch
 #' @seealso \code{\link{runSurrogates}}
 #'
-extractQuantiles <- function(surrogates, probs = c(0.1, 0.9)) {
+extractQuantiles <- function(surrogates, probs = c(0.1, 0.9), minval = 1e-15) {
 
   if (length(probs) != 2)
     stop("`probs` must be a length-2 vector.", call. = FALSE)
@@ -310,10 +313,15 @@ extractQuantiles <- function(surrogates, probs = c(0.1, 0.9)) {
     x <- sapply(surrogates, .extract.runs, name = name)
 
     m <- rowMeans(x)
-    lower <- apply(x, 1, stats::quantile, probs = probs[1])
-    upper <- apply(x, 1, stats::quantile, probs = probs[2])
+    m[m <= 0] <- minval
 
-    list(freq = f, lower = lower / m, upper = upper / m)
+    lower <- apply(x, 1, stats::quantile, probs = probs[1]) / m
+    upper <- apply(x, 1, stats::quantile, probs = probs[2]) / m
+
+    upper[upper <= 0] <- minval
+    lower[lower <= 0] <- minval
+
+    list(freq = f, lower = lower, upper = upper)
 
   }
 

@@ -4,13 +4,17 @@
 \alias{extractQuantiles}
 \title{Quantiles of simulated signal and noise spectrum realizations}
 \usage{
-extractQuantiles(surrogates, probs = c(0.1, 0.9))
+extractQuantiles(surrogates, probs = c(0.1, 0.9), minval = 1e-15)
 }
 \arguments{
 \item{surrogates}{the output from a run of \code{\link{runSurrogates}}.}
 
 \item{probs}{length-2 numeric vector of probabilities with values in [0,1];
 default setting extracts the 10 and 90 \% quantiles.}
+
+\item{minval}{minimum value assigned to negative estimates of the scaled
+lower and upper quantiles to avoid unphysical negative confidence
+intervals, thereby preventing issues on logarithmic plots.}
 }
 \value{
 a named list of the three elements `signal`, `noise`, and `snr`, with
