@@ -22,14 +22,17 @@
 #'
 #' @return A list of the following components:
 #'   \describe{
-#'   \item{N:}{the number of (effective) proxy records of the core array;}
 #'   \item{single:}{a list of \code{N} spectral objects (`?spec.object`) with
 #'     the spectra of each individual proxy record;}
 #'   \item{mean:}{spectral object of the mean spectrum across all individual
 #'     spectra;}
 #'   \item{stack:}{spectral object of the spectrum of the average proxy record
-#'     in the time domain ("stacked record").}
+#'     in the time domain ("stacked record");}
 #' }
+#' with the attribute "array.par": a named vector with information on the proxy
+#' record array: number of (effective) records ("nc" = \code{neff}), number of
+#' observation points per record ("nt"), and sampling resolution ("res" =
+#' \code{res}).
 #'
 #' @author Thomas Münch
 #' @seealso \code{\link{PlotArraySpectra}}, \code{\link{SpecMTM}},
@@ -47,10 +50,11 @@ ObtainArraySpectra <- function(cores, res = 1, neff = length(cores),
   if (length(cores) == 1)
     stop("Only one proxy record (`cores` is of length 1).", call. = FALSE)
 
+  ll <- lengths(cores, use.names = FALSE)
   if (!is.data.frame(cores)) {
 
     # data vectors in list must be of the same length
-    if (stats::sd(lengths(cores)) > 0) {
+    if (stats::sd(ll) > 0) {
       stop("Elements of `cores` must all have the same length.", call. = FALSE)
     }
 
@@ -78,12 +82,18 @@ ObtainArraySpectra <- function(cores, res = 1, neff = length(cores),
     stack  <- LogSmooth(stack, df.log = df.log)
   }
 
-  # return results as a list
+  # return results as a list with attribute supplying the array parameter
+
+  setAttr <- function(x) {
+    attr(x, "array.par") <- c(nc = neff, nt = ll[1], res = res)
+    return(x)
+  }
+
   list(
-    N          = neff,
-    single     = single,
-    mean       = mean,
-    stack      = stack
-  )
+    single = single,
+    mean   = mean,
+    stack  = stack
+  ) %>%
+    setAttr()
 
 }

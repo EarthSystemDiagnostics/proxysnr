@@ -22,7 +22,8 @@ test_that("obtaining the array spectra works", {
   mean <- MeanSpectrum(single)
   stack <- SpecMTM(stats::ts(rowMeans(simplify2array(cores))))
 
-  expected <- list(N = 3, single = single, mean = mean, stack = stack)
+  expected <- list(single = single, mean = mean, stack = stack)
+  attr(expected, "array.par") <- c(nc = 3, nt = 100, res = 1)
   actual <- ObtainArraySpectra(cores)
 
   expect_equal(actual, expected)
@@ -35,7 +36,8 @@ test_that("obtaining the array spectra works", {
   mean <- MeanSpectrum(single)
   stack <- SpecMTM(stats::ts(rowMeans(simplify2array(cores)), deltat = 5))
 
-  expected <- list(N = 3, single = single, mean = mean, stack = stack)
+  expected <- list(single = single, mean = mean, stack = stack)
+  attr(expected, "array.par") <- c(nc = 3, nt = 100, res = 5)
   actual <- ObtainArraySpectra(cores, res = 5)
 
   expect_equal(actual, expected)
@@ -43,7 +45,8 @@ test_that("obtaining the array spectra works", {
   # effective number of records is set
 
   neff <- 1.5
-  expected <- list(N = neff, single = single, mean = mean, stack = stack)
+  expected <- list(single = single, mean = mean, stack = stack)
+  attr(expected, "array.par") <- c(nc = neff, nt = 100, res = 5)
   actual <- ObtainArraySpectra(cores, res = 5, neff = neff)
 
   expect_equal(actual, expected)

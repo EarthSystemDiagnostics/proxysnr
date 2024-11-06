@@ -29,14 +29,17 @@ function \code{\link{SpecMTM}}.}
 \value{
 A list of the following components:
   \describe{
-  \item{N:}{the number of (effective) proxy records of the core array;}
   \item{single:}{a list of \code{N} spectral objects (`?spec.object`) with
     the spectra of each individual proxy record;}
   \item{mean:}{spectral object of the mean spectrum across all individual
     spectra;}
   \item{stack:}{spectral object of the spectrum of the average proxy record
-    in the time domain ("stacked record").}
+    in the time domain ("stacked record");}
 }
+with the attribute "array.par": a named vector with information on the proxy
+record array: number of (effective) records ("nc" = \code{neff}), number of
+observation points per record ("nt"), and sampling resolution ("res" =
+\code{res}).
 }
 \description{
 Calculate all relevant spectral estimates for a given array of \code{n}
