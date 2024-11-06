@@ -6,6 +6,9 @@ test_that("obtaining the array spectra works", {
   expect_error(ObtainArraySpectra(1), m, fixed = TRUE)
   expect_error(ObtainArraySpectra(matrix(1 : 6, 2, 3)), m, fixed = TRUE)
 
+  m <- "Only one proxy record (`cores` is of length 1)."
+  expect_error(ObtainArraySpectra(list(a = 1 : 10)), m, fixed = TRUE)
+
   m <- "Elements of `cores` must all have the same length."
   expect_error(ObtainArraySpectra(list(a = 1, b = 1 : 10, c = c(3, 8, 5))),
                                   m, fixed = TRUE)

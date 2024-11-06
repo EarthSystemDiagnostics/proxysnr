@@ -44,6 +44,9 @@ ObtainArraySpectra <- function(cores, res = 1, neff = length(cores),
   if (!is.list(cores))
     stop("`cores` must be a list or a data frame.", call. = FALSE)
 
+  if (length(cores) == 1)
+    stop("Only one proxy record (`cores` is of length 1).", call. = FALSE)
+
   if (!is.data.frame(cores)) {
 
     # data vectors in list must be of the same length

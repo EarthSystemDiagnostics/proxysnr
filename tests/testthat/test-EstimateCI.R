@@ -121,6 +121,90 @@ test_that("simulation produces correct frequency axis", {
 
 })
 
+test_that("CI error checks work", {
+
+  m <- "`spectra` must be a list."
+
+  expect_error(EstimateCI(1), m, fixed = TRUE)
+  expect_error(EstimateCI(matrix()), m, fixed = TRUE)
+
+  m <- "`spectra` must have elements `N`, `signal`, `noise`, and `snr`."
+
+  expect_error(EstimateCI(list()), m, fixed = TRUE)
+  expect_error(EstimateCI(list(N = 1)), m, fixed = TRUE)
+  expect_error(EstimateCI(list(N = 1, signal = list())), m, fixed = TRUE)
+  expect_error(EstimateCI(list(signal = list(), noise = list())),
+               m, fixed = TRUE)
+  expect_error(EstimateCI(list(N = 1, signal = list(), snr = list())),
+               m, fixed = TRUE)
+
+  s1 <- list(freq = 1, spec = 1)
+  s2 <- list(freq = 3 : 12, spec = rnorm(10))
+
+  m <- paste("`spectra$signal` must be a list with elements",
+             "`freq` and `spec` of equal length.")
+
+  expect_error(EstimateCI(
+    list(N = 1, signal = list(), noise = list(), snr = list())),
+    m, fixed = TRUE)
+
+  m <- paste("`spectra$snr` must be a list with elements",
+             "`freq` and `spec` of equal length.")
+
+  expect_error(EstimateCI(
+    list(N = 1, signal = s1, noise = s1, snr = list())),
+    m, fixed = TRUE)
+
+  m <- "`signal` and `noise` must have the same number of spectral estimates."
+
+  expect_error(EstimateCI(
+    list(N = 1, signal = s1, noise = s2, snr = s1)),
+    m, fixed = TRUE)
+
+  m <- "`signal` and `snr` must have the same number of spectral estimates."
+
+  expect_error(EstimateCI(
+    list(N = 1, signal = s1, noise = s1, snr = s2)),
+    m, fixed = TRUE)
+
+  s1 <- list(freq = 1 : 10, spec = rnorm(10))
+
+  m <- "Frequency axes of `signal` and `noise` do not match."
+
+  expect_error(EstimateCI(
+    list(N = 1, signal = s1, noise = s2, snr = s2)),
+    m, fixed = TRUE)
+
+  m <- "Frequency axes of `signal` and `snr` do not match."
+
+  expect_error(EstimateCI(
+    list(N = 1, signal = s1, noise = s1, snr = s2)),
+    m, fixed = TRUE)
+
+  m <- paste("`spectra$N` must be a single integer > 1 supplying the number",
+             "of records underlying the analyses in `spectra`.")
+
+  spectra <- list(signal = s1, noise = s1, snr = s1)
+
+  spectra$N <- 1 : 3
+  expect_error(EstimateCI(spectra), m, fixed = TRUE)
+  spectra$N <- -5
+  expect_error(EstimateCI(spectra), m, fixed = TRUE)
+  spectra$N <- 1
+  expect_error(EstimateCI(spectra), m, fixed = TRUE)
+  spectra$N <- list(N = 1)
+  expect_error(EstimateCI(spectra), m, fixed = TRUE)
+  spectra$N <- data.frame(N = 1)
+  expect_error(EstimateCI(spectra), m, fixed = TRUE)
+  spectra$N <- matrix(data = 1, ncol = 2)
+  expect_error(EstimateCI(spectra), m, fixed = TRUE)
+  spectra$N <- NA
+  expect_error(EstimateCI(spectra), m, fixed = TRUE)
+  spectra$N <- Inf
+  expect_error(EstimateCI(spectra), m, fixed = TRUE)
+
+})
+
 test_that("CI estimation works", {
 
   # test using DML2 dataset from Muench and Laepple (2018)

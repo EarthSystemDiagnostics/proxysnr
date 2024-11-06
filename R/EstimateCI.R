@@ -56,20 +56,33 @@ EstimateCI <- function(spectra, f.start = NULL, f.end = NULL, nmc = 10,
 
   if (!is.list(spectra)) stop("`spectra` must be a list.", call. = FALSE)
 
-  if (!all(utils::hasName(spectra, c("signal", "noise"))))
-    stop("`spectra` must have elements `signal` and `noise`.", call. = FALSE)
+  if (!all(utils::hasName(spectra, c("N", "signal", "noise", "snr"))))
+    stop("`spectra` must have elements `N`, `signal`, `noise`, and `snr`.",
+         call. = FALSE)
 
   check.if.spectrum(spectra$signal)
   check.if.spectrum(spectra$noise)
+  check.if.spectrum(spectra$snr)
 
   if (length(spectra$signal$freq) != length(spectra$noise$freq)) {
     stop("`signal` and `noise` must have the same number of spectral estimates.",
+         call. = FALSE)
+  }
+  if (length(spectra$signal$freq) != length(spectra$snr$freq)) {
+    stop("`signal` and `snr` must have the same number of spectral estimates.",
          call. = FALSE)
   }
 
   if (!all(spectra$signal$freq == spectra$noise$freq)) {
     stop("Frequency axes of `signal` and `noise` do not match.", call. = FALSE)
   }
+  if (!all(spectra$signal$freq == spectra$snr$freq)) {
+    stop("Frequency axes of `signal` and `snr` do not match.", call. = FALSE)
+  }
+
+  if (!checkmate::testNumber(spectra$N, lower = 2, finite = TRUE))
+    stop("`spectra$N` must be a single integer > 1 supplying the number ",
+         "of records underlying the analyses in `spectra`.", call. = FALSE)
 
   # ----------------------------------------------------------------------------
   # helper functions
