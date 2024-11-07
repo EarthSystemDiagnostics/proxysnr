@@ -21,8 +21,8 @@ test_that("simulated signal and noise spectra are valid", {
   sim <- simSignalAndNoise(signal.par, noise.par, nc = nc, nt = nt, res = 1)
 
   expect_type(sim, "list")
-  expect_length(sim, 4)
-  expect_named(sim, c("N", "signal", "noise", "snr"))
+  expect_length(sim, 3)
+  expect_named(sim, c("signal", "noise", "snr"))
 
   expect_true(is.spectrum(sim$signal))
   expect_true(is.spectrum(sim$noise))
@@ -37,7 +37,7 @@ test_that("running surrogate signal and noise spectra works", {
 
   expect_type(sim, "list")
   expect_length(sim, nmc)
-  expect_equal(lengths(sim), rep(4, nmc))
+  expect_equal(lengths(sim), rep(3, nmc))
 
 })
 
@@ -128,7 +128,7 @@ test_that("CI error checks work", {
   expect_error(EstimateCI(1), m, fixed = TRUE)
   expect_error(EstimateCI(matrix()), m, fixed = TRUE)
 
-  m <- "`spectra` must have elements `N`, `signal`, `noise`, and `snr`."
+  m <- "`spectra` must have elements `signal`, `noise`, and `snr`."
 
   expect_error(EstimateCI(list()), m, fixed = TRUE)
   expect_error(EstimateCI(list(N = 1)), m, fixed = TRUE)
@@ -145,26 +145,26 @@ test_that("CI error checks work", {
              "`freq` and `spec` of equal length.")
 
   expect_error(EstimateCI(
-    list(N = 1, signal = list(), noise = list(), snr = list())),
+    list(signal = list(), noise = list(), snr = list())),
     m, fixed = TRUE)
 
   m <- paste("`spectra$snr` must be a list with elements",
              "`freq` and `spec` of equal length.")
 
   expect_error(EstimateCI(
-    list(N = 1, signal = s1, noise = s1, snr = list())),
+    list(signal = s1, noise = s1, snr = list())),
     m, fixed = TRUE)
 
   m <- "`signal` and `noise` must have the same number of spectral estimates."
 
   expect_error(EstimateCI(
-    list(N = 1, signal = s1, noise = s2, snr = s1)),
+    list(signal = s1, noise = s2, snr = s1)),
     m, fixed = TRUE)
 
   m <- "`signal` and `snr` must have the same number of spectral estimates."
 
   expect_error(EstimateCI(
-    list(N = 1, signal = s1, noise = s1, snr = s2)),
+    list(signal = s1, noise = s1, snr = s2)),
     m, fixed = TRUE)
 
   s1 <- list(freq = 1 : 10, spec = rnorm(10))
@@ -172,36 +172,14 @@ test_that("CI error checks work", {
   m <- "Frequency axes of `signal` and `noise` do not match."
 
   expect_error(EstimateCI(
-    list(N = 1, signal = s1, noise = s2, snr = s2)),
+    list(signal = s1, noise = s2, snr = s2)),
     m, fixed = TRUE)
 
   m <- "Frequency axes of `signal` and `snr` do not match."
 
   expect_error(EstimateCI(
-    list(N = 1, signal = s1, noise = s1, snr = s2)),
+    list(signal = s1, noise = s1, snr = s2)),
     m, fixed = TRUE)
-
-  m <- paste("`spectra$N` must be a single integer > 1 supplying the number",
-             "of records underlying the analyses in `spectra`.")
-
-  spectra <- list(signal = s1, noise = s1, snr = s1)
-
-  spectra$N <- 1 : 3
-  expect_error(EstimateCI(spectra), m, fixed = TRUE)
-  spectra$N <- -5
-  expect_error(EstimateCI(spectra), m, fixed = TRUE)
-  spectra$N <- 1
-  expect_error(EstimateCI(spectra), m, fixed = TRUE)
-  spectra$N <- list(N = 1)
-  expect_error(EstimateCI(spectra), m, fixed = TRUE)
-  spectra$N <- data.frame(N = 1)
-  expect_error(EstimateCI(spectra), m, fixed = TRUE)
-  spectra$N <- matrix(data = 1, ncol = 2)
-  expect_error(EstimateCI(spectra), m, fixed = TRUE)
-  spectra$N <- NA
-  expect_error(EstimateCI(spectra), m, fixed = TRUE)
-  spectra$N <- Inf
-  expect_error(EstimateCI(spectra), m, fixed = TRUE)
 
 })
 
@@ -216,8 +194,8 @@ test_that("CI estimation works", {
                                 df.log = NULL, ci.df.log = NULL)
 
   expect_type(spectra.with.ci, "list")
-  expect_length(spectra.with.ci, 4)
-  expect_named(spectra.with.ci, c("N", "signal", "noise", "snr"))
+  expect_length(spectra.with.ci, 3)
+  expect_named(spectra.with.ci, c("signal", "noise", "snr"))
 
   nms <- c("freq", "spec", "lim.1", "lim.2")
 
@@ -250,17 +228,14 @@ test_that("CI estimation works", {
     proxysnr:::PublicationSNR(data = "raw") %>%
     .$dml
 
-  # supply number of records manually: use 3
-  spectra$N <- 3
-
   expect_warning(
     spectra.with.ci <- EstimateCI(spectra, f.end = 0.1,
                                   df.log = 0.15, ci.df.log = 0.05),
     w)
 
   expect_type(spectra.with.ci, "list")
-  expect_length(spectra.with.ci, 5)
-  expect_named(spectra.with.ci, c("signal", "noise", "snr", "f.cutoff", "N"))
+  expect_length(spectra.with.ci, 4)
+  expect_named(spectra.with.ci, c("signal", "noise", "snr", "f.cutoff"))
   expect_equal(spectra.with.ci$N, spectra$N)
 
   nms <- c("freq", "spec", "lim.1", "lim.2")

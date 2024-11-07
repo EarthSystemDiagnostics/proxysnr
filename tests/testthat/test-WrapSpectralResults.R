@@ -43,14 +43,21 @@ test_that("WrapSpectralResults works", {
   expect_equal(length(names(spec)), 0)
 
   expect_equal(sapply(spec, names), rep("raw", 3))
-  expect_equal(names(spec[[1]]$raw), c("N", "signal", "noise", "snr", "f.cutoff"))
-  expect_equal(names(spec[[2]]$raw), c("N", "signal", "noise", "snr", "f.cutoff"))
-  expect_equal(names(spec[[3]]$raw), c("N", "signal", "noise", "snr", "f.cutoff"))
+  expect_equal(names(spec[[1]]$raw), c("signal", "noise", "snr", "f.cutoff"))
+  expect_equal(names(spec[[2]]$raw), c("signal", "noise", "snr", "f.cutoff"))
+  expect_equal(names(spec[[3]]$raw), c("signal", "noise", "snr", "f.cutoff"))
 
   expect_true(is.spectrum(spec[[1]]$raw$signal))
   expect_true(is.spectrum(spec[[1]]$raw$noise))
   expect_true(is.spectrum(spec[[1]]$raw$snr))
   expect_true(is.na(spec[[1]]$raw$f.cutoff))
+
+  expect_equal(attr(spec[[1]]$raw, "array.par"),
+               c(nc = nc[1], nt = nt[1], res = 1))
+  expect_equal(attr(spec[[2]]$raw, "array.par"),
+               c(nc = nc[2], nt = nt[2], res = 1))
+  expect_equal(attr(spec[[3]]$raw, "array.par"),
+               c(nc = nc[3], nt = nt[3], res = 1))
 
   # test with correction functions applied to one or to both datasets
 

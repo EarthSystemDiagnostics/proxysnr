@@ -34,10 +34,14 @@ test_that("plotting array spectra works", {
 
   single <- list(a = list(freq = 1 : 10, spec = 1 : 10), b = "ufp",
                  c = list(freq = 1 : 10, spec = 1 : 10))
+  spec <- list(single = single, mean = mean, stack = stack)
+
+  m <- "Attribute `array.par` missing from input object `spec`."
+  expect_error(PlotArraySpectra(spec), m, fixed = TRUE)
+
+  attr(spec, "array.par") <- c(nc = 3, nt = 10, res = 1)
   m <- "Cannot plot `spec$single[[2]]`: no spectral object."
-  expect_error(
-    PlotArraySpectra(list(single = single, mean = mean, stack = stack)),
-    m, fixed = TRUE)
+  expect_error(PlotArraySpectra(spec), m, fixed = TRUE)
 
   # create artificial data
   nc <- 5

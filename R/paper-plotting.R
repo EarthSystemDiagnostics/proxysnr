@@ -124,6 +124,9 @@ PublicationSNR <- function(spec,
   res$wais$snr      <- wais.snr
   res$wais$f.cutoff <- spec.wais$f.cutoff
 
+  attr(res$dml, "array.par") <- attr(spec.dml2, "array.par") # use DML2 parameter
+  attr(res$wais, "array.par") <- attr(spec.wais, "array.par")
+
   return(res)
 
 }

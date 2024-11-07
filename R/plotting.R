@@ -130,9 +130,11 @@ PlotArraySpectra <- function(spec, marker = NA, remove = 1,
   if (!length(remove) %in% c(1, 2))
     stop("`remove` must be a single value or a length-2 vector.", call. = FALSE)
 
+  has.array.attribute(spec)
+
   # Gather input
   
-  N <- length(spec$single)    
+  N <- attr(spec, "array.par")[["nc"]]
   psd1 <- spec$mean
   psd2 <- spec$stack
   psd3 <- psd1

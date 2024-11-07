@@ -16,14 +16,13 @@
 #' proxy data where only time uncertainty is relevant, or for estimating raw
 #' signal and noise spectra by supplying no transfer functions at all.
 #'
-#' @param spectra a list of the spectral estimates from a proxy core array as
-#'   output from \code{\link{ObtainArraySpectra}}, or, as minimum requirement, a
-#'   named list (components `mean` and `stack` as spectral objects; see
-#'   `?spec.object`) supplying the mean spectrum of the `n` proxy records and
-#'   the spectrum of the record stacked across the `n` records.
-#' @param neff the effective number of records (e.g. to account for an expected
-#'   spatial correlation of the local noise). Per default set to element
-#'   \code{N} in \code{spectra}, otherwise supply it explicitly here.
+#' @param spectra a list of the spectral estimates from a proxy core array in
+#'   the format as output from \code{\link{ObtainArraySpectra}}.
+#' @param neff the effective number of records (`neff` <= `n`, e.g. to account
+#'   for an expected spatial correlation of the local noise). Per default
+#'   extracted from the "array.par" attribute of `spectra` (see the "Value"
+#'   section from \code{\link{?ObtainArraySpectra}}), but you can supply the
+#'   `neff` explicitly here to overwrite the default value.
 #' @param measurement.noise a measurement noise level for correcting the proxy
 #'   noise spectrum: either a single value or a spectral object. In the former
 #'   case, the measurement noise is assumed to exhibit a white spectrum and the
@@ -45,15 +44,16 @@
 #'   correct the effect it has on the estimated signal spectrum. The default
 #'   `NULL` is to apply no correction.
 #'
-#' @return A list of four objects: one integer value and three spectral objects:
+#' @return A list of three spectral objects:
 #'   \describe{
-#'   \item{\code{N}:}{the (effective) number of records underlying the
-#'     analysis;}
 #'   \item{\code{signal}:}{the raw or corrected signal spectrum;}
 #'   \item{\code{noise}:}{the raw or corrected noise spectrum;}
 #'   \item{\code{snr}:}{the signal-to-noise ratio as calculated from the previous
-#'     components.}
+#'     components;}
 #' }
+#' with the attribute "array.par": a named vector with information on the proxy
+#' record array: number of (effective) records ("nc" = \code{neff}), number of
+#' observation points per record ("nt"), and sampling resolution ("res").
 #'
 #' @author Thomas Münch
 #' @seealso \code{\link{ObtainArraySpectra}}, \code{\link{CalculateDiffusionTF}},
@@ -67,7 +67,7 @@
 #'
 #' @export
 #'
-SeparateSignalFromNoise <- function(spectra, neff = spectra$N,
+SeparateSignalFromNoise <- function(spectra, neff = NULL,
                                     measurement.noise = NULL,
                                     diffusion = NULL, time.uncertainty = NULL) {
 
@@ -90,8 +90,17 @@ SeparateSignalFromNoise <- function(spectra, neff = spectra$N,
     stop("Frequency axes of `mean` and `stack` do not match.")
   }
 
+  has.array.attribute(spectra)
+
   if (is.null(neff)) {
-    stop("Supply (effective) number of records.")
+
+    neff <- attr(spectra, "array.par")[["nc"]]
+
+  } else {
+
+    if (!checkmate::testNumber(neff, lower = 2, finite = TRUE))
+      stop("Manually supplied `neff` must be a single integer >= 2.",
+           call. = FALSE)
   }
 
   if (is.null(measurement.noise)) {
@@ -181,13 +190,19 @@ SeparateSignalFromNoise <- function(spectra, neff = spectra$N,
   # organize output
 
   class(signal) <- class(noise) <- class(snr) <- "spec"
+
+  setAttr <- function(x) {
+    attr(x, "array.par") <- c(nc = N,
+                              nt = attr(spectra, "array.par")[["nt"]],
+                              res = attr(spectra, "array.par")[["res"]])
+    return(x)
+  }
   
-  res <- list(
-    N = N,
+  list(
     signal  = signal,
     noise   = noise,
-    snr     = snr)
-
-  return(res)
+    snr     = snr
+  ) %>%
+    setAttr()
 
 }

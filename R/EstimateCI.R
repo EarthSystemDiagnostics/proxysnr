@@ -16,9 +16,8 @@
 #' signal, noise, and SNR to yield the confidence intervals.
 #'
 #' @param spectra a list with the spectral objects `signal`, `noise`, and `snr`
-#'   from an investigated proxy record array for which to estimate confidence
-#'   intervals, together with the number of records, `N`, in the array; this
-#'   list is usually to be obtained from \code{\link{SeparateSignalFromNoise}}.
+#'   for an investigated proxy record array, obtained from
+#'   \code{\link{SeparateSignalFromNoise}}.
 #' @param f.start lower end of the frequency range on which the power-law fit is
 #'   made on the proxy data; the default \code{NULL} uses the lowest frequency
 #'   of the proxy \code{spectra}.
@@ -56,8 +55,8 @@ EstimateCI <- function(spectra, f.start = NULL, f.end = NULL, nmc = 10,
 
   if (!is.list(spectra)) stop("`spectra` must be a list.", call. = FALSE)
 
-  if (!all(utils::hasName(spectra, c("N", "signal", "noise", "snr"))))
-    stop("`spectra` must have elements `N`, `signal`, `noise`, and `snr`.",
+  if (!all(utils::hasName(spectra, c("signal", "noise", "snr"))))
+    stop("`spectra` must have elements `signal`, `noise`, and `snr`.",
          call. = FALSE)
 
   check.if.spectrum(spectra$signal)
@@ -80,9 +79,7 @@ EstimateCI <- function(spectra, f.start = NULL, f.end = NULL, nmc = 10,
     stop("Frequency axes of `signal` and `snr` do not match.", call. = FALSE)
   }
 
-  if (!checkmate::testNumber(spectra$N, lower = 2, finite = TRUE))
-    stop("`spectra$N` must be a single integer > 1 supplying the number ",
-         "of records underlying the analyses in `spectra`.", call. = FALSE)
+  has.array.attribute(spectra)
 
   # ----------------------------------------------------------------------------
   # helper functions
@@ -277,12 +274,12 @@ runSimulation <- function(spectra, f.start = NULL, f.end = NULL,
   signal.par <- fit.powerlaw(spectra$signal, f.start, f.end)
   noise.par  <- fit.powerlaw(spectra$noise, f.start, f.end)
 
-  # get time resolution of original proxy records
-  res <- 1 / (2 * max(spectra$signal$freq))
-  # get number of time steps
-  nt <- 1 / (res * spectra$signal$freq[1])
   # get number of cores underlying results in `spectra`
-  nc <- spectra$N
+  nc <- attr(spectra, "array.par")[["nc"]]
+  # get number of time steps of original proxy records
+  nt <- attr(spectra, "array.par")[["nt"]]
+  # get time resolution of original proxy records
+  res <- attr(spectra, "array.par")[["res"]]
 
   runSurrogates(signal.par = signal.par, noise.par = noise.par,
                 nc = nc, nt = nt, res = res, nmc = nmc,

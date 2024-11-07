@@ -31,13 +31,12 @@
 #'   0.5.
 #'
 #' @return A list of \code{n} lists, where \code{n} is the number of provided
-#'   data sets and where each of these lists contains up to five elements:
+#'   data sets and where each of these lists contains up to four elements:
 #'   \describe{
-#'   \item{\code{raw}:}{a list with five elements: the number of records
-#'     underlying the analysis (\code{N}), three spectral objects (the raw
-#'     signal, noise and corresponding SNR spectra), and a two-element vector
-#'     (\code{f.cutoff}) with the index and value of the cutoff frequency from
-#'     constraining the smoothing correction (see the \code{crit.diffusion}
+#'   \item{\code{raw}:}{a list with four elements: three spectral objects (the
+#'     raw signal, noise and corresponding SNR spectra), and a two-element
+#'     vector (\code{f.cutoff}) with the index and value of the cutoff frequency
+#'     from constraining the smoothing correction (see the \code{crit.diffusion}
 #'     parameter).}
 #'   \item{\code{corr.diff.only}:}{as item \code{raw} but with the spectra after
 #'     correction for the effect of diffusion-like smoothing.}
@@ -51,7 +50,7 @@
 #' whether transfer functions for the corrections have been provided in
 #' \code{diffusion} and \code{time.uncertainty} or not. Also, the element
 #' \code{f.cutoff} is `NA` if diffusion-like smoothing has not been corrected
-#'   for.
+#' for.
 #'
 #' @seealso \code{\link{SeparateSignalFromNoise}},
 #'   \code{\link{CalculateDiffusionTF}},
