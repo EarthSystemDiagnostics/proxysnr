@@ -8,12 +8,13 @@ WrapSpectralResults(
   ...,
   diffusion = NULL,
   time.uncertainty = NULL,
+  res = 1,
   df.log = 0.05,
   crit.diffusion = 0.5
 )
 }
 \arguments{
-\item{...}{a comma separated list of named proxy data sets to analyse.}
+\item{...}{a comma separated list of named proxy datasets to analyse.}
 
 \item{diffusion}{a list the same length as the number of datasets with each
 list element a spectral object (`?spec.object`) of a transfer function to
@@ -32,9 +33,13 @@ correct for the effect of time uncertainty
 (see also \code{\link{CalculateTimeUncertaintyTF}} for calculating transfer
 functions in the case of layer-counted proxy chronologies).}
 
+\item{res}{the sampling (e.g., temporal) resolution of the proxy data. Either
+a single value if all datasets have the same resolution, or a vector with a
+value for each dataset.}
+
 \item{df.log}{a vector of Gaussian kernel widths in log space to smooth the
-spectral estimates from each data set. If dimensions do not fit, its length
-is recycled to match the number of data sets.}
+spectral estimates from each dataset. Either a single value to apply the
+same smoothing to all datasets, or a vector with a value for each dataset.}
 
 \item{crit.diffusion}{minimum transfer function value for the diffusion-like
 smoothing process to constrain the corresponding correction. This
@@ -44,7 +49,7 @@ large uncertainties at the high-frequency end of the spectra; defaults to
 }
 \value{
 A list of \code{n} lists, where \code{n} is the number of provided
-  data sets and where each of these lists contains up to four elements:
+  datasets and where each of these lists contains up to four elements:
   \describe{
   \item{\code{raw}:}{a list with four elements: three spectral objects (the
     raw signal, noise and corresponding SNR spectra), and a two-element
@@ -59,7 +64,7 @@ A list of \code{n} lists, where \code{n} is the number of provided
     correction for both the effects of diffusion-like smoothing and time
     uncertainty.}
 }
-The number of the returned list elements for each data set depends on
+The number of the returned list elements for each dataset depends on
 whether transfer functions for the corrections have been provided in
 \code{diffusion} and \code{time.uncertainty} or not. Also, the element
 \code{f.cutoff} is `NA` if diffusion-like smoothing has not been corrected

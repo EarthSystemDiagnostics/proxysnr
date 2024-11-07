@@ -34,6 +34,15 @@ test_that("WrapSpectralResults works", {
                                    time.uncertainty = rep(NA, 4)),
                m, fixed = TRUE)
 
+  m <- "Length of `df.log` must be 1 or equal to the number of datasets."
+  expect_error(WrapSpectralResults(data[[1]], data[[2]], data[[3]],
+                                   df.log = c(0.05, 0.1)), m, fixed = TRUE)
+  expect_error(WrapSpectralResults(data[[1]], data[[2]], data[[3]],
+                                   df.log = NULL), m, fixed = TRUE)
+  m <- "Length of `res` must be 1 or equal to the number of datasets."
+  expect_error(WrapSpectralResults(data[[1]], data[[2]], data[[3]],
+                                   res = 1 : 11), m, fixed = TRUE)
+
   # test without any correction
 
   spec <- WrapSpectralResults(data[[1]], data[[2]], data[[3]])
