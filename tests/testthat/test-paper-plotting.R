@@ -28,9 +28,13 @@ test_that("paper plotting functions work", {
   m <- "No version `raw` available for dataset `wais`."
   expect_error(PublicationSNR(corrupted_data, data = "raw"), m, fixed = TRUE)
 
+  expect_no_error(s <- proxysnr:::PublicationSNR(data))
+  expect_equal(attr(s$dml, "array.par"), c(nc = 3, nt = 995, res = 1))
+  expect_equal(attr(s$wais, "array.par"), c(nc = 5, nt = 201, res = 1))
+
   expect_no_error(
     # suppress warnings from permil sign conversion failures
-    suppressWarnings(muench_laepple_fig05(proxysnr:::PublicationSNR(data)))
+    suppressWarnings(muench_laepple_fig05(s))
   )
 
 })

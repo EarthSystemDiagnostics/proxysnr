@@ -8,9 +8,8 @@ runSimulation(spectra, f.start = NULL, f.end = NULL, nmc = 10, df.log = NULL)
 }
 \arguments{
 \item{spectra}{a list with the spectral objects `signal`, `noise`, and `snr`
-from an investigated proxy record array for which to estimate confidence
-intervals, together with the number of records, `N`, in the array; this
-list is usually to be obtained from \code{\link{SeparateSignalFromNoise}}.}
+for an investigated proxy record array, obtained from
+\code{\link{SeparateSignalFromNoise}}.}
 
 \item{f.start}{lower end of the frequency range on which the power-law fit is
 made on the proxy data; the default \code{NULL} uses the lowest frequency

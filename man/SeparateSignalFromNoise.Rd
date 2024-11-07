@@ -6,22 +6,21 @@
 \usage{
 SeparateSignalFromNoise(
   spectra,
-  neff = spectra$N,
+  neff = NULL,
   measurement.noise = NULL,
   diffusion = NULL,
   time.uncertainty = NULL
 )
 }
 \arguments{
-\item{spectra}{a list of the spectral estimates from a proxy core array as
-output from \code{\link{ObtainArraySpectra}}, or, as minimum requirement, a
-named list (components `mean` and `stack` as spectral objects; see
-`?spec.object`) supplying the mean spectrum of the `n` proxy records and
-the spectrum of the record stacked across the `n` records.}
+\item{spectra}{a list of the spectral estimates from a proxy core array in
+the format as output from \code{\link{ObtainArraySpectra}}.}
 
-\item{neff}{the effective number of records (e.g. to account for an expected
-spatial correlation of the local noise). Per default set to element
-\code{N} in \code{spectra}, otherwise supply it explicitly here.}
+\item{neff}{the effective number of records (`neff` <= `n`, e.g. to account
+for an expected spatial correlation of the local noise). Per default
+extracted from the "array.par" attribute of `spectra` (see the "Value"
+section from \code{\link{?ObtainArraySpectra}}), but you can supply the
+`neff` explicitly here to overwrite the default value.}
 
 \item{measurement.noise}{a measurement noise level for correcting the proxy
 noise spectrum: either a single value or a spectral object. In the former
@@ -47,15 +46,16 @@ correct the effect it has on the estimated signal spectrum. The default
 `NULL` is to apply no correction.}
 }
 \value{
-A list of four objects: one integer value and three spectral objects:
+A list of three spectral objects:
   \describe{
-  \item{\code{N}:}{the (effective) number of records underlying the
-    analysis;}
   \item{\code{signal}:}{the raw or corrected signal spectrum;}
   \item{\code{noise}:}{the raw or corrected noise spectrum;}
   \item{\code{snr}:}{the signal-to-noise ratio as calculated from the previous
-    components.}
+    components;}
 }
+with the attribute "array.par": a named vector with information on the proxy
+record array: number of (effective) records ("nc" = \code{neff}), number of
+observation points per record ("nt"), and sampling resolution ("res").
 }
 \description{
 Calculate the raw signal and noise spectra and the corresponding
