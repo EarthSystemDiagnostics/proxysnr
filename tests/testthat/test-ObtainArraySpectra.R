@@ -11,7 +11,11 @@ test_that("obtaining the array spectra works", {
 
   m <- "Elements of `cores` must all have the same length."
   expect_error(ObtainArraySpectra(list(a = 1, b = 1 : 10, c = c(3, 8, 5))),
-                                  m, fixed = TRUE)
+               m, fixed = TRUE)
+
+  m <- "Need at least 9 observations per record to calculate spectra."
+  expect_error(ObtainArraySpectra(list(a = 1 : 5, b = 1 : 5)),
+               m, fixed = TRUE)
   
   # test with data
 

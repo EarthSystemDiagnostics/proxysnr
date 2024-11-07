@@ -59,6 +59,12 @@ ObtainArraySpectra <- function(cores, res = 1, neff = length(cores),
     }
 
   }
+
+  nt <- ll[1]
+  if (nt <= 8) {
+    stop("Need at least 9 observations per record to calculate spectra.",
+         call. = FALSE)
+  }
   
   # estimate individual spectra
   single <- cores %>%
@@ -85,7 +91,7 @@ ObtainArraySpectra <- function(cores, res = 1, neff = length(cores),
   # return results as a list with attribute supplying the array parameter
 
   setAttr <- function(x) {
-    attr(x, "array.par") <- c(nc = neff, nt = ll[1], res = res)
+    attr(x, "array.par") <- c(nc = neff, nt = nt, res = res)
     return(x)
   }
 
