@@ -21,8 +21,9 @@
 #' @param neff the effective number of records (`neff` <= `n`, e.g. to account
 #'   for an expected spatial correlation of the local noise). Per default
 #'   extracted from the "array.par" attribute of `spectra` (see the "Value"
-#'   section from \code{\link{?ObtainArraySpectra}}), but you can supply the
-#'   `neff` explicitly here to overwrite the default value.
+#'   section in the function documentation for
+#'   \code{\link{ObtainArraySpectra}}), but you can supply the `neff` explicitly
+#'   here to overwrite the default value.
 #' @param measurement.noise a measurement noise level for correcting the proxy
 #'   noise spectrum: either a single value or a spectral object. In the former
 #'   case, the measurement noise is assumed to exhibit a white spectrum and the
