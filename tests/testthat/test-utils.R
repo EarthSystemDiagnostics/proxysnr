@@ -168,3 +168,48 @@ test_that("interpolating spectra works", {
   expect_equal(actual$spec, expected$spec)
 
 })
+
+test_that("checking for array.par attribute works", {
+
+  m <- "Attribute `array.par` missing from input object `spectra`."
+
+  spectra  <- 1
+  expect_error(has.array.attribute(spectra), m, fixed = TRUE)
+  attr(spectra, "array.foo") <- "bar"
+  expect_error(has.array.attribute(spectra), m, fixed = TRUE)
+
+  m <- paste("Attribute `array.par` must a named vector",
+             "with elements `nc`, `nt`, `res`.")
+
+  attr(spectra, "array.par") <- "bar"
+  expect_error(has.array.attribute(spectra), m, fixed = TRUE)
+  attr(spectra, "array.par") <- c(nt = 10)
+  expect_error(has.array.attribute(spectra), m, fixed = TRUE)
+  attr(spectra, "array.par") <- c(nc = 10, res = 1)
+  expect_error(has.array.attribute(spectra), m, fixed = TRUE)
+
+  m <- paste("Element `nc` of `array.par attribute",
+             "(number of proxy records) must be a single integer >= 2.")
+  attr(spectra, "array.par") <- c(nc = 0, nt = 100, res = 1)
+  expect_error(has.array.attribute(spectra), m, fixed = TRUE)
+
+  m <- paste("Element `nt` of `array.par attribute",
+             "(number of observations per proxy record)",
+             "must be a single integer > 8.")
+  attr(spectra, "array.par") <- c(nc = 5, nt = 5, res = 1)
+  expect_error(has.array.attribute(spectra), m, fixed = TRUE)
+  attr(spectra, "array.par") <- c(nc = 5, nt = Inf, res = 1)
+  expect_error(has.array.attribute(spectra), m, fixed = TRUE)
+
+  m <- paste("Element `res` of `array.par attribute",
+             "(resolution of proxy records)",
+             "must be a single integer > 0.")
+  attr(spectra, "array.par") <- c(nc = 5, nt = 100, res = 0)
+  expect_error(has.array.attribute(spectra), m, fixed = TRUE)
+  attr(spectra, "array.par") <- c(nc = 5, nt = 100, res = NA)
+  expect_error(has.array.attribute(spectra), m, fixed = TRUE)
+
+  attr(spectra, "array.par") <- c(nc = 5, nt = 100, res = 1)
+  expect_no_error(has.array.attribute(spectra))
+
+})

@@ -210,3 +210,35 @@ InterpolateSpectrum <- function(x, target, num.prec = 8) {
 
 }
 
+has.array.attribute <- function(x) {
+
+  n <- sprintf(" `%s`.", deparse(substitute(x)))
+  a <- attributes(x)
+
+  if (length(a) == 0)
+    stop("Attribute `array.par` missing from input object", n, call. = FALSE)
+
+  if (length(a$array.par) == 0)
+    stop("Attribute `array.par` missing from input object", n, call. = FALSE)
+
+  if (!all(utils::hasName(a$array.par, c("nc", "nt", "res"))))
+    stop("Attribute `array.par` must a named vector with elements ",
+         "`nc`, `nt`, `res`.", call. = FALSE)
+
+  if (!checkmate::testNumber(a$array.par[["nc"]], lower = 2, finite = TRUE))
+    stop("Element `nc` of `array.par attribute ",
+         "(number of proxy records) ",
+         "must be a single integer >= 2.", call. = FALSE)
+
+  if (!checkmate::testNumber(a$array.par[["nt"]], lower = 9, finite = TRUE))
+    stop("Element `nt` of `array.par attribute ",
+         "(number of observations per proxy record) ",
+         "must be a single integer > 8.", call. = FALSE)
+
+  if (!checkmate::testNumber(a$array.par[["res"]], lower = 1e-15, finite = TRUE))
+    stop("Element `res` of `array.par attribute ",
+         "(resolution of proxy records) ",
+         "must be a single integer > 0.", call. = FALSE)
+
+}
+
