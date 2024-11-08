@@ -5,8 +5,8 @@ is a list of these components:
 * LogSmooth: Code taken from function LogSmooth in package paleospec: MIT
 * SpecMTM: Code taken from function SpecMTM in package paleospec: MIT
 * MeanSpectrum: Code taken from function MeanSpectrum in package paleospec: MIT
-* LPlot: Code taken from function LPlot in package paleospec: MIT
-* LLines: Code taken from function LLines in package paleospec: MIT
+* LPlot: Code modified version of function LPlot in package paleospec: MIT
+* LLines: Code  modified version of function LLines in package paleospec: MIT
 * SimPLS: Code taken from function SimPLS in package paleospec: MIT
 * dml: Data taken from https://doi.org/10.1594/PANGAEA.728240: CC-BY-3.0
 * wais: Data taken from https://doi.org/10.7265/N5QJ7F8B: CC-BY-NC-4.0

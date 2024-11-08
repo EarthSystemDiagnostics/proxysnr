@@ -1,12 +1,14 @@
-# Functions in this file are copied from R package paleospec:
+# Functions in this file are copied from R package paleospec, except for
+# functions LPlot and LLines, which are adapted from the functions of the same
+# name in R package paleospec:
 # https://github.com/EarthSystemDiagnostics/paleospec
 # 
 # Original authors and copyright information follow:
 # 
-# * LogSmooth, SpecMTM, LPlot, LLines:
+# * LogSmooth, SpecMTM:
 #   Written by Thomas Laepple. MIT, Copyright (C) 2019 Earth System Diagnostics
 #   group of the Alfred Wegener Institute
-# * MeanSpectrum:
+# * MeanSpectrum, LPlot, LLines:
 #   Written by Thomas Laepple, Thomas Münch. MIT, Copyright (C) 2019 Earth
 #   System Diagnostics group of the Alfred Wegener Institute
 # * SimPLS:
@@ -181,48 +183,53 @@ MeanSpectrum <- function(speclist) {
 
 }
 
-#' Log-log spectral plot
+#' Plot spectral object
 #'
-#' This function plots a spectrum on a double-logarithmic scale and optionally
-#' adds a transparent confidence interval.
+#' Plot a spectral object on a double-logarithmic scale, optionally adding a
+#' transparent confidence interval.
 #'
 #' @param x a spectral object.
+#' @param type 1-character string giving the type of plot desired: default type
+#'   "l" makes a line plot, while type "n" produces only the plot frame; see
+#'   also \code{\link{plot.default}}.
+#' @param inverse if \code{TRUE} the x-axis is displayed in units of period
+#'   (inverse frequency), increasing to the left; defaults to \code{FALSE}.
 #' @param conf if \code{TRUE} (the default) add a transparent confidence
-#'   interval (suppressed if \code{x} contains no error limits).
-#' @param bPeriod if \code{TRUE} the x-axis is displayed in units of period
-#'   (inverse frequency), increasing to the left. Defaults to \code{FALSE}.
-#' @param bNoPlot if \code{TRUE} only produce the plot frame (\code{type = "n"}
-#'   behaviour of function \code{\link{plot}}). Defaults to \code{FALSE}.
+#'   interval (has no effect if \code{x} contains no confidence limits).
 #' @param axes if \code{FALSE} the plotting of the x and y axes is
-#'   suppressed. Defaults to \code{TRUE}.
+#'   suppressed; defaults to \code{TRUE}.
 #' @param col color for the line plot and the confidence interval.
 #' @param alpha transparency level (between 0 and 1) for the confidence
-#'   interval. Defaults to \code{0.2}.
+#'   interval; defaults to \code{0.2}.
 #' @param removeFirst omit \code{removeFirst} values on the low frequency side.
 #' @param removeLast omit \code{removeLast} values on the high frequency side.
 #' @param xlab character string for labelling the x-axis.
 #' @param ylab character string for labelling the y-axis.
 #' @param xlim range of x-axis values; if \code{NULL} (the default) it is
-#'   calculated internally and automatically reversed for \code{bPeriod = TRUE}.
+#'   calculated internally and automatically reversed if \code{period = TRUE}.
 #' @param ylim range of y-axis values; if \code{NULL} (the default) it is
 #'   calculated internally.
 #' @param ... further graphical parameters passed to \code{plot}.
 #'
 #' @author Thomas Laepple
-#' @noRd
+#' @seealso `?spec.object` for the definition of a "proxysnr" spectral object.
 #'
-LPlot <- function(x, conf = TRUE, bPeriod = FALSE, bNoPlot = FALSE, axes = TRUE,
+#' @export
+#'
+LPlot <- function(x, type = "l", inverse = FALSE, conf = TRUE, axes = TRUE,
                   col = "black", alpha = 0.2, removeFirst = 0, removeLast = 0,
-                  xlab = "f", ylab = "PSD", xlim = NULL, ylim = NULL, ...) {
+                  xlab = ifelse(inverse, "period", "f"), ylab = "PSD",
+                  xlim = NULL, ylim = NULL, ...) {
 
-  if (bPeriod) {
+  check.if.spectrum(x)
+
+  if (inverse) {
     x$freq <- 1 / x$freq
     if (is.null(xlim)) xlim <- rev(range(x$freq))
-    if (xlab == "f") xlab <- "period"
   }
 
   index <- (removeFirst + 1) : (length(x$freq) - removeLast)
-  
+
   x$freq  <- x$freq[index]
   x$spec  <- x$spec[index]
   x$lim.1 <- x$lim.1[index]
@@ -233,40 +240,43 @@ LPlot <- function(x, conf = TRUE, bPeriod = FALSE, bNoPlot = FALSE, axes = TRUE,
                  axes = axes, ...)
 
   lim <- !is.null(x$lim.1) & !is.null(x$lim.2)
-  if (conf & lim & !bNoPlot) {
+  if (conf & lim & type != "n") {
     Polyplot(x = x$freq, y1 = x$lim.1, y2 = x$lim.2,
              col = col, alpha = alpha)
   }
 
-  if (!bNoPlot) graphics::lines(x$freq, x$spec, col = col, ...)
-  
+  if (type != "n") graphics::lines(x$freq, x$spec, col = col, ...)
+
 }
 
-#' Add spectrum to existing log-log spectral plot
+#' Add spectral object plot
 #'
-#' This function adds a spectrum to an existing double-logarithmic plot and
-#' optionally adds a transparent confidence interval.
-#' 
+#' Add a line plot of a spectral object to an existing plot.
+#'
 #' @param x a spectral object.
+#' @param inverse if \code{TRUE} treat the x-axis values in units of period
+#'   (inverse frequency), increasing to the left; defaults to \code{FALSE}.
 #' @param conf if \code{TRUE} (the default) add a transparent confidence
-#'   interval (suppressed if \code{x} contains no error limits).
-#' @param bPeriod if \code{TRUE} treat the x-axis values in units of period
-#'   (inverse frequency). Defaults to \code{FALSE}.
+#'   interval (has no effect if \code{x} contains no confidence limits).
 #' @param col color for the line plot and the confidence interval.
 #' @param alpha transparency level (between 0 and 1) for the confidence
-#'   interval. Defaults to \code{0.2}.
-#' @param removeFirst omit \code{removeFirst} values on the low frequency side. 
+#'   interval; defaults to \code{0.2}.
+#' @param removeFirst omit \code{removeFirst} values on the low frequency side.
 #' @param removeLast omit \code{removeLast} values on the high frequency side.
 #' @param ... further graphical parameters passed to \code{lines}.
 #'
-#' @author Thomas Laepple
-#' @noRd
+#' @author Thomas Laepple, Thomas Münch
+#' @seealso `?spec.object` for the definition of a "proxysnr" spectral object.
 #'
-LLines<-function(x, conf = TRUE, bPeriod = FALSE, col = "black", alpha = 0.2,
-                 removeFirst = 0, removeLast = 0, ...) {
+#' @export
+#'
+LLines <- function(x, inverse = FALSE, conf = TRUE, col = "black",
+                   alpha = 0.2, removeFirst = 0, removeLast = 0, ...) {
 
-  if (bPeriod) x$freq <- 1 / x$freq
-  
+  check.if.spectrum(x)
+
+  if (inverse) x$freq <- 1 / x$freq
+
   index <- (removeFirst + 1) : (length(x$freq) - removeLast)
 
   x$freq  <- x$freq[index]
@@ -279,9 +289,9 @@ LLines<-function(x, conf = TRUE, bPeriod = FALSE, col = "black", alpha = 0.2,
     Polyplot(x = x$freq, y1 = x$lim.1, y2 = x$lim.2,
              col = col, alpha = alpha)
   }
-  
+
   graphics::lines(x$freq, x$spec, col = col, ...)
-  
+
 }
 
 #' Simulate a random time series with a power-law spectrum

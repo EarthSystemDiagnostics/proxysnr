@@ -157,7 +157,7 @@ PlotArraySpectra <- function(spec, marker = NA, remove = 1,
 
   # Plot frame
   
-  LPlot(psd1, bPeriod = TRUE, bNoPlot = TRUE, axes = FALSE,
+  LPlot(psd1, type = "n", inverse = TRUE, axes = FALSE,
         xlim = xlim, ylim = ylim, xlab = "", ylab = "")
 
   # Shadings
@@ -184,7 +184,7 @@ PlotArraySpectra <- function(spec, marker = NA, remove = 1,
 
     tryCatch(
     {
-      LLines(spec$single[[i]], conf = FALSE, bPeriod = TRUE,
+      LLines(spec$single[[i]], conf = FALSE, inverse = TRUE,
              removeFirst = remove[1], removeLast = remove[2],
              col = col[1])
     }, error = function(cond) {
@@ -195,13 +195,13 @@ PlotArraySpectra <- function(spec, marker = NA, remove = 1,
 
   # Main spectra
 
-  LLines(psd1, conf = FALSE, bPeriod = TRUE,
+  LLines(psd1, conf = FALSE, inverse = TRUE,
          removeFirst = remove[1], removeLast = remove[2],
          col = col[2], lwd = 3)
-  LLines(psd2, conf = FALSE, bPeriod = TRUE,
+  LLines(psd2, conf = FALSE, inverse = TRUE,
          removeFirst = remove[1], removeLast = remove[2],
          col = col[3], lwd = 3)
-  LLines(psd3, conf = FALSE, bPeriod = TRUE,
+  LLines(psd3, conf = FALSE, inverse = TRUE,
          removeFirst = remove[1], removeLast = remove[2],
          col = col[2], lwd = 1.5, lty = 5)
 
@@ -299,11 +299,11 @@ PlotSNR <- function(spec, f.cut = FALSE,
                        conf, removeF, removeL, add = FALSE) {
 
     if (!add) {
-      LPlot(snr, bPeriod = TRUE, bNoPlot = TRUE, axes = FALSE,
+      LPlot(snr, type = "n", inverse = TRUE, axes = FALSE,
             xlim = xlim, ylim = ylim, xlab = "", ylab = "")
     }
 
-    LLines(snr, conf = conf, bPeriod = TRUE,
+    LLines(snr, conf = conf, inverse = TRUE,
            removeFirst = removeF, removeLast = removeL,
            col = col, lwd = lwd)
 
@@ -677,11 +677,11 @@ PlotTF <- function(dtf = NULL, ttf = NULL,
         call. = FALSE)
     }
 
-    LPlot(tf[[1]], bNoPlot = TRUE, bPeriod = TRUE, axes = FALSE,
+    LPlot(tf[[1]], type = "n", inverse = TRUE, axes = FALSE,
           xlab = "", ylab = "", xlim = xlim, ylim = ylim)
 
     sapply(seq(length(tf)), function(i) {
-      LLines(tf[[i]], bPeriod = TRUE, lwd = 2, col = col[i])
+      LLines(tf[[i]], inverse = TRUE, lwd = 2, col = col[i])
     })
 
     if (!is.null(dtf.threshold)) {

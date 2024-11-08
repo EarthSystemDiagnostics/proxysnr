@@ -170,7 +170,7 @@ muench_laepple_fig02 <- function(spec, f.cut = TRUE) {
   # --------------------------------------------------------------------------
   # Plot DML signal spectra
 
-  LPlot(spec$dml1$raw$signal, bPeriod = TRUE, bNoPlot = TRUE, axes = FALSE,
+  LPlot(spec$dml1$raw$signal, type = "n", inverse = TRUE, axes = FALSE,
         xlim = c(500, 2), ylim = ylim, xlab = "", ylab = "")
   graphics::axis(2, at = y.at, labels = y.at)
   graphics::box()
@@ -189,13 +189,13 @@ muench_laepple_fig02 <- function(spec, f.cut = TRUE) {
     removeLast <- length(
       spec$dml1$corr.full$f.cutoff[1] : length(spec$dml1$raw$signal$freq))
   
-  LLines(spec$dml1$raw$signal, conf = FALSE, bPeriod = TRUE,
+  LLines(spec$dml1$raw$signal, conf = FALSE, inverse = TRUE,
          removeFirst = 1, removeLast = removeLast,
          col = "dodgerblue4", lwd = 1.5, lty = 3)
-  LLines(spec$dml1$corr.t$signal, conf = FALSE, bPeriod = TRUE,
+  LLines(spec$dml1$corr.t$signal, conf = FALSE, inverse = TRUE,
          removeFirst = 1, removeLast = removeLast,
          col = "dodgerblue4", lwd = 1.5, lty = 5)
-  LLines(spec$dml1$corr.full$signal, conf = FALSE, bPeriod = TRUE,
+  LLines(spec$dml1$corr.full$signal, conf = FALSE, inverse = TRUE,
          removeFirst = 1, removeLast = removeLast,
          col = "dodgerblue4", lwd = 3, lty = 1)
 
@@ -203,13 +203,13 @@ muench_laepple_fig02 <- function(spec, f.cut = TRUE) {
     removeLast <- length(
       spec$dml2$corr.full$f.cutoff[1] : length(spec$dml2$raw$signal$freq))
   
-  LLines(spec$dml2$raw$signal, conf = FALSE, bPeriod = TRUE,
+  LLines(spec$dml2$raw$signal, conf = FALSE, inverse = TRUE,
          removeFirst = 1, removeLast = removeLast,
          col = "black", lwd = 1.5, lty = 3)
-  LLines(spec$dml2$corr.t$signal, conf = FALSE, bPeriod = TRUE,
+  LLines(spec$dml2$corr.t$signal, conf = FALSE, inverse = TRUE,
          removeFirst = 1, removeLast = removeLast,
          col = "black", lwd = 1.5, lty = 5)
-  LLines(spec$dml2$corr.full$signal, conf = FALSE, bPeriod = TRUE,
+  LLines(spec$dml2$corr.full$signal, conf = FALSE, inverse = TRUE,
          removeFirst = 1, removeLast = removeLast,
          col = "black", lwd = 3, lty = 1)
 
@@ -225,7 +225,7 @@ muench_laepple_fig02 <- function(spec, f.cut = TRUE) {
   # --------------------------------------------------------------------------
   # Plot WAIS signal spectra
   
-  LPlot(spec$wais$raw$signal, bPeriod = TRUE, bNoPlot = TRUE, axes = FALSE,
+  LPlot(spec$wais$raw$signal, type = "n", inverse = TRUE, axes = FALSE,
         xlim = c(500, 2), ylim = ylim, xlab = "", ylab = "")
   graphics::axis(1)
   graphics::axis(2, at = y.at, labels = y.at)
@@ -244,20 +244,21 @@ muench_laepple_fig02 <- function(spec, f.cut = TRUE) {
     removeLast <- length(
       spec$wais$corr.full$f.cutoff[1] : length(spec$wais$raw$signal$freq))
 
-  LLines(spec$wais$raw$signal, conf = FALSE, bPeriod = TRUE,
+  LLines(spec$wais$raw$signal, conf = FALSE, inverse = TRUE,
          removeFirst = 1, removeLast = removeLast,
          col = "dodgerblue4", lwd = 1.5, lty = 3)
-  LLines(spec$wais$corr.t$signal, conf = FALSE, bPeriod = TRUE,
+  LLines(spec$wais$corr.t$signal, conf = FALSE, inverse = TRUE,
          removeFirst = 1, removeLast = removeLast,
          col = "dodgerblue4", lwd = 1.5, lty = 5)
-  LLines(spec$wais$corr.full$signal, conf = FALSE, bPeriod = TRUE,
+  LLines(spec$wais$corr.full$signal, conf = FALSE, inverse = TRUE,
          removeFirst = 1, removeLast = removeLast,
          col = "dodgerblue4", lwd = 3, lty = 1)
+
 
   #---------------------------------------------------------------------------
   # Plot DML noise spectra
   
-  LPlot(spec$dml1$raw$noise, bPeriod = TRUE, bNoPlot = TRUE, axes = FALSE,
+  LPlot(spec$dml1$raw$noise, type = "n", inverse = TRUE, axes = FALSE,
         xlim = c(500, 2), ylim = ylim, xlab = "", ylab = "")
   graphics::box()
 
@@ -271,13 +272,13 @@ muench_laepple_fig02 <- function(spec, f.cut = TRUE) {
     removeLast <- length(
       spec$dml1$corr.full$f.cutoff[1] : length(spec$dml1$raw$signal$freq))
   
-  LLines(spec$dml1$raw$noise, conf = FALSE, bPeriod = TRUE,
+  LLines(spec$dml1$raw$noise, conf = FALSE, inverse = TRUE,
          removeFirst = 1, removeLast = removeLast,
          col = "firebrick4", lwd = 1.5, lty = 3)
-  LLines(spec$dml1$corr.t$noise, conf = FALSE, bPeriod = TRUE,
+  LLines(spec$dml1$corr.t$noise, conf = FALSE, inverse = TRUE,
          removeFirst = 1, removeLast = removeLast,
          col = "firebrick4", lwd = 1.5, lty = 5)
-  LLines(spec$dml1$corr.full$noise, conf = FALSE, bPeriod = TRUE,
+  LLines(spec$dml1$corr.full$noise, conf = FALSE, inverse = TRUE,
          removeFirst = 1, removeLast = removeLast,
          col = "firebrick4", lwd = 3, lty = 1)
 
@@ -285,13 +286,13 @@ muench_laepple_fig02 <- function(spec, f.cut = TRUE) {
     removeLast <- length(
       spec$dml2$corr.full$f.cutoff[1] : length(spec$dml2$raw$signal$freq))
   
-  LLines(spec$dml2$raw$noise, conf = FALSE, bPeriod = TRUE,
+  LLines(spec$dml2$raw$noise, conf = FALSE, inverse = TRUE,
          removeFirst = 1, removeLast = removeLast,
          col = "black", lwd = 1.5, lty = 3)
-  LLines(spec$dml2$corr.t$noise, conf = FALSE, bPeriod = TRUE,
+  LLines(spec$dml2$corr.t$noise, conf = FALSE, inverse = TRUE,
          removeFirst = 1, removeLast = removeLast,
          col = "black", lwd = 1.5, lty = 5)
-  LLines(spec$dml2$corr.full$noise, conf = FALSE, bPeriod = TRUE,
+  LLines(spec$dml2$corr.full$noise, conf = FALSE, inverse = TRUE,
          removeFirst = 1, removeLast = removeLast,
          col = "black", lwd = 3, lty = 1)
 
@@ -307,7 +308,7 @@ muench_laepple_fig02 <- function(spec, f.cut = TRUE) {
   #---------------------------------------------------------------------------
   # Plot WAIS noise spectra
   
-  LPlot(spec$wais$raw$noise, bPeriod = TRUE, bNoPlot = TRUE, axes = FALSE,
+  LPlot(spec$wais$raw$noise, type = "n", inverse = TRUE, axes = FALSE,
         xlim = c(500, 2), ylim = ylim, xlab = "", ylab = "")
   graphics::axis(1)
   graphics::box()
@@ -321,13 +322,13 @@ muench_laepple_fig02 <- function(spec, f.cut = TRUE) {
     removeLast <- length(
       spec$wais$corr.full$f.cutoff[1] : length(spec$wais$raw$signal$freq))
 
-  LLines(spec$wais$raw$noise, conf = FALSE, bPeriod = TRUE,
+  LLines(spec$wais$raw$noise, conf = FALSE, inverse = TRUE,
          removeFirst = 1, removeLast = removeLast,
          col = "firebrick4", lwd = 1.5, lty = 3)
-  LLines(spec$wais$corr.t$noise, conf = FALSE, bPeriod = TRUE,
+  LLines(spec$wais$corr.t$noise, conf = FALSE, inverse = TRUE,
          removeFirst = 1, removeLast = removeLast,
          col = "firebrick4", lwd = 1.5, lty = 5)
-  LLines(spec$wais$corr.full$noise, conf = FALSE, bPeriod = TRUE,
+  LLines(spec$wais$corr.full$noise, conf = FALSE, inverse = TRUE,
          removeFirst = 1, removeLast = removeLast,
          col = "firebrick4", lwd = 3, lty = 1)
 
@@ -375,10 +376,10 @@ muench_laepple_fig05 <- function(SNR, TNS = t15.noise, f.cut = TRUE) {
 
   # Plot final DML noise spectrum
 
-  LPlot(SNR$dml$noise, bPeriod = TRUE, bNoPlot = TRUE, axes = FALSE,
+  LPlot(SNR$dml$noise, type = "n", inverse = TRUE, axes = FALSE,
         xlim = xlim, ylim = ylim, xlab = "", ylab = "")
 
-  LLines(SNR$dml$noise, conf = FALSE, bPeriod = TRUE,
+  LLines(SNR$dml$noise, conf = FALSE, inverse = TRUE,
          removeFirst = 1, removeLast = removeLast,
          col = "firebrick4", lwd = 3, lty = 1)
 
@@ -398,7 +399,7 @@ muench_laepple_fig05 <- function(SNR, TNS = t15.noise, f.cut = TRUE) {
               col = grDevices::adjustcolor("dodgerblue4", 0.2), border = NA)
 
   # trench noise spectrum for mean accumulation rate
-  LLines(TNS$mean, conf = FALSE, bPeriod = TRUE,
+  LLines(TNS$mean, conf = FALSE, inverse = TRUE,
          removeFirst = 2, removeLast = 0,
          col = "dodgerblue4", lwd = 3, lty = 1)
 
