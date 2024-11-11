@@ -19,7 +19,7 @@ A named list with two components:
 \source{
 Data citation:\cr
 Graf, W., et al.: Stable-isotope records from Dronning Maud Land, Antarctica,
-\url{https://doi.org/10.1594/PANGAEA.728240}, 2002.
+PANGAEA, \url{https://doi.org/10.1594/PANGAEA.728240}, 2002.
 
 License:\cr
 CC-BY-3.0 (\url{https://creativecommons.org/licenses/by/3.0/})

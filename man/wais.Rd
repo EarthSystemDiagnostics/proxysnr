@@ -11,10 +11,8 @@ the years from 2000 CE to 1800 CE.
 }
 \source{
 Data citation:\cr
-Steig, E. J.: West Antarctica Ice Core and Climate Model Data. WDC2005A,
-ITASE-1999-1, ITASE-2000-1, ITASE-2000-4, ITASE-2000-5. Boulder, Colorado
-USA: National Snow and Ice Data Center,
-\url{https://doi.org/10.7265/N5QJ7F8B}, 2013.
+Steig, E. J.: West Antarctica Ice Core and Climate Model Data, U.S. Antarctic
+Program (USAP) Data Center, \url{https://doi.org/10.7265/N5QJ7F8B}, 2013.
 
 License:\cr
 CC-BY-NC-4.0 (\url{https://creativecommons.org/licenses/by-nc/4.0/})
