@@ -2,3 +2,63 @@ url: https://earthsystemdiagnostics.github.io/proxysnr/
 template:
   bootstrap: 5
 
+reference:
+- title: Main
+  desc: >
+    Conduct signal and noise separation analyses.
+  contents:
+  - ObtainArraySpectra
+  - SeparateSignalFromNoise
+  - EstimateCI
+
+- title: Further analyses
+  desc: >
+    Analyse and combine signal and noise spectra.
+  contents:
+  - GetIntegratedSNR
+  - ObtainStackCorrelation
+  - WrapSpectralResults
+
+- title: Plotting
+  desc: >
+    Plot results from applying analyses functions.
+  contents:
+  - PlotArraySpectra
+  - PlotStackCorrelation
+  - PlotSNR
+  - PlotTF
+  - LPlot
+  - LLines
+
+- title: Estimating transfer functions
+  desc: >
+    Estimate spectral transfer functions for special use cases.
+  contents:
+  - CalculateDiffusionTF
+  - CalculateTimeUncertaintyTF
+
+- title: Included datasets
+  contents:
+  - dml
+  - wais
+  - diffusion.tf
+  - time.uncertainty.tf
+
+- title: Object definitions
+  contents:
+  - spec.object    
+
+- title: Deprecated
+  desc: >
+    Functions with names not adhering to the paradigm of using verb phrases, or
+    not being descriptive enough, and which have been replaced by more
+    appropriately named functions. However, in order to not break older code
+    they will stay around for at least some time, and a call to one of these
+    functions is piped to the respective new function.
+  contents:
+  - ArraySpectra
+  - SeparateSpectra
+  - StackCorrelation
+  - IntegratedSNR
+  - DiffusionTF
+  - TimeUncertaintyTF
