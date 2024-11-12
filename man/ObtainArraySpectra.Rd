@@ -2,20 +2,20 @@
 % Please edit documentation in R/ObtainArraySpectra.R
 \name{ObtainArraySpectra}
 \alias{ObtainArraySpectra}
-\title{Spectral estimates of core array}
+\title{Spectral estimates of proxy record array}
 \usage{
 ObtainArraySpectra(cores, res = 1, neff = length(cores), df.log = NULL, ...)
 }
 \arguments{
-\item{cores}{a list or a data frame of the proxy data from the core array. If
-a list is supplied, all elements must be numeric vectors of the same
-length.}
+\item{cores}{a list or a data frame of the proxy data from the record
+array. If a list is supplied, all elements must be numeric vectors of the
+same length.}
 
 \item{res}{the sampling (e.g., temporal) resolution of the proxy data;
 determines the frequency axis of the spectral estimates.}
 
 \item{neff}{the effective number of records (e.g. to account for an expected
-spatial correlation of the local noise). Per default, no spatial
+spatial correlation of the local noise). Per default, no spatial noise
 correlation is assumed and \code{neff} is set to the number of proxy
 records (the length of \code{cores}).}
 
@@ -29,17 +29,18 @@ function \code{\link{SpecMTM}}.}
 \value{
 A list of the following components:
   \describe{
-  \item{single:}{a list of \code{N} spectral objects (`?spec.object`) with
-    the spectra of each individual proxy record;}
-  \item{mean:}{spectral object of the mean spectrum across all individual
-    spectra;}
-  \item{stack:}{spectral object of the spectrum of the average proxy record
-    in the time domain ("stacked record");}
+  \item{\code{single}:}{a list of \code{n} spectral objects
+    (\code{\link{?spec.object}}) with the spectra of each individual proxy
+    record;}
+  \item{\code{mean}:}{spectral object of the mean spectrum across all
+    individual spectra;}
+  \item{\code{stack}:}{spectral object of the spectrum of the average proxy
+    record ("stacked record");}
 }
-with the attribute "array.par": a named vector with information on the proxy
-record array: number of (effective) records ("nc" = \code{neff}), number of
-observation points per record ("nt"), and sampling resolution ("res" =
-\code{res}).
+with the attribute \code{array.par}: a named vector with information on the proxy
+record array: number of (effective) records (\code{nc} = \code{neff}), number
+of observation points per record (\code{nt}), and sampling resolution
+(\code{res} = \code{res}).
 }
 \description{
 Calculate all relevant spectral estimates for a given array of \code{n}
@@ -49,7 +50,8 @@ linear detrending before analysis.
 }
 \seealso{
 \code{\link{PlotArraySpectra}}, \code{\link{SpecMTM}},
-  `?spec.object` for the definition of a "proxysnr" spectral object.
+  \code{\link{spec.object}} for the definition of a \code{proxysnr} spectral
+  object.
 }
 \author{
 Thomas Münch

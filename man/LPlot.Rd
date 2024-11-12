@@ -25,8 +25,8 @@ LPlot(
 \item{x}{a spectral object.}
 
 \item{type}{1-character string giving the type of plot desired: default type
-"l" makes a line plot, while type "n" produces only the plot frame; see
-also \code{\link{plot.default}}.}
+\code{"l"} makes a line plot, while type \code{"n"} produces only the plot
+frame; see also \code{\link{plot.default}}.}
 
 \item{inverse}{if \code{TRUE} the x-axis is displayed in units of period
 (inverse frequency), increasing to the left; defaults to \code{FALSE}.}
@@ -40,7 +40,7 @@ suppressed; defaults to \code{TRUE}.}
 \item{col}{color for the line plot and the confidence interval.}
 
 \item{alpha}{transparency level (between 0 and 1) for the confidence
-interval; defaults to \code{0.2}.}
+interval; defaults to 0.2.}
 
 \item{removeFirst}{omit \code{removeFirst} values on the low frequency side.}
 
@@ -51,7 +51,7 @@ interval; defaults to \code{0.2}.}
 \item{ylab}{character string for labelling the y-axis.}
 
 \item{xlim}{range of x-axis values; if \code{NULL} (the default) it is
-calculated internally and automatically reversed if \code{period = TRUE}.}
+calculated internally and automatically reversed if \code{inverse = TRUE}.}
 
 \item{ylim}{range of y-axis values; if \code{NULL} (the default) it is
 calculated internally.}
@@ -63,7 +63,8 @@ Plot a spectral object on a double-logarithmic scale, optionally adding a
 transparent confidence interval.
 }
 \seealso{
-`?spec.object` for the definition of a "proxysnr" spectral object.
+\code{?spec.object} for the definition of a \code{proxysnr} spectral
+  object.
 }
 \author{
 Thomas Laepple

@@ -27,7 +27,7 @@ interval (has no effect if \code{x} contains no confidence limits).}
 \item{col}{color for the line plot and the confidence interval.}
 
 \item{alpha}{transparency level (between 0 and 1) for the confidence
-interval; defaults to \code{0.2}.}
+interval; defaults to 0.2.}
 
 \item{removeFirst}{omit \code{removeFirst} values on the low frequency side.}
 
@@ -39,7 +39,8 @@ interval; defaults to \code{0.2}.}
 Add a line plot of a spectral object to an existing plot.
 }
 \seealso{
-`?spec.object` for the definition of a "proxysnr" spectral object.
+\code{?spec.object} for the definition of a \code{proxysnr} spectral
+  object.
 }
 \author{
 Thomas Laepple, Thomas Münch

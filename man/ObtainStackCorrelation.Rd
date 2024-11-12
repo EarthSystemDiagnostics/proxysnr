@@ -7,8 +7,8 @@
 ObtainStackCorrelation(input, N = 1, f1 = 2, f2 = "max", limits = NULL)
 }
 \arguments{
-\item{input}{a list of the spectral objects (`?spec.object`) \code{signal}
-and \code{noise}, usually to be obtained from a call to
+\item{input}{a list of the spectral objects (\code{?spec.object})
+\code{signal} and \code{noise}, usually to be obtained from a call to
 \code{\link{SeparateSignalFromNoise}}.}
 
 \item{N}{integer vector with the number of records in the assumed stack;
@@ -24,19 +24,19 @@ maximum frequency of the given spectral estimates.}
 
 \item{limits}{numeric vector with a frequency range of the integration: this
 is an alternative way of specifying the integration limits and overrides
-the setting by \code{f1} and \code{f2}. If not `NULL` it must be a length-2
-vector with the lower integration limit as first and the upper integration
-limit as second element.}
+the setting by \code{f1} and \code{f2}. If not \code{NULL} it must be a
+length-2 vector with the lower integration limit as first and the upper
+integration limit as second element.}
 }
 \value{
 a list of two components:
   \describe{
-  \item{freq:}{numeric vector of frequencies corresponding to the upper ends
-    of the cumulative integrations;}
-  \item{correlation:}{a \code{n * m} matrix where \code{n} corresponds to
-    \code{length(N)} and \code{m} is given by \code{length(freq)} providing
-    the correlation values as a function of the number of averaged records
-    and the record resolution (= increasing upper frequency of the
+  \item{\code{freq}:}{numeric vector of frequencies corresponding to the
+    upper ends of the cumulative integrations;}
+  \item{\code{correlation}:}{a \code{n * m} matrix where \code{n} corresponds
+    to \code{length(N)} and \code{m} is given by \code{length(freq)}
+    providing the correlation values as a function of the number of averaged
+    records and the record resolution (= increasing upper frequency of the
     integration).}
 }
 }
@@ -59,8 +59,8 @@ decadal- to centennial-scale isotope variations from Antarctic ice cores?
 Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
 }
 \seealso{
-\code{\link{PlotStackCorrelation}}, `?spec.object` for the
-  definition of a "proxysnr" spectral object.
+\code{\link{PlotStackCorrelation}}, \code{spec.object} for the
+  definition of a \code{proxysnr} spectral object.
 }
 \author{
 Thomas Münch

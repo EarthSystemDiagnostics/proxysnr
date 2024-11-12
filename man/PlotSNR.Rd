@@ -20,11 +20,11 @@ PlotSNR(
 )
 }
 \arguments{
-\item{spec}{a (named) list of signal-to-noise ratio data sets: each data set
+\item{spec}{a (named) list of signal-to-noise ratio data sets: each dataset
 itself should be list containing at least the spectral object
-(`?spec.object`) \code{snr} providing signal-to-noise ratios as a function
-of frequency. For Figure 3 in Münch and Laepple (2018) set \code{spec} to
-the output from \code{\link{PublicationSNR}}.}
+(\code{?spec.object}) \code{snr} providing signal-to-noise ratios as a
+function of frequency. For Figure 3 in Münch and Laepple (2018) set
+\code{spec} to the output from \code{\link{PublicationSNR}}.}
 
 \item{f.cut}{Shall the spectra be cut at the cutoff frequency constrained
 by the diffusion correction strength? Defaults to \code{FALSE}.}
@@ -62,7 +62,6 @@ timescale (e.g., as in the firn core analysis of Münch and Laepple, 2018,
 Fig. 3).
 }
 \examples{
-
 # create toy data
 n <- 100
 spec <- list(
@@ -74,7 +73,6 @@ spec <- list(
 
 # plot SNR data
 PlotSNR(spec)
-
 }
 \references{
 Münch, T. and Laepple, T.: What climate signal is contained in
@@ -82,7 +80,8 @@ decadal- to centennial-scale isotope variations from Antarctic ice cores?
 Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
 }
 \seealso{
-`?spec.object` for the definition of a "proxysnr" spectral object.
+\code{?spec.object} for the definition of a \code{proxysnr} spectral
+  object.
 }
 \author{
 Thomas Münch

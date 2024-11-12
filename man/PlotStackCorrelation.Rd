@@ -24,7 +24,7 @@ PlotStackCorrelation(
 \item{data}{a list of the correlation data (e.g. as output by
 \code{\link{ObtainStackCorrelation}}), which must have two elements:
 \code{freq} and \code{correlation}, where \code{freq} contains the
-frequency axis of the underlying proxy data set (to obtain an axis for the
+frequency axis of the underlying proxy dataset (to obtain an axis for the
 temporal averaging period), and where \code{correlation} is a \code{n * m}
 matrix of the correlation values. The number of columns of
 \code{correlation} must match the number of frequency values (i.e. the
@@ -32,12 +32,12 @@ length of \code{freq}), and the row index stands for the number of proxy
 records averaged.}
 
 \item{col.pal}{a color palette function to be used to assign colors in the
-plot; the default `NULL` means to calculate the palette function internally
-from ten colours of the diverging \code{RdYlBu} palette in the ColorBrewer
-2.0 collection.}
+plot; the default \code{NULL} means to calculate the palette function
+internally from ten colours of the diverging \code{RdYlBu} palette in the
+ColorBrewer 2.0 collection.}
 
-\item{label}{an optional label of the data set to be displayed at the top
-of the plot.}
+\item{label}{an optional label of the dataset to be displayed at the top of
+the plot.}
 
 \item{xlim}{the x limits (x1, x2) of the plot. Set to \code{NA} to use
 default limits calculated from the x data range, or supply a numeric vector
@@ -76,7 +76,6 @@ averaged and their temporal resolution (e.g., as in the firn core analysis of
 Münch and Laepple, 2018, Fig. 4).
 }
 \examples{
-
 # create a toy correlation dataset, which mimicks an increase
 # in correlation with timescale and with the number of cores
 # averaged, and plot it:
@@ -96,8 +95,6 @@ data$correlation[data$correlation > 1] <- 1
 data$correlation[data$correlation < 0] <- 0
 
 PlotStackCorrelation(data)
-
-
 }
 \references{
 Münch, T. and Laepple, T.: What climate signal is contained in

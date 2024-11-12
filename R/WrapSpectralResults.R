@@ -1,4 +1,4 @@
-#' Wrap spectral results for several data sets
+#' Wrap spectral results for several datasets
 #'
 #' This wrapper function is used to combine all main spectral results for the
 #' signal, noise and signal-to-noise ratio as presented and discussed in Münch
@@ -7,10 +7,10 @@
 #'
 #' @param ... a comma separated list of named proxy datasets to analyse.
 #' @param diffusion a list the same length as the number of datasets with each
-#'   list element a spectral object (`?spec.object`) of a transfer function to
-#'   correct the corresponding dataset for the effect of diffusion-like
-#'   smoothing (see `?SeparateSignalFromNoise` for more details on this, and see
-#'   \code{\link{CalculateDiffusionTF}} for calculating transfer functions
+#'   list element a spectral object (\code{?spec.object}) of a transfer function
+#'   to correct the corresponding dataset for the effect of diffusion-like
+#'   smoothing (\code{?SeparateSignalFromNoise} for more details on this, and
+#'   \code{\link{?CalculateDiffusionTF}} for calculating transfer functions
 #'   specifically for the firn diffusion process). Internally, the inverse of
 #'   the transfer function values are applied to correct for the smoothing
 #'   effect on the estimated signal and noise spectra (see Eq. 4 in Münch and
@@ -19,7 +19,7 @@
 #'   corresponding list element(s) to \code{NA}.
 #' @param time.uncertainty as \code{diffusion} a list of transfer functions to
 #'   correct for the effect of time uncertainty
-#'   (see also \code{\link{CalculateTimeUncertaintyTF}} for calculating transfer
+#'   (\code{\link{?CalculateTimeUncertaintyTF}} for calculating transfer
 #'   functions in the case of layer-counted proxy chronologies).
 #' @param res the sampling (e.g., temporal) resolution of the proxy data. Either
 #'   a single value if all datasets have the same resolution, or a vector with a
@@ -52,13 +52,13 @@
 #' The number of the returned list elements for each dataset depends on
 #' whether transfer functions for the corrections have been provided in
 #' \code{diffusion} and \code{time.uncertainty} or not. Also, the element
-#' \code{f.cutoff} is `NA` if diffusion-like smoothing has not been corrected
+#' \code{f.cutoff} is \code{NA} if diffusion-like smoothing has not been corrected
 #' for.
 #'
 #' @seealso \code{\link{SeparateSignalFromNoise}},
 #'   \code{\link{CalculateDiffusionTF}},
-#'   \code{\link{CalculateTimeUncertaintyTF}}, `?spec.object` for the definition
-#'   of a "proxysnr" spectral object.
+#'   \code{\link{CalculateTimeUncertaintyTF}}, \code{spec.object} for the
+#'   definition of a \code{proxysnr} spectral object.
 #' @author Thomas Münch
 #'
 #' @references
@@ -67,7 +67,6 @@
 #' Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
 #'
 #' @examples
-#'
 #' # Get main results of Münch and Laepple (2018)
 #' 
 #' results <- WrapSpectralResults(
@@ -75,7 +74,6 @@
 #'                diffusion = diffusion.tf,
 #'                time.uncertainty = time.uncertainty.tf,
 #'                df.log = c(0.15, 0.15, 0.1))
-#'
 #' @export
 #'
 WrapSpectralResults <- function(..., diffusion = NULL, time.uncertainty = NULL,

@@ -88,16 +88,16 @@ a spectral object including the degrees of freedom of the spectral
 }
 \description{
 This is a wrapper for the \code{\link[multitaper]{spec.mtm}} function from
-package multitaper, which sets convenient defaults for the spectral estimate
-and makes the degrees of freedom accessible as a direct list element of the
-output.
+package \code{multitaper}, which sets convenient defaults for the spectral
+estimate and makes the degrees of freedom accessible as a direct list element
+of the output.
 }
 \references{
-Thomson, D.J (1982) Spectrum estimation and harmonic analysis. _Proceedings
-of the IEEE_ Volume *70*, Number 9, pp. 1055-1096.
+Thomson, D.J: Spectrum estimation and harmonic analysis, Proceedings
+of the IEEE, 70(9), 1055-1096, 1982.
 
-Percival, D.B. and Walden, A.T. (1993) _Spectral analysis for physical
-applications_ Cambridge University Press.
+Percival, D.B. and Walden, A.T.: Spectral analysis for physical applications,
+Cambridge University Press, 1993.
 }
 \seealso{
 \code{\link[multitaper]{spec.mtm}}

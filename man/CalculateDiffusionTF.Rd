@@ -38,10 +38,10 @@ units of \code{res}.}
 \item{res}{the sampling (e.g., temporal) resolution of the isotope data;
 determines the frequency axis of the transfer function.}
 
-\item{window}{length-2 vector giving a start and an end time (within `1 :
-nt`) offering the possibility to only use a subset of the total length of
-the simulated records for the transfer function analysis, while the default
-of `NULL` means to use the records' entire lengths.}
+\item{window}{length-2 vector giving a start and an end time (within
+\code{1:nt}) offering the possibility to only use a subset of the total
+length of the simulated records for the transfer function analysis, while
+the default of \code{NULL} means to use the records' entire lengths.}
 
 \item{coherent}{if \code{TRUE}, \code{nc} identical white noise time series
 are assumed to estimate the transfer function; else (the default) \code{nc}
@@ -62,13 +62,13 @@ spectra whose ratio determines the transfer function (see Details).}
 function \code{\link{SpecMTM}}.}
 }
 \value{
-either a spectral object (`?spec.object`) of the transfer function if
+either a spectral object (\code{?spec.object}) of the transfer function if
   \code{verbose.output = FALSE} (default), or a list of the spectral objects
   \code{signal}, \code{diffused} and \code{ratio}, providing the averages
   over the \code{ns} simulations of:
   \describe{
-  \item{\code{signal}:}{the undiffused noise spectrum;}
-  \item{\code{diffused}:}{the diffused noise spectrum;}
+  \item{\code{signal}:}{the undiffused spectrum;}
+  \item{\code{diffused}:}{the diffused spectrum;}
   \item{\code{ratio}}{their ratio (diffused/undiffused), i.e. the transfer
     function.}
 }
@@ -99,7 +99,8 @@ decadal- to centennial-scale isotope variations from Antarctic ice cores?
 Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
 }
 \seealso{
-`?spec.object` for the definition of a "proxysnr" spectral object.
+\code{?spec.object} for the definition of a \code{proxysnr} spectral
+  object.
 }
 \author{
 Thomas Münch

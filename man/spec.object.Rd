@@ -5,12 +5,14 @@
 \title{"proxysnr" spectral object}
 \description{
 {
-A spectral object is a named list of the two elements `freq` and `spec`,
-which are numeric vectors of the same length holding a frequency axis and the
-corresponding power spectral densities.
-
+A spectral object is a named list of the two elements \code{freq} and
+\code{spec}, which are numeric vectors of the same length holding a frequency
+axis and the corresponding power spectral densities.
+\cr
+\cr
 Optionally, the list can in addition include a vector with the degrees of
-freedom of the spectrum (list element \code{dof}) and be of class "spec", but
-"proxysnr" does not include any methods generic to that class as of now.
+freedom of the spectrum (list element \code{dof}) and be of class
+\code{"spec"}, but \code{proxysnr} does not include any methods generic to
+that class as of now.
 }
 }

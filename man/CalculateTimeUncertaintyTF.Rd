@@ -40,8 +40,9 @@ simulate; per default set to \code{length(t)}.}
 function.}
 
 \item{model}{name string of the random process to use for realising the age
-perturbations; must be either "poisson" (the default) or "bernoulli"; see
-Comboul et al. (2014) for details on the two models.}
+perturbations; must be either \code{"poisson"} (the default) or
+\code{"bernoulli"}; see Comboul et al. (2014) for details on the two
+models.}
 
 \item{rate}{numeric vector of probability rate(s) that an age band is
 perturbed; you can specify a vector of two rates where the first entry is
@@ -82,10 +83,10 @@ spectra whose ratio determines the transfer function (see Details).}
 function \code{\link{SpecMTM}}.}
 }
 \value{
-either a spectral object (`?spec.object`) of the transfer function if
-  \code{verbose.output = FALSE} (default), or a list of the spectral objects
-  \code{input}, \code{stack} and \code{ratio}, providing averages over the
-  \code{ns} simulations of:
+either a spectral object (\code{?spec.object}) of the transfer
+  function if \code{verbose.output = FALSE} (default), or a list of the
+  spectral objects \code{input}, \code{stack} and \code{ratio}, providing
+  averages over the \code{ns} simulations of:
   \describe{
   \item{\code{input}:}{the original spectrum of the surrogate data;}
   \item{\code{stack}:}{the spectrum of the spatial average of the
@@ -112,10 +113,10 @@ spectral transfer function.
 The modelling of the time uncertainty follows the approach presented in
 Comboul et al. (2014) which is implemented in the package
 \code{simproxyage}. The package can be installed from GitHub via\cr
-`remotes::install_github("EarthSystemDiagnostics/simproxyage")`\cr
+\code{remotes::install_github("EarthSystemDiagnostics/simproxyage")}\cr
 or you can download the package repository from\cr
 <https://doi.org/10.5281/zenodo.2025204>\cr
-and install the package via `devtools::install()`.
+and install the package via \code{devtools::install()}.
 
 The spectral estimates are calculated using Thomson’s multitaper method with
 three windows with linear detrending before analysis.
@@ -157,7 +158,8 @@ decadal- to centennial-scale isotope variations from Antarctic ice cores?
 Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
 }
 \seealso{
-`?spec.object` for the definition of a "proxysnr" spectral object.
+\code{?spec.object} for the definition of a \code{proxysnr} spectral
+  object.
 }
 \author{
 Thomas Münch

@@ -2,12 +2,6 @@
 % Please edit documentation in R/deprecated.R
 \name{proxysnr-deprecated}
 \alias{proxysnr-deprecated}
-\alias{ArraySpectra}
-\alias{SeparateSpectra}
-\alias{StackCorrelation}
-\alias{IntegratedSNR}
-\alias{DiffusionTF}
-\alias{TimeUncertaintyTF}
 \title{Deprecated functions}
 \description{
 The following function names are deprecated, since they do not adhere to the
@@ -15,28 +9,15 @@ paradigm of using verb phrases, or are not desriptive enough, and are
 replaced by the respective new names mentioned thereafter:
 
 \itemize{
-  \item ArraySpectra -> ObtainArraySpectra
-  \item SeparateSpectra -> SeparateSignalFromNoise
-  \item StackCorrelation -> ObtainStackCorrelation
-  \item IntegratedSNR -> GetIntegratedSNR
-  \item DiffusionTF -> CalculateDiffusionTF
-  \item TimeUncertaintyTF -> CalculateTimeUncertaintyTF
+  \item \code{ArraySpectra} -> \code{\link{ObtainArraySpectra}}
+  \item \code{SeparateSpectra} -> \code{\link{SeparateSignalFromNoise}}
+  \item \code{StackCorrelation} -> \code{\link{ObtainStackCorrelation}}
+  \item \code{IntegratedSNR} -> \code{\link{GetIntegratedSNR}}
+  \item \code{DiffusionTF} -> \code{\link{CalculateDiffusionTF}}
+  \item \code{TimeUncertaintyTF} -> \code{\link{CalculateTimeUncertaintyTF}}
 }
 
 However, calls that use the old name will still work and pipe the input to
 the respective function of the new name, but a warning will be issued
 informing about the new function name.
-}
-\seealso{
-\code{\link{ObtainArraySpectra}}
-
-\code{\link{SeparateSignalFromNoise}}
-
-\code{\link{ObtainStackCorrelation}}
-
-\code{\link{GetIntegratedSNR}}
-
-\code{\link{CalculateDiffusionTF}}
-
-\code{\link{CalculateTimeUncertaintyTF}}
 }

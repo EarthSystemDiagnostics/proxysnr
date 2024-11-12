@@ -1,17 +1,17 @@
-#' Spectral estimates of core array
+#' Spectral estimates of proxy record array
 #'
 #' Calculate all relevant spectral estimates for a given array of \code{n}
 #' proxy records. The spectral estimates can be smoothed in logarithmic space
 #' and are calculated using Thomson’s multitaper method with three windows with
 #' linear detrending before analysis.
 #'
-#' @param cores a list or a data frame of the proxy data from the core array. If
-#'   a list is supplied, all elements must be numeric vectors of the same
-#'   length.
+#' @param cores a list or a data frame of the proxy data from the record
+#'   array. If a list is supplied, all elements must be numeric vectors of the
+#'   same length.
 #' @param res the sampling (e.g., temporal) resolution of the proxy data;
 #'   determines the frequency axis of the spectral estimates.
 #' @param neff the effective number of records (e.g. to account for an expected
-#'   spatial correlation of the local noise). Per default, no spatial
+#'   spatial correlation of the local noise). Per default, no spatial noise
 #'   correlation is assumed and \code{neff} is set to the number of proxy
 #'   records (the length of \code{cores}).
 #' @param df.log width of the Gaussian kernel in logarithmic frequency units to
@@ -22,21 +22,23 @@
 #'
 #' @return A list of the following components:
 #'   \describe{
-#'   \item{single:}{a list of \code{N} spectral objects (`?spec.object`) with
-#'     the spectra of each individual proxy record;}
-#'   \item{mean:}{spectral object of the mean spectrum across all individual
-#'     spectra;}
-#'   \item{stack:}{spectral object of the spectrum of the average proxy record
-#'     in the time domain ("stacked record");}
+#'   \item{\code{single}:}{a list of \code{n} spectral objects
+#'     (\code{\link{?spec.object}}) with the spectra of each individual proxy
+#'     record;}
+#'   \item{\code{mean}:}{spectral object of the mean spectrum across all
+#'     individual spectra;}
+#'   \item{\code{stack}:}{spectral object of the spectrum of the average proxy
+#'     record ("stacked record");}
 #' }
-#' with the attribute "array.par": a named vector with information on the proxy
-#' record array: number of (effective) records ("nc" = \code{neff}), number of
-#' observation points per record ("nt"), and sampling resolution ("res" =
-#' \code{res}).
+#' with the attribute \code{array.par}: a named vector with information on the proxy
+#' record array: number of (effective) records (\code{nc} = \code{neff}), number
+#' of observation points per record (\code{nt}), and sampling resolution
+#' (\code{res} = \code{res}).
 #'
 #' @author Thomas Münch
 #' @seealso \code{\link{PlotArraySpectra}}, \code{\link{SpecMTM}},
-#'   `?spec.object` for the definition of a "proxysnr" spectral object.
+#'   \code{\link{spec.object}} for the definition of a \code{proxysnr} spectral
+#'   object.
 #'
 #' @export
 #'

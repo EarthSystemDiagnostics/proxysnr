@@ -40,10 +40,10 @@ Polyplot <- function(x, y1, y2, col = "black", alpha = 0.2, ...) {
 # ------------------------------------------------------------------------------
 # generic functions to plot results from applying proxysnr method
 
-#' Plot spectra from spatial proxy data array
+#' Plot spectra from proxy record array
 #'
-#' Plot the spectral estimates from a spatial proxy data array (e.g., as in the
-#' firn core analysis of Münch and Laepple, 2018, Fig. 1).
+#' Plot the spectral estimates from a spatial proxy record array (e.g., as in
+#' the firn core analysis of Münch and Laepple, 2018, Fig. 1).
 #'
 #' @param spec output from \code{\link{ObtainArraySpectra}}.
 #' @param marker vector of optional frequency values to mark certain parts of
@@ -82,7 +82,6 @@ Polyplot <- function(x, y1, y2, col = "black", alpha = 0.2, ...) {
 #' Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
 #'
 #' @examples
-#'
 #' library(magrittr)
 #'
 #' # create artificial proxy data as a showcase dataset
@@ -103,7 +102,6 @@ Polyplot <- function(x, y1, y2, col = "black", alpha = 0.2, ...) {
 #' cores %>%
 #'   ObtainArraySpectra(df.log = 0.05) %>%
 #'   PlotArraySpectra(remove = 0, xlim = c(1000, 2))
-#'
 #' @export
 #'
 PlotArraySpectra <- function(spec, marker = NA, remove = 1,
@@ -229,11 +227,11 @@ PlotArraySpectra <- function(spec, marker = NA, remove = 1,
 #' timescale (e.g., as in the firn core analysis of Münch and Laepple, 2018,
 #' Fig. 3).
 #'
-#' @param spec a (named) list of signal-to-noise ratio data sets: each data set
+#' @param spec a (named) list of signal-to-noise ratio data sets: each dataset
 #'   itself should be list containing at least the spectral object
-#'   (`?spec.object`) \code{snr} providing signal-to-noise ratios as a function
-#'   of frequency. For Figure 3 in Münch and Laepple (2018) set \code{spec} to
-#'   the output from \code{\link{PublicationSNR}}.
+#'   (\code{?spec.object}) \code{snr} providing signal-to-noise ratios as a
+#'   function of frequency. For Figure 3 in Münch and Laepple (2018) set
+#'   \code{spec} to the output from \code{\link{PublicationSNR}}.
 #' @param f.cut Shall the spectra be cut at the cutoff frequency constrained
 #'   by the diffusion correction strength? Defaults to \code{FALSE}.
 #' @param names an optional character vector of names of the proxy data
@@ -247,7 +245,8 @@ PlotArraySpectra <- function(spec, marker = NA, remove = 1,
 #'   \code{c(0.05, 0.1, 0.5, 1, 5)}.
 #' @inheritParams PlotArraySpectra
 #'
-#' @seealso `?spec.object` for the definition of a "proxysnr" spectral object.
+#' @seealso \code{?spec.object} for the definition of a \code{proxysnr} spectral
+#'   object.
 #' @author Thomas Münch
 #'
 #' @references
@@ -256,7 +255,6 @@ PlotArraySpectra <- function(spec, marker = NA, remove = 1,
 #' Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
 #'
 #' @examples
-#'
 #' # create toy data
 #' n <- 100
 #' spec <- list(
@@ -268,7 +266,6 @@ PlotArraySpectra <- function(spec, marker = NA, remove = 1,
 #'
 #' # plot SNR data
 #' PlotSNR(spec)
-#'
 #' @export
 #'
 PlotSNR <- function(spec, f.cut = FALSE,
@@ -377,18 +374,18 @@ PlotSNR <- function(spec, f.cut = FALSE,
 #' @param data a list of the correlation data (e.g. as output by
 #'   \code{\link{ObtainStackCorrelation}}), which must have two elements:
 #'   \code{freq} and \code{correlation}, where \code{freq} contains the
-#'   frequency axis of the underlying proxy data set (to obtain an axis for the
+#'   frequency axis of the underlying proxy dataset (to obtain an axis for the
 #'   temporal averaging period), and where \code{correlation} is a \code{n * m}
 #'   matrix of the correlation values. The number of columns of
 #'   \code{correlation} must match the number of frequency values (i.e. the
 #'   length of \code{freq}), and the row index stands for the number of proxy
 #'   records averaged.
 #' @param col.pal a color palette function to be used to assign colors in the
-#'   plot; the default `NULL` means to calculate the palette function internally
-#'   from ten colours of the diverging \code{RdYlBu} palette in the ColorBrewer
-#'   2.0 collection.
-#' @param label an optional label of the data set to be displayed at the top
-#'   of the plot.
+#'   plot; the default \code{NULL} means to calculate the palette function
+#'   internally from ten colours of the diverging \code{RdYlBu} palette in the
+#'   ColorBrewer 2.0 collection.
+#' @param label an optional label of the dataset to be displayed at the top of
+#'   the plot.
 #' @param xlim the x limits (x1, x2) of the plot. Set to \code{NA} to use
 #'   default limits calculated from the x data range, or supply a numeric vector
 #'   of length 2 with custom limits. In the latter case, setting either of the
@@ -414,7 +411,6 @@ PlotSNR <- function(spec, f.cut = FALSE,
 #' Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
 #'
 #' @examples
-#'
 #' # create a toy correlation dataset, which mimicks an increase
 #' # in correlation with timescale and with the number of cores
 #' # averaged, and plot it:
@@ -434,8 +430,6 @@ PlotSNR <- function(spec, f.cut = FALSE,
 #' data$correlation[data$correlation < 0] <- 0
 #'
 #' PlotStackCorrelation(data)
-#'
-#'
 #' @export
 #'
 PlotStackCorrelation <- function(data, col.pal = NULL, label = "",
@@ -558,7 +552,7 @@ PlotStackCorrelation <- function(data, col.pal = NULL, label = "",
 #' functions that are provided with the \code{proxysnr} package, which
 #' corresponds to Figure B1 in Münch and Laepple (2018).
 #'
-#' @param dtf a list of spectral objects (`?spec.object`) of the transfer
+#' @param dtf a list of spectral objects (\code{?spec.object}) of the transfer
 #'   function datasets that describe a diffusion-type smoothing process. See
 #'   Details for the meaning of \code{NULL}.
 #' @param ttf as \code{dtf} but providing time uncertainty transfer
@@ -594,7 +588,8 @@ PlotStackCorrelation <- function(data, col.pal = NULL, label = "",
 #' @param ytl2 as \code{ytl1} for the y axis on the time uncertainty transfer
 #'   function plot.
 #'
-#' @seealso `?spec.object` for the definition of a "proxysnr" spectral object.
+#' @seealso \code{?spec.object} for the definition of a \code{proxysnr} spectral
+#'   object.
 #' @author Thomas Münch
 #'
 #' @references Münch, T. and Laepple, T.: What climate signal is contained in
@@ -602,13 +597,11 @@ PlotStackCorrelation <- function(data, col.pal = NULL, label = "",
 #' Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
 #'
 #' @examples
-#'
 #' # Plot Figure B1 in Münch and Laepple (2018), i.e. the used transfer
 #' # functions to correct the DML and WAIS isotope spectra:
 #'
 #' PlotTF(names = c("DML1", "DML2", "WAIS"), dtf.threshold = 0.5,
 #'        col = c("black", "firebrick", "dodgerblue"))
-#'
 #' @export
 #'
 PlotTF <- function(dtf = NULL, ttf = NULL,

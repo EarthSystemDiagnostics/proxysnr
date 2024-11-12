@@ -56,9 +56,4 @@ reference:
     they will stay around for at least some time, and a call to one of these
     functions is piped to the respective new function.
   contents:
-  - ArraySpectra
-  - SeparateSpectra
-  - StackCorrelation
-  - IntegratedSNR
-  - DiffusionTF
-  - TimeUncertaintyTF
+  - proxysnr-deprecated

@@ -93,9 +93,9 @@ LogSmooth <- function(x, df.log=0.05) {
 #' Multitaper spectral estimate
 #' 
 #' This is a wrapper for the \code{\link[multitaper]{spec.mtm}} function from
-#' package multitaper, which sets convenient defaults for the spectral estimate
-#' and makes the degrees of freedom accessible as a direct list element of the
-#' output.
+#' package \code{multitaper}, which sets convenient defaults for the spectral
+#' estimate and makes the degrees of freedom accessible as a direct list element
+#' of the output.
 #'
 #' @inheritParams multitaper::spec.mtm
 #' @param detrend Shall the time series data be linearly detrended before
@@ -111,11 +111,11 @@ LogSmooth <- function(x, df.log=0.05) {
 #'
 #' @references
 #'
-#' Thomson, D.J (1982) Spectrum estimation and harmonic analysis. _Proceedings
-#' of the IEEE_ Volume *70*, Number 9, pp. 1055-1096.
+#' Thomson, D.J: Spectrum estimation and harmonic analysis, Proceedings
+#' of the IEEE, 70(9), 1055-1096, 1982.
 #'
-#' Percival, D.B. and Walden, A.T. (1993) _Spectral analysis for physical
-#' applications_ Cambridge University Press.
+#' Percival, D.B. and Walden, A.T.: Spectral analysis for physical applications,
+#' Cambridge University Press, 1993.
 #'
 #' @keywords internal
 #'
@@ -192,8 +192,8 @@ MeanSpectrum <- function(speclist) {
 #'
 #' @param x a spectral object.
 #' @param type 1-character string giving the type of plot desired: default type
-#'   "l" makes a line plot, while type "n" produces only the plot frame; see
-#'   also \code{\link{plot.default}}.
+#'   \code{"l"} makes a line plot, while type \code{"n"} produces only the plot
+#'   frame; see also \code{\link{plot.default}}.
 #' @param inverse if \code{TRUE} the x-axis is displayed in units of period
 #'   (inverse frequency), increasing to the left; defaults to \code{FALSE}.
 #' @param conf if \code{TRUE} (the default) add a transparent confidence
@@ -202,19 +202,20 @@ MeanSpectrum <- function(speclist) {
 #'   suppressed; defaults to \code{TRUE}.
 #' @param col color for the line plot and the confidence interval.
 #' @param alpha transparency level (between 0 and 1) for the confidence
-#'   interval; defaults to \code{0.2}.
+#'   interval; defaults to 0.2.
 #' @param removeFirst omit \code{removeFirst} values on the low frequency side.
 #' @param removeLast omit \code{removeLast} values on the high frequency side.
 #' @param xlab character string for labelling the x-axis.
 #' @param ylab character string for labelling the y-axis.
 #' @param xlim range of x-axis values; if \code{NULL} (the default) it is
-#'   calculated internally and automatically reversed if \code{period = TRUE}.
+#'   calculated internally and automatically reversed if \code{inverse = TRUE}.
 #' @param ylim range of y-axis values; if \code{NULL} (the default) it is
 #'   calculated internally.
 #' @param ... further graphical parameters passed to \code{plot}.
 #'
 #' @author Thomas Laepple
-#' @seealso `?spec.object` for the definition of a "proxysnr" spectral object.
+#' @seealso \code{?spec.object} for the definition of a \code{proxysnr} spectral
+#'   object.
 #'
 #' @export
 #'
@@ -262,13 +263,14 @@ LPlot <- function(x, type = "l", inverse = FALSE, conf = TRUE, axes = TRUE,
 #'   interval (has no effect if \code{x} contains no confidence limits).
 #' @param col color for the line plot and the confidence interval.
 #' @param alpha transparency level (between 0 and 1) for the confidence
-#'   interval; defaults to \code{0.2}.
+#'   interval; defaults to 0.2.
 #' @param removeFirst omit \code{removeFirst} values on the low frequency side.
 #' @param removeLast omit \code{removeLast} values on the high frequency side.
 #' @param ... further graphical parameters passed to \code{lines}.
 #'
 #' @author Thomas Laepple, Thomas Münch
-#' @seealso `?spec.object` for the definition of a "proxysnr" spectral object.
+#' @seealso \code{?spec.object} for the definition of a \code{proxysnr} spectral
+#'   object.
 #'
 #' @export
 #'
