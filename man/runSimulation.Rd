@@ -45,3 +45,4 @@ powerlaw parameters) and call the Monte Carlo signal and noise simulation
 \author{
 Thomas Münch
 }
+\keyword{internal}

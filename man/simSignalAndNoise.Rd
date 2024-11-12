@@ -39,3 +39,4 @@ data the common signal from the independent noise
 \author{
 Thomas Münch
 }
+\keyword{internal}

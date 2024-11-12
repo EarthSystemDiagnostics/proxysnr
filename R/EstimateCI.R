@@ -184,6 +184,7 @@ EstimateCI <- function(spectra, f.start = NULL, f.end = NULL, nmc = 10,
 #'   length `nt`.
 #'
 #' @author Thomas Münch
+#' @keywords internal
 #'
 simCoreArray <- function(signal.par, noise.par, nc, nt) {
 
@@ -220,6 +221,7 @@ simCoreArray <- function(signal.par, noise.par, nc, nt) {
 #'   noise, and the corresponding signal-to-noise ratio (SNR), respectively.
 #'
 #' @author Thomas Münch
+#' @keywords internal
 #'
 simSignalAndNoise <- function(signal.par, noise.par, nc, nt, res,
                               df.log = NULL) {
@@ -241,6 +243,7 @@ simSignalAndNoise <- function(signal.par, noise.par, nc, nt, res,
 #'   \code{\link{simSignalAndNoise}}.
 #' @author Thomas Münch
 #' @seealso \code{\link{simSignalAndNoise}}, \code{\link{simCoreArray}}
+#' @keywords internal
 #'
 runSurrogates <- function(signal.par, noise.par, nc, nt, res, nmc = 10,
                           df.log = NULL) {
@@ -266,6 +269,7 @@ runSurrogates <- function(signal.par, noise.par, nc, nt, res, nmc = 10,
 #'   where each list element is one signal and noise estimation realization.
 #' @author Thomas Münch
 #' @seealso \code{\link{runSurrogates}}, \code{\link{EstimateCI}}
+#' @keywords internal
 #'
 runSimulation <- function(spectra, f.start = NULL, f.end = NULL,
                           nmc = 10, df.log = NULL) {
@@ -306,6 +310,7 @@ runSimulation <- function(spectra, f.start = NULL, f.end = NULL,
 #'
 #' @author Thomas Münch
 #' @seealso \code{\link{runSurrogates}}
+#' @keywords internal
 #'
 extractQuantiles <- function(surrogates, probs = c(0.1, 0.9), minval = 1e-15) {
 

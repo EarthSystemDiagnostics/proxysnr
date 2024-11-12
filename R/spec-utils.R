@@ -117,6 +117,8 @@ LogSmooth <- function(x, df.log=0.05) {
 #' Percival, D.B. and Walden, A.T. (1993) _Spectral analysis for physical
 #' applications_ Cambridge University Press.
 #'
+#' @keywords internal
+#'
 SpecMTM <- function(timeSeries, k = 3, nw = 2, nFFT = "default",
                     centre = c("Slepian"), dpssIN = NULL,
                     returnZeroFreq = FALSE, Ftest = FALSE, jackknife = FALSE,
