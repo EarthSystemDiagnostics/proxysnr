@@ -25,7 +25,7 @@ A dataset containing the calculated time uncertainty transfer functions for
 the DML1, DML2 and WAIS records from Münch and Laepple (2018) based on
 numerical simulations. The transfer function describes the effect time
 uncertainty has on the spectrum of the average (in the time domain) of
-a number of \cpde{N} proxy records.
+a number of \code{N} proxy records.
 }
 \references{
 Münch, T. and Laepple, T.: What climate signal is contained in

@@ -130,7 +130,7 @@
 #' the DML1, DML2 and WAIS records from Münch and Laepple (2018) based on
 #' numerical simulations. The transfer function describes the effect time
 #' uncertainty has on the spectrum of the average (in the time domain) of
-#' a number of \cpde{N} proxy records.
+#' a number of \code{N} proxy records.
 #'
 #' @format A named list with the 3 elements \code{dml1}, \code{dml2}, and
 #'   \code{wais}, where each element is a spectral object:
