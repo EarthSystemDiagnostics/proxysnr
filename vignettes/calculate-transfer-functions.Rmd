@@ -1,10 +1,8 @@
 ---
-title: "Calculate diffusion and time uncertainty transfer functions"
-author: "Thomas Münch"
-date: "`r Sys.Date()`"
+title: "Calculate transfer functions"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Calculating transfer functions}
+  %\VignetteIndexEntry{Calculate transfer functions}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -18,16 +16,13 @@ knitr::opts_chunk$set(
 
 ## Overview
 
-This vignette describes the calculation of the spectral transfer functions for
-the effects of vapour diffusion and time uncertainty. The transfer functions
-describe the loss in spectral power as a function of frequency that is expected
-due to these two processes: for time uncertainty, the loss applies to the
-spectrum of the common signal recorded by the spatial average of an array
-of proxy records (the "stacked" record); for diffusion, it applies to the loss
-in average spectral power of the individual records. Proxy records refer here, more
-specifically, to any proxy time series that are based on layer counting in the
-case of time uncertainty and to stable isotope records from firn/ice cores in
-the case of diffusion.
+This vignette explains, for the two special cases of isotope diffusion in polar
+firn and time uncertainty in layer-counted chronologies, how to calculate
+spectral transfer functions which describe the expected loss in spectral power
+as a function of frequency. For time uncertainty, the loss applies to the
+spectrum of the common signal recorded by the spatial average of an array of
+layer-counted proxy records (the "stacked" record); for diffusion, it applies to
+the loss in average spectral power of individual isotope records.
 
 The documentation utilises as examples the code for calculating the transfer
 functions for the DML and WAIS isotope records studied in Münch and Laepple
@@ -40,15 +35,15 @@ functions for the DML and WAIS isotope records studied in Münch and Laepple
 library(proxysnr)
 ```
 
-For the modelling of time uncertainty the suggested package **simproxyage** is
+For the modelling of time uncertainty the suggested package `simproxyage` is
 required, so we need to check whether it is available:
 ```{r}
 has.simproxyage <- proxysnr:::check.simproxyage()
 ```
 
-In case you have not installed **simproxyage** and you try to rebuild this
+In case you have not installed `simproxyage` and you try to rebuild this
 vignette, you will receive a message with installation instructions here. The
-vignette will still build, though, but without actually calculating any time
+vignette will still build, though without actually calculating any time
 uncertainty transfer function.
 
 ## General settings
@@ -125,14 +120,13 @@ rate <- 0.013
 (Specify a numeric vector with two entries to use asymmetric rates.)
 
 For the diffusion simulations, estimates of the diffusion length (in units of
-the record resolution) are needed as a function of time since deposition, which
-need to be supplied as the parameter `sigma` in the call of the function
-`CalculateDiffusionTF` (see below). Along with **proxysnr**, the diffusion
-length estimates for the DML and WAIS cores are provided in the internal dataset
-`diffusion.length`. Calculation of these estimates is documented in the package
-source under `./data-raw/produce-internal-data.R`, where `.` is the root of the
-package source directory. For further information see the publication Münch and
-Laepple (2018).
+the record resolution) are needed as a function of time since deposition. Along
+with `proxysnr`, the diffusion length estimates for the DML and WAIS cores are
+provided in the internal dataset `diffusion.length`. Calculation of these
+estimates is documented in the package source under
+`./data-raw/produce-internal-data.R`, where `.` is the root of the package
+source directory. For further information see the publication Münch and Laepple
+(2018).
 
 We can now run the diffusion model,
 ```{r}
@@ -210,16 +204,15 @@ if (has.simproxyage) {
 
 The obtained transfer functions can be plotted with:
 
-```{r, fig.width = 7, fig.height = 8, fig.cap = "Estimates of the spectral transfer functions for the effects of site-specific diffusion (**a**) and time uncertainty (**b**) for three arrays of firn-core isotope records: DML1 (black), DML2 (red) and WAIS (blue) (as studied in Münch and Laepple, 2018). Plotted is in each case the average transfer function from 10 Monte Carlo simulations."}
+```{r, fig.width = 7, fig.height = 8, fig.cap = "**Fig. 1**: Estimates of the spectral transfer functions for the effects of site-specific diffusion (**a**) and time uncertainty (**b**) for three arrays of firn-core isotope records: DML1 (black), DML2 (red) and WAIS (blue) (as studied in Münch and Laepple, 2018). Plotted is in each case the average transfer function from 10 Monte Carlo simulations."}
 PlotTF(dtf = dtf, ttf = ttf,
        names = c("DML1", "DML2", "WAIS"),
        col = c("black", "firebrick", "dodgerblue"))
 ```
 
 The transfer functions for simulations with `ns = 10^5` as used and shown in
-Münch and Laepple (2018), Fig. B1, are provided along **proxysnr** in the
-variables `diffusion.tf` and `time.uncertainty.tf`; see `?diffusion.tf` and
-`?time.uncertainty.tf` for details.
+Münch and Laepple (2018), Fig. B1, are provided along `proxysnr` in the
+variables `?diffusion.tf` and `?time.uncertainty.tf`.
 
 These can be plotted by simply omitting the transfer function parameters in the
 plot call:

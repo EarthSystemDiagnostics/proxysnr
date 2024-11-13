@@ -37,6 +37,8 @@
 #' decadal- to centennial-scale isotope variations from Antarctic ice cores?
 #' Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
 #'
+#' @keywords internal
+#'
 PublicationSNR <- function(spec,
                            data = c("corr.full", "corr.diff.only",
                                     "corr.t.unc.only", "raw"),

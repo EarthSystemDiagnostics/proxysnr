@@ -30,3 +30,4 @@ a power-law of the form `alpha * f^(-beta)` where `f` denotes frequency.
 \author{
 Thomas Münch
 }
+\keyword{internal}

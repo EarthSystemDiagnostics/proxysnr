@@ -12,6 +12,7 @@ A method to separate the common signal from local noise in a spatial network of 
 Useful links:
 \itemize{
   \item \url{https://github.com/EarthSystemDiagnostics/proxysnr}
+  \item \url{https://earthsystemdiagnostics.github.io/proxysnr/}
   \item Report bugs at \url{https://github.com/EarthSystemDiagnostics/proxysnr/issues}
 }
 

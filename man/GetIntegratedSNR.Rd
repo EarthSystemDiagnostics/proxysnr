@@ -7,8 +7,8 @@
 GetIntegratedSNR(input, N = 1, f1 = 2, f2 = "max", limits = NULL)
 }
 \arguments{
-\item{input}{a list of the spectral objects (`?spec.object`) \code{signal}
-and \code{noise}, usually to be obtained from a call to
+\item{input}{a list of the spectral objects (\code{?spec.object})
+\code{signal} and \code{noise}, usually to be obtained from a call to
 \code{\link{SeparateSignalFromNoise}}.}
 
 \item{N}{integer; number of proxy records averaged. The default returns the
@@ -26,9 +26,9 @@ maximum frequency of the given spectral estimates.}
 
 \item{limits}{numeric vector with a frequency range of the integration: this
 is an alternative way of specifying the integration limits and overrides
-the setting by \code{f1} and \code{f2}. If not `NULL` it must be a length-2
-vector with the lower integration limit as first and the upper integration
-limit as second element.}
+the setting by \code{f1} and \code{f2}. If not \code{NULL} it must be a
+length-2 vector with the lower integration limit as first and the upper
+integration limit as second element.}
 }
 \value{
 the SNR spectrum as a spectral object.
@@ -52,7 +52,8 @@ decadal- to centennial-scale isotope variations from Antarctic ice cores?
 Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
 }
 \seealso{
-`?spec.object` for the definition of a "proxysnr" spectral object.
+\code{spec.object} for the definition of a \code{proxysnr} spectral
+  object.
 }
 \author{
 Thomas Münch

@@ -13,38 +13,38 @@ SeparateSignalFromNoise(
 )
 }
 \arguments{
-\item{spectra}{a list of the spectral estimates from a proxy core array in
+\item{spectra}{a list of the spectral estimates from a proxy record array in
 the format as output from \code{\link{ObtainArraySpectra}}.}
 
-\item{neff}{the effective number of records (`neff` <= `n`, e.g. to account
-for an expected spatial correlation of the local noise). Per default
-extracted from the "array.par" attribute of `spectra` (see the "Value"
-section in the function documentation for
-\code{\link{ObtainArraySpectra}}), but you can supply the `neff` explicitly
-here to overwrite the default value.}
+\item{neff}{the effective number of records (\code{neff <= n}, e.g. to
+account for an expected spatial correlation of the local noise). Per
+default extracted from the \code{array.par} attribute of \code{spectra}
+(see section "Value" under \code{\link{?ObtainArraySpectra}}), but you can
+supply the \code{neff} explicitly here to overwrite the default value.}
 
 \item{measurement.noise}{a measurement noise level for correcting the proxy
-noise spectrum: either a single value or a spectral object. In the former
-case, the measurement noise is assumed to exhibit a white spectrum and the
-given value is interpreted as its total variance; the latter case can be
-applied if the measurement noise has a known spectral shape different from
-white noise (but the frequency range of the given measurement noise
-spectral object must then cover the frequency range of the proxy
-spectra). The default `NULL` assumes no measurement noise.}
+noise spectrum: either a single value or a spectral object
+(\code{\link{?spec.object}}). In the former case, the measurement noise is
+assumed to exhibit a white spectrum and the given value is interpreted as
+its total variance; the latter case can be applied if the measurement noise
+has a known spectral shape different from white noise (but the frequency
+range of the given measurement noise spectral object must then cover the
+frequency range of the proxy spectra). The default \code{NULL} assumes no
+measurement noise.}
 
 \item{diffusion}{a spectral object of a transfer function desribing a
 diffusion-like proxy smoothing process (see Details), e.g. diffusion in ice
-cores (see also \code{\link{CalculateDiffusionTF}}). Internally, the
-inverse of the transfer function values are applied to correct for the
-smoothing effect on the estimated signal and noise spectra (see Eq. 4 in
-Münch and Laepple, 2018). The default `NULL` is to apply no correction.}
+cores: \code{\link{?CalculateDiffusionTF}}. Internally, the inverse of the
+transfer function values are applied to correct for the smoothing effect on
+the estimated signal and noise spectra (see Eq. 4 in Münch and Laepple,
+2018). The default \code{NULL} is to apply no correction.}
 
 \item{time.uncertainty}{as \code{diffusion} but for a transfer function
 that describes the effect of time uncertainty (see also
 \code{\link{CalculateTimeUncertaintyTF}} for calculating transfer functions
 in the case of layer-counted proxy chronologies) and which is used to
 correct the effect it has on the estimated signal spectrum. The default
-`NULL` is to apply no correction.}
+\code{NULL} is to apply no correction.}
 }
 \value{
 A list of three spectral objects:
@@ -54,13 +54,14 @@ A list of three spectral objects:
   \item{\code{snr}:}{the signal-to-noise ratio as calculated from the previous
     components;}
 }
-with the attribute "array.par": a named vector with information on the proxy
-record array: number of (effective) records ("nc" = \code{neff}), number of
-observation points per record ("nt"), and sampling resolution ("res").
+with the attribute \code{array.par}: a named vector with information on the
+proxy record array: number of (effective) records (\code{nc} = \code{neff}),
+number of observation points per record (\code{nt}), and sampling resolution
+(\code{res}).
 }
 \description{
 Calculate the raw signal and noise spectra and the corresponding
-signal-to-noise ratio spectrum from the spectral estimates of a core array of
+signal-to-noise ratio spectrum from the spectral estimates of an array of
 \code{n} proxy records. Where applicable, these raw results can be corrected
 for the effects of time uncertainty and diffusion-like smoothing.
 }
@@ -83,8 +84,8 @@ Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
 }
 \seealso{
 \code{\link{ObtainArraySpectra}}, \code{\link{CalculateDiffusionTF}},
-  \code{\link{CalculateTimeUncertaintyTF}}, `?spec.object` for the definition
-  of a "proxysnr" spectral object.
+  \code{\link{CalculateTimeUncertaintyTF}}, \code{spec.object} for the definition
+  of a \code{proxysnr} spectral object.
 }
 \author{
 Thomas Münch

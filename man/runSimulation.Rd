@@ -7,13 +7,13 @@
 runSimulation(spectra, f.start = NULL, f.end = NULL, nmc = 10, df.log = NULL)
 }
 \arguments{
-\item{spectra}{a list with the spectral objects `signal`, `noise`, and `snr`
-for an investigated proxy record array, obtained from
+\item{spectra}{a list with the spectral objects \code{signal}, \code{noise},
+and \code{snr} for an investigated proxy record array, obtained from
 \code{\link{SeparateSignalFromNoise}}.}
 
 \item{f.start}{lower end of the frequency range on which the power-law fit is
-made on the proxy data; the default \code{NULL} uses the lowest frequency
-of the proxy \code{spectra}.}
+made on the proxy data (see Details); the default \code{NULL} uses the
+lowest frequency of the proxy \code{spectra}.}
 
 \item{f.end}{as \code{f.start} for the upper end; the default \code{NULL}
 uses the uppermost frequency of the proxy \code{spectra}.}
@@ -45,3 +45,4 @@ powerlaw parameters) and call the Monte Carlo signal and noise simulation
 \author{
 Thomas Münch
 }
+\keyword{internal}

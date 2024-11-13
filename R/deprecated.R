@@ -6,29 +6,21 @@
 #' replaced by the respective new names mentioned thereafter:
 #'
 #' \itemize{
-#'   \item ArraySpectra -> ObtainArraySpectra
-#'   \item SeparateSpectra -> SeparateSignalFromNoise
-#'   \item StackCorrelation -> ObtainStackCorrelation
-#'   \item IntegratedSNR -> GetIntegratedSNR
-#'   \item DiffusionTF -> CalculateDiffusionTF
-#'   \item TimeUncertaintyTF -> CalculateTimeUncertaintyTF
+#'   \item \code{ArraySpectra} -> \code{\link{ObtainArraySpectra}}
+#'   \item \code{SeparateSpectra} -> \code{\link{SeparateSignalFromNoise}}
+#'   \item \code{StackCorrelation} -> \code{\link{ObtainStackCorrelation}}
+#'   \item \code{IntegratedSNR} -> \code{\link{GetIntegratedSNR}}
+#'   \item \code{DiffusionTF} -> \code{\link{CalculateDiffusionTF}}
+#'   \item \code{TimeUncertaintyTF} -> \code{\link{CalculateTimeUncertaintyTF}}
 #' }
 #'
 #' However, calls that use the old name will still work and pipe the input to
 #' the respective function of the new name, but a warning will be issued
 #' informing about the new function name.
 #'
-#' @seealso \code{\link{ObtainArraySpectra}}
-#' @seealso \code{\link{SeparateSignalFromNoise}}
-#' @seealso \code{\link{ObtainStackCorrelation}}
-#' @seealso \code{\link{GetIntegratedSNR}}
-#' @seealso \code{\link{CalculateDiffusionTF}}
-#' @seealso \code{\link{CalculateTimeUncertaintyTF}}
-#'
 #' @name proxysnr-deprecated
 NULL
 
-#' @rdname proxysnr-deprecated
 #' @usage NULL
 #' @export
 ArraySpectra <- function(cores, res = 1, neff = length(cores),
@@ -39,7 +31,6 @@ ArraySpectra <- function(cores, res = 1, neff = length(cores),
 
 }
 
-#' @rdname proxysnr-deprecated
 #' @usage NULL
 #' @export
 SeparateSpectra <- function(spectra, neff = spectra$N,
@@ -53,7 +44,6 @@ SeparateSpectra <- function(spectra, neff = spectra$N,
 
 }
 
-#' @rdname proxysnr-deprecated
 #' @usage NULL
 #' @export
 StackCorrelation <- function(input, N = 1, f1 = 2, f2 = "max",
@@ -67,7 +57,6 @@ StackCorrelation <- function(input, N = 1, f1 = 2, f2 = "max",
 
 }
 
-#' @rdname proxysnr-deprecated
 #' @usage NULL
 #' @export
 IntegratedSNR <- function(input, N = 1, f1 = 2, f2 = "max",
@@ -81,7 +70,6 @@ IntegratedSNR <- function(input, N = 1, f1 = 2, f2 = "max",
 
 }
 
-#' @rdname proxysnr-deprecated
 #' @usage NULL
 #' @export
 DiffusionTF <- function(nt, nc, ns, sigma, res = 1, window = NULL,
@@ -93,7 +81,6 @@ DiffusionTF <- function(nt, nc, ns, sigma, res = 1, window = NULL,
 
 }
 
-#' @rdname proxysnr-deprecated
 #' @usage NULL
 #' @export
 TimeUncertaintyTF <- function(t = 100 : 1, acp = c(t[1], NA),

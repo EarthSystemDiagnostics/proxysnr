@@ -40,3 +40,4 @@ Replicate \code{\link{simSignalAndNoise}} a given number of times.
 \author{
 Thomas Münch
 }
+\keyword{internal}

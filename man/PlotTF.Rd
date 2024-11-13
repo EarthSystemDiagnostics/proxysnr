@@ -25,7 +25,7 @@ PlotTF(
 )
 }
 \arguments{
-\item{dtf}{a list of spectral objects (`?spec.object`) of the transfer
+\item{dtf}{a list of spectral objects (\code{?spec.object}) of the transfer
 function datasets that describe a diffusion-type smoothing process. See
 Details for the meaning of \code{NULL}.}
 
@@ -98,13 +98,11 @@ functions that are provided with the \code{proxysnr} package, which
 corresponds to Figure B1 in Münch and Laepple (2018).
 }
 \examples{
-
 # Plot Figure B1 in Münch and Laepple (2018), i.e. the used transfer
 # functions to correct the DML and WAIS isotope spectra:
 
 PlotTF(names = c("DML1", "DML2", "WAIS"), dtf.threshold = 0.5,
        col = c("black", "firebrick", "dodgerblue"))
-
 }
 \references{
 Münch, T. and Laepple, T.: What climate signal is contained in
@@ -112,7 +110,8 @@ decadal- to centennial-scale isotope variations from Antarctic ice cores?
 Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
 }
 \seealso{
-`?spec.object` for the definition of a "proxysnr" spectral object.
+\code{?spec.object} for the definition of a \code{proxysnr} spectral
+  object.
 }
 \author{
 Thomas Münch

@@ -10,21 +10,25 @@ time series of oxygen isotope data from one of the firn cores in per mil for
 the years from 2000 CE to 1800 CE.
 }
 \source{
-Data citation:\cr
-Steig, E. J.: West Antarctica Ice Core and Climate Model Data, U.S. Antarctic
-Program (USAP) Data Center, \url{https://doi.org/10.7265/N5QJ7F8B}, 2013.
+\describe{
+\item{Data citation:}{
 
-License:\cr
-CC-BY-NC-4.0 (\url{https://creativecommons.org/licenses/by-nc/4.0/})
+  Steig, E. J.: West Antarctica Ice Core and Climate Model Data,
+  U.S. Antarctic Program (USAP) Data Center,
+  \url{https://doi.org/10.7265/N5QJ7F8B}, 2013.}
+\item{License:}{
 
-Literature citation:\cr
-Steig, E. J., et al.: Recent climate and ice-sheet changes in West Antarctica
-compared with the past 2,000 years, Nat. Geosci., 6, 372–375,
-\url{https://doi.org/10.1038/ngeo1778}, 2013.\cr
-Münch, T. and Laepple, T.: What climate signal is contained in
-decadal- to centennial-scale isotope variations from Antarctic ice cores?
-Clim. Past, 14, 2053–2070, \url{https://doi.org/10.5194/cp-14-2053-2018},
-2018.
+  CC-BY-NC-4.0 (\url{https://creativecommons.org/licenses/by-nc/4.0/}).}
+\item{Literature citation:}{
+
+  Steig, E. J., et al.: Recent climate and ice-sheet changes in West
+  Antarctica compared with the past 2,000 years, Nat. Geosci., 6, 372–375,
+  \url{https://doi.org/10.1038/ngeo1778}, 2013.
+
+  Münch, T. and Laepple, T.: What climate signal is contained in decadal- to
+  centennial-scale isotope variations from Antarctic ice cores? Clim. Past,
+  14, 2053–2070, \url{https://doi.org/10.5194/cp-14-2053-2018}, 2018.}
+}
 }
 \usage{
 wais

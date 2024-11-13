@@ -16,10 +16,10 @@
 #' The modelling of the time uncertainty follows the approach presented in
 #' Comboul et al. (2014) which is implemented in the package
 #' \code{simproxyage}. The package can be installed from GitHub via\cr
-#' `remotes::install_github("EarthSystemDiagnostics/simproxyage")`\cr
+#' \code{remotes::install_github("EarthSystemDiagnostics/simproxyage")}\cr
 #' or you can download the package repository from\cr
 #' <https://doi.org/10.5281/zenodo.2025204>\cr
-#' and install the package via `devtools::install()`.
+#' and install the package via \code{devtools::install()}.
 #'
 #' The spectral estimates are calculated using Thomson’s multitaper method with
 #' three windows with linear detrending before analysis.
@@ -62,8 +62,9 @@
 #' @param ns the number of Monte Carlo simulations for estimating the transfer
 #'   function.
 #' @param model name string of the random process to use for realising the age
-#'   perturbations; must be either "poisson" (the default) or "bernoulli"; see
-#'   Comboul et al. (2014) for details on the two models.
+#'   perturbations; must be either \code{"poisson"} (the default) or
+#'   \code{"bernoulli"}; see Comboul et al. (2014) for details on the two
+#'   models.
 #' @param rate numeric vector of probability rate(s) that an age band is
 #'   perturbed; you can specify a vector of two rates where the first entry is
 #'   the probability for a missing band and the second entry the probability for
@@ -85,10 +86,10 @@
 #'   compared to the total length of the time series.
 #' @inheritParams CalculateDiffusionTF
 #'
-#' @return either a spectral object (`?spec.object`) of the transfer function if
-#'   \code{verbose.output = FALSE} (default), or a list of the spectral objects
-#'   \code{input}, \code{stack} and \code{ratio}, providing averages over the
-#'   \code{ns} simulations of:
+#' @return either a spectral object (\code{?spec.object}) of the transfer
+#'   function if \code{verbose.output = FALSE} (default), or a list of the
+#'   spectral objects \code{input}, \code{stack} and \code{ratio}, providing
+#'   averages over the \code{ns} simulations of:
 #'   \describe{
 #'   \item{\code{input}:}{the original spectrum of the surrogate data;}
 #'   \item{\code{stack}:}{the spectrum of the spatial average of the
@@ -97,7 +98,8 @@
 #'         function.}
 #' }
 #'
-#' @seealso `?spec.object` for the definition of a "proxysnr" spectral object.
+#' @seealso \code{?spec.object} for the definition of a \code{proxysnr} spectral
+#'   object.
 #' @author Thomas Münch
 #'
 #' @references

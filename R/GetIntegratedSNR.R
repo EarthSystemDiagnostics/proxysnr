@@ -11,8 +11,8 @@
 #' \code{f.int1 = f1} and \code{f.int2} consecutively increases from \code{f1}
 #' to \code{f2}.
 #'
-#' @param input a list of the spectral objects (`?spec.object`) \code{signal}
-#'   and \code{noise}, usually to be obtained from a call to
+#' @param input a list of the spectral objects (\code{?spec.object})
+#'   \code{signal} and \code{noise}, usually to be obtained from a call to
 #'   \code{\link{SeparateSignalFromNoise}}.
 #' @param N integer; number of proxy records averaged. The default returns the
 #'   SNR of a single proxy record. For a different number, the SNR is calculated
@@ -23,7 +23,8 @@
 #'
 #' @return the SNR spectrum as a spectral object.
 #'
-#' @seealso `?spec.object` for the definition of a "proxysnr" spectral object.
+#' @seealso \code{spec.object} for the definition of a \code{proxysnr} spectral
+#'   object.
 #' @author Thomas Münch
 #'
 #' @references

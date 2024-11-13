@@ -56,7 +56,7 @@ Suggests:
     usethis
 Remotes:
     earthsystemdiagnostics/simproxyage
-URL: https://github.com/EarthSystemDiagnostics/proxysnr
+URL: https://github.com/EarthSystemDiagnostics/proxysnr, https://earthsystemdiagnostics.github.io/proxysnr/
 BugReports: https://github.com/EarthSystemDiagnostics/proxysnr/issues
 SystemRequirements: Package vignettes based on R Markdown v2 or
     reStructuredText require Pandoc (http://pandoc.org).

@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotting.R
 \name{PlotArraySpectra}
 \alias{PlotArraySpectra}
-\title{Plot spectra from spatial proxy data array}
+\title{Plot spectra from proxy record array}
 \usage{
 PlotArraySpectra(
   spec,
@@ -64,11 +64,10 @@ from \code{xtm}, else it must be a vector of labels of the same length as
 \item{ytl}{equivalent to \code{xtl} for the y axis tick mark labels.}
 }
 \description{
-Plot the spectral estimates from a spatial proxy data array (e.g., as in the
-firn core analysis of Münch and Laepple, 2018, Fig. 1).
+Plot the spectral estimates from a spatial proxy record array (e.g., as in
+the firn core analysis of Münch and Laepple, 2018, Fig. 1).
 }
 \examples{
-
 library(magrittr)
 
 # create artificial proxy data as a showcase dataset
@@ -89,7 +88,6 @@ cores \%>\%
 cores \%>\%
   ObtainArraySpectra(df.log = 0.05) \%>\%
   PlotArraySpectra(remove = 0, xlim = c(1000, 2))
-
 }
 \references{
 Münch, T. and Laepple, T.: What climate signal is contained in

@@ -21,20 +21,26 @@
 #' which inludes the selection of the oxygen isotope data and the required time
 #' span, and linear interpolation of missing values.
 #' @source
-#' Data citation:\cr
-#' Graf, W., et al.: Stable-isotope records from Dronning Maud Land, Antarctica,
-#' PANGAEA, \url{https://doi.org/10.1594/PANGAEA.728240}, 2002.
+#' \describe{
+#' \item{Data citation:}{
 #'
-#' License:\cr
-#' CC-BY-3.0 (\url{https://creativecommons.org/licenses/by/3.0/})
+#'   Graf, W., et al.: Stable-isotope records from
+#'   Dronning Maud Land, Antarctica, PANGAEA,
+#'   \url{https://doi.org/10.1594/PANGAEA.728240}, 2002.}
+#' \item{License:}{
 #'
-#' Literature citation:\cr
-#' Graf, W., et al.: Stable-isotope records from Dronning Maud Land, Antarctica,
-#' Ann. Glaciol., 35, 195–201, 2002.\cr
-#' Münch, T. and Laepple, T.: What climate signal is contained in
-#' decadal- to centennial-scale isotope variations from Antarctic ice cores?
-#' Clim. Past, 14, 2053–2070, \url{https://doi.org/10.5194/cp-14-2053-2018},
-#' 2018.
+#'   CC-BY-3.0 (\url{https://creativecommons.org/licenses/by/3.0/}).}
+#' \item{Literature citation:}{
+#'
+#'   Graf, W., et al.: Stable-isotope records from Dronning Maud Land,
+#'   Antarctica, Ann. Glaciol., 35, 195–201, 2002.
+#'
+#'   Münch,
+#'   T. and Laepple, T.: What climate signal is contained in decadal- to
+#'   centennial-scale isotope variations from Antarctic ice cores? Clim. Past,
+#'   14, 2053–2070, \url{https://doi.org/10.5194/cp-14-2053-2018}, 2018.}
+#' }
+#' 
 "dml"
 
 #' WAIS oxygen isotope data
@@ -55,21 +61,26 @@
 #' of the cores ITASE-2000-4 and ITASE-2000-5 from their original
 #' higher-resolution data, and linear interpolation of missing values.
 #' @source
-#' Data citation:\cr
-#' Steig, E. J.: West Antarctica Ice Core and Climate Model Data, U.S. Antarctic
-#' Program (USAP) Data Center, \url{https://doi.org/10.7265/N5QJ7F8B}, 2013.
+#' \describe{
+#' \item{Data citation:}{
 #'
-#' License:\cr
-#' CC-BY-NC-4.0 (\url{https://creativecommons.org/licenses/by-nc/4.0/})
+#'   Steig, E. J.: West Antarctica Ice Core and Climate Model Data,
+#'   U.S. Antarctic Program (USAP) Data Center,
+#'   \url{https://doi.org/10.7265/N5QJ7F8B}, 2013.}
+#' \item{License:}{
 #'
-#' Literature citation:\cr
-#' Steig, E. J., et al.: Recent climate and ice-sheet changes in West Antarctica
-#' compared with the past 2,000 years, Nat. Geosci., 6, 372–375,
-#' \url{https://doi.org/10.1038/ngeo1778}, 2013.\cr
-#' Münch, T. and Laepple, T.: What climate signal is contained in
-#' decadal- to centennial-scale isotope variations from Antarctic ice cores?
-#' Clim. Past, 14, 2053–2070, \url{https://doi.org/10.5194/cp-14-2053-2018},
-#' 2018.
+#'   CC-BY-NC-4.0 (\url{https://creativecommons.org/licenses/by-nc/4.0/}).}
+#' \item{Literature citation:}{
+#' 
+#'   Steig, E. J., et al.: Recent climate and ice-sheet changes in West
+#'   Antarctica compared with the past 2,000 years, Nat. Geosci., 6, 372–375,
+#'   \url{https://doi.org/10.1038/ngeo1778}, 2013.
+#' 
+#'   Münch, T. and Laepple, T.: What climate signal is contained in decadal- to
+#'   centennial-scale isotope variations from Antarctic ice cores? Clim. Past,
+#'   14, 2053–2070, \url{https://doi.org/10.5194/cp-14-2053-2018}, 2018.}
+#' }
+#'
 "wais"
 
 #' Diffusion transfer functions
@@ -77,7 +88,7 @@
 #' A dataset containing the calculated diffusion transfer functions for the
 #' DML1, DML2 and WAIS records from Münch and Laepple (2018) based on numerical
 #' simulations. The transfer function describes the average effect firn
-#' diffusion has on the mean of the spectra from a number of `N` spatially
+#' diffusion has on the mean of the spectra from a number of \code{N} spatially
 #' distributed oxygen isotope records.
 #'
 #' @format A named list with the 3 elements \code{dml1}, \code{dml2}, and
@@ -91,21 +102,21 @@
 #' The transfer functions were obtained using \code{?CalculateDiffusionTF} for
 #' the site-specific diffusion lengths provided by
 #' \code{proxysnr:::diffusion.length}; see also the respective package
-#' vignette \code{vignette("calculate-transfer-functions")}. Isotope records
-#' were simulated at semi-annual resolution and the transfer functions
-#' interpolated in frequency space to annual resolution. Note here that prior to
-#' `proxysnr` v1.0.0, the transer functions supplied to
-#' `SeparateSignalFromNoise()` needed to match in frequency axis the spectra of 
-#' the analysed data, hence the interpolation step. From `proxysnr` v1.0.0
-#' onwards this is no longer required, as the frequency axis overlap is checked
-#' within `SeparateSignalFromNoise()`, with interpolation taking place there, if
-#' needed. The example firn diffusion transfer functions here were, however,
-#' left as originally produced to maintain consistency with the results
-#' published in Münch and Laepple (2018).
+#' \code{vignette("calculate-transfer-functions")}. Isotope records were
+#' simulated at semi-annual resolution and the transfer functions interpolated
+#' in frequency space to annual resolution. Note here that prior to
+#' \code{proxysnr} v1.0.0, the transer functions supplied to
+#' \code{\link{SeparateSignalFromNoise}} needed to match in frequency axis the
+#' spectra of the analysed data, hence the interpolation step. From
+#' \code{proxysnr} v1.0.0 onwards this is no longer required, as the frequency
+#' axis overlap is checked within \code{\link{SeparateSignalFromNoise}}, with
+#' interpolation taking place there, if needed. The example firn diffusion
+#' transfer functions here were, however, left as originally produced to
+#' maintain consistency with the results published in Münch and Laepple (2018).
 #'
 #' @seealso
-#' \code{\link{CalculateDiffusionTF}}\cr
-#' \code{vignette("calculate-transfer-functions")}
+#' \code{\link{CalculateDiffusionTF}},
+#'   \code{vignette("calculate-transfer-functions")}
 #' @references
 #' Münch, T. and Laepple, T.: What climate signal is contained in
 #' decadal- to centennial-scale isotope variations from Antarctic ice cores?
@@ -119,7 +130,7 @@
 #' the DML1, DML2 and WAIS records from Münch and Laepple (2018) based on
 #' numerical simulations. The transfer function describes the effect time
 #' uncertainty has on the spectrum of the average (in the time domain) of
-#' a number of `N` proxy records.
+#' a number of \code{N} proxy records.
 #'
 #' @format A named list with the 3 elements \code{dml1}, \code{dml2}, and
 #'   \code{wais}, where each element is a spectral object:
@@ -131,10 +142,10 @@
 #' @source
 #' The transfer functions were obtained using
 #' \code{?CalculateTimeUncertaintyTF}; see also the respective package
-#' vignette \code{vignette("calculate-transfer-functions")}.
+#' \code{vignette("calculate-transfer-functions")}.
 #' @seealso
-#' \code{\link{CalculateTimeUncertaintyTF}}\cr
-#' \code{vignette("calculate-transfer-functions")}
+#' \code{\link{CalculateTimeUncertaintyTF}},
+#'   \code{vignette("calculate-transfer-functions")}
 #' @references
 #' Münch, T. and Laepple, T.: What climate signal is contained in
 #' decadal- to centennial-scale isotope variations from Antarctic ice cores?
@@ -142,16 +153,18 @@
 #' 2018.
 "time.uncertainty.tf"
 
-#' "proxysnr" spectral object
+#' \code{proxysnr} spectral object
 #'
 #' @description{
-#' A spectral object is a named list of the two elements `freq` and `spec`,
-#' which are numeric vectors of the same length holding a frequency axis and the
-#' corresponding power spectral densities.
-#'
+#' A spectral object is a named list of the two elements \code{freq} and
+#' \code{spec}, which are numeric vectors of the same length holding a frequency
+#' axis and the corresponding power spectral densities.
+#' \cr
+#' \cr
 #' Optionally, the list can in addition include a vector with the degrees of
-#' freedom of the spectrum (list element \code{dof}) and be of class "spec", but
-#' "proxysnr" does not include any methods generic to that class as of now.
+#' freedom of the spectrum (list element \code{dof}) and be of class
+#' \code{"spec"}, but \code{proxysnr} does not include any methods generic to
+#' that class as of now.
 #' }
 #' @name spec.object
 NULL

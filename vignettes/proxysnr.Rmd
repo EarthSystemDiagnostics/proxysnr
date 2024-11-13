@@ -1,10 +1,8 @@
 ---
-title: "Introduction to `proxysnr`"
-author: "Thomas Münch"
-date: "`r Sys.Date()`"
+title: "Introduction to proxysnr"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Introduction to `proxysnr`}
+  %\VignetteIndexEntry{Introduction to proxysnr}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -23,11 +21,11 @@ library(magrittr)
 
 ## Getting started
 
-`proxysnr` applies spectral analyses to climate proxy records that were obtained
-from a spatial array of proxy observation locations, e.g. ice cores, marine
-sediment cores, tree rings, etc., to derive the power spectral density (PSD, or,
-in short, spectrum) of the record's common signal and the PSD of the local noise
-(for details see Münch and Laepple, 2018).
+With `proxysnr` you can apply spectral analyses to climate proxy records that
+were obtained from a spatial array of proxy observation locations, e.g. ice
+cores, marine sediment cores, tree rings, etc., to derive the power spectral
+density (PSD, or, in short, spectrum) of the record's common signal and the PSD
+of the local noise (for details see Münch and Laepple, 2018)
 
 To work with `proxysnr`, supply the proxy records in form of a list, or a data
 frame, with each list element or data column representing one of the proxy
@@ -63,7 +61,7 @@ cores <- 1.2 * clim + noise
 A first step is to calculate the PSD for each proxy record, obtain the average
 spectrum of these individual spectra, and get the spectrum of the data series
 when averaging across all proxy records (the "stacked" record); all of which is
-handled by the function `ObtainArraySpectra`. We only need to set the sampling
+handled by the function `ObtainArraySpectra()`. We only need to set the sampling
 resolution via the parameter `res` (chosen arbitrarily here) in order to obtain
 the correct spectral units, and we can apply some smoothing to the raw spectral
 estimates (parameter `df.log`) to reduce their spectral uncertainty:
@@ -80,7 +78,7 @@ on the underlying proxy record array, namely the number of records ("nc"), the
 number of sampling points per record ("nt"), and the sampling resolution
 ("res"), so that other `proxysnr` functions have these information available.
 
-The function `PlotArraySpectra` directly plots the results:
+The function `PlotArraySpectra()` directly plots the results:
 
 ```{r array-spectra, fig.width = 7, fig.height = 6}
 PlotArraySpectra(arrspec, remove = 0, xlim = c(2000, 2), ylim = c(0.05, 50),
@@ -133,8 +131,8 @@ str(spec)
 
 There are two plotting routines available in `proxysnr`, `LPlot()` and
 `LLines()`, to plot any spectral object returned by its functions automatically
-on double-logarithmic axes. These follow the concept of base R's `plot` and
-`lines` functions and can thus make a fresh spectrum plot or add a spectrum to
+on double-logarithmic axes. These follow the concept of base R's `plot()` and
+`lines()` functions and can thus make a fresh spectrum plot or add a spectrum to
 an existing plot. So to plot the results from our analyses in `spec` we can
 write
 
@@ -207,22 +205,23 @@ records, with this time uncertainty affecting the reconstruction of the common
 signal.
 
 `proxysnr` offers to correct the estimated signal and noise spectra for these
-effects by supplying respective transfer functions to `SeparateSignalFromNoise`
-via the function parameters `diffusion` and `time.uncertainty`. These transfer
-functions describe the loss in spectral power due to the smoothing or the
-uncertain chronologies and need to be assessed and provided by the user.
+effects by supplying respective transfer functions to
+`SeparateSignalFromNoise()` via the function parameters `diffusion` and
+`time.uncertainty`. These transfer functions describe the loss in spectral power
+due to the smoothing or the uncertain chronologies and need to be assessed and
+provided by the user.
 
 For two special cases you can apply `proxysnr` to directly calculate the
-transfer functions: firn diffusion (function `CalculateDiffusionTF`) and time
+transfer functions: firn diffusion (function `CalculateDiffusionTF()`) and time
 uncertainty in _layer-counted_ chronologies (function
-`CalculateTimeUncertaintyTF`); see also Münch and Laepple (2018) for more
+`CalculateTimeUncertaintyTF()`); see also Münch and Laepple (2018) for more
 details on the processes and the implemented estimation, and the
 `vignette("calculate-transfer-functions")` for details on using the two
 functions.
 
 Proxy records also contain measurement noise. If you have an estimate of its
 magnitude and its spectral shape, you can supply these information to
-`SeparateSignalFromNoise` via the `measurement.noise` parameter, and the
+`SeparateSignalFromNoise()` via the `measurement.noise` parameter, and the
 returned noise and SNR spectra will be corrected for the measurement noise,
 i.e. they will take into account only the proxy-specific noise that was created
 during the archiving process.
@@ -232,29 +231,29 @@ during the archiving process.
 There are some more `proxysnr` functions you can use to conduct and visualise
 analyses:
 
-- `GetIntegratedSNR` delivers the ratio of the integrated signal and noise
+- `GetIntegratedSNR()` delivers the ratio of the integrated signal and noise
   spectra, which corresponds to the SNR at a specific sampling resolution;
-- `ObtainStackCorrelation` calculates the expected correlation of a stack of
+- `ObtainStackCorrelation()` calculates the expected correlation of a stack of
   proxy records with the common climate signal as a function of the number of
   records averaged and the records' sampling resolution (see Fig. 4 in Münch and
   Laepple, 2018 for an example);
-- `PlotStackCorrelation` to directly plot the output from
-  `ObtainStackCorrelation`;
-- `PlotSNR` to plot several SNR datasets in one figure;
-- `PlotTF` to make a plot of the transfer functions obtained with
-  `CalculateDiffusionTF` and/or `CalculateTimeUncertaintyTF`.
+- `PlotStackCorrelation()` to directly plot the output from
+  `ObtainStackCorrelation()`;
+- `PlotSNR()` to plot several SNR datasets in one figure;
+- `PlotTF()` to make a plot of the transfer functions obtained with
+  `CalculateDiffusionTF()` and/or `CalculateTimeUncertaintyTF()`.
 
 ## Package data
 
 `proxysnr` ships with four package datasets:
 
-- "`dml`" contains the oxygen isotope data of 15 firn cores from Dronning Maud
+- `?dml` contains the oxygen isotope data of 15 firn cores from Dronning Maud
   Land (DML), Antarctica (Graf et al., 2002);
-- "`wais`" contains the oxygen isotope data of 5 firn cores from the West
+- `?wais` contains the oxygen isotope data of 5 firn cores from the West
   Antarctic Ice Sheet (WAIS; Steig, 2013);
-- "`diffusion.tf`" contains pre-calculated diffusion transfer functions for the
+- `?diffusion.tf` contains pre-calculated diffusion transfer functions for the
   DML and WAIS isotope records; and
-- "`time.uncertainty.tf`" contains pre-calculated time uncertainty transfer
+- `?time.uncertainty.tf` contains pre-calculated time uncertainty transfer
   functions for these records.
 
 The datasets can be used to test out the functions from `proxysnr`, and they

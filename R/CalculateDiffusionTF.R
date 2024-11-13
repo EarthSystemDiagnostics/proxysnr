@@ -33,10 +33,10 @@
 #'   units of \code{res}.
 #' @param res the sampling (e.g., temporal) resolution of the isotope data;
 #'   determines the frequency axis of the transfer function.
-#' @param window length-2 vector giving a start and an end time (within `1 :
-#'   nt`) offering the possibility to only use a subset of the total length of
-#'   the simulated records for the transfer function analysis, while the default
-#'   of `NULL` means to use the records' entire lengths.
+#' @param window length-2 vector giving a start and an end time (within
+#'   \code{1:nt}) offering the possibility to only use a subset of the total
+#'   length of the simulated records for the transfer function analysis, while
+#'   the default of \code{NULL} means to use the records' entire lengths.
 #' @param coherent if \code{TRUE}, \code{nc} identical white noise time series
 #'   are assumed to estimate the transfer function; else (the default) \code{nc}
 #'   independent noise series.
@@ -52,18 +52,19 @@
 #' @param ... additional parameters which are passed to the spectral estimation
 #'   function \code{\link{SpecMTM}}.
 #'
-#' @return either a spectral object (`?spec.object`) of the transfer function if
+#' @return either a spectral object (\code{?spec.object}) of the transfer function if
 #'   \code{verbose.output = FALSE} (default), or a list of the spectral objects
 #'   \code{signal}, \code{diffused} and \code{ratio}, providing the averages
 #'   over the \code{ns} simulations of:
 #'   \describe{
-#'   \item{\code{signal}:}{the undiffused noise spectrum;}
-#'   \item{\code{diffused}:}{the diffused noise spectrum;}
+#'   \item{\code{signal}:}{the undiffused spectrum;}
+#'   \item{\code{diffused}:}{the diffused spectrum;}
 #'   \item{\code{ratio}}{their ratio (diffused/undiffused), i.e. the transfer
 #'     function.}
 #' }
 #'
-#' @seealso `?spec.object` for the definition of a "proxysnr" spectral object.
+#' @seealso \code{?spec.object} for the definition of a \code{proxysnr} spectral
+#'   object.
 #' @author Thomas Münch
 #'
 #' @references

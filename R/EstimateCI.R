@@ -5,22 +5,22 @@
 #' obtained from an actual proxy record array.
 #'
 #' The parametric bootstrapping procedure for the confidence level estimation is
-#' implemented as follows. A power-law fit of the form `alpha * f^(-beta)` is
-#' applied to the actual signal and noise spectra, and the resulting power-law
-#' coefficients are used to generate surrogate signal and noise series in a
-#' simulated array that mimics the actual proxy record array. This simulated
-#' array is replicated multiple times and lower and upper quantiles are
-#' calculated across the realizations of the signal, noise and SNR
+#' implemented as follows. A power-law fit of the form \code{alpha * f^(-beta)}
+#' is applied to the actual signal and noise spectra, and the resulting
+#' power-law coefficients are used to generate surrogate signal and noise series
+#' in a simulated array that mimics the actual proxy record array. This
+#' simulated array is replicated \code{nmc} times and lower and upper quantiles
+#' are calculated across the realizations of the signal, noise and SNR
 #' surrogates. Subsequently, the quantiles are scaled to the respective mean
 #' estimates and applied multiplicatively to the actual proxy estimates of
 #' signal, noise, and SNR to yield the confidence intervals.
 #'
-#' @param spectra a list with the spectral objects `signal`, `noise`, and `snr`
-#'   for an investigated proxy record array, obtained from
+#' @param spectra a list with the spectral objects \code{signal}, \code{noise},
+#'   and \code{snr} for an investigated proxy record array, obtained from
 #'   \code{\link{SeparateSignalFromNoise}}.
 #' @param f.start lower end of the frequency range on which the power-law fit is
-#'   made on the proxy data; the default \code{NULL} uses the lowest frequency
-#'   of the proxy \code{spectra}.
+#'   made on the proxy data (see Details); the default \code{NULL} uses the
+#'   lowest frequency of the proxy \code{spectra}.
 #' @param f.end as \code{f.start} for the upper end; the default \code{NULL}
 #'   uses the uppermost frequency of the proxy \code{spectra}.
 #' @param nmc integer; the number of replications for the confidence interval
@@ -38,8 +38,8 @@
 #'   estimated confidence intervals, merely for visual purposes; \code{NULL}
 #'   (the default) suppresses smoothing.
 #' @return the input \code{spectra} object, amended by the confidence intervals
-#'   for the signal, noise and SNR spectra (element `lim.1` gives the upper
-#'   confidence level, element `lim.2` the lower level, respectively).
+#'   for the signal, noise and SNR spectra (element \code{lim.1} gives the upper
+#'   confidence level, element \code{lim.2} the lower level, respectively).
 #'
 #' @author Thomas Münch
 #' @seealso \code{\link{SeparateSignalFromNoise}},
@@ -184,6 +184,7 @@ EstimateCI <- function(spectra, f.start = NULL, f.end = NULL, nmc = 10,
 #'   length `nt`.
 #'
 #' @author Thomas Münch
+#' @keywords internal
 #'
 simCoreArray <- function(signal.par, noise.par, nc, nt) {
 
@@ -220,6 +221,7 @@ simCoreArray <- function(signal.par, noise.par, nc, nt) {
 #'   noise, and the corresponding signal-to-noise ratio (SNR), respectively.
 #'
 #' @author Thomas Münch
+#' @keywords internal
 #'
 simSignalAndNoise <- function(signal.par, noise.par, nc, nt, res,
                               df.log = NULL) {
@@ -241,6 +243,7 @@ simSignalAndNoise <- function(signal.par, noise.par, nc, nt, res,
 #'   \code{\link{simSignalAndNoise}}.
 #' @author Thomas Münch
 #' @seealso \code{\link{simSignalAndNoise}}, \code{\link{simCoreArray}}
+#' @keywords internal
 #'
 runSurrogates <- function(signal.par, noise.par, nc, nt, res, nmc = 10,
                           df.log = NULL) {
@@ -266,6 +269,7 @@ runSurrogates <- function(signal.par, noise.par, nc, nt, res, nmc = 10,
 #'   where each list element is one signal and noise estimation realization.
 #' @author Thomas Münch
 #' @seealso \code{\link{runSurrogates}}, \code{\link{EstimateCI}}
+#' @keywords internal
 #'
 runSimulation <- function(spectra, f.start = NULL, f.end = NULL,
                           nmc = 10, df.log = NULL) {
@@ -306,6 +310,7 @@ runSimulation <- function(spectra, f.start = NULL, f.end = NULL,
 #'
 #' @author Thomas Münch
 #' @seealso \code{\link{runSurrogates}}
+#' @keywords internal
 #'
 extractQuantiles <- function(surrogates, probs = c(0.1, 0.9), minval = 1e-15) {
 

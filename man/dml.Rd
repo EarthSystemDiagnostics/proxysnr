@@ -17,20 +17,25 @@ A named list with two components:
 }
 }
 \source{
-Data citation:\cr
-Graf, W., et al.: Stable-isotope records from Dronning Maud Land, Antarctica,
-PANGAEA, \url{https://doi.org/10.1594/PANGAEA.728240}, 2002.
+\describe{
+\item{Data citation:}{
 
-License:\cr
-CC-BY-3.0 (\url{https://creativecommons.org/licenses/by/3.0/})
+  Graf, W., et al.: Stable-isotope records from
+  Dronning Maud Land, Antarctica, PANGAEA,
+  \url{https://doi.org/10.1594/PANGAEA.728240}, 2002.}
+\item{License:}{
 
-Literature citation:\cr
-Graf, W., et al.: Stable-isotope records from Dronning Maud Land, Antarctica,
-Ann. Glaciol., 35, 195–201, 2002.\cr
-Münch, T. and Laepple, T.: What climate signal is contained in
-decadal- to centennial-scale isotope variations from Antarctic ice cores?
-Clim. Past, 14, 2053–2070, \url{https://doi.org/10.5194/cp-14-2053-2018},
-2018.
+  CC-BY-3.0 (\url{https://creativecommons.org/licenses/by/3.0/}).}
+\item{Literature citation:}{
+
+  Graf, W., et al.: Stable-isotope records from Dronning Maud Land,
+  Antarctica, Ann. Glaciol., 35, 195–201, 2002.
+
+  Münch,
+  T. and Laepple, T.: What climate signal is contained in decadal- to
+  centennial-scale isotope variations from Antarctic ice cores? Clim. Past,
+  14, 2053–2070, \url{https://doi.org/10.5194/cp-14-2053-2018}, 2018.}
+}
 }
 \usage{
 dml
