@@ -21,11 +21,11 @@ library(magrittr)
 
 ## Getting started
 
-With `proxysnr` you apply spectral analyses to climate proxy records that were
-obtained from a spatial array of proxy observation locations, e.g. ice cores,
-marine sediment cores, tree rings, etc., to derive the power spectral density
-(PSD, or, in short, spectrum) of the record's common signal and the PSD of the
-local noise (for details see Münch and Laepple, 2018).
+With `proxysnr` you can apply spectral analyses to climate proxy records that
+were obtained from a spatial array of proxy observation locations, e.g. ice
+cores, marine sediment cores, tree rings, etc., to derive the power spectral
+density (PSD, or, in short, spectrum) of the record's common signal and the PSD
+of the local noise (for details see Münch and Laepple, 2018)
 
 To work with `proxysnr`, supply the proxy records in form of a list, or a data
 frame, with each list element or data column representing one of the proxy

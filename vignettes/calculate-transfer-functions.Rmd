@@ -1,8 +1,8 @@
 ---
-title: "Calculate diffusion and time uncertainty transfer functions"
+title: "Calculate transfer functions"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Calculating transfer functions}
+  %\VignetteIndexEntry{Calculate transfer functions}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -16,15 +16,13 @@ knitr::opts_chunk$set(
 
 ## Overview
 
-This vignette explains for the effects of vapour diffusion and time uncertainty
-the calculation of spectral transfer functions which describe the expected loss
-in spectral power as a function of frequency for these two processes. For time
-uncertainty, the loss applies to the spectrum of the common signal recorded by
-the spatial average of an array of proxy records (the "stacked" record); for
-diffusion, it applies to the loss in average spectral power of the individual
-records. Proxy records refer here, more specifically, to any proxy time series
-that are based on layer counting in the case of time uncertainty and to stable
-isotope records from firn/ice cores in the case of diffusion.
+This vignette explains, for the two special cases of isotope diffusion in polar
+firn and time uncertainty in layer-counted chronologies, how to calculate
+spectral transfer functions which describe the expected loss in spectral power
+as a function of frequency. For time uncertainty, the loss applies to the
+spectrum of the common signal recorded by the spatial average of an array of
+layer-counted proxy records (the "stacked" record); for diffusion, it applies to
+the loss in average spectral power of individual isotope records.
 
 The documentation utilises as examples the code for calculating the transfer
 functions for the DML and WAIS isotope records studied in Münch and Laepple

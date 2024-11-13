@@ -2,7 +2,7 @@
 % Please edit documentation in R/data.R
 \name{spec.object}
 \alias{spec.object}
-\title{"proxysnr" spectral object}
+\title{\code{proxysnr} spectral object}
 \description{
 {
 A spectral object is a named list of the two elements \code{freq} and

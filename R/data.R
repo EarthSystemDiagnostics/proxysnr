@@ -153,7 +153,7 @@
 #' 2018.
 "time.uncertainty.tf"
 
-#' "proxysnr" spectral object
+#' \code{proxysnr} spectral object
 #'
 #' @description{
 #' A spectral object is a named list of the two elements \code{freq} and

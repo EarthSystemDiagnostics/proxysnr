@@ -17,7 +17,8 @@ spectra for the effects of time uncertainty, proxy smoothing processes
 (e.g. diffusion), and measurement noise.
 
 The method is introduced and in detail explained in Münch and Laepple (2018),
-and it has been applied there to Antarctic firn-core oxygen isotope records.
+and it has been applied there to oxygen isotope records from Antarctic firn and
+ice cores.
 
 `proxysnr` has been implemented by Dr. Thomas Münch with contributions by
 Dr. Thomas Laepple, Dr. Andrew Dolman, Dr. Torben Kunz, and Dr. Mara
