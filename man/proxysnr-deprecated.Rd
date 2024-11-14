@@ -2,6 +2,12 @@
 % Please edit documentation in R/deprecated.R
 \name{proxysnr-deprecated}
 \alias{proxysnr-deprecated}
+\alias{ArraySpectra}
+\alias{SeparateSpectra}
+\alias{StackCorrelation}
+\alias{IntegratedSNR}
+\alias{DiffusionTF}
+\alias{TimeUncertaintyTF}
 \title{Deprecated functions}
 \description{
 The following function names are deprecated, since they do not adhere to the

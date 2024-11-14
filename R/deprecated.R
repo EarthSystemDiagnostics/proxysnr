@@ -22,6 +22,7 @@
 NULL
 
 #' @usage NULL
+#' @rdname proxysnr-deprecated
 #' @export
 ArraySpectra <- function(cores, res = 1, neff = length(cores),
                          df.log = NULL, ...) {
@@ -32,6 +33,7 @@ ArraySpectra <- function(cores, res = 1, neff = length(cores),
 }
 
 #' @usage NULL
+#' @rdname proxysnr-deprecated
 #' @export
 SeparateSpectra <- function(spectra, neff = spectra$N,
                             diffusion, time.uncertainty) {
@@ -45,6 +47,7 @@ SeparateSpectra <- function(spectra, neff = spectra$N,
 }
 
 #' @usage NULL
+#' @rdname proxysnr-deprecated
 #' @export
 StackCorrelation <- function(input, N = 1, f1 = 2, f2 = "max",
                              freq.cut.lower = NULL, freq.cut.upper = NULL) {
@@ -58,6 +61,7 @@ StackCorrelation <- function(input, N = 1, f1 = 2, f2 = "max",
 }
 
 #' @usage NULL
+#' @rdname proxysnr-deprecated
 #' @export
 IntegratedSNR <- function(input, N = 1, f1 = 2, f2 = "max",
                           freq.cut.lower = NULL, freq.cut.upper = NULL) {
@@ -71,6 +75,7 @@ IntegratedSNR <- function(input, N = 1, f1 = 2, f2 = "max",
 }
 
 #' @usage NULL
+#' @rdname proxysnr-deprecated
 #' @export
 DiffusionTF <- function(nt, nc, ns, sigma, res = 1, window = NULL,
                         coherent = FALSE, ...) {
@@ -82,6 +87,7 @@ DiffusionTF <- function(nt, nc, ns, sigma, res = 1, window = NULL,
 }
 
 #' @usage NULL
+#' @rdname proxysnr-deprecated
 #' @export
 TimeUncertaintyTF <- function(t = 100 : 1, acp = c(t[1], NA),
                               nt = length(t), nc = 1, ns = 100,
