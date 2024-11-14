@@ -20,7 +20,7 @@ WrapSpectralResults(
 list element a spectral object (\code{?spec.object}) of a transfer function
 to correct the corresponding dataset for the effect of diffusion-like
 smoothing (\code{?SeparateSignalFromNoise} for more details on this, and
-\code{\link{?CalculateDiffusionTF}} for calculating transfer functions
+\code{?CalculateDiffusionTF} for calculating transfer functions
 specifically for the firn diffusion process). Internally, the inverse of
 the transfer function values are applied to correct for the smoothing
 effect on the estimated signal and noise spectra (see Eq. 4 in Münch and
@@ -30,7 +30,7 @@ corresponding list element(s) to \code{NA}.}
 
 \item{time.uncertainty}{as \code{diffusion} a list of transfer functions to
 correct for the effect of time uncertainty
-(\code{\link{?CalculateTimeUncertaintyTF}} for calculating transfer
+(\code{?CalculateTimeUncertaintyTF} for calculating transfer
 functions in the case of layer-counted proxy chronologies).}
 
 \item{res}{the sampling (e.g., temporal) resolution of the proxy data. Either
@@ -88,12 +88,13 @@ results <- WrapSpectralResults(
 \references{
 Münch, T. and Laepple, T.: What climate signal is contained in
 decadal- to centennial-scale isotope variations from Antarctic ice cores?
-Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
+Clim. Past, 14, 2053–2070, \url{https://doi.org/10.5194/cp-14-2053-2018},
+  2018.
 }
 \seealso{
 \code{\link{SeparateSignalFromNoise}},
   \code{\link{CalculateDiffusionTF}},
-  \code{\link{CalculateTimeUncertaintyTF}}, \code{spec.object} for the
+  \code{\link{CalculateTimeUncertaintyTF}}, \code{\link{spec.object}} for the
   definition of a \code{proxysnr} spectral object.
 }
 \author{

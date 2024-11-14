@@ -214,8 +214,8 @@ MeanSpectrum <- function(speclist) {
 #' @param ... further graphical parameters passed to \code{plot}.
 #'
 #' @author Thomas Laepple
-#' @seealso \code{?spec.object} for the definition of a \code{proxysnr} spectral
-#'   object.
+#' @seealso \code{\link{spec.object}} for the definition of a \code{proxysnr}
+#'   spectral object.
 #'
 #' @export
 #'
@@ -269,8 +269,8 @@ LPlot <- function(x, type = "l", inverse = FALSE, conf = TRUE, axes = TRUE,
 #' @param ... further graphical parameters passed to \code{lines}.
 #'
 #' @author Thomas Laepple, Thomas Münch
-#' @seealso \code{?spec.object} for the definition of a \code{proxysnr} spectral
-#'   object.
+#' @seealso \code{\link{spec.object}} for the definition of a \code{proxysnr}
+#'   spectral object.
 #'
 #' @export
 #'

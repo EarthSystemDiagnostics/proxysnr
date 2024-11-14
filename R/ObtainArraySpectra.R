@@ -23,8 +23,7 @@
 #' @return A list of the following components:
 #'   \describe{
 #'   \item{\code{single}:}{a list of \code{n} spectral objects
-#'     (\code{\link{?spec.object}}) with the spectra of each individual proxy
-#'     record;}
+#'     (\code{?spec.object}) with the spectra of each individual proxy record;}
 #'   \item{\code{mean}:}{spectral object of the mean spectrum across all
 #'     individual spectra;}
 #'   \item{\code{stack}:}{spectral object of the spectrum of the average proxy

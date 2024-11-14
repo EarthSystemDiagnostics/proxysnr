@@ -18,7 +18,7 @@
 #' \code{simproxyage}. The package can be installed from GitHub via\cr
 #' \code{remotes::install_github("EarthSystemDiagnostics/simproxyage")}\cr
 #' or you can download the package repository from\cr
-#' <https://doi.org/10.5281/zenodo.2025204>\cr
+#' \url{https://doi.org/10.5281/zenodo.2025204}\cr
 #' and install the package via \code{devtools::install()}.
 #'
 #' The spectral estimates are calculated using Thomson’s multitaper method with
@@ -98,8 +98,8 @@
 #'         function.}
 #' }
 #'
-#' @seealso \code{?spec.object} for the definition of a \code{proxysnr} spectral
-#'   object.
+#' @seealso \code{\link{spec.object}} for the definition of a \code{proxysnr}
+#'   spectral object.
 #' @author Thomas Münch
 #'
 #' @references
@@ -108,11 +108,12 @@
 #' and Thompson, D. M.: A probabilistic model of chronological errors in
 #' layer-counted climate proxies: applications to annually banded coral
 #' archives, Clim. Past, 10(2), 825-841,
-#' https://doi.org/10.5194/cp-10-825-2014, 2014.
+#' \url{https://doi.org/10.5194/cp-10-825-2014}, 2014.
 #'
 #' Münch, T. and Laepple, T.: What climate signal is contained in
 #' decadal- to centennial-scale isotope variations from Antarctic ice cores?
-#' Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
+#' Clim. Past, 14, 2053–2070, \url{https://doi.org/10.5194/cp-14-2053-2018},
+#'   2018.
 #'
 #' @export
 #'

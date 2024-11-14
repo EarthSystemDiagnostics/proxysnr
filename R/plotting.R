@@ -79,7 +79,8 @@ Polyplot <- function(x, y1, y2, col = "black", alpha = 0.2, ...) {
 #' @references
 #' Münch, T. and Laepple, T.: What climate signal is contained in
 #' decadal- to centennial-scale isotope variations from Antarctic ice cores?
-#' Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
+#' Clim. Past, 14, 2053–2070, \url{https://doi.org/10.5194/cp-14-2053-2018},
+#'   2018.
 #'
 #' @examples
 #' library(magrittr)
@@ -245,14 +246,15 @@ PlotArraySpectra <- function(spec, marker = NA, remove = 1,
 #'   \code{c(0.05, 0.1, 0.5, 1, 5)}.
 #' @inheritParams PlotArraySpectra
 #'
-#' @seealso \code{?spec.object} for the definition of a \code{proxysnr} spectral
-#'   object.
+#' @seealso \code{\link{spec.object}} for the definition of a \code{proxysnr}
+#'   spectral object.
 #' @author Thomas Münch
 #'
 #' @references
 #' Münch, T. and Laepple, T.: What climate signal is contained in
 #' decadal- to centennial-scale isotope variations from Antarctic ice cores?
-#' Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
+#' Clim. Past, 14, 2053–2070, \url{https://doi.org/10.5194/cp-14-2053-2018},
+#'   2018.
 #'
 #' @examples
 #' # create toy data
@@ -403,12 +405,14 @@ PlotSNR <- function(spec, f.cut = FALSE,
 #' @param ytm.min as \code{xtm.min} for minor y axis tick marks.
 #'
 #' @author Thomas Münch
-#' @seealso \code{\link{ObtainStackCorrelation}}; <https://colorbrewer2.org/>
+#' @seealso \code{\link{ObtainStackCorrelation}};
+#'   \url{https://colorbrewer2.org/}
 #'
 #' @references
 #' Münch, T. and Laepple, T.: What climate signal is contained in
 #' decadal- to centennial-scale isotope variations from Antarctic ice cores?
-#' Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
+#' Clim. Past, 14, 2053–2070, \url{https://doi.org/10.5194/cp-14-2053-2018},
+#'   2018. 
 #'
 #' @examples
 #' # create a toy correlation dataset, which mimicks an increase
@@ -588,13 +592,14 @@ PlotStackCorrelation <- function(data, col.pal = NULL, label = "",
 #' @param ytl2 as \code{ytl1} for the y axis on the time uncertainty transfer
 #'   function plot.
 #'
-#' @seealso \code{?spec.object} for the definition of a \code{proxysnr} spectral
-#'   object.
+#' @seealso \code{\link{spec.object}} for the definition of a \code{proxysnr}
+#'   spectral object.
 #' @author Thomas Münch
 #'
 #' @references Münch, T. and Laepple, T.: What climate signal is contained in
 #' decadal- to centennial-scale isotope variations from Antarctic ice cores?
-#' Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
+#' Clim. Past, 14, 2053–2070, \url{https://doi.org/10.5194/cp-14-2053-2018},
+#'   2018.
 #'
 #' @examples
 #' # Plot Figure B1 in Münch and Laepple (2018), i.e. the used transfer

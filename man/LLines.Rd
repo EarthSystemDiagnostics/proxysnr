@@ -39,8 +39,8 @@ interval; defaults to 0.2.}
 Add a line plot of a spectral object to an existing plot.
 }
 \seealso{
-\code{?spec.object} for the definition of a \code{proxysnr} spectral
-  object.
+\code{\link{spec.object}} for the definition of a \code{proxysnr}
+  spectral object.
 }
 \author{
 Thomas Laepple, Thomas Münch

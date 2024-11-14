@@ -63,8 +63,8 @@ Plot a spectral object on a double-logarithmic scale, optionally adding a
 transparent confidence interval.
 }
 \seealso{
-\code{?spec.object} for the definition of a \code{proxysnr} spectral
-  object.
+\code{\link{spec.object}} for the definition of a \code{proxysnr}
+  spectral object.
 }
 \author{
 Thomas Laepple

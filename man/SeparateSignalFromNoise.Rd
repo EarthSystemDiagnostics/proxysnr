@@ -19,12 +19,12 @@ the format as output from \code{\link{ObtainArraySpectra}}.}
 \item{neff}{the effective number of records (\code{neff <= n}, e.g. to
 account for an expected spatial correlation of the local noise). Per
 default extracted from the \code{array.par} attribute of \code{spectra}
-(see section "Value" under \code{\link{?ObtainArraySpectra}}), but you can
+(see section "Value" under \code{?ObtainArraySpectra}), but you can
 supply the \code{neff} explicitly here to overwrite the default value.}
 
 \item{measurement.noise}{a measurement noise level for correcting the proxy
 noise spectrum: either a single value or a spectral object
-(\code{\link{?spec.object}}). In the former case, the measurement noise is
+(\code{?spec.object}). In the former case, the measurement noise is
 assumed to exhibit a white spectrum and the given value is interpreted as
 its total variance; the latter case can be applied if the measurement noise
 has a known spectral shape different from white noise (but the frequency
@@ -34,7 +34,7 @@ measurement noise.}
 
 \item{diffusion}{a spectral object of a transfer function desribing a
 diffusion-like proxy smoothing process (see Details), e.g. diffusion in ice
-cores: \code{\link{?CalculateDiffusionTF}}. Internally, the inverse of the
+cores: \code{?CalculateDiffusionTF}. Internally, the inverse of the
 transfer function values are applied to correct for the smoothing effect on
 the estimated signal and noise spectra (see Eq. 4 in Münch and Laepple,
 2018). The default \code{NULL} is to apply no correction.}
@@ -80,12 +80,13 @@ signal and noise spectra by supplying no transfer functions at all.
 \references{
 Münch, T. and Laepple, T.: What climate signal is contained in
 decadal- to centennial-scale isotope variations from Antarctic ice cores?
-Clim. Past, 14, 2053–2070, https://doi.org/10.5194/cp-14-2053-2018, 2018.
+Clim. Past, 14, 2053–2070, \url{https://doi.org/10.5194/cp-14-2053-2018},
+  2018.
 }
 \seealso{
 \code{\link{ObtainArraySpectra}}, \code{\link{CalculateDiffusionTF}},
-  \code{\link{CalculateTimeUncertaintyTF}}, \code{spec.object} for the definition
-  of a \code{proxysnr} spectral object.
+  \code{\link{CalculateTimeUncertaintyTF}}, \code{\link{spec.object}} for the
+  definition of a \code{proxysnr} spectral object.
 }
 \author{
 Thomas Münch
