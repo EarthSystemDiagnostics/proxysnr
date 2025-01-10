@@ -210,6 +210,17 @@ InterpolateSpectrum <- function(x, target, num.prec = 8) {
 
 }
 
+#' Check if \code{array.par} attribute is present
+#'
+#' Test whether the \code{array.par} attribute is set on the input object and
+#' has valid content.
+#'
+#' @param x a list of spectral estimates based on a proxy record array.
+#' @return \code{TRUE} invisibly if all checks pass.
+#'
+#' @author Thomas Münch
+#' @noRd
+#'
 has.array.attribute <- function(x) {
 
   n <- sprintf(" `%s`.", deparse(substitute(x)))
@@ -239,6 +250,8 @@ has.array.attribute <- function(x) {
     stop("Element `res` of `array.par attribute ",
          "(resolution of proxy records) ",
          "must be a single integer > 0.", call. = FALSE)
+
+  invisible(TRUE)
 
 }
 

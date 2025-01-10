@@ -211,5 +211,6 @@ test_that("checking for array.par attribute works", {
 
   attr(spectra, "array.par") <- c(nc = 5, nt = 100, res = 1)
   expect_no_error(has.array.attribute(spectra))
+  expect_true(has.array.attribute(spectra))
 
 })
