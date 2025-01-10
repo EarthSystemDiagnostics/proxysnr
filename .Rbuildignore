@@ -2,3 +2,9 @@
 ^\.Rproj\.user$
 ^data-raw$
 ^doc$
+^\.github$
+^Makefile$
+^LICENSE\.md$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$

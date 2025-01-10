@@ -1,36 +1,63 @@
 Package: proxysnr
 Title: Separate Signal and Noise in Climate Proxy Records
-Version: 0.2.3
+Version: 1.0.0
 Authors@R: c(
     person("Thomas", "Münch", email = "thomas.muench@awi.de",
-    role = c("aut", "cre")),
-    person("Thomas", "Laepple", role = "aut"),
-    person("Andrew", "Dolman", role = "ctb"))
-Description: This R package implements a method to separate the common signal
-    from local noise in a spatial network of climate proxy records using
-    spectral analyses. The package allows the correction of the estimated signal
-    and noise spectra for the effects of time uncertainty and diffusion.
+           role = c("aut", "cre")),
+    person("Thomas", "Laepple", role = "cph",
+           comment = "Author of included functions LogSmooth, SpecMTM,
+	   MeanSpectrum, LPlot, LLines."),
+    person("Andrew M.", "Dolman", role = "cph",
+           comment = "Author of included function SimPLS."),
+    person("Torben", "Kunz", role = "cph",
+           comment = "Author of included function SimPLS."),
+    person("Mara Y.", "McPartland", role = "ctb",
+            comment = "Drafted code for confidence interval estimation."),
+    person("Wolfgang", "Graf", role = "cph",
+           comment = "Creator of included Dronning Maud Land ice-core data."),
+    person("Hans", "Oerter", role = "cph",
+           comment = "Creator of included Dronning Maud Land ice-core data."),
+    person("Oskar", "Reinwarth", role = "cph",
+           comment = "Creator of included Dronning Maud Land ice-core data."),
+    person("Willibald", "Stichler", role = "cph",
+           comment = "Creator of included Dronning Maud Land ice-core data."),
+    person("Frank", "Wilhelms", role = "cph",
+           comment = "Creator of included Dronning Maud Land ice-core data."),
+    person("Heinz", "Miller", role = "cph",
+           comment = "Creator of included Dronning Maud Land ice-core data."),
+    person("Robert", "Mulvaney", role = "cph",
+           comment = "Creator of included Dronning Maud Land ice-core data."),
+    person("Eric J.", "Steig", role = "cph",
+           comment = "Creator of included WAIS ice-core data."))
+Description: A method to separate the common signal from local noise in a
+    spatial network of climate proxy records using spectral analyses. The
+    estimated signal and noise spectra can be corrected for the effects of
+    proxy smoothing processes, time uncertainty, and measurement noise.
 Depends: R (>= 3.3.1)
 License: file LICENSE
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.2.3
 VignetteBuilder: knitr
-Imports: multitaper
-Suggests: Hmisc,
+Imports:
+    checkmate (>= 2.3.2),
+    fpCompare,
+    magrittr,
+    multitaper,
+    RColorBrewer
+Suggests:
+    covr,
+    Hmisc,
     knitr,
-    PaleoSpec,
     pangaear,
     rmarkdown,
-    RColorBrewer,
     simproxyage,
-    TrenchR,
+    testthat (>= 3.0.0),
     usethis
 Remotes:
-    earthsystemdiagnostics/paleospec,
-    earthsystemdiagnostics/simproxyage,
-    earthsystemdiagnostics/TrenchR
-URL: https://github.com/EarthSystemDiagnostics/proxysnr
+    earthsystemdiagnostics/simproxyage
+URL: https://github.com/EarthSystemDiagnostics/proxysnr, https://earthsystemdiagnostics.github.io/proxysnr/
 BugReports: https://github.com/EarthSystemDiagnostics/proxysnr/issues
 SystemRequirements: Package vignettes based on R Markdown v2 or
     reStructuredText require Pandoc (http://pandoc.org).
+Config/testthat/edition: 3
