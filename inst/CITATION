@@ -1,0 +1,19 @@
+citHeader("To cite proxysnr in publications use:")
+
+bibentry(
+  bibtype  = "Misc",
+  title    = "proxysnr: An R package to separate the common signal from local noise in climate proxy records using spectral analyses",
+  author   = c(person("Thomas", 'M\\"{u}nch')),
+  year     = "2025",
+  doi      = "10.5281/zenodo.2027638",
+  howpublished = "{Zenodo}"
+)
+
+citFooter(
+  "For the spectral signal and noise separation method,",
+  "please cite the journal publication of Münch and Laepple,",
+  "Climate of the Past, 2018. If you also used the DML and/or WAIS",
+  "isotope data included in proxysnr, please also cite the respective",
+  "data and journal publications; see `?dml` and `?wais` for citation",
+  "details on these."
+)

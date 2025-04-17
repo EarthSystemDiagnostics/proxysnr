@@ -32,6 +32,8 @@ no. 716092) and Helmholtz funding through the Polar Regions and
 Coasts in the Changing Earth System (PACES) programme of the Alfred Wegener
 Institute. It further contributes to the German BMBF project PalMod.
 
+Please consider [citing `proxysnr`](#citation) when using it in a publication.
+
 ## Installation
 
 The current version of`proxysnr` can be installed directly from GitHub:
@@ -70,6 +72,21 @@ main aspects of the package:
    spectral transfer functions describing the loss in spectral power for two
    special cases: time-uncertainty in layer-counted chronologies and isotope
    diffusion in polar firn.
+
+## Citation
+
+If you use `proxysnr` for analyses in a publication, please consider citing the
+package in the publication as follows:
+
+Münch, T.: proxysnr: An R package to separate the common signal from local noise
+in climate proxy records using spectral analyses, Zenodo,
+https://doi.org/10.5281/zenodo.2027638, 2025.
+
+For the spectral signal and noise separation method, please cite the journal
+publication of [Münch and Laepple (2018)](#literature-cited). If you also used
+the DML and/or WAIS isotope data included in `proxysnr`, please also cite the
+respective data and journal publications; see `?dml` and `?wais` for citation
+details on these.
 
 ## Literature cited
 
