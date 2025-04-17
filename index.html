@@ -65,6 +65,7 @@
 <p>The method is introduced and in detail explained in Münch and Laepple (2018), and it has been applied there to oxygen isotope records from Antarctic firn and ice cores.</p>
 <p><code>proxysnr</code> has been implemented by Dr. Thomas Münch with contributions by Dr. Thomas Laepple, Dr. Andrew Dolman, Dr. Torben Kunz, and Dr. Mara McPartland. Please contact Dr. Thomas Münch &lt;<a href="mailto:thomas.muench@awi.de" class="email">thomas.muench@awi.de</a>&gt; at the Alfred Wegener Institute, Helmholtz Centre for Polar and Marine Research, Germany, for further information.</p>
 <p>This work was supported by the European Research Council (ERC) under the European Union’s Horizon 2020 research and innovation programme (grant agreement no. 716092) and Helmholtz funding through the Polar Regions and Coasts in the Changing Earth System (PACES) programme of the Alfred Wegener Institute. It further contributes to the German BMBF project PalMod.</p>
+<p>Please consider <a href="#citation">citing <code>proxysnr</code></a> when using it in a publication.</p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -89,6 +90,13 @@
 <li>The <code><a href="articles/plot-muench-laepple-figures.html">vignette("plot-muench-laepple-figures")</a></code> applies this method on two real-world proxy datasets from Antarctic firn and ice cores, thereby showing how to reproduce the results of Münch and Laepple (2018).</li>
 <li>The <code><a href="articles/calculate-transfer-functions.html">vignette("calculate-transfer-functions")</a></code> demonstrates how to obtain spectral transfer functions describing the loss in spectral power for two special cases: time-uncertainty in layer-counted chronologies and isotope diffusion in polar firn.</li>
 </ul>
+</div>
+<div class="section level2">
+<h2 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
+</h2>
+<p>If you use <code>proxysnr</code> for analyses in a publication, please consider citing the package in the publication as follows:</p>
+<p>Münch, T.: proxysnr: An R package to separate the common signal from local noise in climate proxy records using spectral analyses, Zenodo, <a href="https://doi.org/10.5281/zenodo.2027638" class="external-link uri">https://doi.org/10.5281/zenodo.2027638</a>, 2025.</p>
+<p>For the spectral signal and noise separation method, please cite the journal publication of <a href="#literature-cited">Münch and Laepple (2018)</a>. If you also used the DML and/or WAIS isotope data included in <code>proxysnr</code>, please also cite the respective data and journal publications; see <code><a href="reference/dml.html">?dml</a></code> and <code><a href="reference/wais.html">?wais</a></code> for citation details on these.</p>
 </div>
 <div class="section level2">
 <h2 id="literature-cited">Literature cited<a class="anchor" aria-label="anchor" href="#literature-cited"></a>
