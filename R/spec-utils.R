@@ -171,7 +171,7 @@ SpecMTM <- function(timeSeries, k = 3, nw = 2, nFFT = "default",
 MeanSpectrum <- function(speclist) {
 
   # check for equal lengths of supplied spectra
-  if (stats::var(lengths(lapply(speclist, "[[", "freq"))) > 0)
+  if (length(speclist) > 1 & stats::var(lengths(lapply(speclist, "[[", "freq"))) > 0)
     stop("MeanSpectrum: Spectra are of different lengths.", call. = FALSE)
   
   mean <- list()
