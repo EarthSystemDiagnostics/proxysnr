@@ -1,3 +1,9 @@
+# proxysnr 1.0.1
+
+* Fix error check in `MeanSpectrum()` function so that also lists of length 1
+  can be passed safely to the function.
+* Add additional checks in `MeanSpectrum()` to cover other possible input errors.
+
 # proxysnr 1.0.0
 
 ## Breaking changes
