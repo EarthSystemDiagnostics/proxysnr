@@ -170,9 +170,22 @@ SpecMTM <- function(timeSeries, k = 3, nw = 2, nFFT = "default",
 #'
 MeanSpectrum <- function(speclist) {
 
+  if (!is.list(speclist))
+    stop("MeanSpectrum: `speclist` must be a list.")
+  if (length(speclist) == 0)
+    stop("MeanSpectrum: `speclist` is of length 0.", call. = FALSE)
+
+  # check validity of list elements
+  if (!all(sapply(speclist, is.spectrum, USE.NAMES = FALSE)))
+    stop("MeanSpectrum: All `speclist` elements must be spectral objects ",
+         "(lists with elements `freq` and `spec` of equal length).",
+         call. = FALSE)
+
   # check for equal lengths of supplied spectra
-  if (stats::var(lengths(lapply(speclist, "[[", "freq"))) > 0)
+  if (length(speclist) > 1 &
+      stats::var(lengths(lapply(speclist, "[[", "freq"))) > 0) {
     stop("MeanSpectrum: Spectra are of different lengths.", call. = FALSE)
+  }
   
   mean <- list()
   mean$freq <- speclist[[1]]$freq

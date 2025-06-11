@@ -38,11 +38,25 @@ test_that("log-smoothing works", {
 
 test_that("averaging spectra works", {
 
-  m <- "MeanSpectrum: Spectra are of different lengths."
+  m <- "MeanSpectrum: `speclist` must be a list."
+  expect_error(MeanSpectrum(1), m, fixed = TRUE)
+  expect_error(MeanSpectrum(matrix(nrow = 4, ncol = 4)), m, fixed = TRUE)
+
+  m <- "MeanSpectrum: `speclist` is of length 0."
+  expect_error(MeanSpectrum(list()), m, fixed = TRUE)
+
   s1 <- SpecMTM(stats::ts(rnorm(100)))
   s2 <- SpecMTM(stats::ts(rnorm(1000)))
   s3 <- SpecMTM(stats::ts(rnorm(1000)))
 
+  expect_no_error(MeanSpectrum(list(s1)))
+
+  m <- paste("MeanSpectrum: All `speclist` elements must be spectral objects",
+             "(lists with elements `freq` and `spec` of equal length).")
+  expect_error(MeanSpectrum(list(s1, 1 : 100, s2)), m, fixed = TRUE)
+  expect_error(MeanSpectrum(list(s1, list(freq = 1 : 100))), m, fixed = TRUE)
+
+  m <- "MeanSpectrum: Spectra are of different lengths."
   expect_error(MeanSpectrum(list(s1, s2, s3)), m, fixed = TRUE)
 
   s1 <- SpecMTM(stats::ts(rnorm(1000)))
