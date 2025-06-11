@@ -43,6 +43,7 @@ test_that("averaging spectra works", {
   s2 <- SpecMTM(stats::ts(rnorm(1000)))
   s3 <- SpecMTM(stats::ts(rnorm(1000)))
 
+  expect_no_error(MeanSpectrum(list(s1)))
   expect_error(MeanSpectrum(list(s1, s2, s3)), m, fixed = TRUE)
 
   s1 <- SpecMTM(stats::ts(rnorm(1000)))
